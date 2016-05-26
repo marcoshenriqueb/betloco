@@ -1,0 +1,66 @@
+.mdl-layout__content {
+  background-color: #fafafa;
+}
+.search-container {
+  display: flex;
+  flex-direction: column;
+}
+.search-container .mdl-textfield {
+  width: 100%;
+}
+.search-container .mdl-textfield__input {
+  font-size: 22px;
+  border-bottom: 1px solid rgba(0,0,0,0.6);
+}
+.search-container .mdl-textfield__label {
+  color: rgba(0,0,0,0.6);
+}
+.search-container .mdl-typography--display-1 {
+  color: rgba(0,0,0,0.88);
+  margin-bottom: 0;
+}
+.market-card-event.mdl-card {
+  width: 100%;
+  background: #fff;
+}
+.market-card-event h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 20px;
+}
+.market-card-event> .mdl-card__actions> .material-icons {
+  padding-right: 10px;
+}
+.market-card-event> .mdl-card__title {
+  align-items: flex-start;
+  background-color: #3e4eb8;
+  color: #fff;
+}
+.market-card-event>.mdl-card__supporting-text {
+  display: flex;
+  justify-content: flex-start;
+}
+.market-card-event>.mdl-card__supporting-text>.mdl-card__choices {
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.market-card-event> .mdl-card__actions {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+}
+.market-card-event> .mdl-card__actions>.market-details>span {
+  font-size: 10px;
+  margin: 0 5px;
+  white-space: nowrap;
+}
+.market-card-event>.mdl-card__actions {
+  color: rgba(0,0,0,0.6);
+}
+@media (min-width: 768px) {
+  .container {
+    padding: 0 10%;
+  }
+}
