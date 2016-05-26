@@ -8,6 +8,9 @@ class MarketType(models.Model):
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
 
+    def __str__(self):
+        return self.name
+
 class Market(models.Model):
     """docstring for Market"""
     title = models.CharField(max_length=100)
@@ -19,10 +22,16 @@ class Market(models.Model):
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
 
+    def __str__(self):
+        return self.title
+
 class Choice(models.Model):
     """docstring for Choice"""
     market = models.ForeignKey(Market, on_delete=models.CASCADE,)
     title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
 
 class Order(models.Model):
     """docstring for Order"""
