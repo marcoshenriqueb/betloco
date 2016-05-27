@@ -13,7 +13,9 @@ const styles = {
 };
 
 var AppNavbar = React.createClass({
-
+  _logout: function(){
+    window.location = "/accounts/logout/";
+  },
   render: function() {
     return (
       <AppBar
@@ -30,7 +32,7 @@ var AppNavbar = React.createClass({
           >
             <MenuItem primaryText="Mercados" />
             <MenuItem primaryText="Perfil" />
-            <MenuItem primaryText="Sair" />
+            <MenuItem primaryText="Sair" onTouchTap={this._logout} />
           </IconMenu>
         }
       />

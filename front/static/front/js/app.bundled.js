@@ -40294,7 +40294,9 @@ var styles = {
 var AppNavbar = _react2.default.createClass({
   displayName: 'AppNavbar',
 
-
+  _logout: function _logout() {
+    window.location = "/accounts/logout/";
+  },
   render: function render() {
     return _react2.default.createElement(_AppBar2.default, {
       title: 'BetLoco',
@@ -40317,7 +40319,7 @@ var AppNavbar = _react2.default.createClass({
         },
         _react2.default.createElement(_MenuItem2.default, { primaryText: 'Mercados' }),
         _react2.default.createElement(_MenuItem2.default, { primaryText: 'Perfil' }),
-        _react2.default.createElement(_MenuItem2.default, { primaryText: 'Sair' })
+        _react2.default.createElement(_MenuItem2.default, { primaryText: 'Sair', onTouchTap: this._logout })
       )
     });
   }
