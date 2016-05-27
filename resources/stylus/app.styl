@@ -4,71 +4,48 @@ light_gray_color = #FAFAFA
 white_color = #FFF
 primary_color = #3E4EB8
 
-.mdl-layout__content
+*
+  box-sizing: border-box;
+
+body
   background-color: light_gray_color
 
-.search-container
+.app-content
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+.container
+  width: 95%
+
+.marketcard-subtitle
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  span
+    margin-right: 20px
+    white-space: nowrap;
+
+.marketcard
+  margin-bottom: 15px;
+
+.marketcard-predictions
   display: flex;
   flex-direction: column;
 
-  .mdl-textfield
-    width: 100%;
+  .marketcard-predictions__choices
+    display: flex;
+    align-items: flex-end;
+  h5
+    margin-right: 20px
 
-  .mdl-textfield__input
-    font-size: 22px;
-    border-bottom: 1px solid gray_color
-
-  .mdl-textfield__label
-    color gray_color
-
-  .mdl-typography--display-1
-    color dark_color
-    margin-bottom: 0;
-
-.market-card-event.mdl-card
-  width: 100%;
-  background: white_color
-
-.market-card-event
-  h4
-    margin-top: 0;
+  h5, p
     margin-bottom: 0
-    font-size: 20px
-
-  &> .mdl-card__actions
-
-    &> .material-icons
-      padding-right: 10px;
-
-  &> .mdl-card__title
-    align-items: flex-start;
-    background-color: primary_color
-    color: white_color
-
-  &>.mdl-card__supporting-text
-    display: flex;
-    justify-content: flex-start;
-
-    &>.mdl-card__choices
-      margin: 0 20px
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-  &> .mdl-card__actions
-    display: flex;
-    box-sizing:border-box;
-    align-items: center;
-
-    &>.market-details>span
-      font-size: 10px;
-      margin: 0 5px;
-      white-space: nowrap;
-
-.market-card-event
-  &>.mdl-card__actions
-    color: gray_color
 
 @media(min-width: 768px)
   .container
-    padding: 0 10%
+    width: 80%
+
+// Fix bug
+input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly])
+  box-shadow: none;

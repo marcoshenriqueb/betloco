@@ -27,7 +27,7 @@ class Market(models.Model):
 
 class Choice(models.Model):
     """docstring for Choice"""
-    market = models.ForeignKey(Market, on_delete=models.CASCADE,)
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
     title = models.CharField(max_length=100)
 
     def __str__(self):

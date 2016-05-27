@@ -4,7 +4,7 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
-var reactify = require('reactify');
+var babelify = require('babelify');
 
 gulp.task('stylus', function () {
   gulp.src('./resources/stylus/app.styl')
@@ -14,7 +14,7 @@ gulp.task('stylus', function () {
 
 gulp.task('script', function() {
   browserify('./resources/js/app.js')
-  .transform(reactify)
+  .transform(babelify, {presets: ["es2015", "react"]})
   .bundle()
   .pipe(source('app.bundled.js'))
   .pipe(buffer())
