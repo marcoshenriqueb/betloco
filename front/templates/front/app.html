@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'front/css/app.css' %}">
     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
   </head>
-  <body id="app">
+  <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--no-desktop-drawer-button mdl-layout--fixed-header">
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
@@ -34,7 +34,7 @@
         </nav>
       </div>
       <main class="mdl-layout__content">
-        <div class="page-content">
+        <div id="app" class="page-content">
           <div class="mdl-grid search-container container">
             <h3 class="mdl-typography--display-1">
               Mercados
