@@ -15,10 +15,8 @@ const style = {
 };
 
 var SearchComp = React.createClass({
-  getInitialState: function() {
-    return {
-      search: ''
-    };
+  handleSearchChange: function(val){
+    this.props.onUserInput(val.target.value);
   },
 
   render: function() {
@@ -27,6 +25,8 @@ var SearchComp = React.createClass({
       <TextField
         style={style.textField}
         hintText="Procurar mercados"
+        value={this.props.search}
+        onChange={this.handleSearchChange}
       />
       </Paper>
     );

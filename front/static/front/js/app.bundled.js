@@ -40213,19 +40213,14 @@ var _AppNavbar = require('./components/AppNavbar.jsx');
 
 var _AppNavbar2 = _interopRequireDefault(_AppNavbar);
 
-var _SearchComp = require('./components/SearchComp.jsx');
+var _MarketContainer = require('./components/MarketContainer.jsx');
 
-var _SearchComp2 = _interopRequireDefault(_SearchComp);
-
-var _Market = require('./components/Market.jsx');
-
-var _Market2 = _interopRequireDefault(_Market);
+var _MarketContainer2 = _interopRequireDefault(_MarketContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = _react2.default.createClass({
   displayName: 'App',
-
 
   render: function render() {
     return _react2.default.createElement(
@@ -40235,12 +40230,7 @@ var App = _react2.default.createClass({
         'div',
         null,
         _react2.default.createElement(_AppNavbar2.default, null),
-        _react2.default.createElement(
-          'div',
-          { className: 'app-content' },
-          _react2.default.createElement(_SearchComp2.default, null),
-          _react2.default.createElement(_Market2.default, null)
-        )
+        _react2.default.createElement(_MarketContainer2.default, null)
       )
     );
   }
@@ -40248,7 +40238,7 @@ var App = _react2.default.createClass({
 
 exports.default = App;
 
-},{"./components/AppNavbar.jsx":361,"./components/Market.jsx":362,"./components/SearchComp.jsx":364,"material-ui/styles/MuiThemeProvider":156,"material-ui/styles/getMuiTheme":159,"react":357}],361:[function(require,module,exports){
+},{"./components/AppNavbar.jsx":361,"./components/MarketContainer.jsx":362,"material-ui/styles/MuiThemeProvider":156,"material-ui/styles/getMuiTheme":159,"react":357}],361:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40342,19 +40332,29 @@ var _reqwest = require('reqwest');
 
 var _reqwest2 = _interopRequireDefault(_reqwest);
 
-var _MarketCard = require('./MarketCard.jsx');
+var _SearchComp = require('./markets/SearchComp.jsx');
 
-var _MarketCard2 = _interopRequireDefault(_MarketCard);
+var _SearchComp2 = _interopRequireDefault(_SearchComp);
+
+var _Market = require('./markets/Market.jsx');
+
+var _Market2 = _interopRequireDefault(_Market);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Market = _react2.default.createClass({
-  displayName: 'Market',
+var MarketContainer = _react2.default.createClass({
+  displayName: 'MarketContainer',
 
   getInitialState: function getInitialState() {
     return {
-      markets: []
+      markets: [],
+      search: 'hey'
     };
+  },
+  handleUserInput: function handleUserInput(filterText) {
+    this.setState({
+      search: filterText
+    });
   },
   componentDidMount: function componentDidMount() {
     var that = this;
@@ -40367,8 +40367,42 @@ var Market = _react2.default.createClass({
   render: function render() {
     return _react2.default.createElement(
       'div',
+      { className: 'app-content' },
+      _react2.default.createElement(_SearchComp2.default, { search: this.state.search, onUserInput: this.handleUserInput }),
+      _react2.default.createElement(_Market2.default, { markets: this.state.markets, search: this.state.search })
+    );
+  }
+});
+
+exports.default = MarketContainer;
+
+},{"./markets/Market.jsx":363,"./markets/SearchComp.jsx":365,"react":357,"reqwest":358}],363:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _MarketCard = require('./MarketCard.jsx');
+
+var _MarketCard2 = _interopRequireDefault(_MarketCard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Market = _react2.default.createClass({
+  displayName: 'Market',
+
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
       { className: 'container' },
-      this.state.markets.map(function (market) {
+      this.props.markets.filter(function (market) {
+        return market.title.indexOf(this.props.search) !== -1;
+      }.bind(this)).map(function (market) {
         return _react2.default.createElement(_MarketCard2.default, { market: market, key: market.id });
       })
     );
@@ -40377,7 +40411,7 @@ var Market = _react2.default.createClass({
 
 exports.default = Market;
 
-},{"./MarketCard.jsx":363,"react":357,"reqwest":358}],363:[function(require,module,exports){
+},{"./MarketCard.jsx":364,"react":357}],364:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40483,7 +40517,7 @@ var MarketCard = _react2.default.createClass({
 
 exports.default = MarketCard;
 
-},{"material-ui/Card":14,"material-ui/FlatButton":17,"material-ui/LinearProgress":25,"react":357}],364:[function(require,module,exports){
+},{"material-ui/Card":14,"material-ui/FlatButton":17,"material-ui/LinearProgress":25,"react":357}],365:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40519,10 +40553,8 @@ var style = {
 var SearchComp = _react2.default.createClass({
   displayName: 'SearchComp',
 
-  getInitialState: function getInitialState() {
-    return {
-      search: ''
-    };
+  handleSearchChange: function handleSearchChange(val) {
+    this.props.onUserInput(val.target.value);
   },
 
   render: function render() {
@@ -40531,7 +40563,9 @@ var SearchComp = _react2.default.createClass({
       { className: 'container', style: style.paper, zDepth: 1 },
       _react2.default.createElement(_TextField2.default, {
         style: style.textField,
-        hintText: 'Procurar mercados'
+        hintText: 'Procurar mercados',
+        value: this.props.search,
+        onChange: this.handleSearchChange
       })
     );
   }
