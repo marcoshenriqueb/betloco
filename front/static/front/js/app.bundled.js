@@ -45608,7 +45608,8 @@ var MarketContainer = _react2.default.createClass({
   getInitialState: function getInitialState() {
     return {
       markets: [],
-      search: ''
+      search: '',
+      next: null
     };
   },
   handleUserInput: function handleUserInput(filterText) {
@@ -45616,20 +45617,40 @@ var MarketContainer = _react2.default.createClass({
       search: filterText
     });
   },
-  componentDidMount: function componentDidMount() {
+  getMarkets: function getMarkets(url) {
+    if (url == undefined) {
+      url = '/api/markets/?format=json';
+    }
     var that = this;
-    (0, _reqwest2.default)('/api/markets/?format=json').then(function (response) {
+    (0, _reqwest2.default)(url).then(function (response) {
+      var markets = that.state.markets.concat(response.results);
       that.setState({
-        markets: response
+        markets: markets,
+        next: response.next
       });
     });
   },
+  getNextMarketPage: function getNextMarketPage() {
+    this.getMarkets(this.state.next);
+  },
+  componentDidMount: function componentDidMount() {
+    this.getMarkets();
+  },
   render: function render() {
+    var nextPageButton = null;
+    if (this.state.next != null) {
+      nextPageButton = _react2.default.createElement(
+        'button',
+        { onClick: this.getNextMarketPage },
+        'Mais'
+      );
+    }
     return _react2.default.createElement(
       'div',
       { className: 'app-content' },
       _react2.default.createElement(_SearchComp2.default, { search: this.state.search, onUserInput: this.handleUserInput }),
-      _react2.default.createElement(_Market2.default, { markets: this.state.markets, search: this.state.search })
+      _react2.default.createElement(_Market2.default, { markets: this.state.markets, search: this.state.search }),
+      nextPageButton
     );
   }
 });
@@ -45637,41 +45658,37 @@ var MarketContainer = _react2.default.createClass({
 exports.default = MarketContainer;
 
 },{"./markets/Market.jsx":425,"./markets/SearchComp.jsx":427,"react":418,"reqwest":419}],424:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reqwest = require('reqwest');
-
-var _reqwest2 = _interopRequireDefault(_reqwest);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var MarketContainer = _react2.default.createClass({
-  displayName: 'MarketContainer',
+var ProfileContainer = _react2.default.createClass({
+  displayName: "ProfileContainer",
 
   render: function render() {
     return _react2.default.createElement(
-      'div',
-      { className: '' },
+      "div",
+      { className: "" },
       _react2.default.createElement(
-        'h1',
+        "h1",
         null,
-        'Hey'
+        "Hey"
       )
     );
   }
 });
 
-exports.default = MarketContainer;
+exports.default = ProfileContainer;
 
-},{"react":418,"reqwest":419}],425:[function(require,module,exports){
+},{"react":418}],425:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

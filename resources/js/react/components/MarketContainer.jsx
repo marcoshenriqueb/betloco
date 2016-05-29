@@ -7,7 +7,8 @@ var MarketContainer = React.createClass({
   getInitialState: function() {
     return {
       markets: [],
-      search: ''
+      search: '',
+      next: null
     };
   },
   handleUserInput: function(filterText) {
@@ -15,19 +16,35 @@ var MarketContainer = React.createClass({
       search: filterText,
     });
   },
-  componentDidMount: function() {
+  getMarkets: function(url){
+    if (url == undefined) {
+      url = '/api/markets/?format=json';
+    }
     var that = this;
-    req('/api/markets/?format=json').then(function(response){
+    req(url).then(function(response){
+      var markets = that.state.markets.concat(response.results);
       that.setState({
-        markets: response
+        markets: markets,
+        next: response.next
       });
     });
   },
+  getNextMarketPage: function(){
+    this.getMarkets(this.state.next);
+  },
+  componentDidMount: function() {
+    this.getMarkets();
+  },
   render: function() {
+    var nextPageButton = null;
+    if (this.state.next != null) {
+      nextPageButton = (<button onClick={this.getNextMarketPage}>Mais</button>);
+    }
     return (
       <div className="app-content">
         <SearchComp search={this.state.search} onUserInput={this.handleUserInput} />
         <Market markets={this.state.markets} search={this.state.search} />
+        {nextPageButton}
       </div>
     );
   }
