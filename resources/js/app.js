@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, Route, Link, browserHistory } from 'react-router'
 // Here we put our React instance to the global scope. Make sure you do not put it
 // into production and make sure that you close and open your console if the
 // DEV-TOOLS does not display
@@ -11,12 +12,16 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
 import App from './react/App.jsx';
+import MarketContainer from './react/components/MarketContainer.jsx';
+import ProfileContainer from './react/components/ProfileContainer.jsx';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render((
+  <Router history={browserHistory}>
+    <Route component={App}>
+      <Route path="/app/" component={MarketContainer} />
+      <Route path="/app/perfil/" component={ProfileContainer} />
+    </Route>
+  </Router>
+), document.getElementById('app'))
 
-
-// var req = require('reqwest');
-//
-// req('/api/markets/?format=json').then(function(resp){
-//   console.log(resp);
-// });
+// ReactDOM.render(<App />, document.getElementById('app'));

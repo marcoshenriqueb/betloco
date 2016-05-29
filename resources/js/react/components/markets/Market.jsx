@@ -7,7 +7,7 @@ var Market = React.createClass({
       <div className="container">
       {
         this.props.markets.filter(function(market){
-          return market.title.indexOf(this.props.search) !== -1;
+          return market.title.toLowerCase().indexOf(this.props.search.toLowerCase()) !== -1;
         }.bind(this)).map((market) => {
           return <MarketCard market={market} key={market.id} />
         })

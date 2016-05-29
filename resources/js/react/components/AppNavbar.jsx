@@ -5,6 +5,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import { browserHistory } from 'react-router';
 
 const styles = {
   title: {
@@ -15,6 +16,12 @@ const styles = {
 var AppNavbar = React.createClass({
   _logout: function(){
     window.location = "/accounts/logout/";
+  },
+  _profileRoute: function(){
+    browserHistory.push('/app/perfil/');
+  },
+  _marketRoute: function(){
+    browserHistory.push('/app/');
   },
   render: function() {
     return (
@@ -30,8 +37,8 @@ var AppNavbar = React.createClass({
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           >
-            <MenuItem primaryText="Mercados" />
-            <MenuItem primaryText="Perfil" />
+            <MenuItem primaryText="Mercados" onTouchTap={this._marketRoute} />
+            <MenuItem primaryText="Perfil" onTouchTap={this._profileRoute} />
             <MenuItem primaryText="Sair" onTouchTap={this._logout} />
           </IconMenu>
         }

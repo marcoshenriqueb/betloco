@@ -7,7 +7,7 @@ var MarketContainer = React.createClass({
   getInitialState: function() {
     return {
       markets: [],
-      search: 'hey'
+      search: ''
     };
   },
   handleUserInput: function(filterText) {
