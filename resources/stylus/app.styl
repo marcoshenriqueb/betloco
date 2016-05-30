@@ -2,50 +2,23 @@ dark_color = rgba(0,0,0,.88)
 gray_color = rgba(0,0,0,.60)
 light_gray_color = #FAFAFA
 white_color = #FFF
-primary_color = #3E4EB8
+primary_color = rgb(0, 188, 212)
 
 *
   box-sizing: border-box;
 
 body
   background-color: light_gray_color
+  font-family: 'Roboto'
 
-.app-content
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+h2
+  font-size: 28px
 
-.container
-  width: 95%
+h3
+  font-size: 24px
 
-.marketcard-subtitle
-  max-width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  span
-    margin-right: 20px
-    white-space: nowrap;
-
-.marketcard
-  margin-bottom: 15px;
-
-.marketcard-predictions
-  display: flex;
-  flex-direction: column;
-
-  .marketcard-predictions__choices
-    display: flex;
-    align-items: flex-end;
-  h5
-    margin-right: 20px
-
-  h5, p
-    margin-bottom: 0
-
-@media(min-width: 768px)
-  .container
-    width: 80%
-
+@import "./markets.styl"
+@import "./orderbook.styl"
 // Fix bug
 input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly])
   box-shadow: none;

@@ -1,29 +1,24 @@
 import React from 'react';
-import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import OrderBook from './OrderBook.jsx';
+
+var styles = {
+  cardtext: {
+    paddingTop: 0
+  }
+}
 
 var MarketDetailCard = React.createClass({
   render: function() {
     return (
-      <Card className="marketcard">
-        <CardTitle
-          title={this.props.market.title}
-          subtitle={
-            <div className="marketcard-subtitle">
-              <span>Mercado: {this.props.market.market_type}</span>
-              <span>Taxa: {this.props.market.trading_fee * 100}%</span>
-              <span>Volume: 500 contratos</span>
-              <span>Encerramento: 31/12/2016</span>
-            </div>
-          }
-        />
-        <CardText>
-          {this.props.market.description}
-        </CardText>
-        <CardActions>
-          <FlatButton label="Action1" />
-        </CardActions>
-      </Card>
+      <div>
+        <h2>{this.props.market.title}</h2>
+        <div className="orderbook-container">
+          <OrderBook />
+          <OrderBook />
+        </div>
+      </div>
     );
   }
 });
