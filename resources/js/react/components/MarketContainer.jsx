@@ -2,6 +2,8 @@ import React from 'react';
 import req from 'reqwest';
 import SearchComp from './markets/SearchComp.jsx';
 import Market from './markets/Market.jsx';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 var MarketContainer = React.createClass({
   getInitialState: function() {
@@ -38,13 +40,19 @@ var MarketContainer = React.createClass({
   render: function() {
     var nextPageButton = null;
     if (this.state.next != null) {
-      nextPageButton = (<button onClick={this.getNextMarketPage}>Mais</button>);
+      nextPageButton = (
+        <FloatingActionButton mini={true} onClick={this.getNextMarketPage}>
+          <ContentAdd />
+        </FloatingActionButton>
+      );
     }
     return (
       <div className="app-content">
         <SearchComp search={this.state.search} onUserInput={this.handleUserInput} />
         <Market markets={this.state.markets} search={this.state.search} />
         {nextPageButton}
+        <br />
+        <br />
       </div>
     );
   }
