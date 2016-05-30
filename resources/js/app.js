@@ -14,12 +14,14 @@ injectTapEventPlugin();
 import App from './react/App.jsx';
 import MarketContainer from './react/components/MarketContainer.jsx';
 import ProfileContainer from './react/components/ProfileContainer.jsx';
+import MarketDetailContainer from './react/components/MarketDetailContainer.jsx';
 
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route component={App}>
       <Route path="/app/" component={MarketContainer} />
       <Route path="/app/perfil/" component={ProfileContainer} />
+      <Route path="/app/mercado/:id" component={MarketDetailContainer} />
     </Route>
   </Router>
 ), document.getElementById('app'))

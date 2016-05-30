@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
+import { browserHistory } from 'react-router';
 
 var style = {
   linear: {
@@ -14,6 +15,9 @@ var style = {
 }
 
 var MarketCard = React.createClass({
+  goToMarketDetail: function(){
+    browserHistory.push('/app/mercado/' + this.props.market.id + '/');
+  },
   render: function() {
     return (
       <Card className="marketcard">
@@ -42,7 +46,7 @@ var MarketCard = React.createClass({
           }
         </CardText>
         <CardActions>
-          <FlatButton primary={true} label="Ver Mercado" />
+          <FlatButton onTouchTap={this.goToMarketDetail} primary={true} label="Ver Mercado" />
         </CardActions>
       </Card>
     );

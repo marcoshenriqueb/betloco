@@ -18,3 +18,11 @@ class MarketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Market
         fields = ('id', 'title', 'market_type', 'trading_fee', 'deadline', 'choices')
+
+class MarketDetailSerializer(serializers.ModelSerializer):
+    market_type = serializers.StringRelatedField()
+    choices = ChoiceSerializer(many=True)
+
+    class Meta:
+        model = Market
+        fields = ('id', 'title', 'description', 'market_type', 'trading_fee', 'deadline', 'choices')

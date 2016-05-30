@@ -45840,6 +45840,10 @@ var _ProfileContainer = require('./react/components/ProfileContainer.jsx');
 
 var _ProfileContainer2 = _interopRequireDefault(_ProfileContainer);
 
+var _MarketDetailContainer = require('./react/components/MarketDetailContainer.jsx');
+
+var _MarketDetailContainer2 = _interopRequireDefault(_MarketDetailContainer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Needed for onTouchTap
@@ -45858,13 +45862,14 @@ _reactDom2.default.render(_react2.default.createElement(
     _reactRouter.Route,
     { component: _App2.default },
     _react2.default.createElement(_reactRouter.Route, { path: '/app/', component: _MarketContainer2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/app/perfil/', component: _ProfileContainer2.default })
+    _react2.default.createElement(_reactRouter.Route, { path: '/app/perfil/', component: _ProfileContainer2.default }),
+    _react2.default.createElement(_reactRouter.Route, { path: '/app/mercado/:id', component: _MarketDetailContainer2.default })
   )
 ), document.getElementById('app'));
 
 // ReactDOM.render(<App />, document.getElementById('app'));
 
-},{"./react/App.jsx":424,"./react/components/MarketContainer.jsx":426,"./react/components/ProfileContainer.jsx":427,"react":421,"react-dom":185,"react-router":215,"react-tap-event-plugin":252}],424:[function(require,module,exports){
+},{"./react/App.jsx":424,"./react/components/MarketContainer.jsx":426,"./react/components/MarketDetailContainer.jsx":427,"./react/components/ProfileContainer.jsx":428,"react":421,"react-dom":185,"react-router":215,"react-tap-event-plugin":252}],424:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46085,7 +46090,60 @@ var MarketContainer = _react2.default.createClass({
 
 exports.default = MarketContainer;
 
-},{"./markets/Market.jsx":428,"./markets/SearchComp.jsx":430,"material-ui/FloatingActionButton":19,"material-ui/svg-icons/content/add":166,"react":421,"reqwest":422}],427:[function(require,module,exports){
+},{"./markets/Market.jsx":430,"./markets/SearchComp.jsx":432,"material-ui/FloatingActionButton":19,"material-ui/svg-icons/content/add":166,"react":421,"reqwest":422}],427:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reqwest = require('reqwest');
+
+var _reqwest2 = _interopRequireDefault(_reqwest);
+
+var _MarketDetailCard = require('./marketDetail/MarketDetailCard.jsx');
+
+var _MarketDetailCard2 = _interopRequireDefault(_MarketDetailCard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MarketDetailContainer = _react2.default.createClass({
+  displayName: 'MarketDetailContainer',
+
+  getInitialState: function getInitialState() {
+    return {
+      market: {}
+    };
+  },
+  getMarket: function getMarket() {
+    var that = this;
+    (0, _reqwest2.default)('/api/markets/' + this.props.params.id + '/?format=json').then(function (response) {
+      var market = response;
+      that.setState({
+        market: market
+      });
+    });
+  },
+  componentDidMount: function componentDidMount() {
+    this.getMarket();
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      { className: 'marketdetail-content container' },
+      _react2.default.createElement('br', null),
+      _react2.default.createElement(_MarketDetailCard2.default, { market: this.state.market })
+    );
+  }
+});
+
+exports.default = MarketDetailContainer;
+
+},{"./marketDetail/MarketDetailCard.jsx":429,"react":421,"reqwest":422}],428:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46116,7 +46174,79 @@ var ProfileContainer = _react2.default.createClass({
 
 exports.default = ProfileContainer;
 
-},{"react":421}],428:[function(require,module,exports){
+},{"react":421}],429:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Card = require('material-ui/Card');
+
+var _FlatButton = require('material-ui/FlatButton');
+
+var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MarketDetailCard = _react2.default.createClass({
+  displayName: 'MarketDetailCard',
+
+  render: function render() {
+    return _react2.default.createElement(
+      _Card.Card,
+      { className: 'marketcard' },
+      _react2.default.createElement(_Card.CardTitle, {
+        title: this.props.market.title,
+        subtitle: _react2.default.createElement(
+          'div',
+          { className: 'marketcard-subtitle' },
+          _react2.default.createElement(
+            'span',
+            null,
+            'Mercado: ',
+            this.props.market.market_type
+          ),
+          _react2.default.createElement(
+            'span',
+            null,
+            'Taxa: ',
+            this.props.market.trading_fee * 100,
+            '%'
+          ),
+          _react2.default.createElement(
+            'span',
+            null,
+            'Volume: 500 contratos'
+          ),
+          _react2.default.createElement(
+            'span',
+            null,
+            'Encerramento: 31/12/2016'
+          )
+        )
+      }),
+      _react2.default.createElement(
+        _Card.CardText,
+        null,
+        this.props.market.description
+      ),
+      _react2.default.createElement(
+        _Card.CardActions,
+        null,
+        _react2.default.createElement(_FlatButton2.default, { label: 'Action1' })
+      )
+    );
+  }
+});
+
+exports.default = MarketDetailCard;
+
+},{"material-ui/Card":14,"material-ui/FlatButton":17,"react":421}],430:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46151,7 +46281,7 @@ var Market = _react2.default.createClass({
 
 exports.default = Market;
 
-},{"./MarketCard.jsx":429,"react":421}],429:[function(require,module,exports){
+},{"./MarketCard.jsx":431,"react":421}],431:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46172,6 +46302,8 @@ var _LinearProgress = require('material-ui/LinearProgress');
 
 var _LinearProgress2 = _interopRequireDefault(_LinearProgress);
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var style = {
@@ -46187,6 +46319,9 @@ var style = {
 var MarketCard = _react2.default.createClass({
   displayName: 'MarketCard',
 
+  goToMarketDetail: function goToMarketDetail() {
+    _reactRouter.browserHistory.push('/app/mercado/' + this.props.market.id + '/');
+  },
   render: function render() {
     return _react2.default.createElement(
       _Card.Card,
@@ -46249,7 +46384,7 @@ var MarketCard = _react2.default.createClass({
       _react2.default.createElement(
         _Card.CardActions,
         null,
-        _react2.default.createElement(_FlatButton2.default, { primary: true, label: 'Ver Mercado' })
+        _react2.default.createElement(_FlatButton2.default, { onTouchTap: this.goToMarketDetail, primary: true, label: 'Ver Mercado' })
       )
     );
   }
@@ -46257,7 +46392,7 @@ var MarketCard = _react2.default.createClass({
 
 exports.default = MarketCard;
 
-},{"material-ui/Card":14,"material-ui/FlatButton":17,"material-ui/LinearProgress":27,"react":421}],430:[function(require,module,exports){
+},{"material-ui/Card":14,"material-ui/FlatButton":17,"material-ui/LinearProgress":27,"react":421,"react-router":215}],432:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
