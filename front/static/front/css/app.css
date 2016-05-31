@@ -51,33 +51,51 @@ h3 {
     width: 80%;
   }
 }
-.orderbook-title {
+.orderrequest-title {
   display: block;
 }
-.orderbook-card {
+.orderrequest-card {
   margin-right: 20px;
 }
-.orderbook-card__header {
+.orderrequest-card__header {
   background-color: #00bcd4;
   color: #fff;
   padding: 10px 15px;
 }
-.orderbook-card__header p {
+.orderrequest-card__header p {
   margin: 0;
   font-size: 16px;
   font-weight: bold;
 }
-.orderbook-card__orders-column {
+.orderrequest-card__orders-column {
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
 }
-.orderbook-card__buy-column,
-.orderbook-card__sell-column {
+.orderrequest-card__buy-column,
+.orderrequest-card__sell-column {
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.orderrequest-card__details span {
+  font-size: 13px;
+}
+.orderbook-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.orderbook-card {
+  width: 400px;
+  margin-right: 1%;
+  margin-bottom: 1%;
+}
+td,
+th {
+  padding: 2px 5px;
 }
 input:not([type]):focus:not([readonly]),
 input[type=text]:focus:not([readonly]),
