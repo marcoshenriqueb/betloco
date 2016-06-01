@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum, Q
+from django.db.models import Sum, Max, Q
 import operator, functools
 
 class MarketType(models.Model):
@@ -50,6 +50,12 @@ class Market(models.Model):
 
     volume = property(_getVolume)
 
+    def _getLastCompleteOrder(self):
+        return Operation.objects.filter(from_order__choice__market__id=self.id) \
+                                .order_by('-created_at')[0:1].get()
+
+    lastCompleteOrder = property(_getLastCompleteOrder)
+
 class Choice(models.Model):
     """docstring for Choice"""
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
@@ -58,11 +64,9 @@ class Choice(models.Model):
     def __str__(self):
         return self.title
 
-    def _getLastPrice(self):
-        return self.order_set.filter(Q(from_order__isnull=False) | Q(to_order__isnull=False))
-
-
-    lastPrice = property(_getLastPrice)
+    # def _getLastCompleteOrder(self):
+    #     return self.order_set.filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+    #                          .order_by('to_order__created_at')[0:1].get()
 
 class Order(models.Model):
     """docstring for Order"""
