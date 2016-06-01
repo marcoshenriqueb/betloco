@@ -50,12 +50,6 @@ class Market(models.Model):
 
     volume = property(_getVolume)
 
-    def _getLastCompleteOrder(self):
-        return Operation.objects.filter(from_order__choice__market__id=self.id) \
-                                .order_by('-created_at')[0:1].get()
-
-    lastCompleteOrder = property(_getLastCompleteOrder)
-
 class Choice(models.Model):
     """docstring for Choice"""
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
@@ -64,9 +58,11 @@ class Choice(models.Model):
     def __str__(self):
         return self.title
 
-    # def _getLastCompleteOrder(self):
-    #     return self.order_set.filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
-    #                          .order_by('to_order__created_at')[0:1].get()
+    def _getLastCompleteOrder(self):
+        o = Operation.objects.filter(Q(from_order__choice__id=self.id) | Q(to_order__choice__id=self.id)) \
+                             .order_by('-created_at')[0:1].get()
+        return self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
+    lastCompleteOrder = property(_getLastCompleteOrder)
 
 class Order(models.Model):
     """docstring for Order"""

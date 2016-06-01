@@ -1,32 +1,24 @@
 from rest_framework import serializers
 from .models import Market, Choice, MarketType, MarketCategory, Order, Operation
 
-class SimpleChoiceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Choice
-        fields = ('id', 'title')
-
 class OrderSerializer(serializers.ModelSerializer):
-    choice = SimpleChoiceSerializer()
-
     class Meta:
         model = Order
-        fields = ('id', 'price', 'amount', 'choice')
+        fields = ('id', 'price', 'amount')
 
-class OperationSerializer(serializers.ModelSerializer):
-    from_order = OrderSerializer()
-    to_order = OrderSerializer()
-
+class SimpleChoiceSerializer(serializers.ModelSerializer):
+    lastCompleteOrder = OrderSerializer()
     class Meta:
-        model = Operation
-        fields = ('id', 'price', 'amount', 'from_order', 'to_order')
+        model = Choice
+        fields = ('id', 'title', 'lastCompleteOrder')
 
 class ChoiceSerializer(serializers.ModelSerializer):
     order_set = OrderSerializer(many=True)
+    lastCompleteOrder = OrderSerializer()
 
     class Meta:
         model = Choice
-        fields = ('id', 'title', 'order_set')
+        fields = ('id', 'title', 'order_set', 'lastCompleteOrder')
 
 class MarketCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,7 +34,6 @@ class MarketSerializer(serializers.ModelSerializer):
     market_type = serializers.StringRelatedField()
     market_category = serializers.StringRelatedField()
     choices = SimpleChoiceSerializer(many=True)
-    lastCompleteOrder = OperationSerializer()
 
     class Meta:
         model = Market
@@ -55,7 +46,6 @@ class MarketSerializer(serializers.ModelSerializer):
             'volume',
             'deadline',
             'choices',
-            'lastCompleteOrder'
         )
 
 class MarketDetailSerializer(serializers.ModelSerializer):
@@ -63,7 +53,6 @@ class MarketDetailSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     market_category = MarketCategorySerializer()
     choices = ChoiceSerializer(many=True)
-    lastCompleteOrder = OperationSerializer()
 
     class Meta:
         model = Market
@@ -77,7 +66,6 @@ class MarketDetailSerializer(serializers.ModelSerializer):
             'trading_fee',
             'volume',
             'choices',
-            'lastCompleteOrder',
             'deadline',
             'created_at'
         )
