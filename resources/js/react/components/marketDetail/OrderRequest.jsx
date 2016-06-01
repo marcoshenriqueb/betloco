@@ -32,7 +32,7 @@ var OrderRequest = React.createClass({
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
-          <p>Sim (70%)</p>
+          <p>{this.props.choice.title} (70%)</p>
         </div>
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'front',
     'market',
+    'transaction',
     'rest_framework',
     'allauth',
     'allauth.account',

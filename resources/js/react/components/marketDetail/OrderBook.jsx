@@ -19,7 +19,7 @@ var OrderBook = React.createClass({
   render: function() {
     return (
       <Card style={styles.card} className="orderbook-card">
-        <CardHeader actAsExpander={true} showExpandableButton={true} title="Livro de Ofertas - Sim" />
+        <CardHeader actAsExpander={true} showExpandableButton={true} title={"Livro de Ofertas - " + this.props.choice.title} />
         <CardText expandable={true} style={styles.cardtext} className="orderbook-card__details">
           <Table>
             <TableHeader adjustForCheckbox={false}

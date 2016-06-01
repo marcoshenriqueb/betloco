@@ -13,23 +13,29 @@ var styles = {
 
 var MarketDetailCard = React.createClass({
   render: function() {
-    return (
-      <div>
-        <h2>{this.props.market.title}</h2>
-        <div className="orderrequest-container">
-          <OrderRequest />
-          <OrderRequest />
+    if (this.props.market.choices != undefined) {
+      return (
+        <div>
+          <h2>{this.props.market.title}</h2>
+          <div className="orderrequest-container">
+            {this.props.market.choices.map((choice) => {
+              return <OrderRequest choice={choice} key={choice.id} />
+            })}
+          </div>
+          <br/>
+          <div className="orderbook-container">
+            {this.props.market.choices.map((choice) => {
+              return <OrderBook choice={choice} key={choice.id} />
+            })}
+          </div>
+          <br/>
+          <Details market={this.props.market} />
+          <br/>
         </div>
-        <br/>
-        <div className="orderbook-container">
-          <OrderBook />
-          <OrderBook />
-        </div>
-        <br/>
-        <Details />
-        <br/>
-      </div>
-    );
+      );
+    }else {
+      return (<div/>);
+    }
   }
 });
 

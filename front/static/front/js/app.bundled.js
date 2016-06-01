@@ -48925,8 +48925,8 @@ var _Divider2 = _interopRequireDefault(_Divider);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
-  noPaddingBottom: {
-    paddingBottom: 0
+  noMarginTop: {
+    marginTop: 0
   },
   noPaddingTop: {
     paddingTop: 0
@@ -48940,14 +48940,14 @@ var Details = _react2.default.createClass({
     return _react2.default.createElement(
       _Card.Card,
       { initiallyExpanded: true },
-      _react2.default.createElement(_Card.CardHeader, { style: styles.noPaddingBottom, actAsExpander: true, showExpandableButton: true, title: 'Detalhes do Mercado' }),
+      _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: 'Detalhes do Mercado' }),
       _react2.default.createElement(
         _Card.CardText,
         { expandable: true, style: styles.noPaddingTop },
         _react2.default.createElement(
           'p',
-          null,
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+          { style: styles.noMarginTop },
+          this.props.market.description
         ),
         _react2.default.createElement(
           _Table.Table,
@@ -48967,7 +48967,8 @@ var Details = _react2.default.createClass({
               _react2.default.createElement(
                 _Table.TableRowColumn,
                 null,
-                '2%'
+                this.props.market.trading_fee * 100,
+                '%'
               )
             ),
             _react2.default.createElement(
@@ -48995,7 +48996,7 @@ var Details = _react2.default.createClass({
               _react2.default.createElement(
                 _Table.TableRowColumn,
                 null,
-                '12/12/2016'
+                this.props.market.deadline
               )
             ),
             _react2.default.createElement(
@@ -49009,7 +49010,7 @@ var Details = _react2.default.createClass({
               _react2.default.createElement(
                 _Table.TableRowColumn,
                 null,
-                '01/01/2016'
+                this.props.market.created_at
               )
             ),
             _react2.default.createElement(
@@ -49023,7 +49024,7 @@ var Details = _react2.default.createClass({
               _react2.default.createElement(
                 _Table.TableRowColumn,
                 null,
-                'Marcos'
+                this.props.market.user
               )
             )
           )
@@ -49076,31 +49077,37 @@ var MarketDetailCard = _react2.default.createClass({
   displayName: 'MarketDetailCard',
 
   render: function render() {
-    return _react2.default.createElement(
-      'div',
-      null,
-      _react2.default.createElement(
-        'h2',
+    if (this.props.market.choices != undefined) {
+      return _react2.default.createElement(
+        'div',
         null,
-        this.props.market.title
-      ),
-      _react2.default.createElement(
-        'div',
-        { className: 'orderrequest-container' },
-        _react2.default.createElement(_OrderRequest2.default, null),
-        _react2.default.createElement(_OrderRequest2.default, null)
-      ),
-      _react2.default.createElement('br', null),
-      _react2.default.createElement(
-        'div',
-        { className: 'orderbook-container' },
-        _react2.default.createElement(_OrderBook2.default, null),
-        _react2.default.createElement(_OrderBook2.default, null)
-      ),
-      _react2.default.createElement('br', null),
-      _react2.default.createElement(_Details2.default, null),
-      _react2.default.createElement('br', null)
-    );
+        _react2.default.createElement(
+          'h2',
+          null,
+          this.props.market.title
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'orderrequest-container' },
+          this.props.market.choices.map(function (choice) {
+            return _react2.default.createElement(_OrderRequest2.default, { choice: choice, key: choice.id });
+          })
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          'div',
+          { className: 'orderbook-container' },
+          this.props.market.choices.map(function (choice) {
+            return _react2.default.createElement(_OrderBook2.default, { choice: choice, key: choice.id });
+          })
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(_Details2.default, { market: this.props.market }),
+        _react2.default.createElement('br', null)
+      );
+    } else {
+      return _react2.default.createElement('div', null);
+    }
   }
 });
 
@@ -49146,7 +49153,7 @@ var OrderBook = _react2.default.createClass({
     return _react2.default.createElement(
       _Card.Card,
       { style: styles.card, className: 'orderbook-card' },
-      _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: 'Livro de Ofertas - Sim' }),
+      _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: "Livro de Ofertas - " + this.props.choice.title }),
       _react2.default.createElement(
         _Card.CardText,
         { expandable: true, style: styles.cardtext, className: 'orderbook-card__details' },
@@ -49365,7 +49372,8 @@ var OrderRequest = _react2.default.createClass({
         _react2.default.createElement(
           'p',
           null,
-          'Sim (70%)'
+          this.props.choice.title,
+          ' (70%)'
         )
       ),
       _react2.default.createElement(
