@@ -27,8 +27,8 @@ var MarketCard = React.createClass({
             <div className="marketcard-subtitle">
               <span>Mercado: {this.props.market.market_type}</span>
               <span>Taxa: {this.props.market.trading_fee * 100}%</span>
-              <span>Volume: 500 contratos</span>
-              <span>Encerramento: 31/12/2016</span>
+              <span>Volume: {this.props.market.volume} papéis negociados</span>
+              <span>Encerramento: {this.props.market.deadline}</span>
             </div>
           }
         />

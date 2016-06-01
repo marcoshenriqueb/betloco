@@ -48982,7 +48982,7 @@ var Details = _react2.default.createClass({
               _react2.default.createElement(
                 _Table.TableRowColumn,
                 null,
-                '10.000'
+                this.props.market.volume
               )
             ),
             _react2.default.createElement(
@@ -49526,12 +49526,15 @@ var MarketCard = _react2.default.createClass({
           _react2.default.createElement(
             'span',
             null,
-            'Volume: 500 contratos'
+            'Volume: ',
+            this.props.market.volume,
+            ' papéis negociados'
           ),
           _react2.default.createElement(
             'span',
             null,
-            'Encerramento: 31/12/2016'
+            'Encerramento: ',
+            this.props.market.deadline
           )
         )
       }),

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models import Sum, Q
+import operator, functools
 
 class MarketType(models.Model):
     """docstring for Market"""
@@ -35,6 +37,19 @@ class Market(models.Model):
     def __str__(self):
         return self.title
 
+    def _getVolume(self):
+        q = []
+        for c in self.choices.all():
+            q.append(Q(from_order__choice__id=c.id))
+            q.append(Q(to_order__choice__id=c.id))
+
+        q_query = functools.reduce(operator.or_, q)
+        result = Operation.objects.filter(q_query) \
+                        .aggregate(Sum('amount'))['amount__sum']
+        return result or 0
+
+    volume = property(_getVolume)
+
 class Choice(models.Model):
     """docstring for Choice"""
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
@@ -42,6 +57,12 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.title
+
+    def _getLastPrice(self):
+        return self.order_set.filter(Q(from_order__isnull=False) | Q(to_order__isnull=False))
+
+
+    lastPrice = property(_getLastPrice)
 
 class Order(models.Model):
     """docstring for Order"""

@@ -1,11 +1,18 @@
 from rest_framework import serializers
-from .models import Market, Choice, MarketType, MarketCategory, Operation
-from django.db.models import Sum, Q
+from .models import Market, Choice, MarketType, MarketCategory, Order
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('id', 'price', 'amount')
 
 class ChoiceSerializer(serializers.ModelSerializer):
+    order_set = OrderSerializer(many=True)
+    lastPrice = OrderSerializer(many=True)
+
     class Meta:
         model = Choice
-        fields = ('id', 'title',)
+        fields = ('id', 'title', 'order_set', 'lastPrice')
 
 class MarketCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,19 +31,13 @@ class MarketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Market
-        fields = ('id', 'title', 'market_type', 'market_category', 'trading_fee', 'deadline', 'choices')
+        fields = ('id', 'title', 'market_type', 'market_category', 'trading_fee', 'volume', 'deadline', 'choices')
 
 class MarketDetailSerializer(serializers.ModelSerializer):
     market_type = MarketTypeSerializer()
     user = serializers.StringRelatedField()
     market_category = MarketCategorySerializer()
     choices = ChoiceSerializer(many=True)
-    # volume = serializers.SerializerMethodField('getVolume')
-    #
-    # def getVolume(self, obj):
-    #     q1 = Q(from_order__choice__id=1) | Q(to_order__choice__id=2)
-    #     return Operation.objects.filter(q1) \
-    #                     .aggregate(Sum('amount'))['amount__sum']
 
     class Meta:
         model = Market
@@ -48,6 +49,7 @@ class MarketDetailSerializer(serializers.ModelSerializer):
             'market_type',
             'market_category',
             'trading_fee',
+            'volume',
             'choices',
             'deadline',
             'created_at'

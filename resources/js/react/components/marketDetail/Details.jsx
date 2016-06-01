@@ -28,7 +28,7 @@ var Details = React.createClass({
               </TableRow>
               <TableRow>
                 <TableRowColumn>Volume(papéis):</TableRowColumn>
-                <TableRowColumn>10.000</TableRowColumn>
+                <TableRowColumn>{this.props.market.volume}</TableRowColumn>
               </TableRow>
               <TableRow>
                 <TableRowColumn>Data de Encerramento:</TableRowColumn>
