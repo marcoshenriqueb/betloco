@@ -49373,7 +49373,9 @@ var OrderRequest = _react2.default.createClass({
           'p',
           null,
           this.props.choice.title,
-          ' (70%)'
+          ' (',
+          this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price * 100 : 0,
+          '%)'
         )
       ),
       _react2.default.createElement(
@@ -49403,7 +49405,8 @@ var OrderRequest = _react2.default.createClass({
           _react2.default.createElement(
             'strong',
             null,
-            'R$ 0,70'
+            'R$ ',
+            this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price : 0
           ),
           '/papel'
         ),
@@ -49556,10 +49559,14 @@ var MarketCard = _react2.default.createClass({
               _react2.default.createElement(
                 'p',
                 null,
-                '(70%)'
+                '(',
+                c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 + '%' : '0%',
+                ')'
               )
             ),
-            _react2.default.createElement(_LinearProgress2.default, { style: style.linear, mode: 'determinate', value: 70 })
+            _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
+              mode: 'determinate',
+              value: c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 : 0 })
           );
         })
       ),

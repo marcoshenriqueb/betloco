@@ -34,13 +34,16 @@ var MarketCard = React.createClass({
         />
         <CardText style={style.cardtext} className="marketcard-predictions">
           {
-            this.props.market.choices.map((c)=>{return (
+            this.props.market.choices.map((c) => {
+              return (
               <div key={c.id}>
                 <div className="marketcard-predictions__choices">
                   <h5>{c.title}</h5>
-                  <p>(70%)</p>
+                  <p>({c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 + '%' : '0%'})</p>
                 </div>
-                <LinearProgress style={style.linear} mode="determinate" value={70} />
+                <LinearProgress style={style.linear}
+                                mode="determinate"
+                                value={c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 : 0} />
               </div>
             )})
           }
