@@ -78,6 +78,9 @@ class Order(models.Model):
                                        symmetrical=False,
                                        related_name='operation')
 
+    def __str__(self):
+        return str(self.price)
+
 class Operation(models.Model):
     """docstring for Operation"""
     from_order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='from_order')
