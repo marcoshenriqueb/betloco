@@ -48772,17 +48772,23 @@ var MarketContainer = _react2.default.createClass({
       next: null
     };
   },
-  handleUserInput: function handleUserInput(filterText) {
-    this.setState({
-      search: filterText
-    });
-  },
-  getMarkets: function getMarkets(url) {
-    if (url == undefined) {
-      url = '/api/markets/?format=json';
+  getMarkets: function getMarkets(search) {
+    var url = '/api/markets/?format=json';
+    if (search != undefined) {
+      console.log(search);
+      url += '&search=' + search;
     }
     var that = this;
     (0, _reqwest2.default)(url).then(function (response) {
+      that.setState({
+        markets: response.results,
+        next: response.next
+      });
+    });
+  },
+  getNextMarketPage: function getNextMarketPage() {
+    var that = this;
+    (0, _reqwest2.default)(this.state.next).then(function (response) {
       var markets = that.state.markets.concat(response.results);
       that.setState({
         markets: markets,
@@ -48790,11 +48796,14 @@ var MarketContainer = _react2.default.createClass({
       });
     });
   },
-  getNextMarketPage: function getNextMarketPage() {
-    this.getMarkets(this.state.next);
-  },
   componentDidMount: function componentDidMount() {
     this.getMarkets();
+  },
+  handleUserInput: function handleUserInput(filterText) {
+    this.getMarkets(filterText);
+    this.setState({
+      search: filterText
+    });
   },
   render: function render() {
     var nextPageButton = null;
@@ -49420,11 +49429,9 @@ var Market = _react2.default.createClass({
   render: function render() {
     return _react2.default.createElement(
       'div',
-      { className: 'container' },
-      this.props.markets.filter(function (market) {
-        return market.title.toLowerCase().indexOf(this.props.search.toLowerCase()) !== -1;
-      }.bind(this)).map(function (market) {
-        return _react2.default.createElement(_MarketCard2.default, { market: market, key: market.id });
+      { className: 'container markets-container' },
+      this.props.markets.map(function (market, id) {
+        return _react2.default.createElement(_MarketCard2.default, { market: market, key: id });
       })
     );
   }

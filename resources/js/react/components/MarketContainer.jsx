@@ -13,17 +13,23 @@ var MarketContainer = React.createClass({
       next: null
     };
   },
-  handleUserInput: function(filterText) {
-    this.setState({
-      search: filterText,
-    });
-  },
-  getMarkets: function(url){
-    if (url == undefined) {
-      url = '/api/markets/?format=json';
+  getMarkets: function(search){
+    var url = '/api/markets/?format=json';
+    if (search != undefined) {
+      console.log(search);
+      url += '&search=' + search;
     }
     var that = this;
     req(url).then(function(response){
+      that.setState({
+        markets: response.results,
+        next: response.next
+      });
+    });
+  },
+  getNextMarketPage: function(){
+    var that = this;
+    req(this.state.next).then(function(response){
       var markets = that.state.markets.concat(response.results);
       that.setState({
         markets: markets,
@@ -31,11 +37,14 @@ var MarketContainer = React.createClass({
       });
     });
   },
-  getNextMarketPage: function(){
-    this.getMarkets(this.state.next);
-  },
   componentDidMount: function() {
     this.getMarkets();
+  },
+  handleUserInput: function(filterText) {
+    this.getMarkets(filterText);
+    this.setState({
+      search: filterText,
+    });
   },
   render: function() {
     var nextPageButton = null;
