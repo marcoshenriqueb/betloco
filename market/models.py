@@ -70,11 +70,17 @@ class Choice(models.Model):
 
     def _getTopFiveToBuy(self):
         cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
+                            .filter(from_order__isnull=True) \
+                            .filter(to_order__isnull=True) \
                             .filter(~Q(choice__id=self.id)) \
                             .filter(amount__gt=0)
         for o in cross_orders:
             o.price = (1 - o.price)
-        orders = self.order_set.filter(amount__lt=0)
+        orders = self.order_set.filter(to_order__isnull=True) \
+                            .filter(from_order__isnull=True) \
+                            .filter(amount__lt=0)
+        for o in orders:
+            o.amount = o.amount * (-1)
         l = list(chain(orders, cross_orders))[0:5]
         l.sort(key=lambda x: x.price, reverse=False)
         return l
@@ -83,11 +89,16 @@ class Choice(models.Model):
 
     def _getTopFiveToSell(self):
         cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
+                            .filter(from_order__isnull=True) \
+                            .filter(to_order__isnull=True) \
                             .filter(~Q(choice__id=self.id)) \
                             .filter(amount__lt=0)
         for o in cross_orders:
             o.price = (1 - o.price)
-        orders = self.order_set.filter(amount__gt=0)
+            o.amount = o.amount * (-1)
+        orders = self.order_set.filter(to_order__isnull=True) \
+                            .filter(from_order__isnull=True) \
+                            .filter(amount__gt=0)
         l = list(chain(orders, cross_orders))[0:5]
         l.sort(key=lambda x: x.price, reverse=True)
         return l
@@ -109,7 +120,7 @@ class Order(models.Model):
                                        related_name='operation')
 
     def __str__(self):
-        return str(self.price)
+        return str(self.id)
 
 class Operation(models.Model):
     """docstring for Operation"""
