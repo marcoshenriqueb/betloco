@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum, Max, Q
+from django.db.models import Sum, Q
 import operator, functools
 
 class MarketType(models.Model):
@@ -38,15 +38,18 @@ class Market(models.Model):
         return self.title
 
     def _getVolume(self):
-        q = []
-        for c in self.choices.all():
-            q.append(Q(from_order__choice__id=c.id))
-            q.append(Q(to_order__choice__id=c.id))
+        try:
+            q = []
+            for c in self.choices.all():
+                q.append(Q(from_order__choice__id=c.id))
+                q.append(Q(to_order__choice__id=c.id))
 
-        q_query = functools.reduce(operator.or_, q)
-        result = Operation.objects.filter(q_query) \
-                        .aggregate(Sum('amount'))['amount__sum']
-        return result or 0
+            q_query = functools.reduce(operator.or_, q)
+            result = Operation.objects.filter(q_query) \
+                            .aggregate(Sum('amount'))['amount__sum']
+            return result or 0
+        except TypeError as e:
+            return 0
 
     volume = property(_getVolume)
 
@@ -63,6 +66,14 @@ class Choice(models.Model):
                              .order_by('-created_at')[0:1].get()
         return self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
     lastCompleteOrder = property(_getLastCompleteOrder)
+
+    def _getTopFiveToBuy(self):
+        return self.order_set.filter(amount__lt=0).order_by('price')[0:5]
+    topFiveBuys = property(_getTopFiveToBuy)
+
+    def _getTopFiveToSell(self):
+        return self.order_set.filter(amount__gt=0).order_by('-price')[0:5]
+    topFiveSells = property(_getTopFiveToSell)
 
 class Order(models.Model):
     """docstring for Order"""

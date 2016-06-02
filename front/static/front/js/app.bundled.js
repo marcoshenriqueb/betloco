@@ -49139,7 +49139,8 @@ var styles = {
     display: 'inline-block'
   },
   cardtext: {
-    paddingTop: 0
+    paddingTop: 0,
+    'display': 'flex'
   },
   rowheight: {
     height: 40
@@ -49150,6 +49151,46 @@ var OrderBook = _react2.default.createClass({
   displayName: 'OrderBook',
 
   render: function render() {
+    var buys = null;
+    if (this.props.choice.topFiveBuys.length > 0) {
+      buys = this.props.choice.topFiveBuys.map(function (b) {
+        return _react2.default.createElement(
+          _Table.TableRow,
+          { style: styles.rowheight },
+          _react2.default.createElement(
+            _Table.TableRowColumn,
+            { style: styles.rowheight },
+            'R$ ',
+            b.price
+          ),
+          _react2.default.createElement(
+            _Table.TableRowColumn,
+            { style: styles.rowheight },
+            b.amount
+          )
+        );
+      });
+    }
+    var sells = null;
+    if (this.props.choice.topFiveSells.length > 0) {
+      sells = this.props.choice.topFiveSells.map(function (s) {
+        return _react2.default.createElement(
+          _Table.TableRow,
+          { style: styles.rowheight },
+          _react2.default.createElement(
+            _Table.TableRowColumn,
+            { style: styles.rowheight },
+            'R$ ',
+            s.price
+          ),
+          _react2.default.createElement(
+            _Table.TableRowColumn,
+            { style: styles.rowheight },
+            s.amount
+          )
+        );
+      });
+    }
     return _react2.default.createElement(
       _Card.Card,
       { style: styles.card, className: 'orderbook-card' },
@@ -49172,7 +49213,40 @@ var OrderBook = _react2.default.createClass({
                 { style: styles.rowheight },
                 'Compra'
               ),
-              _react2.default.createElement(_Table.TableHeaderColumn, { style: styles.rowheight }),
+              _react2.default.createElement(_Table.TableHeaderColumn, { style: styles.rowheight })
+            ),
+            _react2.default.createElement(
+              _Table.TableRow,
+              { style: styles.rowheight },
+              _react2.default.createElement(
+                _Table.TableHeaderColumn,
+                { style: styles.rowheight },
+                'Preço'
+              ),
+              _react2.default.createElement(
+                _Table.TableHeaderColumn,
+                { style: styles.rowheight },
+                'Qtde'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _Table.TableBody,
+            { displayRowCheckbox: false,
+              showRowHover: true },
+            buys
+          )
+        ),
+        _react2.default.createElement(
+          _Table.Table,
+          null,
+          _react2.default.createElement(
+            _Table.TableHeader,
+            { adjustForCheckbox: false,
+              displaySelectAll: false },
+            _react2.default.createElement(
+              _Table.TableRow,
+              { style: styles.rowheight },
               _react2.default.createElement(
                 _Table.TableHeaderColumn,
                 { style: styles.rowheight },
@@ -49192,16 +49266,6 @@ var OrderBook = _react2.default.createClass({
                 _Table.TableHeaderColumn,
                 { style: styles.rowheight },
                 'Qtde'
-              ),
-              _react2.default.createElement(
-                _Table.TableHeaderColumn,
-                { style: styles.rowheight },
-                'Preço'
-              ),
-              _react2.default.createElement(
-                _Table.TableHeaderColumn,
-                { style: styles.rowheight },
-                'Qtde'
               )
             )
           ),
@@ -49209,102 +49273,7 @@ var OrderBook = _react2.default.createClass({
             _Table.TableBody,
             { displayRowCheckbox: false,
               showRowHover: true },
-            _react2.default.createElement(
-              _Table.TableRow,
-              { style: styles.rowheight },
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              )
-            ),
-            _react2.default.createElement(
-              _Table.TableRow,
-              { style: styles.rowheight },
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              )
-            ),
-            _react2.default.createElement(
-              _Table.TableRow,
-              { style: styles.rowheight },
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              )
-            ),
-            _react2.default.createElement(
-              _Table.TableRow,
-              { style: styles.rowheight },
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                'R$ 0,70'
-              ),
-              _react2.default.createElement(
-                _Table.TableRowColumn,
-                { style: styles.rowheight },
-                '100'
-              )
-            )
+            sells
           )
         )
       )

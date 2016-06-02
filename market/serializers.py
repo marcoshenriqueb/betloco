@@ -13,12 +13,13 @@ class SimpleChoiceSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'lastCompleteOrder')
 
 class ChoiceSerializer(serializers.ModelSerializer):
-    order_set = OrderSerializer(many=True)
+    topFiveBuys = OrderSerializer(many=True)
+    topFiveSells = OrderSerializer(many=True)
     lastCompleteOrder = OrderSerializer()
 
     class Meta:
         model = Choice
-        fields = ('id', 'title', 'order_set', 'lastCompleteOrder')
+        fields = ('id', 'title', 'topFiveBuys', 'topFiveSells', 'lastCompleteOrder')
 
 class MarketCategorySerializer(serializers.ModelSerializer):
     class Meta:
