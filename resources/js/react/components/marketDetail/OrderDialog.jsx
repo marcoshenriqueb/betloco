@@ -121,8 +121,7 @@ var OrderDialog = React.createClass({
           contentStyle={styles.dialog}
           actions={actions}
           modal={false}
-          open={this.props.dialog}
-          onRequestClose={this.props.closeDialog} >
+          open={this.props.dialog}>
         {content}
       </Dialog>
     );

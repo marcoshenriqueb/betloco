@@ -50780,8 +50780,7 @@ var OrderDialog = _react2.default.createClass({
         contentStyle: styles.dialog,
         actions: actions,
         modal: false,
-        open: this.props.dialog,
-        onRequestClose: this.props.closeDialog },
+        open: this.props.dialog },
       content
     );
   }
