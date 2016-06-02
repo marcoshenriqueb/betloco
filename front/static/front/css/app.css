@@ -103,6 +103,16 @@ td,
 th {
   padding: 2px 5px;
 }
+.order-dialog {
+  display: flex;
+}
+.order-dialog__table {
+  width: 200px;
+  margin-right: 20px;
+}
+.order-dialog__form {
+  padding: 0 15px 0 15px;
+}
 input:not([type]):focus:not([readonly]),
 input[type=text]:focus:not([readonly]),
 input[type=password]:focus:not([readonly]),

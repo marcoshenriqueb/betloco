@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import OrderRequest from './OrderRequest.jsx';
 import OrderBook from './OrderBook.jsx';
 import Details from './Details.jsx';
+import OrderDialog from './OrderDialog.jsx';
 
 var styles = {
   cardtext: {
@@ -16,10 +17,13 @@ var MarketDetailCard = React.createClass({
     if (this.props.market.choices != undefined) {
       return (
         <div>
+          <OrderDialog dialog={this.props.dialog}
+                       closeDialog={this.props.closeDialog}
+                       dialogContent={this.props.dialogContent} />
           <h2>{this.props.market.title}</h2>
           <div className="orderrequest-container">
             {this.props.market.choices.map((choice) => {
-              return <OrderRequest choice={choice} key={choice.id} />
+              return <OrderRequest openDialog={this.props.openDialog} choice={choice} key={choice.id} />
             })}
           </div>
           <br/>

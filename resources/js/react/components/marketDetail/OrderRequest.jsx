@@ -28,6 +28,12 @@ var styles = {
 }
 
 var OrderRequest = React.createClass({
+  openBuy: function(){
+    this.props.openDialog(this.props.choice, true);
+  },
+  openSell: function(){
+    this.props.openDialog(this.props.choice, false);
+  },
   render: function() {
     return (
       <Card style={styles.card} className="orderrequest-card">
@@ -37,10 +43,10 @@ var OrderRequest = React.createClass({
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">
             <div className="orderrequest-card__buy-column">
-              <FlatButton style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
+              <FlatButton onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
             </div>
             <div className="orderrequest-card__sell-column">
-              <FlatButton style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
+              <FlatButton onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
             </div>
           </div>
         </CardActions>

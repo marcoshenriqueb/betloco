@@ -6,6 +6,8 @@ var MarketDetailContainer = React.createClass({
   getInitialState: function() {
     return {
       market: {},
+      dialog: false,
+      dialogContent: undefined
     };
   },
   getMarket: function(){
@@ -20,11 +22,27 @@ var MarketDetailContainer = React.createClass({
   componentDidMount: function() {
     this.getMarket();
   },
+  openDialog: function(choice, buy){
+    this.setState({
+      dialog: true,
+      dialogContent: {
+        choice: choice,
+        buy: buy
+      }
+    });
+  },
+  closeDialog: function(){
+    this.setState({dialog: false});
+  },
   render: function() {
     return (
       <div className="marketdetail-content container">
         <br />
-        <MarketDetailCard market={this.state.market} />
+        <MarketDetailCard dialog={this.state.dialog}
+                          dialogContent={this.state.dialogContent}
+                          openDialog={this.openDialog}
+                          closeDialog={this.closeDialog}
+                          market={this.state.market} />
       </div>
     );
   }
