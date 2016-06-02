@@ -21,8 +21,8 @@ var OrderBook = React.createClass({
     var buys = null;
     if (this.props.choice.topFiveBuys.length > 0) {
       buys = this.props.choice.topFiveBuys.map((b) => {
-        return <TableRow style={styles.rowheight}>
-                <TableRowColumn style={styles.rowheight}>R$ {b.price}</TableRowColumn>
+        return <TableRow style={styles.rowheight} key={b.id}>
+                <TableRowColumn style={styles.rowheight}>R$ {b.price.toFixed(2)}</TableRowColumn>
                 <TableRowColumn style={styles.rowheight}>{b.amount}</TableRowColumn>
               </TableRow>
       })
@@ -30,8 +30,8 @@ var OrderBook = React.createClass({
     var sells = null;
     if (this.props.choice.topFiveSells.length > 0) {
       sells = this.props.choice.topFiveSells.map((s) => {
-        return <TableRow style={styles.rowheight}>
-                <TableRowColumn style={styles.rowheight}>R$ {s.price}</TableRowColumn>
+        return <TableRow style={styles.rowheight} key={s.id}>
+                <TableRowColumn style={styles.rowheight}>R$ {s.price.toFixed(2)}</TableRowColumn>
                 <TableRowColumn style={styles.rowheight}>{s.amount}</TableRowColumn>
               </TableRow>
       })

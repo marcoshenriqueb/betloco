@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Sum, Q
 import operator, functools
+from itertools import chain
 
 class MarketType(models.Model):
     """docstring for Market"""
@@ -68,11 +69,29 @@ class Choice(models.Model):
     lastCompleteOrder = property(_getLastCompleteOrder)
 
     def _getTopFiveToBuy(self):
-        return self.order_set.filter(amount__lt=0).order_by('price')[0:5]
+        cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
+                            .filter(~Q(choice__id=self.id)) \
+                            .filter(amount__gt=0)
+        for o in cross_orders:
+            o.price = (1 - o.price)
+        orders = self.order_set.filter(amount__lt=0)
+        l = list(chain(orders, cross_orders))[0:5]
+        l.sort(key=lambda x: x.price, reverse=False)
+        return l
+
     topFiveBuys = property(_getTopFiveToBuy)
 
     def _getTopFiveToSell(self):
-        return self.order_set.filter(amount__gt=0).order_by('-price')[0:5]
+        cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
+                            .filter(~Q(choice__id=self.id)) \
+                            .filter(amount__lt=0)
+        for o in cross_orders:
+            o.price = (1 - o.price)
+        orders = self.order_set.filter(amount__gt=0)
+        l = list(chain(orders, cross_orders))[0:5]
+        l.sort(key=lambda x: x.price, reverse=True)
+        return l
+
     topFiveSells = property(_getTopFiveToSell)
 
 class Order(models.Model):

@@ -49156,12 +49156,12 @@ var OrderBook = _react2.default.createClass({
       buys = this.props.choice.topFiveBuys.map(function (b) {
         return _react2.default.createElement(
           _Table.TableRow,
-          { style: styles.rowheight },
+          { style: styles.rowheight, key: b.id },
           _react2.default.createElement(
             _Table.TableRowColumn,
             { style: styles.rowheight },
             'R$ ',
-            b.price
+            b.price.toFixed(2)
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
@@ -49176,12 +49176,12 @@ var OrderBook = _react2.default.createClass({
       sells = this.props.choice.topFiveSells.map(function (s) {
         return _react2.default.createElement(
           _Table.TableRow,
-          { style: styles.rowheight },
+          { style: styles.rowheight, key: s.id },
           _react2.default.createElement(
             _Table.TableRowColumn,
             { style: styles.rowheight },
             'R$ ',
-            s.price
+            s.price.toFixed(2)
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
