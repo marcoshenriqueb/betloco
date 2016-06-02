@@ -1,5 +1,6 @@
 import React from 'react';
 import PlaceOrderDialog from './PlaceOrderDialog.jsx';
+import ConfirmOrderDialog from './ConfirmOrderDialog.jsx';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
@@ -110,7 +111,8 @@ var OrderDialog = React.createClass({
         />,
       ];
       var content = (
-        <div/>
+        <ConfirmOrderDialog amount={this.state.amount}
+                            price={this.state.price} />
       );
     }
     return (
