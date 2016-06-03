@@ -4,6 +4,22 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 var styles = {
   right: {
     textAlign: 'right'
+  },
+  header: {
+    backgroundColor:"rgb(0, 188, 212)",
+    color: "#fff",
+    fontWeight: "bold"
+  },
+  th:{
+    color: 'inherit',
+    fontWeight : 'inherit'
+  },
+  boldRight: {
+    fontWeight: 'bold',
+    textAlign: 'right'
+  },
+  bold:{
+    fontWeight: 'bold'
   }
 }
 
@@ -14,8 +30,8 @@ var ConfirmOrderDialog = React.createClass({
       <Table>
         <TableHeader adjustForCheckbox={false}
                      displaySelectAll={false}>
-          <TableRow>
-            <TableHeaderColumn>Resumo</TableHeaderColumn>
+          <TableRow style={styles.header}>
+            <TableHeaderColumn style={styles.th}>Resumo</TableHeaderColumn>
             <TableHeaderColumn></TableHeaderColumn>
           </TableRow>
         </TableHeader>
@@ -34,12 +50,12 @@ var ConfirmOrderDialog = React.createClass({
             <TableRowColumn style={styles.right}>R${total}</TableRowColumn>
           </TableRow>
           <TableRow>
-            <TableRowColumn>Valor disponível</TableRowColumn>
-            <TableRowColumn style={styles.right}>R$10000</TableRowColumn>
+            <TableRowColumn style={styles.bold}>Valor disponível</TableRowColumn>
+            <TableRowColumn style={styles.boldRight}>R$10000</TableRowColumn>
           </TableRow>
           <TableRow>
-            <TableRowColumn>Valor remanescente</TableRowColumn>
-            <TableRowColumn style={styles.right}>R${10000 - total}</TableRowColumn>
+            <TableRowColumn style={styles.bold}>Valor remanescente</TableRowColumn>
+            <TableRowColumn style={styles.boldRight}>R${10000 - total}</TableRowColumn>
           </TableRow>
         </TableBody>
       </Table>

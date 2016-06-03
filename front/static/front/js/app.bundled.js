@@ -50254,6 +50254,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var styles = {
   right: {
     textAlign: 'right'
+  },
+  header: {
+    backgroundColor: "rgb(0, 188, 212)",
+    color: "#fff",
+    fontWeight: "bold"
+  },
+  th: {
+    color: 'inherit',
+    fontWeight: 'inherit'
+  },
+  boldRight: {
+    fontWeight: 'bold',
+    textAlign: 'right'
+  },
+  bold: {
+    fontWeight: 'bold'
   }
 };
 
@@ -50271,10 +50287,10 @@ var ConfirmOrderDialog = _react2.default.createClass({
           displaySelectAll: false },
         _react2.default.createElement(
           _Table.TableRow,
-          null,
+          { style: styles.header },
           _react2.default.createElement(
             _Table.TableHeaderColumn,
-            null,
+            { style: styles.th },
             'Resumo'
           ),
           _react2.default.createElement(_Table.TableHeaderColumn, null)
@@ -50333,12 +50349,12 @@ var ConfirmOrderDialog = _react2.default.createClass({
           null,
           _react2.default.createElement(
             _Table.TableRowColumn,
-            null,
+            { style: styles.bold },
             'Valor disponível'
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
-            { style: styles.right },
+            { style: styles.boldRight },
             'R$10000'
           )
         ),
@@ -50347,12 +50363,12 @@ var ConfirmOrderDialog = _react2.default.createClass({
           null,
           _react2.default.createElement(
             _Table.TableRowColumn,
-            null,
+            { style: styles.bold },
             'Valor remanescente'
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
-            { style: styles.right },
+            { style: styles.boldRight },
             'R$',
             10000 - total
           )
@@ -50730,7 +50746,9 @@ var OrderDialog = _react2.default.createClass({
     this.setState({
       amount: '',
       price: '',
-      content: 0
+      content: 0,
+      amountError: false,
+      priceError: false
     });
     this.props.closeDialog();
   },
@@ -50744,7 +50762,7 @@ var OrderDialog = _react2.default.createClass({
       var actions = [_react2.default.createElement(_FlatButton2.default, {
         label: 'Cancelar',
         primary: true,
-        onTouchTap: this.props.closeDialog
+        onTouchTap: this.returnStepAndClose
       }), _react2.default.createElement(_FlatButton2.default, {
         label: this.props.dialogContent.buy ? 'Comprar' : 'Vender',
         primary: true,
@@ -51082,7 +51100,12 @@ var PlaceOrderDialog = _react2.default.createClass({
           floatingLabelText: 'Preço (¢1 à ¢99)',
           errorText: priceError
         }),
-        _react2.default.createElement('br', null)
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          'span',
+          { className: 'order-dialog__form-help' },
+          'O preço deve ser em centavos, de ¢1 a ¢99, representando a probabilidade de 1% a 99%.'
+        )
       )
     );
   }

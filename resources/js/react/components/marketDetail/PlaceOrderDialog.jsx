@@ -38,6 +38,7 @@ var PlaceOrderDialog = React.createClass({
             floatingLabelText="Preço (¢1 à ¢99)"
             errorText={priceError}
           /><br />
+          <span className="order-dialog__form-help">O preço deve ser em centavos, de ¢1 a ¢99, representando a probabilidade de 1% a 99%.</span>
         </div>
       </div>
     )

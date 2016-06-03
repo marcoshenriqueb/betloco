@@ -56,13 +56,15 @@ var OrderDialog = React.createClass({
     }
   },
   handleConfirmOrder:function(){
-
+    
   },
   returnStepAndClose: function(){
     this.setState({
       amount: '',
       price: '',
-      content: 0
+      content: 0,
+      amountError: false,
+      priceError: false
     });
     this.props.closeDialog();
   },
@@ -77,7 +79,7 @@ var OrderDialog = React.createClass({
         <FlatButton
           label="Cancelar"
           primary={true}
-          onTouchTap={this.props.closeDialog}
+          onTouchTap={this.returnStepAndClose}
         />,
         <FlatButton
           label={this.props.dialogContent.buy ? 'Comprar' : 'Vender'}
