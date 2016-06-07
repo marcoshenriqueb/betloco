@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['betloco-189183.nitrousapp.com',]
 INSTALLED_APPS = [
     'front',
     'market',
+    'user_profile',
     'transaction',
     'rest_framework',
     'allauth',
@@ -162,5 +163,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
     ],
-    'PAGE_SIZE': 2
+    'PAGE_SIZE': 20
 }
