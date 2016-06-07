@@ -82,7 +82,7 @@ class Choice(models.Model):
         for o in orders:
             o.amount = o.amount * (-1)
         l = list(chain(orders, cross_orders))
-        l.sort(key=lambda x: x.price, reverse=False)
+        l.sort(key=lambda x: (x.price, x.created_at), reverse=False)
         return l[0:limit]
 
     topBuys = property(_getTopToBuy)
@@ -100,6 +100,7 @@ class Choice(models.Model):
                             .filter(from_order__isnull=True) \
                             .filter(amount__gt=0)
         l = list(chain(orders, cross_orders))
+        l.sort(key=lambda x: x.created_at, reverse=False)
         l.sort(key=lambda x: x.price, reverse=True)
         return l[0:limit]
 

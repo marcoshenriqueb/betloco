@@ -50416,7 +50416,7 @@ var Details = _react2.default.createClass({
   render: function render() {
     return _react2.default.createElement(
       _Card.Card,
-      { initiallyExpanded: true },
+      null,
       _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: 'Detalhes do Mercado' }),
       _react2.default.createElement(
         _Card.CardText,
@@ -50640,7 +50640,7 @@ var OrderBook = _react2.default.createClass({
   render: function render() {
     return _react2.default.createElement(
       _Card.Card,
-      { style: styles.card, className: 'orderbook-card' },
+      { style: styles.card, className: 'orderbook-card', initiallyExpanded: true },
       _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: "Livro de Ofertas - " + this.props.choice.title }),
       _react2.default.createElement(
         _Card.CardText,
