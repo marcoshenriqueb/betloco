@@ -21,10 +21,10 @@ var OrderBook = React.createClass({
         <CardHeader actAsExpander={true} showExpandableButton={true} title={"Livro de Ofertas - " + this.props.choice.title} />
         <CardText expandable={true} style={styles.cardtext} className="orderbook-card__details">
           <OrderTable buy={true}
-                      orders={this.props.choice.topFiveBuys} />
+                      orders={this.props.choice.topBuys} />
 
           <OrderTable buy={false}
-                      orders={this.props.choice.topFiveSells} />
+                      orders={this.props.choice.topSells} />
         </CardText>
       </Card>
     );

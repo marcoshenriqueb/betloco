@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework import generics, filters
 from rest_framework.response import Response
 from .models import Market, Choice
-from .serializers import MarketSerializer, MarketDetailSerializer
+from .serializers import MarketSerializer, MarketDetailSerializer, CreateOrderSerializer
 
 class ListMarkets(generics.ListAPIView):
     """
@@ -19,3 +19,7 @@ class DetailMarket(generics.RetrieveAPIView):
     """
     queryset = Market.objects.all()
     serializer_class = MarketDetailSerializer
+
+class CreateOrder(generics.CreateAPIView):
+    """docstring for CreateOrder"""
+    serializer_class = CreateOrderSerializer

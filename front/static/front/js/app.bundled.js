@@ -50302,7 +50302,7 @@ var ConfirmOrderDialog = _react2.default.createClass({
           showRowHover: true },
         _react2.default.createElement(
           _Table.TableRow,
-          null,
+          { displayBorder: false },
           _react2.default.createElement(
             _Table.TableRowColumn,
             null,
@@ -50316,7 +50316,7 @@ var ConfirmOrderDialog = _react2.default.createClass({
         ),
         _react2.default.createElement(
           _Table.TableRow,
-          null,
+          { displayBorder: false },
           _react2.default.createElement(
             _Table.TableRowColumn,
             null,
@@ -50646,9 +50646,9 @@ var OrderBook = _react2.default.createClass({
         _Card.CardText,
         { expandable: true, style: styles.cardtext, className: 'orderbook-card__details' },
         _react2.default.createElement(_OrderTable2.default, { buy: true,
-          orders: this.props.choice.topFiveBuys }),
+          orders: this.props.choice.topBuys }),
         _react2.default.createElement(_OrderTable2.default, { buy: false,
-          orders: this.props.choice.topFiveSells })
+          orders: this.props.choice.topSells })
       )
     );
   }
@@ -50666,6 +50666,10 @@ Object.defineProperty(exports, "__esModule", {
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reqwest = require('reqwest');
+
+var _reqwest2 = _interopRequireDefault(_reqwest);
 
 var _PlaceOrderDialog = require('./PlaceOrderDialog.jsx');
 
@@ -50741,7 +50745,25 @@ var OrderDialog = _react2.default.createClass({
       });
     }
   },
-  handleConfirmOrder: function handleConfirmOrder() {},
+  handleConfirmOrder: function handleConfirmOrder() {
+    var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
+    var data = {
+      price: this.state.price / 100,
+      amount: amount,
+      choice: this.props.dialogContent.choice.id
+    };
+    var that = this;
+    (0, _reqwest2.default)({
+      url: '/api/markets/order/?format=json',
+      headers: {
+        'X-CSRFToken': document.getElementById('token').getAttribute('value')
+      },
+      method: 'post',
+      data: data
+    }).then(function (response) {
+      that.returnStepAndClose();
+    });
+  },
   returnStepAndClose: function returnStepAndClose() {
     this.setState({
       amount: '',
@@ -50806,7 +50828,7 @@ var OrderDialog = _react2.default.createClass({
 
 exports.default = OrderDialog;
 
-},{"./ConfirmOrderDialog.jsx":450,"./PlaceOrderDialog.jsx":457,"material-ui/Dialog":18,"material-ui/FlatButton":23,"material-ui/RaisedButton":45,"react":442}],455:[function(require,module,exports){
+},{"./ConfirmOrderDialog.jsx":450,"./PlaceOrderDialog.jsx":457,"material-ui/Dialog":18,"material-ui/FlatButton":23,"material-ui/RaisedButton":45,"react":442,"reqwest":443}],455:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50983,6 +51005,7 @@ var OrderTable = _react2.default.createClass({
     if (this.props.headerStyle != undefined) {
       styles.header = this.props.headerStyle;
     }
+    var title = this.props.buy ? "Compra" : "Venda";
     return _react2.default.createElement(
       _Table.Table,
       null,
@@ -50996,7 +51019,7 @@ var OrderTable = _react2.default.createClass({
           _react2.default.createElement(
             _Table.TableHeaderColumn,
             { style: styles.th },
-            'Ofertas'
+            title
           ),
           _react2.default.createElement(_Table.TableHeaderColumn, { style: styles.rowheight })
         ),
@@ -51057,9 +51080,9 @@ var PlaceOrderDialog = _react2.default.createClass({
 
   render: function render() {
     if (this.props.dialogContent.buy) {
-      var orders = this.props.dialogContent.choice.topFiveBuys;
+      var orders = this.props.dialogContent.choice.topBuys;
     } else {
-      var orders = this.props.dialogContent.choice.topFiveSells;
+      var orders = this.props.dialogContent.choice.topSells;
     }
     var amountError = this.props.amountError ? "Digite uma quantidade" : "";
     var priceError = this.props.priceError ? "Digite um preço" : "";

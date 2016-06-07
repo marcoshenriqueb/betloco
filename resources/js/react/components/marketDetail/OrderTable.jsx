@@ -30,12 +30,13 @@ var OrderTable = React.createClass({
     if (this.props.headerStyle != undefined) {
       styles.header = this.props.headerStyle;
     }
+    var title = this.props.buy ? "Compra" : "Venda";
     return (
       <Table>
         <TableHeader adjustForCheckbox={false}
                      displaySelectAll={false}>
           <TableRow style={styles.header}>
-            <TableHeaderColumn style={styles.th}>Ofertas</TableHeaderColumn>
+            <TableHeaderColumn style={styles.th}>{title}</TableHeaderColumn>
             <TableHeaderColumn style={styles.rowheight}></TableHeaderColumn>
           </TableRow>
           <TableRow style={styles.rowheight}>

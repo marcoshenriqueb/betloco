@@ -68,7 +68,7 @@ class Choice(models.Model):
         return self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
     lastCompleteOrder = property(_getLastCompleteOrder)
 
-    def _getTopFiveToBuy(self):
+    def _getTopToBuy(self, limit=5):
         cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
                             .filter(from_order__isnull=True) \
                             .filter(to_order__isnull=True) \
@@ -81,13 +81,13 @@ class Choice(models.Model):
                             .filter(amount__lt=0)
         for o in orders:
             o.amount = o.amount * (-1)
-        l = list(chain(orders, cross_orders))[0:5]
+        l = list(chain(orders, cross_orders))
         l.sort(key=lambda x: x.price, reverse=False)
-        return l
+        return l[0:limit]
 
-    topFiveBuys = property(_getTopFiveToBuy)
+    topBuys = property(_getTopToBuy)
 
-    def _getTopFiveToSell(self):
+    def _getTopToSell(self, limit=5):
         cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
                             .filter(from_order__isnull=True) \
                             .filter(to_order__isnull=True) \
@@ -99,11 +99,11 @@ class Choice(models.Model):
         orders = self.order_set.filter(to_order__isnull=True) \
                             .filter(from_order__isnull=True) \
                             .filter(amount__gt=0)
-        l = list(chain(orders, cross_orders))[0:5]
+        l = list(chain(orders, cross_orders))
         l.sort(key=lambda x: x.price, reverse=True)
-        return l
+        return l[0:limit]
 
-    topFiveSells = property(_getTopFiveToSell)
+    topSells = property(_getTopToSell)
 
 class Order(models.Model):
     """docstring for Order"""

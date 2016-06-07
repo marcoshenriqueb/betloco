@@ -37,11 +37,11 @@ var ConfirmOrderDialog = React.createClass({
         </TableHeader>
         <TableBody displayRowCheckbox={false}
                    showRowHover={true}>
-          <TableRow>
+          <TableRow displayBorder={false}>
             <TableRowColumn>Quantidade</TableRowColumn>
             <TableRowColumn style={styles.right}>{this.props.amount}</TableRowColumn>
           </TableRow>
-          <TableRow>
+          <TableRow displayBorder={false}>
             <TableRowColumn>Preço</TableRowColumn>
             <TableRowColumn style={styles.right}>R${this.props.price / 100}</TableRowColumn>
           </TableRow>

@@ -6,9 +6,9 @@ import Paper from 'material-ui/Paper';
 var PlaceOrderDialog = React.createClass({
   render: function(){
     if (this.props.dialogContent.buy) {
-      var orders = this.props.dialogContent.choice.topFiveBuys;
+      var orders = this.props.dialogContent.choice.topBuys;
     }else {
-      var orders = this.props.dialogContent.choice.topFiveSells;
+      var orders = this.props.dialogContent.choice.topSells;
     }
     var amountError = this.props.amountError ? "Digite uma quantidade" : "";
     var priceError = this.props.priceError ? "Digite um preço" : "";

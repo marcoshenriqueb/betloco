@@ -13,13 +13,13 @@ class SimpleChoiceSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'lastCompleteOrder')
 
 class ChoiceSerializer(serializers.ModelSerializer):
-    topFiveBuys = OrderSerializer(many=True)
-    topFiveSells = OrderSerializer(many=True)
+    topBuys = OrderSerializer(many=True)
+    topSells = OrderSerializer(many=True)
     lastCompleteOrder = OrderSerializer()
 
     class Meta:
         model = Choice
-        fields = ('id', 'title', 'topFiveBuys', 'topFiveSells', 'lastCompleteOrder')
+        fields = ('id', 'title', 'topBuys', 'topSells', 'lastCompleteOrder')
 
 class MarketCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,4 +69,20 @@ class MarketDetailSerializer(serializers.ModelSerializer):
             'choices',
             'deadline',
             'created_at'
+        )
+
+class CreateOrderSerializer(serializers.ModelSerializer):
+    """docstring for CreateOrderSerializer"""
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    choice = serializers.PrimaryKeyRelatedField(queryset=Choice.objects.all())
+    class Meta:
+        model = Order
+        fields = ('price', 'amount', 'user', 'choice')
+
+    def create(self, validated_data):
+        return Order.objects.create(
+            user=self.context['request'].user,
+            price=validated_data['price'],
+            amount=validated_data['amount'],
+            choice=validated_data['choice']
         )

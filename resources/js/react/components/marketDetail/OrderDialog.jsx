@@ -1,4 +1,5 @@
 import React from 'react';
+import req from 'reqwest';
 import PlaceOrderDialog from './PlaceOrderDialog.jsx';
 import ConfirmOrderDialog from './ConfirmOrderDialog.jsx';
 import FlatButton from 'material-ui/FlatButton';
@@ -56,7 +57,23 @@ var OrderDialog = React.createClass({
     }
   },
   handleConfirmOrder:function(){
-    
+    var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
+    var data = {
+      price: this.state.price / 100,
+      amount: amount,
+      choice: this.props.dialogContent.choice.id
+    };
+    var that = this;
+    req({
+      url: '/api/markets/order/?format=json',
+      headers: {
+        'X-CSRFToken': document.getElementById('token').getAttribute('value')
+      },
+      method: 'post',
+      data: data
+    }).then(function(response){
+      that.returnStepAndClose();
+    });
   },
   returnStepAndClose: function(){
     this.setState({
