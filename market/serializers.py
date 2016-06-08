@@ -81,20 +81,25 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         fields = ('price', 'amount', 'user', 'choice')
 
     def validate(self, data):
+        user_id = self.context['request'].user.id
+        # Validates sell orders
         if data['amount'] < 0:
-            c = Choice.objects.custody(self.context['request'].user.id, data['choice'].market.id, data['choice'].id)
+            c = Choice.objects.custody(user_id, data['choice'].market.id, data['choice'].id)
+            # Don't let user sell more than what he has
             if c[data['choice'].id]['position'] < (data['amount'] * (-1)):
                 raise serializers.ValidationError("Can't sell more than you have!")
             o = Order.objects.filter(user__id=self.context['request'].user.id) \
                              .filter(choice__id=data['choice'].id) \
                              .filter(from_order__isnull=True) \
                              .filter(to_order__isnull=True) \
-                             .filter(amount__gt=0) \
+                             .filter(amount__lt=0) \
                              .aggregate(pending=Sum('amount'))['pending'] or 0
+            print(o)
+            o *= -1
+            # Don't let user sell more than he has plus the orders already sent
             if (c[data['choice'].id]['position'] - o) < (data['amount'] * (-1)):
                 raise serializers.ValidationError("Can't sell more than you have plus orders already sent!")
         return data
-
 
     def create(self, validated_data):
         return Order.objects.create(

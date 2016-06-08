@@ -61,9 +61,11 @@ class Market(models.Model):
 
 class ChoiceManager(models.Manager):
     """docstring for ChoiceManager"""
-    def custody(self, user_id, market_id, choice_id=None):
+    def custody(self, user_id, market_id, choice_id=None, not_choice_id=None):
         if choice_id:
             choices = self.filter(id=choice_id)
+        elif not_choice_id:
+            choices = self.get(id=not_choice_id).market.choices.filter(~Q(id=not_choice_id))
         else:
             choices = self.filter(market__id=market_id)
         result = {}

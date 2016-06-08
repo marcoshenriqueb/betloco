@@ -11,12 +11,12 @@ class OrderEngine():
         if self.order.amount > 0:
             array = self.order.choice._getTopToBuy(1000)
             offers = [o for o in array \
-                        if o.price <= currentOfferPrice and o.user.id != currentUserId]
+                        if o.price <= currentOfferPrice]
             amountBalance = self.order.amount
         else:
             array = self.order.choice._getTopToSell(1000)
             offers = [o for o in array \
-                        if o.price >= currentOfferPrice and o.user.id != currentUserId]
+                        if o.price >= currentOfferPrice]
             amountBalance = self.order.amount * (-1)
         remainingAmountOffer = self.order
         if offers:
@@ -44,9 +44,10 @@ class OrderEngine():
             else:
                 amountBalance = amountBalance if self.order.amount > 0 else amountBalance * (-1)
                 print(amountBalance)
-            Order.objects.create(
-                user=remainingAmountOffer.user,
-                choice=remainingAmountOffer.choice,
-                amount=amountBalance,
-                price=remainingAmountOffer.price
-            )
+            if amountBalance != 0:
+                Order.objects.create(
+                    user=remainingAmountOffer.user,
+                    choice=remainingAmountOffer.choice,
+                    amount=amountBalance,
+                    price=remainingAmountOffer.price
+                )
