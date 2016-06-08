@@ -61,8 +61,11 @@ class Market(models.Model):
 
 class ChoiceManager(models.Manager):
     """docstring for ChoiceManager"""
-    def custody(self, user_id, market_id):
-        choices = self.filter(market__id=market_id)
+    def custody(self, user_id, market_id, choice_id=None):
+        if choice_id:
+            choices = self.filter(id=choice_id)
+        else:
+            choices = self.filter(market__id=market_id)
         result = {}
         for c in choices:
             v1 = c.order_set.filter(user__id=user_id) \

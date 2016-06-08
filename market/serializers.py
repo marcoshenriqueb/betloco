@@ -80,6 +80,15 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('price', 'amount', 'user', 'choice')
 
+    def validate(self, data):
+        if data['amount'] < 0:
+            c = Choice.objects.custody(self.context['request'].user.id, data['choice'].market.id, data['choice'].id)
+            if c[data['choice'].id]['position'] < (data['amount'] * (-1)):
+                raise serializers.ValidationError("Can't sell more than you have!")
+
+        return data
+
+
     def create(self, validated_data):
         return Order.objects.create(
             user=self.context['request'].user,
