@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Market, Choice, MarketType, MarketCategory, Order, Operation
+from .models import Market, Choice, MarketType, MarketCategory, Order, Operation, Sum
 
 class OrderSerializer(serializers.ModelSerializer):
     # user = serializers.StringRelatedField(read_only=True)
@@ -85,7 +85,14 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             c = Choice.objects.custody(self.context['request'].user.id, data['choice'].market.id, data['choice'].id)
             if c[data['choice'].id]['position'] < (data['amount'] * (-1)):
                 raise serializers.ValidationError("Can't sell more than you have!")
-
+            o = Order.objects.filter(user__id=self.context['request'].user.id) \
+                             .filter(choice__id=data['choice'].id) \
+                             .filter(from_order__isnull=True) \
+                             .filter(to_order__isnull=True) \
+                             .filter(amount__gt=0) \
+                             .aggregate(pending=Sum('amount'))['pending'] or 0
+            if (c[data['choice'].id]['position'] - o) < (data['amount'] * (-1)):
+                raise serializers.ValidationError("Can't sell more than you have plus orders already sent!")
         return data
 
 
