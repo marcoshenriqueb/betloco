@@ -50161,6 +50161,7 @@ var MarketDetailContainer = _react2.default.createClass({
   getInitialState: function getInitialState() {
     return {
       market: {},
+      custody: {},
       dialog: false,
       dialogContent: undefined
     };
@@ -50174,8 +50175,18 @@ var MarketDetailContainer = _react2.default.createClass({
       });
     });
   },
+  getCustody: function getCustody() {
+    var that = this;
+    (0, _reqwest2.default)('/api/markets/custody/' + this.props.params.id + '/?format=json').then(function (response) {
+      var custody = response;
+      that.setState({
+        custody: custody
+      });
+    });
+  },
   componentDidMount: function componentDidMount() {
     this.getMarket();
+    this.getCustody();
   },
   openDialog: function openDialog(choice, buy) {
     this.setState({
@@ -50198,6 +50209,7 @@ var MarketDetailContainer = _react2.default.createClass({
         dialogContent: this.state.dialogContent,
         openDialog: this.openDialog,
         closeDialog: this.closeDialog,
+        custody: this.state.custody,
         market: this.state.market })
     );
   }
@@ -50576,7 +50588,10 @@ var MarketDetailCard = _react2.default.createClass({
           'div',
           { className: 'orderrequest-container' },
           this.props.market.choices.map(function (choice) {
-            return _react2.default.createElement(_OrderRequest2.default, { openDialog: _this.props.openDialog, choice: choice, key: choice.id });
+            return _react2.default.createElement(_OrderRequest2.default, { openDialog: _this.props.openDialog,
+              choice: choice,
+              custody: _this.props.custody[choice.id],
+              key: choice.id });
           })
         ),
         _react2.default.createElement('br', null),
@@ -50937,7 +50952,7 @@ var OrderRequest = _react2.default.createClass({
           _react2.default.createElement(
             'strong',
             null,
-            '0'
+            this.props.custody.position
           ),
           ' papéis em custódia'
         )

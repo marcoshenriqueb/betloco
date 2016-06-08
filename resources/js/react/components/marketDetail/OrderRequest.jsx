@@ -52,7 +52,7 @@ var OrderRequest = React.createClass({
         </CardActions>
         <CardText style={styles.cardtext} className="orderrequest-card__details">
           <span><strong>R$ {this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price : 0}</strong>/papel</span><br />
-          <span><strong>0</strong> papéis em custódia</span>
+          <span><strong>{this.props.custody.position}</strong> papéis em custódia</span>
         </CardText>
       </Card>
     );

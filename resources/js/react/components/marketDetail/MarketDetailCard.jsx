@@ -23,7 +23,10 @@ var MarketDetailCard = React.createClass({
           <h2>{this.props.market.title}</h2>
           <div className="orderrequest-container">
             {this.props.market.choices.map((choice) => {
-              return <OrderRequest openDialog={this.props.openDialog} choice={choice} key={choice.id} />
+              return <OrderRequest openDialog={this.props.openDialog}
+                                   choice={choice}
+                                   custody={this.props.custody[choice.id]}
+                                   key={choice.id} />
             })}
           </div>
           <br/>

@@ -6,6 +6,7 @@ var MarketDetailContainer = React.createClass({
   getInitialState: function() {
     return {
       market: {},
+      custody: {},
       dialog: false,
       dialogContent: undefined
     };
@@ -19,8 +20,18 @@ var MarketDetailContainer = React.createClass({
       });
     });
   },
+  getCustody: function(){
+    var that = this;
+    req('/api/markets/custody/' + this.props.params.id + '/?format=json').then(function(response){
+      var custody = response;
+      that.setState({
+        custody: custody
+      });
+    });
+  },
   componentDidMount: function() {
     this.getMarket();
+    this.getCustody();
   },
   openDialog: function(choice, buy){
     this.setState({
@@ -42,6 +53,7 @@ var MarketDetailContainer = React.createClass({
                           dialogContent={this.state.dialogContent}
                           openDialog={this.openDialog}
                           closeDialog={this.closeDialog}
+                          custody={this.state.custody}
                           market={this.state.market} />
       </div>
     );
