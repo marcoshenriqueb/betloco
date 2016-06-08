@@ -2,9 +2,10 @@ from rest_framework import serializers
 from .models import Market, Choice, MarketType, MarketCategory, Order, Operation
 
 class OrderSerializer(serializers.ModelSerializer):
+    # user = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Order
-        fields = ('id', 'price', 'amount')
+        fields = ('id', 'user', 'price', 'amount')
 
 class SimpleChoiceSerializer(serializers.ModelSerializer):
     lastCompleteOrder = OrderSerializer()
