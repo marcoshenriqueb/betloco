@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from market.models import Order, Operation
+from django.db.models import Sum, F, Q
 
 class Currency(models.Model):
     """docstring for Currency"""
@@ -15,7 +16,15 @@ class Currency(models.Model):
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id):
-        return self.filter(user__id=user_id).aggregate(Sum('value'))
+        netTransactions = self.filter(user__id=user_id).aggregate(value=Sum('value'))['value']
+        netOrders = Order.objects.filter(user__id=user_id) \
+                                 .filter(from_order__isnull=True) \
+                                 .filter(to_order__isnull=True) \
+                                 .aggregate(value=Sum(F('amount')*F('price'), output_field=models.FloatField()))['value']
+        netOperations = Operation.objects.filter(to_order__user__id=user_id) \
+                                         .filter(to_order__amount__gt=0)
+        return netOperations
+        return netTransactions - netOrders
 
 class Transaction(models.Model):
     """docstring for Transaction"""
