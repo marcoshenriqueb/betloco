@@ -23,3 +23,8 @@ class DetailMarket(generics.RetrieveAPIView):
 class CreateOrder(generics.CreateAPIView):
     """docstring for CreateOrder"""
     serializer_class = CreateOrderSerializer
+
+class CustodyView(APIView):
+    """Show user custody"""
+    def get(self, request, pk):
+        return Response(Choice.objects.custody(request.user.id, pk))

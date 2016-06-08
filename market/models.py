@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, F
 import operator, functools
 from itertools import chain
+
+@models.IntegerField.register_lookup
+class AbsoluteValue(models.Transform):
+    lookup_name = 'abs'
+    function = 'ABS'
 
 class MarketType(models.Model):
     """docstring for Market"""
@@ -54,10 +59,43 @@ class Market(models.Model):
 
     volume = property(_getVolume)
 
+class ChoiceManager(models.Manager):
+    """docstring for ChoiceManager"""
+    def custody(self, user_id, market_id):
+        choices = self.filter(market__id=market_id)
+        result = {}
+        for c in choices:
+            v1 = c.order_set.filter(user__id=user_id) \
+                            .filter(amount__gt=0) \
+                            .filter(from_order__isnull=False) \
+                            .aggregate(custody=Sum('from_order__amount'))['custody'] \
+                            or 0
+            v2 = c.order_set.filter(user__id=user_id) \
+                            .filter(amount__lt=0) \
+                            .filter(from_order__isnull=False) \
+                            .aggregate(custody=Sum('from_order__amount'))['custody'] \
+                            or 0
+            v3 = c.order_set.filter(user__id=user_id) \
+                            .filter(amount__gt=0) \
+                            .filter(to_order__isnull=False) \
+                            .aggregate(custody=Sum('to_order__amount'))['custody'] \
+                            or 0
+            v4 = c.order_set.filter(user__id=user_id) \
+                            .filter(amount__lt=0) \
+                            .filter(to_order__isnull=False) \
+                            .aggregate(custody=Sum('to_order__amount'))['custody'] \
+                            or 0
+            result[c.id] = {
+                'choice': c.title,
+                'position': v1 - v2 + v3 - v4
+            }
+        return result
+
 class Choice(models.Model):
     """docstring for Choice"""
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
     title = models.CharField(max_length=100)
+    objects = ChoiceManager()
 
     def __str__(self):
         return self.title
