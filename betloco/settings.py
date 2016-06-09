@@ -156,7 +156,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 try:
     from .local_settings import *
-except ImportError:
+except ImportError as e:
     DEBUG = True
 
     import dj_database_url
