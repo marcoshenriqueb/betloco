@@ -5,6 +5,6 @@ from engine.engine import OrderEngine
 
 @receiver(post_save, sender=Order)
 def postSaveOrder(sender, instance, created, **kwargs):
-    if created:
+    if created and instance.residual == 0:
         e = OrderEngine(instance)
         e.findMatchingOffers()

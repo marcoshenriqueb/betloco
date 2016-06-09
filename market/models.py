@@ -157,6 +157,7 @@ class Order(models.Model):
     price = models.FloatField(validators = [MinValueValidator(0.0), MaxValueValidator(1.0)])
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
+    residual = models.BooleanField(default=0)
     matches = models.ManyToManyField('self',
                                        through='Operation',
                                        through_fields=('from_order', 'to_order'),
