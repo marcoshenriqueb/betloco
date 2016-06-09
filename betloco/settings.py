@@ -165,3 +165,5 @@ REST_FRAMEWORK = {
     ],
     'PAGE_SIZE': 20
 }
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
