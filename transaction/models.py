@@ -24,7 +24,7 @@ class TransactionType(models.Model):
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id):
-        return self.filter(user__id=user_id).aggregate(balance=models.Sum('value'))['balance']
+        return self.filter(user__id=user_id).aggregate(balance=models.Sum('value'))['balance'] or 0
 
 class Transaction(models.Model):
     """docstring for Transaction"""
