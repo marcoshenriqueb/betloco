@@ -19,8 +19,21 @@ var OrderDialog = React.createClass({
       amountError: false,
       price: '',
       priceError: false,
-      content: 0
+      content: 0,
+      balance: 0,
+      error: false
     };
+  },
+  componentDidMount: function(){
+    this.getBalance();
+  },
+  getBalance: function(){
+    var that = this;
+    req('/api/transactions/balance/?format=json').then(function(response){
+      that.setState({
+        balance: response
+      });
+    });
   },
   handleAmountChange: function(e){
     if (!isNaN(e.target.value)) {
@@ -57,22 +70,46 @@ var OrderDialog = React.createClass({
     }
   },
   handleConfirmOrder:function(){
-    var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
-    var data = {
-      price: this.state.price / 100,
-      amount: amount,
-      choice: this.props.dialogContent.choice.id
-    };
-    var that = this;
-    req({
-      url: '/api/markets/order/?format=json',
-      headers: {
-        'X-CSRFToken': document.getElementById('token').getAttribute('value')
-      },
-      method: 'post',
-      data: data
-    }).then(function(response){
-      that.returnStepAndClose();
+    var choiceId = this.props.dialogContent.choice.id
+    if (this.props.dialogContent.buy && (this.state.price/100)*this.state.amount > this.state.balance) {
+      this.setState({
+        error: "Saldo insuficiente para completar a operação!"
+      });
+    }else if (!this.props.dialogContent.buy && this.state.amount > this.props.custody[choiceId].position) {
+      this.setState({
+        error: "Quantidade em custódia insuficiente para realizar a venda!"
+      });
+    }else {
+      var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
+      var data = {
+        price: this.state.price / 100,
+        amount: amount,
+        choice: this.props.dialogContent.choice.id
+      };
+      var that = this;
+      req({
+        url: '/api/markets/order/?format=json',
+        headers: {
+          'X-CSRFToken': document.getElementById('token').getAttribute('value')
+        },
+        method: 'post',
+        data: data
+      }).then(function(response){
+        that.returnStepAndClose();
+      }).catch(function(response){
+        console.log(response.response);
+        if (response.status == 400) {
+          that.setState({
+            error: "Quantidade insuficiente realizar a venda, checar demais ordens!"
+          });
+        }
+      });
+    }
+  },
+  returnStep: function(){
+    this.setState({
+      content: 0,
+      error: false
     });
   },
   returnStepAndClose: function(){
@@ -81,7 +118,8 @@ var OrderDialog = React.createClass({
       price: '',
       content: 0,
       amountError: false,
-      priceError: false
+      priceError: false,
+      error: false
     });
     this.props.closeDialog();
   },
@@ -128,11 +166,24 @@ var OrderDialog = React.createClass({
           keyboardFocused={true}
           onTouchTap={this.handleConfirmOrder}
         />,
+        <FlatButton
+          label="Voltar"
+          primary={true}
+          onTouchTap={this.returnStep}
+          style={{float:'left'}}
+        />,
       ];
       var content = (
         <ConfirmOrderDialog amount={this.state.amount}
-                            price={this.state.price} />
+                            buy={this.props.dialogContent.buy}
+                            price={this.state.price}
+                            balance={this.state.balance}
+                            custody={this.props.custody[this.props.dialogContent.choice.id]} />
       );
+    }
+    var error = null;
+    if (this.state.error) {
+      error = (<p className="error-warning">{this.state.error}</p>)
     }
     return (
       <Dialog
@@ -142,6 +193,7 @@ var OrderDialog = React.createClass({
           modal={false}
           open={this.props.dialog}>
         {content}
+        {error}
       </Dialog>
     );
   }

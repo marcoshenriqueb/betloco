@@ -3,6 +3,7 @@ gray_color = rgba(0,0,0,.60)
 light_gray_color = #FAFAFA
 white_color = #FFF
 primary_color = rgb(0, 188, 212)
+warning_color = #ff4c4c
 
 *
   box-sizing: border-box;
@@ -16,6 +17,15 @@ h2
 
 h3
   font-size: 24px
+
+.error-warning
+  color: white_color;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 0
+  padding: 5px 25px
+  background-color: warning_color;
+  border-radius: 2px
 
 @import "./markets.styl"
 @import "./orderrequest.styl"

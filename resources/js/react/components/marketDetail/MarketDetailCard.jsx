@@ -19,7 +19,8 @@ var MarketDetailCard = React.createClass({
         <div>
           <OrderDialog dialog={this.props.dialog}
                        closeDialog={this.props.closeDialog}
-                       dialogContent={this.props.dialogContent} />
+                       dialogContent={this.props.dialogContent}
+                       custody={this.props.custody} />
           <h2>{this.props.market.title}</h2>
           <div className="orderrequest-container">
             {this.props.market.choices.map((choice) => {

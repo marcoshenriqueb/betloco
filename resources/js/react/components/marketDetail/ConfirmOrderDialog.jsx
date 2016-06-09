@@ -26,39 +26,88 @@ var styles = {
 var ConfirmOrderDialog = React.createClass({
   render: function(){
     var total = this.props.amount * (this.props.price / 100);
+    var rows = [
+      {
+        border: false,
+        th: [
+          {content: 'Quantidade', style: null},
+          {content: this.props.amount, style: styles.right}
+        ]
+      },
+      {
+        border: false,
+        th: [
+          {content: 'Preço', style: null},
+          {content: this.props.price / 100, style: styles.right}
+        ]
+      },
+      {
+        border: true,
+        th: [
+          {content: 'Valor Total', style: null},
+          {content: "R$" + total, style: styles.right}
+        ]
+      }
+    ]
+    if (this.props.buy) {
+      var remaining = this.props.balance - total;
+      rows = rows.concat([
+        {
+          border: true,
+          th: [
+            {content: 'Valor Disponível', style: styles.bold},
+            {content: 'R$' + this.props.balance, style: styles.boldRight}
+          ]
+        },
+        {
+          border: true,
+          th: [
+            {content: 'Valor Restante', style: styles.bold},
+            {content: 'R$' + remaining, style: styles.boldRight}
+          ]
+        }
+      ])
+    }else {
+      var remaining = this.props.custody.position - this.props.amount;
+      rows = rows.concat([
+        {
+          border: true,
+          th: [
+            {content: 'Quantidade Disponível', style: styles.bold},
+            {content: this.props.custody.position, style: styles.boldRight}
+          ]
+        },
+        {
+          border: true,
+          th: [
+            {content: 'Quantidade Restante', style: styles.bold},
+            {content: remaining, style: styles.boldRight}
+          ]
+        }
+      ])
+    }
     return(
-      <Table>
-        <TableHeader adjustForCheckbox={false}
-                     displaySelectAll={false}>
-          <TableRow style={styles.header}>
-            <TableHeaderColumn style={styles.th}>Resumo</TableHeaderColumn>
-            <TableHeaderColumn></TableHeaderColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody displayRowCheckbox={false}
-                   showRowHover={true}>
-          <TableRow displayBorder={false}>
-            <TableRowColumn>Quantidade</TableRowColumn>
-            <TableRowColumn style={styles.right}>{this.props.amount}</TableRowColumn>
-          </TableRow>
-          <TableRow displayBorder={false}>
-            <TableRowColumn>Preço</TableRowColumn>
-            <TableRowColumn style={styles.right}>R${this.props.price / 100}</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn>Valor total</TableRowColumn>
-            <TableRowColumn style={styles.right}>R${total}</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn style={styles.bold}>Valor disponível</TableRowColumn>
-            <TableRowColumn style={styles.boldRight}>R$10000</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn style={styles.bold}>Valor remanescente</TableRowColumn>
-            <TableRowColumn style={styles.boldRight}>R${10000 - total}</TableRowColumn>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <div>
+        <Table>
+          <TableHeader adjustForCheckbox={false}
+                       displaySelectAll={false}>
+            <TableRow style={styles.header}>
+              <TableHeaderColumn style={styles.th}>Resumo</TableHeaderColumn>
+              <TableHeaderColumn></TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}
+                     showRowHover={true}>
+            {rows.map((r, k) => (
+              <TableRow displayBorder={r.border} key={k}>
+                {r.th.map((t, i) => (
+                  <TableRowColumn key={i} style={t.style}>{t.content}</TableRowColumn>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     )
   }
 });

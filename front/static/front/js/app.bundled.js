@@ -50290,100 +50290,73 @@ var ConfirmOrderDialog = _react2.default.createClass({
 
   render: function render() {
     var total = this.props.amount * (this.props.price / 100);
+    var rows = [{
+      border: false,
+      th: [{ content: 'Quantidade', style: null }, { content: this.props.amount, style: styles.right }]
+    }, {
+      border: false,
+      th: [{ content: 'Preço', style: null }, { content: this.props.price / 100, style: styles.right }]
+    }, {
+      border: true,
+      th: [{ content: 'Valor Total', style: null }, { content: "R$" + total, style: styles.right }]
+    }];
+    if (this.props.buy) {
+      var remaining = this.props.balance - total;
+      rows = rows.concat([{
+        border: true,
+        th: [{ content: 'Valor Disponível', style: styles.bold }, { content: 'R$' + this.props.balance, style: styles.boldRight }]
+      }, {
+        border: true,
+        th: [{ content: 'Valor Restante', style: styles.bold }, { content: 'R$' + remaining, style: styles.boldRight }]
+      }]);
+    } else {
+      var remaining = this.props.custody.position - this.props.amount;
+      rows = rows.concat([{
+        border: true,
+        th: [{ content: 'Quantidade Disponível', style: styles.bold }, { content: this.props.custody.position, style: styles.boldRight }]
+      }, {
+        border: true,
+        th: [{ content: 'Quantidade Restante', style: styles.bold }, { content: remaining, style: styles.boldRight }]
+      }]);
+    }
     return _react2.default.createElement(
-      _Table.Table,
+      'div',
       null,
       _react2.default.createElement(
-        _Table.TableHeader,
-        { adjustForCheckbox: false,
-          displaySelectAll: false },
+        _Table.Table,
+        null,
         _react2.default.createElement(
-          _Table.TableRow,
-          { style: styles.header },
+          _Table.TableHeader,
+          { adjustForCheckbox: false,
+            displaySelectAll: false },
           _react2.default.createElement(
-            _Table.TableHeaderColumn,
-            { style: styles.th },
-            'Resumo'
-          ),
-          _react2.default.createElement(_Table.TableHeaderColumn, null)
-        )
-      ),
-      _react2.default.createElement(
-        _Table.TableBody,
-        { displayRowCheckbox: false,
-          showRowHover: true },
-        _react2.default.createElement(
-          _Table.TableRow,
-          { displayBorder: false },
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            null,
-            'Quantidade'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.right },
-            this.props.amount
+            _Table.TableRow,
+            { style: styles.header },
+            _react2.default.createElement(
+              _Table.TableHeaderColumn,
+              { style: styles.th },
+              'Resumo'
+            ),
+            _react2.default.createElement(_Table.TableHeaderColumn, null)
           )
         ),
         _react2.default.createElement(
-          _Table.TableRow,
-          { displayBorder: false },
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            null,
-            'Preço'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.right },
-            'R$',
-            this.props.price / 100
-          )
-        ),
-        _react2.default.createElement(
-          _Table.TableRow,
-          null,
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            null,
-            'Valor total'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.right },
-            'R$',
-            total
-          )
-        ),
-        _react2.default.createElement(
-          _Table.TableRow,
-          null,
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.bold },
-            'Valor disponível'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.boldRight },
-            'R$10000'
-          )
-        ),
-        _react2.default.createElement(
-          _Table.TableRow,
-          null,
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.bold },
-            'Valor remanescente'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.boldRight },
-            'R$',
-            10000 - total
-          )
+          _Table.TableBody,
+          { displayRowCheckbox: false,
+            showRowHover: true },
+          rows.map(function (r, k) {
+            return _react2.default.createElement(
+              _Table.TableRow,
+              { displayBorder: r.border, key: k },
+              r.th.map(function (t, i) {
+                return _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  { key: i, style: t.style },
+                  t.content
+                );
+              })
+            );
+          })
         )
       )
     );
@@ -50578,7 +50551,8 @@ var MarketDetailCard = _react2.default.createClass({
         null,
         _react2.default.createElement(_OrderDialog2.default, { dialog: this.props.dialog,
           closeDialog: this.props.closeDialog,
-          dialogContent: this.props.dialogContent }),
+          dialogContent: this.props.dialogContent,
+          custody: this.props.custody }),
         _react2.default.createElement(
           'h2',
           null,
@@ -50723,8 +50697,21 @@ var OrderDialog = _react2.default.createClass({
       amountError: false,
       price: '',
       priceError: false,
-      content: 0
+      content: 0,
+      balance: 0,
+      error: false
     };
+  },
+  componentDidMount: function componentDidMount() {
+    this.getBalance();
+  },
+  getBalance: function getBalance() {
+    var that = this;
+    (0, _reqwest2.default)('/api/transactions/balance/?format=json').then(function (response) {
+      that.setState({
+        balance: response
+      });
+    });
   },
   handleAmountChange: function handleAmountChange(e) {
     if (!isNaN(e.target.value)) {
@@ -50761,22 +50748,46 @@ var OrderDialog = _react2.default.createClass({
     }
   },
   handleConfirmOrder: function handleConfirmOrder() {
-    var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
-    var data = {
-      price: this.state.price / 100,
-      amount: amount,
-      choice: this.props.dialogContent.choice.id
-    };
-    var that = this;
-    (0, _reqwest2.default)({
-      url: '/api/markets/order/?format=json',
-      headers: {
-        'X-CSRFToken': document.getElementById('token').getAttribute('value')
-      },
-      method: 'post',
-      data: data
-    }).then(function (response) {
-      that.returnStepAndClose();
+    var choiceId = this.props.dialogContent.choice.id;
+    if (this.props.dialogContent.buy && this.state.price / 100 * this.state.amount > this.state.balance) {
+      this.setState({
+        error: "Saldo insuficiente para completar a operação!"
+      });
+    } else if (!this.props.dialogContent.buy && this.state.amount > this.props.custody[choiceId].position) {
+      this.setState({
+        error: "Quantidade em custódia insuficiente para realizar a venda!"
+      });
+    } else {
+      var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
+      var data = {
+        price: this.state.price / 100,
+        amount: amount,
+        choice: this.props.dialogContent.choice.id
+      };
+      var that = this;
+      (0, _reqwest2.default)({
+        url: '/api/markets/order/?format=json',
+        headers: {
+          'X-CSRFToken': document.getElementById('token').getAttribute('value')
+        },
+        method: 'post',
+        data: data
+      }).then(function (response) {
+        that.returnStepAndClose();
+      }).catch(function (response) {
+        console.log(response.response);
+        if (response.status == 400) {
+          that.setState({
+            error: "Quantidade insuficiente realizar a venda, checar demais ordens!"
+          });
+        }
+      });
+    }
+  },
+  returnStep: function returnStep() {
+    this.setState({
+      content: 0,
+      error: false
     });
   },
   returnStepAndClose: function returnStepAndClose() {
@@ -50785,7 +50796,8 @@ var OrderDialog = _react2.default.createClass({
       price: '',
       content: 0,
       amountError: false,
-      priceError: false
+      priceError: false,
+      error: false
     });
     this.props.closeDialog();
   },
@@ -50824,9 +50836,25 @@ var OrderDialog = _react2.default.createClass({
         primary: true,
         keyboardFocused: true,
         onTouchTap: this.handleConfirmOrder
+      }), _react2.default.createElement(_FlatButton2.default, {
+        label: 'Voltar',
+        primary: true,
+        onTouchTap: this.returnStep,
+        style: { float: 'left' }
       })];
       var content = _react2.default.createElement(_ConfirmOrderDialog2.default, { amount: this.state.amount,
-        price: this.state.price });
+        buy: this.props.dialogContent.buy,
+        price: this.state.price,
+        balance: this.state.balance,
+        custody: this.props.custody[this.props.dialogContent.choice.id] });
+    }
+    var error = null;
+    if (this.state.error) {
+      error = _react2.default.createElement(
+        'p',
+        { className: 'error-warning' },
+        this.state.error
+      );
     }
     return _react2.default.createElement(
       _Dialog2.default,
@@ -50836,7 +50864,8 @@ var OrderDialog = _react2.default.createClass({
         actions: actions,
         modal: false,
         open: this.props.dialog },
-      content
+      content,
+      error
     );
   }
 });
