@@ -16,4 +16,4 @@ class BalanceView(APIView):
     """docstring for BalanceView"""
     def get(self, request):
         import json
-        return Response(Transaction.objects.balance(request.user.id).values('id', 'price', 'amount'))
+        return Response(Transaction.objects.balance(request.user.id))

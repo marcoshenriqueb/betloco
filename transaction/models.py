@@ -16,15 +16,20 @@ class Currency(models.Model):
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id):
-        netTransactions = self.filter(user__id=user_id).aggregate(value=Sum('value'))['value']
+        netTransactions = self.filter(user__id=user_id).aggregate(value=Sum('value'))['value'] or 0
         netOrders = Order.objects.filter(user__id=user_id) \
+                                 .filter(amount__gt=0) \
                                  .filter(from_order__isnull=True) \
                                  .filter(to_order__isnull=True) \
-                                 .aggregate(value=Sum(F('amount')*F('price'), output_field=models.FloatField()))['value']
-        netOperations = Operation.objects.filter(to_order__user__id=user_id) \
-                                         .filter(to_order__amount__gt=0)
-        return netOperations
-        return netTransactions - netOrders
+                                 .aggregate(value=Sum(F('amount')*F('price'), output_field=models.FloatField()))['value'] or 0
+        buyOperations = Operation.objects.filter(to_order__user__id=user_id) \
+                                         .filter(Q(to_order__amount__gt=0) | Q(from_order__amount__gt=0)) \
+                                         .aggregate(value=Sum(F('amount')*F('price')))['value'] or 0
+        sellOperations = Operation.objects.filter(to_order__user__id=user_id) \
+                                          .filter(Q(to_order__amount__lt=0) | Q(from_order__amount__lt=0)) \
+                                          .aggregate(value=Sum(F('amount')*F('price')))['value'] or 0
+        # Preço da operação não me dá informação suficiente
+        return netTransactions - netOrders - buyOperations + sellOperations
 
 class Transaction(models.Model):
     """docstring for Transaction"""

@@ -94,7 +94,6 @@ class CreateOrderSerializer(serializers.ModelSerializer):
                              .filter(to_order__isnull=True) \
                              .filter(amount__lt=0) \
                              .aggregate(pending=Sum('amount'))['pending'] or 0
-            print(o)
             o *= -1
             # Don't let user sell more than he has plus the orders already sent
             if (c[data['choice'].id]['position'] - o) < (data['amount'] * (-1)):
