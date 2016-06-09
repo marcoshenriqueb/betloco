@@ -3,14 +3,9 @@ from .models import Currency, Transaction, TransactionType, TransactionDetail
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    exclude = ('user',)
     list_display = ('id', 'user', 'value', 'currency', 'created_at')
     list_display_links = ('user', 'value')
     list_filter = ('user',)
-    
-    def save_model(self, request, obj, form, change):
-        obj.user = request.user
-        obj.save()
 
 @admin.register(TransactionType)
 class TransactionTypeAdmin(admin.ModelAdmin):
