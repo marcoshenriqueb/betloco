@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from market.models import Order, Operation
+from market.models import Order
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum, F, Q
 
 class Currency(models.Model):
     """docstring for Currency"""
@@ -25,20 +24,7 @@ class TransactionType(models.Model):
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id):
-        netTransactions = self.filter(user__id=user_id).aggregate(value=Sum('value'))['value'] or 0
-        netOrders = Order.objects.filter(user__id=user_id) \
-                                 .filter(amount__gt=0) \
-                                 .filter(from_order__isnull=True) \
-                                 .filter(to_order__isnull=True) \
-                                 .aggregate(value=Sum(F('amount')*F('price'), output_field=models.FloatField()))['value'] or 0
-        buyOperations = Operation.objects.filter(to_order__user__id=user_id) \
-                                         .filter(Q(to_order__amount__gt=0) | Q(from_order__amount__gt=0)) \
-                                         .aggregate(value=Sum(F('amount')*F('price')))['value'] or 0
-        sellOperations = Operation.objects.filter(to_order__user__id=user_id) \
-                                          .filter(Q(to_order__amount__lt=0) | Q(from_order__amount__lt=0)) \
-                                          .aggregate(value=Sum(F('amount')*F('price')))['value'] or 0
-        # Preço da operação não me dá informação suficiente
-        return netTransactions - netOrders - buyOperations + sellOperations
+        return self.filter(user__id=user_id).aggregate(balance=models.Sum('value'))['balance']
 
 class Transaction(models.Model):
     """docstring for Transaction"""
