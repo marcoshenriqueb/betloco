@@ -79,6 +79,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'betloco.wsgi.application'
 
+try:
+    from .local_settings import *
+except ImportError as e:
+    DEBUG = True
+
+    DATABASES = {
+        'default': {}
+    }
+    import dj_database_url
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -153,15 +164,3 @@ REST_FRAMEWORK = {
 }
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-try:
-    from .local_settings import *
-except ImportError as e:
-    DEBUG = True
-
-    DATABASES = {
-        'default': {}
-    }
-    import dj_database_url
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)

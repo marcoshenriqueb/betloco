@@ -38,7 +38,7 @@ var OrderRequest = React.createClass({
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
-          <p>{this.props.choice.title} ({this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price * 100 : 0}%)</p>
+          <p>{this.props.choice.title} ({this.props.choice.topBuys.length > 0 ? this.props.choice.topBuys[0].price * 100 : 0}%)</p>
         </div>
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">
