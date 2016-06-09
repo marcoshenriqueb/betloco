@@ -22,10 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'w=*e9-y@o1-@vj8&9=w*^*5fdzor0vd=)qr*4#m8t=nx4xfg*@'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['betloco-189183.nitrousapp.com',]
+ALLOWED_HOSTS = ['betloco.herokuapp.com', 'localhost:8000',]
 
 
 # Application definition
@@ -81,17 +78,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'betloco.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 
 # Password validation
@@ -167,3 +153,12 @@ REST_FRAMEWORK = {
 }
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+try:
+    from .local_settings import *
+except ImportError:
+    DEBUG = True
+
+    import dj_database_url
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
