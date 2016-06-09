@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Market, Choice, MarketType, MarketCategory, Order, Operation, Sum
+from transaction.models import Transaction
 
 class OrderSerializer(serializers.ModelSerializer):
     # user = serializers.StringRelatedField(read_only=True)
@@ -98,6 +99,12 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             # Don't let user sell more than he has plus the orders already sent
             if (c[data['choice'].id]['position'] - o) < (data['amount'] * (-1)):
                 raise serializers.ValidationError("Can't sell more than you have plus orders already sent!")
+        # Validates buy orders
+        elif data['amount'] > 0:
+            balance = Transaction.objects.balance(self.context['request'].user.id)
+            if data['amount']*data['price'] > balance:
+                raise serializers.ValidationError("Not enough cash to place the order!")
+
         return data
 
     def create(self, validated_data):
