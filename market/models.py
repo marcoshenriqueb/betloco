@@ -108,7 +108,10 @@ class Choice(models.Model):
     def _getLastCompleteOrder(self):
         o = Operation.objects.filter(Q(from_order__choice__id=self.id) | Q(to_order__choice__id=self.id)) \
                              .order_by('-created_at')[0:1].get()
-        return self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
+        order = self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
+        if order.id == o.from_order_id:
+            order.price = o.price
+        return order
     lastCompleteOrder = property(_getLastCompleteOrder)
 
     def _getTopToBuy(self, limit=5):

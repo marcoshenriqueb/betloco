@@ -50938,7 +50938,7 @@ var OrderRequest = _react2.default.createClass({
           null,
           this.props.choice.title,
           ' (',
-          this.props.choice.topBuys.length > 0 ? this.props.choice.topBuys[0].price * 100 : 0,
+          this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price * 100 : 0,
           '%)'
         )
       ),
