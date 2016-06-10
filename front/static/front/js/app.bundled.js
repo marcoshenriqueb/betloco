@@ -50699,7 +50699,8 @@ var OrderDialog = _react2.default.createClass({
       priceError: false,
       content: 0,
       balance: 0,
-      error: false
+      error: false,
+      disabled: false
     };
   },
   componentDidMount: function componentDidMount() {
@@ -50748,6 +50749,9 @@ var OrderDialog = _react2.default.createClass({
     }
   },
   handleConfirmOrder: function handleConfirmOrder() {
+    this.setState({
+      disabled: true
+    });
     var choiceId = this.props.dialogContent.choice.id;
     if (this.props.dialogContent.buy && this.state.price / 100 * this.state.amount > this.state.balance) {
       this.setState({
@@ -50787,7 +50791,8 @@ var OrderDialog = _react2.default.createClass({
   returnStep: function returnStep() {
     this.setState({
       content: 0,
-      error: false
+      error: false,
+      disabled: false
     });
   },
   returnStepAndClose: function returnStepAndClose() {
@@ -50797,7 +50802,8 @@ var OrderDialog = _react2.default.createClass({
       content: 0,
       amountError: false,
       priceError: false,
-      error: false
+      error: false,
+      disabled: false
     });
     this.props.closeDialog();
   },
@@ -50835,7 +50841,8 @@ var OrderDialog = _react2.default.createClass({
         label: 'Confirmar',
         primary: true,
         keyboardFocused: true,
-        onTouchTap: this.handleConfirmOrder
+        onTouchTap: this.handleConfirmOrder,
+        disabled: this.state.disabled
       }), _react2.default.createElement(_FlatButton2.default, {
         label: 'Voltar',
         primary: true,
