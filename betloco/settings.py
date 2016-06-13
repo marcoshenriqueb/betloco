@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -81,8 +78,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'betloco.wsgi.application'
 
 try:
-    from .local_settings import *
+    from .local_settings import BASE_DIR, DATABASES, DEBUG
 except ImportError as e:
+    # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     DEBUG = True
 
     DATABASES = {
@@ -91,6 +91,19 @@ except ImportError as e:
     import dj_database_url
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
+
+    import urlparse
+    redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
+    CACHES = {
+            'default': {
+                'BACKEND': 'redis_cache.RedisCache',
+                'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
+                'OPTIONS': {
+                    'PASSWORD': redis_url.password,
+                    'DB': 1,
+            }
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
