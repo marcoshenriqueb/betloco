@@ -109,7 +109,7 @@ except ImportError:
         "default": {
             "BACKEND": "asgi_redis.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [(redis_url.hostname, redis_url.port)],
+                "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
             },"ROUTING": "betloco.routing.channel_routing",
         },
     }
