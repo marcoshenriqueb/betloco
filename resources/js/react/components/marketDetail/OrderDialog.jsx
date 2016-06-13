@@ -25,8 +25,10 @@ var OrderDialog = React.createClass({
       disabled: false
     };
   },
-  componentDidMount: function(){
-    this.getBalance();
+  componentWillReceiveProps: function(props){
+    if (props.dialog) {
+      this.getBalance();
+    }
   },
   getBalance: function(){
     var that = this;

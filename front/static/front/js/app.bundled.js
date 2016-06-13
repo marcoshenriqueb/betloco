@@ -50718,8 +50718,10 @@ var OrderDialog = _react2.default.createClass({
       disabled: false
     };
   },
-  componentDidMount: function componentDidMount() {
-    this.getBalance();
+  componentWillReceiveProps: function componentWillReceiveProps(props) {
+    if (props.dialog) {
+      this.getBalance();
+    }
   },
   getBalance: function getBalance() {
     var that = this;
