@@ -78,8 +78,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'betloco.wsgi.application'
 
 try:
-    from .local_settings import BASE_DIR, DATABASES, DEBUG
-except ImportError as e:
+    from .local_settings import *
+except ImportError:
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -92,8 +92,8 @@ except ImportError as e:
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
-    import urlparse
-    redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
+    from urllib.parse import urlparse
+    redis_url = urlparse(os.environ.get('REDISCLOUD_URL'))
     CACHES = {
             'default': {
                 'BACKEND': 'redis_cache.RedisCache',
