@@ -50184,9 +50184,23 @@ var MarketDetailContainer = _react2.default.createClass({
       });
     });
   },
+  connectToMarket: function connectToMarket() {
+    var that = this;
+    var socket = new WebSocket("ws://" + window.location.host + "/market/" + this.props.params.id + '/');
+    socket.onopen = function () {
+      socket.onmessage = function (e) {
+        var m = JSON.parse(e.data);
+        console.log(m);
+        that.setState({
+          market: m
+        });
+      };
+    };
+  },
   componentDidMount: function componentDidMount() {
     this.getMarket();
     this.getCustody();
+    this.connectToMarket();
   },
   openDialog: function openDialog(choice, buy) {
     this.setState({
