@@ -2,7 +2,7 @@
 from channels import Group
 from channels.sessions import enforce_ordering
 from channels.auth import channel_session_user, channel_session_user_from_http
-from .models import Market
+from .models import Market, Choice
 from .serializers import MarketDetailSerializer
 import json
 
@@ -17,11 +17,16 @@ def ws_connect(message, pk):
 
 def market_update(message):
     # Broadcast to listening sockets
-    print(message.content['message'])
-    m = Market.objects.get(pk=message.content['message'])
-    serializer = MarketDetailSerializer(m)
+    ids = json.loads(message.content['message'])
+    m = Market.objects.get(pk=ids['pk'])
+    mserializer = MarketDetailSerializer(m)
+    custody = Choice.objects.custody(ids['user_id'], ids['pk'])
+    data = {
+        'market': mserializer.data,
+        'custody': custody
+    }
     Group(message.content['room']).send({
-        "text": json.dumps(serializer.data),
+        "text": json.dumps(data),
     })
 
 # Connected to websocket.disconnect

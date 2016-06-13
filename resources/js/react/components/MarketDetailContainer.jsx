@@ -37,7 +37,8 @@ var MarketDetailContainer = React.createClass({
         var m = JSON.parse(e.data);
         console.log(m);
         that.setState({
-          market: m
+          market: m.market,
+          custody: m.custody
         });
       }
     }

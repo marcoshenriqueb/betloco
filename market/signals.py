@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from .models import Order
 from engine.engine import OrderEngine
 from channels import Channel
+import json
 
 @receiver(post_save, sender=Order)
 def postSaveOrder(sender, instance, created, **kwargs):
@@ -13,5 +14,5 @@ def postSaveOrder(sender, instance, created, **kwargs):
         pk = instance.choice.market.id
         Channel("market-update").send({
             "room": 'market-' + str(pk),
-            "message": str(pk),
+            "message": json.dumps({'pk': str(pk), 'user_id': instance.user.id})
         })

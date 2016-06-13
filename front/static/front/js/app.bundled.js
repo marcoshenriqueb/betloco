@@ -50192,7 +50192,8 @@ var MarketDetailContainer = _react2.default.createClass({
         var m = JSON.parse(e.data);
         console.log(m);
         that.setState({
-          market: m
+          market: m.market,
+          custody: m.custody
         });
       };
     };
