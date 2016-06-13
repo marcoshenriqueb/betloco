@@ -35,11 +35,10 @@ var MarketDetailContainer = React.createClass({
     socket.onopen = function() {
       socket.onmessage = function(e) {
         var m = JSON.parse(e.data);
-        console.log(m);
         that.setState({
-          market: m.market,
-          custody: m.custody
+          market: m.market
         });
+        that.getCustody();
       }
     }
   },

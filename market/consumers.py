@@ -20,10 +20,8 @@ def market_update(message):
     ids = json.loads(message.content['message'])
     m = Market.objects.get(pk=ids['pk'])
     mserializer = MarketDetailSerializer(m)
-    custody = Choice.objects.custody(ids['user_id'], ids['pk'])
     data = {
-        'market': mserializer.data,
-        'custody': custody
+        'market': mserializer.data
     }
     Group(message.content['room']).send({
         "text": json.dumps(data),

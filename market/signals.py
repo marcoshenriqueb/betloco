@@ -14,5 +14,5 @@ def postSaveOrder(sender, instance, created, **kwargs):
         pk = instance.choice.market.id
         Channel("market-update").send({
             "room": 'market-' + str(pk),
-            "message": json.dumps({'pk': str(pk), 'user_id': instance.user.id})
+            "message": json.dumps({'pk': str(pk)})
         })
