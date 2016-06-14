@@ -50134,7 +50134,7 @@ var MarketContainer = _react2.default.createClass({
 
 exports.default = MarketContainer;
 
-},{"./markets/Market.jsx":458,"./markets/SearchComp.jsx":460,"material-ui/FloatingActionButton":25,"material-ui/svg-icons/content/add":185,"react":442,"reqwest":443}],448:[function(require,module,exports){
+},{"./markets/Market.jsx":459,"./markets/SearchComp.jsx":461,"material-ui/FloatingActionButton":25,"material-ui/svg-icons/content/add":185,"react":442,"reqwest":443}],448:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50541,6 +50541,10 @@ var _Details = require('./Details.jsx');
 
 var _Details2 = _interopRequireDefault(_Details);
 
+var _OpenOrders = require('./OpenOrders.jsx');
+
+var _OpenOrders2 = _interopRequireDefault(_OpenOrders);
+
 var _OrderDialog = require('./OrderDialog.jsx');
 
 var _OrderDialog2 = _interopRequireDefault(_OrderDialog);
@@ -50591,6 +50595,9 @@ var MarketDetailCard = _react2.default.createClass({
           })
         ),
         _react2.default.createElement('br', null),
+        _react2.default.createElement(_OpenOrders2.default, { market_id: this.props.market.id,
+          choices: this.props.market.choices }),
+        _react2.default.createElement('br', null),
         _react2.default.createElement(_Details2.default, { market: this.props.market }),
         _react2.default.createElement('br', null)
       );
@@ -50602,7 +50609,109 @@ var MarketDetailCard = _react2.default.createClass({
 
 exports.default = MarketDetailCard;
 
-},{"./Details.jsx":451,"./OrderBook.jsx":453,"./OrderDialog.jsx":454,"./OrderRequest.jsx":455,"material-ui/Card":14,"material-ui/FlatButton":23,"react":442}],453:[function(require,module,exports){
+},{"./Details.jsx":451,"./OpenOrders.jsx":453,"./OrderBook.jsx":454,"./OrderDialog.jsx":455,"./OrderRequest.jsx":456,"material-ui/Card":14,"material-ui/FlatButton":23,"react":442}],453:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reqwest = require('reqwest');
+
+var _reqwest2 = _interopRequireDefault(_reqwest);
+
+var _Card = require('material-ui/Card');
+
+var _Table = require('material-ui/Table');
+
+var _Divider = require('material-ui/Divider');
+
+var _Divider2 = _interopRequireDefault(_Divider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = {
+  noMarginTop: {
+    marginTop: 0
+  },
+  noPaddingTop: {
+    paddingTop: 0
+  }
+};
+
+var OpenOrders = _react2.default.createClass({
+  displayName: 'OpenOrders',
+
+  getInitialState: function getInitialState() {
+    return {
+      orders: []
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    this.getOpenOrders();
+  },
+  getOpenOrders: function getOpenOrders() {
+    var that = this;
+    (0, _reqwest2.default)('/api/markets/open-orders/?market=' + this.props.market_id + '&format=json').then(function (response) {
+      var orders = response;
+      that.setState({
+        orders: orders
+      });
+    });
+  },
+  render: function render() {
+    var choices = {};
+    this.props.choices.map(function (c) {
+      choices[c.id] = c.title;
+    });
+    return _react2.default.createElement(
+      _Card.Card,
+      { initiallyExpanded: true },
+      _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: 'Ordens em aberto' }),
+      _react2.default.createElement(
+        _Card.CardText,
+        { expandable: true, style: styles.noPaddingTop },
+        _react2.default.createElement(
+          _Table.Table,
+          null,
+          _react2.default.createElement(
+            _Table.TableBody,
+            { showRowHover: true },
+            this.state.orders.map(function (o, k) {
+              return _react2.default.createElement(
+                _Table.TableRow,
+                { key: k },
+                _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  null,
+                  choices[o.choice]
+                ),
+                _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  null,
+                  o.amount
+                ),
+                _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  null,
+                  o.price
+                )
+              );
+            })
+          )
+        )
+      )
+    );
+  }
+});
+
+exports.default = OpenOrders;
+
+},{"material-ui/Card":14,"material-ui/Divider":20,"material-ui/Table":57,"react":442,"reqwest":443}],454:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50659,7 +50768,7 @@ var OrderBook = _react2.default.createClass({
 
 exports.default = OrderBook;
 
-},{"./OrderTable.jsx":456,"material-ui/Card":14,"material-ui/FlatButton":23,"material-ui/Table":57,"react":442}],454:[function(require,module,exports){
+},{"./OrderTable.jsx":457,"material-ui/Card":14,"material-ui/FlatButton":23,"material-ui/Table":57,"react":442}],455:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50895,7 +51004,7 @@ var OrderDialog = _react2.default.createClass({
 
 exports.default = OrderDialog;
 
-},{"./ConfirmOrderDialog.jsx":450,"./PlaceOrderDialog.jsx":457,"material-ui/Dialog":18,"material-ui/FlatButton":23,"material-ui/RaisedButton":45,"react":442,"reqwest":443}],455:[function(require,module,exports){
+},{"./ConfirmOrderDialog.jsx":450,"./PlaceOrderDialog.jsx":458,"material-ui/Dialog":18,"material-ui/FlatButton":23,"material-ui/RaisedButton":45,"react":442,"reqwest":443}],456:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51015,7 +51124,7 @@ var OrderRequest = _react2.default.createClass({
 
 exports.default = OrderRequest;
 
-},{"material-ui/Card":14,"material-ui/FlatButton":23,"material-ui/Table":57,"react":442}],456:[function(require,module,exports){
+},{"material-ui/Card":14,"material-ui/FlatButton":23,"material-ui/Table":57,"react":442}],457:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51117,7 +51226,7 @@ var OrderTable = _react2.default.createClass({
 
 exports.default = OrderTable;
 
-},{"material-ui/Table":57,"react":442}],457:[function(require,module,exports){
+},{"material-ui/Table":57,"react":442}],458:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51203,7 +51312,7 @@ var PlaceOrderDialog = _react2.default.createClass({
 
 exports.default = PlaceOrderDialog;
 
-},{"./OrderTable.jsx":456,"material-ui/Paper":41,"material-ui/TextField":63,"react":442}],458:[function(require,module,exports){
+},{"./OrderTable.jsx":457,"material-ui/Paper":41,"material-ui/TextField":63,"react":442}],459:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51236,7 +51345,7 @@ var Market = _react2.default.createClass({
 
 exports.default = Market;
 
-},{"./MarketCard.jsx":459,"react":442}],459:[function(require,module,exports){
+},{"./MarketCard.jsx":460,"react":442}],460:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51354,7 +51463,7 @@ var MarketCard = _react2.default.createClass({
 
 exports.default = MarketCard;
 
-},{"material-ui/Card":14,"material-ui/FlatButton":23,"material-ui/LinearProgress":33,"react":442,"react-router":236}],460:[function(require,module,exports){
+},{"material-ui/Card":14,"material-ui/FlatButton":23,"material-ui/LinearProgress":33,"react":442,"react-router":236}],461:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import OrderRequest from './OrderRequest.jsx';
 import OrderBook from './OrderBook.jsx';
 import Details from './Details.jsx';
+import OpenOrders from './OpenOrders.jsx';
 import OrderDialog from './OrderDialog.jsx';
 
 var styles = {
@@ -36,6 +37,9 @@ var MarketDetailCard = React.createClass({
               return <OrderBook choice={choice} key={choice.id} />
             })}
           </div>
+          <br/>
+          <OpenOrders market_id={this.props.market.id}
+                      choices={this.props.market.choices} />
           <br/>
           <Details market={this.props.market} />
           <br/>

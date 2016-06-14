@@ -152,6 +152,17 @@ class Choice(models.Model):
 
     topSells = property(_getTopToSell)
 
+class OrderManager(models.Manager):
+    """docstring for OrderManager"""
+    def getOpenOrders(self, user_id, market_id=None):
+        if market_id:
+            return self.filter(user__id=user_id).filter(choice__market__id=market_id) \
+                                                .filter(from_order__isnull=True) \
+                                                .filter(to_order__isnull=True)
+        else:
+            return self.filter(user__id=user_id).filter(from_order__isnull=True) \
+                                                .filter(to_order__isnull=True)
+
 class Order(models.Model):
     """docstring for Order"""
     user = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -166,7 +177,7 @@ class Order(models.Model):
                                        through_fields=('from_order', 'to_order'),
                                        symmetrical=False,
                                        related_name='operation')
-
+    objects = OrderManager()
     def __str__(self):
         return str(self.id)
 
