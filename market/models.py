@@ -165,9 +165,10 @@ class OrderManager(models.Manager):
     def deleteOpenOrders(self, user_id, orders):
         from transaction.models import Transaction, TransactionDetail
         for o in orders:
-            t = Transaction.objects.filter(transactiondetail__order__id=o['id']).get().id
-            TransactionDetail.objects.filter(order__id=o['id']).delete()
-            Transaction.objects.get(pk=t).delete()
+            if o['amount'] > 0:
+                t = Transaction.objects.filter(transactiondetail__order__id=o['id']).get().id
+                TransactionDetail.objects.filter(order__id=o['id']).delete()
+                Transaction.objects.get(pk=t).delete()
             self.filter(user__id=user_id).filter(pk=o['id']).delete()
 
 class Order(models.Model):
