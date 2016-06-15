@@ -50757,7 +50757,7 @@ var OpenOrders = _react2.default.createClass({
                   _Table.TableRowColumn,
                   null,
                   'R$ ',
-                  o.price * o.amount
+                  o.amount < 0 ? o.price * o.amount * -1 : o.price * o.amount
                 )
               );
             })
