@@ -119,12 +119,14 @@ class Choice(models.Model):
                             .filter(from_order__isnull=True) \
                             .filter(to_order__isnull=True) \
                             .filter(~Q(choice__id=self.id)) \
-                            .filter(amount__gt=0)
+                            .filter(amount__gt=0) \
+                            .filter(deleted=0)
         for o in cross_orders:
             o.price = (1 - o.price)
         orders = self.order_set.filter(to_order__isnull=True) \
                             .filter(from_order__isnull=True) \
-                            .filter(amount__lt=0)
+                            .filter(amount__lt=0) \
+                            .filter(deleted=0)
         for o in orders:
             o.amount = o.amount * (-1)
         l = list(chain(orders, cross_orders))
@@ -138,13 +140,15 @@ class Choice(models.Model):
                             .filter(from_order__isnull=True) \
                             .filter(to_order__isnull=True) \
                             .filter(~Q(choice__id=self.id)) \
-                            .filter(amount__lt=0)
+                            .filter(amount__lt=0) \
+                            .filter(deleted=0)
         for o in cross_orders:
             o.price = (1 - o.price)
             o.amount = o.amount * (-1)
         orders = self.order_set.filter(to_order__isnull=True) \
                             .filter(from_order__isnull=True) \
-                            .filter(amount__gt=0)
+                            .filter(amount__gt=0) \
+                            .filter(deleted=0)
         l = list(chain(orders, cross_orders))
         l.sort(key=lambda x: x.created_at, reverse=False)
         l.sort(key=lambda x: x.price, reverse=True)
@@ -158,18 +162,32 @@ class OrderManager(models.Manager):
         if market_id:
             return self.filter(user__id=user_id).filter(choice__market__id=market_id) \
                                                 .filter(from_order__isnull=True) \
-                                                .filter(to_order__isnull=True)
+                                                .filter(to_order__isnull=True) \
+                                                .filter(deleted=0)
         else:
             return self.filter(user__id=user_id).filter(from_order__isnull=True) \
-                                                .filter(to_order__isnull=True)
+                                                .filter(to_order__isnull=True) \
+                                                .filter(deleted=0)
+
     def deleteOpenOrders(self, user_id, orders):
         from transaction.models import Transaction, TransactionDetail
         for o in orders:
             if o['amount'] > 0:
-                t = Transaction.objects.filter(transactiondetail__order__id=o['id']).get().id
-                TransactionDetail.objects.filter(order__id=o['id']).delete()
-                Transaction.objects.get(pk=t).delete()
-            self.filter(user__id=user_id).filter(pk=o['id']).delete()
+                t = Transaction.objects.create(
+                    user_id=user_id,
+                    transaction_type_id=5,
+                    currency_id=1,
+                    value=o['amount']*o['price']
+                )
+                TransactionDetail.objects.create(
+                    transaction=t,
+                    amount=o['amount'],
+                    price=o['price'],
+                    order_id=o['id']
+                )
+            o = self.filter(user__id=user_id).get(pk=o['id'])
+            o.deleted = 1
+            o.save()
 
 class Order(models.Model):
     """docstring for Order"""
@@ -180,6 +198,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
     residual = models.BooleanField(default=0)
+    deleted = models.BooleanField(default=0)
     matches = models.ManyToManyField('self',
                                        through='Operation',
                                        through_fields=('from_order', 'to_order'),

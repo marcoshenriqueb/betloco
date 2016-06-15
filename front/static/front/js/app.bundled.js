@@ -50979,10 +50979,9 @@ var OrderDialog = _react2.default.createClass({
       }).then(function (response) {
         that.returnStepAndClose();
       }).catch(function (response) {
-        console.log(response.response);
         if (response.status == 400) {
           that.setState({
-            error: "Quantidade insuficiente realizar a venda, checar demais ordens!"
+            error: JSON.parse(response.response).non_field_errors[0]
           });
         }
       });
