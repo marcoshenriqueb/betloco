@@ -35,6 +35,13 @@ var OrderRequest = React.createClass({
     this.props.openDialog(this.props.choice, false);
   },
   render: function() {
+    if (this.props.custody) {
+      var custody = this.props.custody;
+    }else {
+      var custody = {
+        position: 0
+      };
+    }
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
@@ -52,7 +59,7 @@ var OrderRequest = React.createClass({
         </CardActions>
         <CardText style={styles.cardtext} className="orderrequest-card__details">
           <span><strong>R$ {this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price : 0}</strong>/papel</span><br />
-          <span><strong>{this.props.custody.position}</strong> papéis em custódia</span>
+          <span><strong>{custody.position}</strong> papéis em custódia</span>
         </CardText>
       </Card>
     );

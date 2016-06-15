@@ -3,6 +3,8 @@ from rest_framework import generics, filters
 from rest_framework.response import Response
 from .models import Market, Choice, Order
 from .serializers import MarketSerializer, MarketDetailSerializer, CreateOrderSerializer
+from channels import Channel
+import json
 
 class ListMarkets(generics.ListAPIView):
     """
@@ -35,4 +37,16 @@ class OpenOrdersView(APIView):
         market = None
         if 'market' in request.query_params:
             market = request.query_params['market']
-        return Response(Order.objects.getOpenOrders(request.user.id, market).values('choice', 'price', 'amount'))
+        return Response(Order.objects.getOpenOrders(request.user.id, market).values('id', 'choice', 'price', 'amount'))
+
+    def delete(self, request):
+        Order.objects.deleteOpenOrders(request.user.id, json.loads(request.query_params['orders']))
+        market = None
+        if 'market' in request.query_params:
+            market = request.query_params['market']
+            Channel("market-update").send({
+                "room": 'market-' + str(market),
+                "message": json.dumps({'pk': str(market)})
+            })
+
+        return Response(True)

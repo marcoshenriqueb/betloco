@@ -1,7 +1,6 @@
 import React from 'react';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import Divider from 'material-ui/Divider';
 
 var styles = {
   noMarginTop: {

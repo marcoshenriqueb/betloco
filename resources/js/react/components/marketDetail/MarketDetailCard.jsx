@@ -16,6 +16,18 @@ var styles = {
 var MarketDetailCard = React.createClass({
   render: function() {
     if (this.props.market.choices != undefined) {
+      if (this.props.orders.length > 0) {
+        var openOrders = (
+          <div>
+            <OpenOrders choices={this.props.market.choices}
+                      orders={this.props.orders}
+                      onDeleteOrders={this.props.onDeleteOrders} />
+            <br/>
+          </div>
+        )
+      }else {
+        var openOrders = null;
+      }
       return (
         <div>
           <OrderDialog dialog={this.props.dialog}
@@ -38,9 +50,7 @@ var MarketDetailCard = React.createClass({
             })}
           </div>
           <br/>
-          <OpenOrders market_id={this.props.market.id}
-                      choices={this.props.market.choices} />
-          <br/>
+          {openOrders}
           <Details market={this.props.market} />
           <br/>
         </div>

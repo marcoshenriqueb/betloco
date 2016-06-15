@@ -8,7 +8,8 @@ var MarketDetailContainer = React.createClass({
       market: {},
       custody: {},
       dialog: false,
-      dialogContent: undefined
+      dialogContent: undefined,
+      orders: []
     };
   },
   getMarket: function(){
@@ -29,6 +30,27 @@ var MarketDetailContainer = React.createClass({
       });
     });
   },
+  getOpenOrders: function(){
+    var that = this;
+    req('/api/markets/open-orders/?market=' + this.props.params.id + '&format=json').then(function(response){
+      var orders = response;
+      that.setState({
+        orders: orders
+      });
+    });
+  },
+  deleteOrders: function(orders){
+    var that = this;
+    req({
+      url: '/api/markets/open-orders/?market=' + this.props.params.id + '&format=json&orders=' + JSON.stringify(orders),
+      headers: {
+        'X-CSRFToken': document.getElementById('token').getAttribute('value')
+      },
+      method: 'delete'
+    }).then(function(response){
+      console.log(response);
+    });
+  },
   connectToMarket: function(){
     var that = this;
     var socket = new WebSocket("ws://" + window.location.host + "/market/" + this.props.params.id + '/');
@@ -39,6 +61,7 @@ var MarketDetailContainer = React.createClass({
           market: m.market
         });
         that.getCustody();
+        that.getOpenOrders();
       }
     }
   },
@@ -46,6 +69,7 @@ var MarketDetailContainer = React.createClass({
     this.getMarket();
     this.getCustody();
     this.connectToMarket();
+    this.getOpenOrders();
   },
   openDialog: function(choice, buy){
     this.setState({
@@ -68,7 +92,9 @@ var MarketDetailContainer = React.createClass({
                           openDialog={this.openDialog}
                           closeDialog={this.closeDialog}
                           custody={this.state.custody}
-                          market={this.state.market} />
+                          market={this.state.market}
+                          orders={this.state.orders}
+                          onDeleteOrders={this.deleteOrders} />
       </div>
     );
   }
