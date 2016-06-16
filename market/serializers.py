@@ -94,6 +94,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
                              .filter(from_order__isnull=True) \
                              .filter(to_order__isnull=True) \
                              .filter(amount__lt=0) \
+                             .filter(deleted=0) \
                              .aggregate(pending=Sum('amount'))['pending'] or 0
             o *= -1
             # Don't let user sell more than he has plus the orders already sent
