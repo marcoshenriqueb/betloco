@@ -114,7 +114,7 @@ class Choice(models.Model):
         return order
     lastCompleteOrder = property(_getLastCompleteOrder)
 
-    def _getTopToBuy(self, limit=5):
+    def _getTopToBuy(self, limit=5, group=True):
         cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
                             .filter(from_order__isnull=True) \
                             .filter(to_order__isnull=True) \
@@ -131,11 +131,22 @@ class Choice(models.Model):
             o.amount = o.amount * (-1)
         l = list(chain(orders, cross_orders))
         l.sort(key=lambda x: (x.price, x.created_at), reverse=False)
+        if group:
+            precedingItem = None
+            result = []
+            for v in l:
+                if precedingItem and precedingItem.price == v.price:
+                    v.amount += precedingItem.amount
+                    result[len(result)-1] = v
+                else:
+                    result.append(v)
+                precedingItem = v
+            return result[0:limit]
         return l[0:limit]
 
     topBuys = property(_getTopToBuy)
 
-    def _getTopToSell(self, limit=5):
+    def _getTopToSell(self, limit=5, group=True):
         cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
                             .filter(from_order__isnull=True) \
                             .filter(to_order__isnull=True) \
@@ -152,6 +163,17 @@ class Choice(models.Model):
         l = list(chain(orders, cross_orders))
         l.sort(key=lambda x: x.created_at, reverse=False)
         l.sort(key=lambda x: x.price, reverse=True)
+        if group:
+            precedingItem = None
+            result = []
+            for v in l:
+                if precedingItem and precedingItem.price == v.price:
+                    v.amount += precedingItem.amount
+                    result[len(result)-1] = v
+                else:
+                    result.append(v)
+                precedingItem = v
+            return result[0:limit]
         return l[0:limit]
 
     topSells = property(_getTopToSell)

@@ -6,7 +6,7 @@ class OrderSerializer(serializers.ModelSerializer):
     # user = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Order
-        fields = ('id', 'user', 'price', 'amount')
+        fields = ('price', 'amount')
 
 class SimpleChoiceSerializer(serializers.ModelSerializer):
     lastCompleteOrder = OrderSerializer()

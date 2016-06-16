@@ -12,12 +12,12 @@ class OrderEngine():
     def defineOffersArray(self):
         currentOfferPrice = self.order.price
         if self.order.amount > 0:
-            array = self.order.choice._getTopToBuy(1000)
+            array = self.order.choice._getTopToBuy(10000, group=False)
             self.offers = [o for o in array \
                         if o.price <= currentOfferPrice]
             self.amountBalance = self.order.amount
         elif self.order.amount < 0:
-            array = self.order.choice._getTopToSell(1000)
+            array = self.order.choice._getTopToSell(10000, group=False)
             self.offers = [o for o in array \
                         if o.price >= currentOfferPrice]
             self.amountBalance = self.order.amount * (-1)
