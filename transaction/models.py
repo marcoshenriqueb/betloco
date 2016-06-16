@@ -26,18 +26,18 @@ class TransactionManager(models.Manager):
     def balance(self, user_id):
         transactions = self.filter(user__id=user_id).filter(transaction_type__id=1).aggregate(balance=Sum('value'))['balance'] or 0
         buyOrders = Order.objects.filter(user__id=user_id).filter(from_order__isnull=True) \
-                                                          .filter(to_order__isnull=True) \
-                                                          .filter(amount__gt=0) \
-                                                          .filter(deleted=0) \
-                                                          .aggregate(balance=Sum(F('amount')*F('price')))['balance'] or 0
+            .filter(to_order__isnull=True) \
+            .filter(amount__gt=0) \
+            .filter(deleted=0) \
+            .aggregate(balance=Sum(F('amount')*F('price'), output_field=models.FloatField()))['balance'] or 0
         fromOrderBuyOperations = Operation.objects.filter(from_order__user__id=user_id) \
-                                               .filter(from_order__amount__gt=0) \
-                                               .aggregate(balance=Sum(F('amount')*F('price')))['balance'] or 0
+           .filter(from_order__amount__gt=0) \
+           .aggregate(balance=Sum(F('amount')*F('price'), output_field=models.FloatField()))['balance'] or 0
         fromOrderSellOperations = Operation.objects.filter(from_order__user__id=user_id) \
-                                               .filter(from_order__amount__lt=0) \
-                                               .aggregate(balance=Sum(F('amount')*F('price')))['balance'] or 0
+           .filter(from_order__amount__lt=0) \
+           .aggregate(balance=Sum(F('amount')*F('price'), output_field=models.FloatField()))['balance'] or 0
         toOrderOperations = Operation.objects.filter(to_order__user__id=user_id) \
-                                               .aggregate(balance=Sum(F('to_order__amount')*F('to_order__price')))['balance'] or 0
+           .aggregate(balance=Sum(F('to_order__amount')*F('to_order__price'), output_field=models.FloatField()))['balance'] or 0
         return transactions - buyOrders - fromOrderBuyOperations + fromOrderSellOperations - toOrderOperations
 
 class Transaction(models.Model):
