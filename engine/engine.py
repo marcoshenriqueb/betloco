@@ -57,13 +57,15 @@ class OrderEngine():
                 self.amountBalance = self.amountBalance if self.order.amount > 0 else self.amountBalance * (-1)
 
             if self.amountBalance != 0:
-                Order.objects.create(
+                o = Order.objects.create(
                     user=self.remainingAmountOffer.user,
                     choice=self.remainingAmountOffer.choice,
                     amount=self.amountBalance,
                     price=self.remainingAmountOffer.price,
                     residual=1
                 )
+                o.created_at = self.remainingAmountOffer.created_at
+                o.save()
 
     def findMatchingOffers(self):
         self.defineOffersArray()
