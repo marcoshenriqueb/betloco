@@ -122,7 +122,7 @@ class Choice(models.Model):
                             .filter(amount__gt=0) \
                             .filter(deleted=0)
         for o in cross_orders:
-            o.price = (1 - o.price)
+            o.price = round(1 - o.price, 2)
         orders = self.order_set.filter(to_order__isnull=True) \
                             .filter(from_order__isnull=True) \
                             .filter(amount__lt=0) \
@@ -143,7 +143,7 @@ class Choice(models.Model):
                             .filter(amount__lt=0) \
                             .filter(deleted=0)
         for o in cross_orders:
-            o.price = (1 - o.price)
+            o.price = round(1 - o.price, 2)
             o.amount = o.amount * (-1)
         orders = self.order_set.filter(to_order__isnull=True) \
                             .filter(from_order__isnull=True) \
