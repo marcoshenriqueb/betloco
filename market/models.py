@@ -170,21 +170,7 @@ class OrderManager(models.Manager):
                                                 .filter(deleted=0)
 
     def deleteOpenOrders(self, user_id, orders):
-        from transaction.models import Transaction, TransactionDetail
         for o in orders:
-            if o['amount'] > 0:
-                t = Transaction.objects.create(
-                    user_id=user_id,
-                    transaction_type_id=5,
-                    currency_id=1,
-                    value=o['amount']*o['price']
-                )
-                TransactionDetail.objects.create(
-                    transaction=t,
-                    amount=o['amount'],
-                    price=o['price'],
-                    order_id=o['id']
-                )
             o = self.filter(user__id=user_id).get(pk=o['id'])
             o.deleted = 1
             o.save()

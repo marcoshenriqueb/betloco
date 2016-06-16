@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from market.models import Order
+from market.models import Order, Sum, F, Operation
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Currency(models.Model):
@@ -24,7 +24,21 @@ class TransactionType(models.Model):
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id):
-        return self.filter(user__id=user_id).aggregate(balance=models.Sum('value'))['balance'] or 0
+        transactions = self.filter(user__id=user_id).filter(transaction_type__id=1).aggregate(balance=Sum('value'))['balance'] or 0
+        buyOrders = Order.objects.filter(user__id=user_id).filter(from_order__isnull=True) \
+                                                          .filter(to_order__isnull=True) \
+                                                          .filter(amount__gt=0) \
+                                                          .filter(deleted=0) \
+                                                          .aggregate(balance=Sum(F('amount')*F('price')))['balance'] or 0
+        fromOrderBuyOperations = Operation.objects.filter(from_order__user__id=user_id) \
+                                               .filter(from_order__amount__gt=0) \
+                                               .aggregate(balance=Sum(F('amount')*F('price')))['balance'] or 0
+        fromOrderSellOperations = Operation.objects.filter(from_order__user__id=user_id) \
+                                               .filter(from_order__amount__lt=0) \
+                                               .aggregate(balance=Sum(F('amount')*F('price')))['balance'] or 0
+        toOrderOperations = Operation.objects.filter(to_order__user__id=user_id) \
+                                               .aggregate(balance=Sum(F('to_order__amount')*F('to_order__price')))['balance'] or 0
+        return transactions - buyOrders - fromOrderBuyOperations + fromOrderSellOperations - toOrderOperations
 
 class Transaction(models.Model):
     """docstring for Transaction"""

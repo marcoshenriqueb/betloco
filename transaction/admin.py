@@ -17,7 +17,7 @@ class CurrencyAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'symbol')
     list_display_links = ('id', 'name')
 
-@admin.register(TransactionDetail)
-class TransactionDetailAdmin(admin.ModelAdmin):
-    list_display = ('id', 'price', 'amount', 'order')
-    list_display_links = ('id', 'price', 'amount')
+# @admin.register(TransactionDetail)
+# class TransactionDetailAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'price', 'amount', 'order')
+#     list_display_links = ('id', 'price', 'amount')
