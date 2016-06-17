@@ -37,6 +37,19 @@ var EventCard = React.createClass({
         </div>
       )})
     }else {
+      var totalPrice = 0;
+      for (var k in this.props._event.markets) {
+        if (this.props._event.markets[k].choices[0].title == "Sim") {
+          var yes = this.props._event.markets[k].choices[0];
+          var no = this.props._event.markets[k].choices[1];
+        }else {
+          var yes = this.props._event.markets[k].choices[1];
+          var no = this.props._event.markets[k].choices[0];
+        }
+        if (yes.lastCompleteOrder != null) {
+          totalPrice += yes.lastCompleteOrder.price;
+        }
+      }
       var textContent = this.props._event.markets.map((m, k)=> {
         return (
           <div key={k}>
@@ -46,7 +59,7 @@ var EventCard = React.createClass({
             </div>
             <LinearProgress style={style.linear}
                             mode="determinate"
-                            value={m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price * 100 : 0} />
+                            value={m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price / totalPrice * 100 : 0} />
           </div>
         )
       })

@@ -51775,6 +51775,19 @@ var EventCard = _react2.default.createClass({
         );
       });
     } else {
+      var totalPrice = 0;
+      for (var k in this.props._event.markets) {
+        if (this.props._event.markets[k].choices[0].title == "Sim") {
+          var yes = this.props._event.markets[k].choices[0];
+          var no = this.props._event.markets[k].choices[1];
+        } else {
+          var yes = this.props._event.markets[k].choices[1];
+          var no = this.props._event.markets[k].choices[0];
+        }
+        if (yes.lastCompleteOrder != null) {
+          totalPrice += yes.lastCompleteOrder.price;
+        }
+      }
       var textContent = this.props._event.markets.map(function (m, k) {
         return _react2.default.createElement(
           'div',
@@ -51797,7 +51810,7 @@ var EventCard = _react2.default.createClass({
           ),
           _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
             mode: 'determinate',
-            value: m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price * 100 : 0 })
+            value: m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price / totalPrice * 100 : 0 })
         );
       });
     }
