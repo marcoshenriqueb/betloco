@@ -51,15 +51,16 @@ var EventCard = React.createClass({
         }
       }
       var textContent = this.props._event.markets.map((m, k)=> {
+        var prob = m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price / totalPrice * 100 : 0;
         return (
           <div key={k}>
             <div className="marketcard-predictions__choices">
               <h5>{m.title}</h5>
-              <p>({m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price * 100 + '%' : '0%'})</p>
+              <p>{prob.toFixed(2)}%</p>
             </div>
             <LinearProgress style={style.linear}
                             mode="determinate"
-                            value={m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price / totalPrice * 100 : 0} />
+                            value={prob} />
           </div>
         )
       })

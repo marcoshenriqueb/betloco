@@ -36,7 +36,6 @@ var MultipleMarketTable = React.createClass({
           totalPrice += yes.lastCompleteOrder.price;
         }
       }
-      console.log(totalPrice);
       var rows = this.props._event.markets.map((m, k)=> {
         if (m.choices[0].title == "Sim") {
           var yes = m.choices[0];
@@ -45,12 +44,13 @@ var MultipleMarketTable = React.createClass({
           var yes = m.choices[1];
           var no = m.choices[0];
         }
+        var prob = (yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price*100 / totalPrice : 0;
         return (
           <TableRow key={k}>
             <TableRowColumn style={styles.choice} className="multiple-market-table__choice">{m.title}</TableRowColumn>
             <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price : '0'}</TableRowColumn>
             <TableRowColumn style={styles.td}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price : '0'}</TableRowColumn>
-            <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price / totalPrice : '0'}</TableRowColumn>
+            <TableRowColumn style={styles.td}>{prob.toFixed(2)}%</TableRowColumn>
             <TableRowColumn style={styles.td}>{m.volume}</TableRowColumn>
             <TableRowColumn style={styles.td}>
               <IndexLink to={'/app/mercado/' + m.id + '/'}>

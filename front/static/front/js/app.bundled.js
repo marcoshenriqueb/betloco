@@ -50392,7 +50392,6 @@ var MultipleMarketTable = _react2.default.createClass({
           totalPrice += yes.lastCompleteOrder.price;
         }
       }
-      console.log(totalPrice);
       var rows = this.props._event.markets.map(function (m, k) {
         if (m.choices[0].title == "Sim") {
           var yes = m.choices[0];
@@ -50401,6 +50400,7 @@ var MultipleMarketTable = _react2.default.createClass({
           var yes = m.choices[1];
           var no = m.choices[0];
         }
+        var prob = yes.lastCompleteOrder != null ? yes.lastCompleteOrder.price * 100 / totalPrice : 0;
         return _react2.default.createElement(
           _Table.TableRow,
           { key: k },
@@ -50422,7 +50422,8 @@ var MultipleMarketTable = _react2.default.createClass({
           _react2.default.createElement(
             _Table.TableRowColumn,
             { style: styles.td },
-            yes.lastCompleteOrder != null ? yes.lastCompleteOrder.price / totalPrice : '0'
+            prob.toFixed(2),
+            '%'
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
@@ -51789,6 +51790,7 @@ var EventCard = _react2.default.createClass({
         }
       }
       var textContent = this.props._event.markets.map(function (m, k) {
+        var prob = m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price / totalPrice * 100 : 0;
         return _react2.default.createElement(
           'div',
           { key: k },
@@ -51803,14 +51805,13 @@ var EventCard = _react2.default.createClass({
             _react2.default.createElement(
               'p',
               null,
-              '(',
-              m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price * 100 + '%' : '0%',
-              ')'
+              prob.toFixed(2),
+              '%'
             )
           ),
           _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
             mode: 'determinate',
-            value: m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price / totalPrice * 100 : 0 })
+            value: prob })
         );
       });
     }
