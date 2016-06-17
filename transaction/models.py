@@ -51,10 +51,3 @@ class Transaction(models.Model):
     objects = TransactionManager()
     def __str__(self):
         return str(self.value)
-
-class TransactionDetail(models.Model):
-    """docstring for TransactionDetail"""
-    transaction = models.OneToOneField(Transaction, on_delete=models.PROTECT)
-    amount = models.IntegerField(blank=False, null=False)
-    price = models.FloatField(validators = [MinValueValidator(0.0), MaxValueValidator(1.0)])
-    order = models.ForeignKey(Order, on_delete=models.PROTECT,)

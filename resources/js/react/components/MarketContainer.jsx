@@ -1,47 +1,46 @@
 import React from 'react';
 import req from 'reqwest';
 import SearchComp from './markets/SearchComp.jsx';
-import Market from './markets/Market.jsx';
+import _Event from './markets/Event.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 var MarketContainer = React.createClass({
   getInitialState: function() {
     return {
-      markets: [],
+      events: [],
       search: '',
       next: null
     };
   },
-  getMarkets: function(search){
+  getEvents: function(search){
     var url = '/api/markets/?format=json';
     if (search != undefined) {
-      console.log(search);
       url += '&search=' + search;
     }
     var that = this;
     req(url).then(function(response){
       that.setState({
-        markets: response.results,
+        events: response.results,
         next: response.next
       });
     });
   },
-  getNextMarketPage: function(){
+  getNextEventPage: function(){
     var that = this;
     req(this.state.next).then(function(response){
-      var markets = that.state.markets.concat(response.results);
+      var events = that.state.events.concat(response.results);
       that.setState({
-        markets: markets,
+        events: events,
         next: response.next
       });
     });
   },
   componentDidMount: function() {
-    this.getMarkets();
+    this.getEvents();
   },
   handleUserInput: function(filterText) {
-    this.getMarkets(filterText);
+    this.getEvents(filterText);
     this.setState({
       search: filterText,
     });
@@ -50,7 +49,7 @@ var MarketContainer = React.createClass({
     var nextPageButton = null;
     if (this.state.next != null) {
       nextPageButton = (
-        <FloatingActionButton mini={true} onClick={this.getNextMarketPage}>
+        <FloatingActionButton mini={true} onClick={this.getNextEventPage}>
           <ContentAdd />
         </FloatingActionButton>
       );
@@ -58,7 +57,7 @@ var MarketContainer = React.createClass({
     return (
       <div className="app-content">
         <SearchComp search={this.state.search} onUserInput={this.handleUserInput} />
-        <Market markets={this.state.markets} search={this.state.search} />
+        <_Event events={this.state.events} search={this.state.search} />
         {nextPageButton}
         <br />
         <br />

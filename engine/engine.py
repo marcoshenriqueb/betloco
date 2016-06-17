@@ -1,5 +1,4 @@
 from market.models import Choice, Operation, Order
-from transaction.models import Transaction, TransactionDetail
 
 class OrderEngine():
     """Responsible for orders price-time matching"""

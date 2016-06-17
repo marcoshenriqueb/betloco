@@ -49997,9 +49997,9 @@ var _SearchComp = require('./markets/SearchComp.jsx');
 
 var _SearchComp2 = _interopRequireDefault(_SearchComp);
 
-var _Market = require('./markets/Market.jsx');
+var _Event2 = require('./markets/Event.jsx');
 
-var _Market2 = _interopRequireDefault(_Market);
+var _Event3 = _interopRequireDefault(_Event2);
 
 var _FloatingActionButton = require('material-ui/FloatingActionButton');
 
@@ -50016,40 +50016,39 @@ var MarketContainer = _react2.default.createClass({
 
   getInitialState: function getInitialState() {
     return {
-      markets: [],
+      events: [],
       search: '',
       next: null
     };
   },
-  getMarkets: function getMarkets(search) {
+  getEvents: function getEvents(search) {
     var url = '/api/markets/?format=json';
     if (search != undefined) {
-      console.log(search);
       url += '&search=' + search;
     }
     var that = this;
     (0, _reqwest2.default)(url).then(function (response) {
       that.setState({
-        markets: response.results,
+        events: response.results,
         next: response.next
       });
     });
   },
-  getNextMarketPage: function getNextMarketPage() {
+  getNextEventPage: function getNextEventPage() {
     var that = this;
     (0, _reqwest2.default)(this.state.next).then(function (response) {
-      var markets = that.state.markets.concat(response.results);
+      var events = that.state.events.concat(response.results);
       that.setState({
-        markets: markets,
+        events: events,
         next: response.next
       });
     });
   },
   componentDidMount: function componentDidMount() {
-    this.getMarkets();
+    this.getEvents();
   },
   handleUserInput: function handleUserInput(filterText) {
-    this.getMarkets(filterText);
+    this.getEvents(filterText);
     this.setState({
       search: filterText
     });
@@ -50059,7 +50058,7 @@ var MarketContainer = _react2.default.createClass({
     if (this.state.next != null) {
       nextPageButton = _react2.default.createElement(
         _FloatingActionButton2.default,
-        { mini: true, onClick: this.getNextMarketPage },
+        { mini: true, onClick: this.getNextEventPage },
         _react2.default.createElement(_add2.default, null)
       );
     }
@@ -50067,7 +50066,7 @@ var MarketContainer = _react2.default.createClass({
       'div',
       { className: 'app-content' },
       _react2.default.createElement(_SearchComp2.default, { search: this.state.search, onUserInput: this.handleUserInput }),
-      _react2.default.createElement(_Market2.default, { markets: this.state.markets, search: this.state.search }),
+      _react2.default.createElement(_Event3.default, { events: this.state.events, search: this.state.search }),
       nextPageButton,
       _react2.default.createElement('br', null),
       _react2.default.createElement('br', null)
@@ -50077,7 +50076,7 @@ var MarketContainer = _react2.default.createClass({
 
 exports.default = MarketContainer;
 
-},{"./markets/Market.jsx":458,"./markets/SearchComp.jsx":460,"material-ui/FloatingActionButton":23,"material-ui/svg-icons/content/add":184,"react":441,"reqwest":442}],447:[function(require,module,exports){
+},{"./markets/Event.jsx":458,"./markets/SearchComp.jsx":460,"material-ui/FloatingActionButton":23,"material-ui/svg-icons/content/add":184,"react":441,"reqwest":442}],447:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50112,7 +50111,7 @@ var MarketDetailContainer = _react2.default.createClass({
   },
   getMarket: function getMarket() {
     var that = this;
-    (0, _reqwest2.default)('/api/markets/' + this.props.params.id + '/?format=json').then(function (response) {
+    (0, _reqwest2.default)('/api/markets/choice/' + this.props.params.id + '/?format=json').then(function (response) {
       var market = response;
       that.setState({
         market: market
@@ -50573,7 +50572,7 @@ var MarketDetailCard = _react2.default.createClass({
         ),
         _react2.default.createElement('br', null),
         openOrders,
-        _react2.default.createElement(_Details2.default, { market: this.props.market }),
+        _react2.default.createElement(_Details2.default, { market: this.props.market.event }),
         _react2.default.createElement('br', null)
       );
     } else {
@@ -51404,29 +51403,29 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MarketCard = require('./MarketCard.jsx');
+var _EventCard = require('./EventCard.jsx');
 
-var _MarketCard2 = _interopRequireDefault(_MarketCard);
+var _EventCard2 = _interopRequireDefault(_EventCard);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Market = _react2.default.createClass({
-  displayName: 'Market',
+var _Event = _react2.default.createClass({
+  displayName: '_Event',
 
   render: function render() {
     return _react2.default.createElement(
       'div',
       { className: 'container markets-container' },
-      this.props.markets.map(function (market, id) {
-        return _react2.default.createElement(_MarketCard2.default, { market: market, key: id });
+      this.props.events.map(function (_event, id) {
+        return _react2.default.createElement(_EventCard2.default, { _event: _event, key: id });
       })
     );
   }
 });
 
-exports.default = Market;
+exports.default = _Event;
 
-},{"./MarketCard.jsx":459,"react":441}],459:[function(require,module,exports){
+},{"./EventCard.jsx":459,"react":441}],459:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51461,18 +51460,49 @@ var style = {
   }
 };
 
-var MarketCard = _react2.default.createClass({
-  displayName: 'MarketCard',
+var EventCard = _react2.default.createClass({
+  displayName: 'EventCard',
 
   goToMarketDetail: function goToMarketDetail() {
-    _reactRouter.browserHistory.push('/app/mercado/' + this.props.market.id + '/');
+    if (this.props._event.markets.length == 1) {
+      _reactRouter.browserHistory.push('/app/mercado/' + this.props._event.markets[0].id + '/');
+    } else {
+      _reactRouter.browserHistory.push('/app/mercado/' + this.props._event.id + '/');
+    }
   },
   render: function render() {
+    if (this.props._event.markets.length == 1) {
+      var textContent = this.props._event.markets[0].choices.map(function (c, k) {
+        return _react2.default.createElement(
+          'div',
+          { key: k },
+          _react2.default.createElement(
+            'div',
+            { className: 'marketcard-predictions__choices' },
+            _react2.default.createElement(
+              'h5',
+              null,
+              c.title
+            ),
+            _react2.default.createElement(
+              'p',
+              null,
+              '(',
+              c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 + '%' : '0%',
+              ')'
+            )
+          ),
+          _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
+            mode: 'determinate',
+            value: c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 : 0 })
+        );
+      });
+    }
     return _react2.default.createElement(
       _Card.Card,
       { className: 'marketcard' },
       _react2.default.createElement(_Card.CardTitle, {
-        title: this.props.market.title,
+        title: this.props._event.title,
         subtitle: _react2.default.createElement(
           'div',
           { className: 'marketcard-subtitle' },
@@ -51480,58 +51510,34 @@ var MarketCard = _react2.default.createClass({
             'span',
             null,
             'Mercado: ',
-            this.props.market.market_type
+            this.props._event.event_type
           ),
           _react2.default.createElement(
             'span',
             null,
             'Taxa: ',
-            this.props.market.trading_fee * 100,
+            this.props._event.trading_fee * 100,
             '%'
           ),
           _react2.default.createElement(
             'span',
             null,
             'Volume: ',
-            this.props.market.volume,
+            this.props._event.volume,
             ' papéis negociados'
           ),
           _react2.default.createElement(
             'span',
             null,
             'Encerramento: ',
-            this.props.market.deadline
+            this.props._event.deadline
           )
         )
       }),
       _react2.default.createElement(
         _Card.CardText,
         { style: style.cardtext, className: 'marketcard-predictions' },
-        this.props.market.choices.map(function (c) {
-          return _react2.default.createElement(
-            'div',
-            { key: c.id },
-            _react2.default.createElement(
-              'div',
-              { className: 'marketcard-predictions__choices' },
-              _react2.default.createElement(
-                'h5',
-                null,
-                c.title
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                '(',
-                c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 + '%' : '0%',
-                ')'
-              )
-            ),
-            _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
-              mode: 'determinate',
-              value: c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 : 0 })
-          );
-        })
+        textContent
       ),
       _react2.default.createElement(
         _Card.CardActions,
@@ -51542,7 +51548,7 @@ var MarketCard = _react2.default.createClass({
   }
 });
 
-exports.default = MarketCard;
+exports.default = EventCard;
 
 },{"material-ui/Card":14,"material-ui/FlatButton":21,"material-ui/LinearProgress":31,"react":441,"react-router":235}],460:[function(require,module,exports){
 'use strict';

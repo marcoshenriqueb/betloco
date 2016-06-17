@@ -10,8 +10,8 @@ class AbsoluteValue(models.Transform):
     lookup_name = 'abs'
     function = 'ABS'
 
-class MarketType(models.Model):
-    """docstring for Market"""
+class EventType(models.Model):
+    """docstring for EventType"""
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
@@ -19,8 +19,8 @@ class MarketType(models.Model):
     def __str__(self):
         return self.name
 
-class MarketCategory(models.Model):
-    """docstring for MarketCategory"""
+class EventCategory(models.Model):
+    """docstring for EventCategory"""
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
@@ -28,12 +28,12 @@ class MarketCategory(models.Model):
     def __str__(self):
         return self.name
 
-class Market(models.Model):
-    """docstring for Market"""
+class Event(models.Model):
+    """docstring for Event"""
     title = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,)
-    market_type = models.ForeignKey(MarketType, on_delete=models.PROTECT,)
-    market_category = models.ForeignKey(MarketCategory, on_delete=models.PROTECT,)
+    event_type = models.ForeignKey(EventType, on_delete=models.PROTECT,)
+    event_category = models.ForeignKey(EventCategory, on_delete=models.PROTECT,)
     trading_fee = models.DecimalField(max_digits=4, decimal_places=2)
     description = models.TextField()
     deadline = models.DateTimeField(auto_now=False, auto_now_add=False, null=False, blank=False)
@@ -46,9 +46,10 @@ class Market(models.Model):
     def _getVolume(self):
         try:
             q = []
-            for c in self.choices.all():
-                q.append(Q(from_order__choice__id=c.id))
-                q.append(Q(to_order__choice__id=c.id))
+            for m in self.markets.all():
+                for c in m.choices.all():
+                    q.append(Q(from_order__choice__id=c.id))
+                    q.append(Q(to_order__choice__id=c.id))
 
             q_query = functools.reduce(operator.or_, q)
             result = Operation.objects.filter(q_query) \
@@ -58,6 +59,16 @@ class Market(models.Model):
             return 0
 
     volume = property(_getVolume)
+
+class Market(models.Model):
+    """docstring for Market"""
+    title = models.CharField(max_length=100)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="markets")
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
+
+    def __str__(self):
+        return self.title
 
 class ChoiceManager(models.Manager):
     """docstring for ChoiceManager"""

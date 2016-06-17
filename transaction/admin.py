@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Currency, Transaction, TransactionType, TransactionDetail
+from .models import Currency, Transaction, TransactionType
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
@@ -16,8 +16,3 @@ class TransactionTypeAdmin(admin.ModelAdmin):
 class CurrencyAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'symbol')
     list_display_links = ('id', 'name')
-
-@admin.register(TransactionDetail)
-class TransactionDetailAdmin(admin.ModelAdmin):
-    list_display = ('id', 'price', 'amount', 'order')
-    list_display_links = ('id', 'price', 'amount')

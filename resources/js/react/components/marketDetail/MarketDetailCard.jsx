@@ -51,7 +51,7 @@ var MarketDetailCard = React.createClass({
           </div>
           <br/>
           {openOrders}
-          <Details market={this.props.market} />
+          <Details market={this.props.market.event} />
           <br/>
         </div>
       );

@@ -1,10 +1,13 @@
-from django.views.generic.base import TemplateView
 from django.views.generic import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-class HomeView(TemplateView):
+class HomeView(View):
     """docstring for HomeView"""
-    template_name = 'front/home.html'
+    def get(self, request):
+        if not request.user.is_authenticated():
+            return render(request, 'front/home.html')
+
+        return redirect('/app/')
 
 class AppView(View):
     """docstring for AppView"""
@@ -13,4 +16,4 @@ class AppView(View):
             context = {'user': request.user}
             return render(request, 'front/app.html', context=context)
 
-        return render(request, 'front/home.html')
+        return redirect('/')

@@ -1,16 +1,21 @@
 from django.contrib import admin
-from .models import MarketType, MarketCategory, Market, Choice, Order, Operation
+from .models import Event, EventType, EventCategory, Market, Choice, Order, Operation
 
-@admin.register(Market)
-class MarketAdmin(admin.ModelAdmin):
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
     exclude = ('user',)
-    list_display = ('id', 'title', 'market_type', 'market_category', 'user', 'updated_at')
+    list_display = ('id', 'title', 'event_type', 'event_category', 'user', 'updated_at')
     list_display_links = ('title',)
-    list_filter = ('updated_at', 'market_type', 'market_category')
+    list_filter = ('updated_at', 'event_type', 'event_category')
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         obj.save()
+
+@admin.register(Market)
+class MarketAdmin(admin.ModelAdmin):
+    list_display = ('id', 'event', 'title', 'updated_at')
+    list_display_links = ('title',)
 
 @admin.register(Choice)
 class ChoiceAdmin(admin.ModelAdmin):
@@ -37,5 +42,5 @@ class OperationAdmin(admin.ModelAdmin):
     list_filter = ('updated_at',)
     search_fields = ['to_order__choice__market__title']
 
-admin.site.register(MarketCategory)
-admin.site.register(MarketType)
+admin.site.register(EventCategory)
+admin.site.register(EventType)

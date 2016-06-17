@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Market, Choice, MarketType, MarketCategory, Order, Operation, Sum, Q
+from .models import Event, Market, Choice, EventType, EventCategory, Order, Operation, Sum, Q
 from transaction.models import Transaction
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -23,52 +23,79 @@ class ChoiceSerializer(serializers.ModelSerializer):
         model = Choice
         fields = ('id', 'title', 'topBuys', 'topSells', 'lastCompleteOrder')
 
-class MarketCategorySerializer(serializers.ModelSerializer):
+class EventCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = MarketCategory
+        model = EventCategory
         fields = ('id', 'name',)
 
-class MarketTypeSerializer(serializers.ModelSerializer):
+class EventTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MarketType
+        model = EventType
         fields = ('id', 'name',)
 
 class MarketSerializer(serializers.ModelSerializer):
-    market_type = serializers.StringRelatedField()
-    market_category = serializers.StringRelatedField()
     choices = SimpleChoiceSerializer(many=True)
 
     class Meta:
-        model = Market
+        model = Event
         fields = (
             'id',
             'title',
-            'market_type',
-            'market_category',
-            'trading_fee',
-            'volume',
-            'deadline',
             'choices',
         )
 
-class MarketDetailSerializer(serializers.ModelSerializer):
-    market_type = MarketTypeSerializer()
+class EventSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
-    market_category = MarketCategorySerializer()
-    choices = ChoiceSerializer(many=True)
+    event_type = serializers.StringRelatedField()
+    event_category = serializers.StringRelatedField()
+    markets = MarketSerializer(many=True)
 
     class Meta:
-        model = Market
+        model = Event
+        fields = (
+            'id',
+            'title',
+            'user',
+            'event_type',
+            'event_category',
+            'trading_fee',
+            'volume',
+            'deadline',
+            'markets',
+            'created_at'
+        )
+
+class MarketDetailSerializer(serializers.ModelSerializer):
+    choices = ChoiceSerializer(many=True)
+    event = EventSerializer()
+
+    class Meta:
+        model = Event
+        fields = (
+            'id',
+            'event',
+            'title',
+            'choices',
+        )
+
+class EventDetailSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    event_type = EventTypeSerializer()
+    event_category = EventCategorySerializer()
+    markets = MarketSerializer(many=True)
+
+    class Meta:
+        model = Event
         fields = (
             'id',
             'user',
             'title',
             'description',
-            'market_type',
-            'market_category',
+            'event_type',
+            'event_category',
             'trading_fee',
             'volume',
-            'choices',
+            'markets',
             'deadline',
             'created_at'
         )
@@ -109,7 +136,6 @@ class CreateOrderSerializer(serializers.ModelSerializer):
 
             o = Order.objects.getOpenOrders(user_id, data['choice'].market.id) \
                                 .filter(~Q(choice__id=data['choice'].id)).count()
-            print(o)
             if o > 0:
                 raise serializers.ValidationError("Can't place bets on both Yes and No!")
             balance = Transaction.objects.balance(self.context['request'].user.id)

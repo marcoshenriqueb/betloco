@@ -1,23 +1,30 @@
 from rest_framework.views import APIView
 from rest_framework import generics, filters
 from rest_framework.response import Response
-from .models import Market, Choice, Order
-from .serializers import MarketSerializer, MarketDetailSerializer, CreateOrderSerializer
+from .models import Event, Market, Choice, Order
+from .serializers import MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
 from channels import Channel
 import json
 
-class ListMarkets(generics.ListAPIView):
+class ListEvents(generics.ListAPIView):
     """
-    View to list all markets in the system.
+    View to list all events in the system.
     """
-    queryset = Market.objects.all()
-    serializer_class = MarketSerializer
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
 
+class DetailEvent(generics.RetrieveAPIView):
+    """
+    View to list all events in the system.
+    """
+    queryset = Event.objects.all()
+    serializer_class = EventDetailSerializer
+
 class DetailMarket(generics.RetrieveAPIView):
     """
-    View to list all markets in the system.
+    View to list all events in the system.
     """
     queryset = Market.objects.all()
     serializer_class = MarketDetailSerializer

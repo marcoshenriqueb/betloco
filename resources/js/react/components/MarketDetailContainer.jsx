@@ -14,7 +14,7 @@ var MarketDetailContainer = React.createClass({
   },
   getMarket: function(){
     var that = this;
-    req('/api/markets/' + this.props.params.id + '/?format=json').then(function(response){
+    req('/api/markets/choice/' + this.props.params.id + '/?format=json').then(function(response){
       var market = response;
       that.setState({
         market: market
