@@ -14,7 +14,7 @@ var styles = {
 var Details = React.createClass({
   render: function() {
     return (
-      <Card>
+      <Card initiallyExpanded={true}>
         <CardHeader actAsExpander={true} showExpandableButton={true} title="Detalhes do Mercado" />
         <CardText expandable={true} style={styles.noPaddingTop}>
           <p style={styles.noMarginTop}>{this.props.market.description}</p>

@@ -141,3 +141,7 @@ input[type=search]:focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]) {
   box-shadow: none;
 }
+.multiple-market-table__choice {
+  color: rgba(0,0,0,0.6);
+  font-weight: bold;
+}

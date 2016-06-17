@@ -19,7 +19,7 @@ var EventCard = React.createClass({
     if (this.props._event.markets.length == 1) {
       browserHistory.push('/app/mercado/' + this.props._event.markets[0].id + '/');
     }else {
-      browserHistory.push('/app/mercado/' + this.props._event.id + '/');
+      browserHistory.push('/app/evento/' + this.props._event.id + '/');
     }
   },
   render: function() {
@@ -36,6 +36,20 @@ var EventCard = React.createClass({
                           value={c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 : 0} />
         </div>
       )})
+    }else {
+      var textContent = this.props._event.markets.map((m, k)=> {
+        return (
+          <div key={k}>
+            <div className="marketcard-predictions__choices">
+              <h5>{m.title}</h5>
+              <p>({m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price * 100 + '%' : '0%'})</p>
+            </div>
+            <LinearProgress style={style.linear}
+                            mode="determinate"
+                            value={m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price * 100 : 0} />
+          </div>
+        )
+      })
     }
     return (
       <Card className="marketcard">

@@ -34,7 +34,7 @@ class EventTypeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name',)
 
 class MarketSerializer(serializers.ModelSerializer):
-    choices = SimpleChoiceSerializer(many=True)
+    choices = ChoiceSerializer(many=True)
 
     class Meta:
         model = Event
@@ -42,6 +42,7 @@ class MarketSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'choices',
+            'volume'
         )
 
 class EventSerializer(serializers.ModelSerializer):
@@ -76,6 +77,7 @@ class MarketDetailSerializer(serializers.ModelSerializer):
             'event',
             'title',
             'choices',
+            'volume'
         )
 
 class EventDetailSerializer(serializers.ModelSerializer):

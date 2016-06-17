@@ -70,6 +70,22 @@ class Market(models.Model):
     def __str__(self):
         return self.title
 
+    def _getVolume(self):
+        try:
+            q = []
+            for c in self.choices.all():
+                q.append(Q(from_order__choice__id=c.id))
+                q.append(Q(to_order__choice__id=c.id))
+
+            q_query = functools.reduce(operator.or_, q)
+            result = Operation.objects.filter(q_query) \
+                            .aggregate(Sum('amount'))['amount__sum']
+            return result or 0
+        except TypeError as e:
+            return 0
+
+    volume = property(_getVolume)
+
 class ChoiceManager(models.Manager):
     """docstring for ChoiceManager"""
     def custody(self, user_id, market_id, choice_id=None, not_choice_id=None):
