@@ -50,7 +50,7 @@ var MultipleMarketTable = React.createClass({
             <TableRowColumn style={styles.choice} className="multiple-market-table__choice">{m.title}</TableRowColumn>
             <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price : '0'}</TableRowColumn>
             <TableRowColumn style={styles.td}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price : '0'}</TableRowColumn>
-            <TableRowColumn style={styles.td}>{prob.toFixed(2)}%</TableRowColumn>
+            <TableRowColumn style={styles.td}>{prob.toFixed(1)}%</TableRowColumn>
             <TableRowColumn style={styles.td}>{m.volume}</TableRowColumn>
             <TableRowColumn style={styles.td}>
               <IndexLink to={'/app/mercado/' + m.id + '/'}>
