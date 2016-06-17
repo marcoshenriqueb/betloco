@@ -50422,7 +50422,7 @@ var MultipleMarketTable = _react2.default.createClass({
           _react2.default.createElement(
             _Table.TableRowColumn,
             { style: styles.td },
-            prob.toFixed(2),
+            prob.toFixed(1),
             '%'
           ),
           _react2.default.createElement(
@@ -51805,7 +51805,7 @@ var EventCard = _react2.default.createClass({
             _react2.default.createElement(
               'p',
               null,
-              prob.toFixed(2),
+              prob.toFixed(1),
               '%'
             )
           ),
