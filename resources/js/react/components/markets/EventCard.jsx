@@ -56,7 +56,7 @@ var EventCard = React.createClass({
           <div key={k}>
             <div className="marketcard-predictions__choices">
               <h5>{m.title}</h5>
-              <p>{prob.toFixed(1)}%</p>
+              <p>({prob.toFixed(1)}%)</p>
             </div>
             <LinearProgress style={style.linear}
                             mode="determinate"

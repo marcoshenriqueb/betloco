@@ -51805,8 +51805,9 @@ var EventCard = _react2.default.createClass({
             _react2.default.createElement(
               'p',
               null,
+              '(',
               prob.toFixed(1),
-              '%'
+              '%)'
             )
           ),
           _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
