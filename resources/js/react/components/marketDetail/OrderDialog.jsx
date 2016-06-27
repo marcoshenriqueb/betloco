@@ -20,23 +20,9 @@ var OrderDialog = React.createClass({
       price: '',
       priceError: false,
       content: 0,
-      balance: 0,
       error: false,
       disabled: false
     };
-  },
-  componentWillReceiveProps: function(props){
-    if (props.dialog) {
-      this.getBalance();
-    }
-  },
-  getBalance: function(){
-    var that = this;
-    req('/api/transactions/balance/?format=json').then(function(response){
-      that.setState({
-        balance: response
-      });
-    });
   },
   handleAmountChange: function(e){
     if (!isNaN(e.target.value)) {
@@ -77,7 +63,7 @@ var OrderDialog = React.createClass({
       disabled: true
     });
     var choiceId = this.props.dialogContent.choice.id
-    if (this.props.dialogContent.buy && (this.state.price/100)*this.state.amount > this.state.balance) {
+    if (this.props.dialogContent.buy && (this.state.price/100)*this.state.amount > this.props.balance) {
       this.setState({
         error: "Saldo insuficiente para completar a operação!"
       });
@@ -102,6 +88,7 @@ var OrderDialog = React.createClass({
         data: data
       }).then(function(response){
         that.returnStepAndClose();
+        that.props.updateBalance();
       }).catch(function(response){
         if (response.status == 400) {
           that.setState({
@@ -185,7 +172,7 @@ var OrderDialog = React.createClass({
         <ConfirmOrderDialog amount={this.state.amount}
                             buy={this.props.dialogContent.buy}
                             price={this.state.price}
-                            balance={this.state.balance}
+                            balance={this.props.balance}
                             custody={this.props.custody[this.props.dialogContent.choice.id]} />
       );
     }

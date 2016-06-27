@@ -31,6 +31,8 @@ var MarketDetailCard = React.createClass({
       return (
         <div>
           <OrderDialog dialog={this.props.dialog}
+                       balance={this.props.balance}
+                       updateBalance={this.props.updateBalance}
                        closeDialog={this.props.closeDialog}
                        dialogContent={this.props.dialogContent}
                        custody={this.props.custody} />

@@ -20,6 +20,28 @@ h3 {
   background-color: #ff4081;
   border-radius: 2px;
 }
+.appbar-nav {
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+.appbar-nav__info-container {
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+.appbar-nav__info-container span {
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+.appbar-nav__info-holder {
+  border-radius: 2px;
+  padding: 2px 8px 0 8px;
+  background-color: #fff;
+  color: rgba(0,0,0,0.6);
+  font-weight: 500;
+}
 .app-content {
   display: flex;
   flex-direction: column;

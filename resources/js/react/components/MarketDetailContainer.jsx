@@ -48,7 +48,7 @@ var MarketDetailContainer = React.createClass({
       },
       method: 'delete'
     }).then(function(response){
-      console.log(response);
+      that.props.updateBalance();
     });
   },
   connectToMarket: function(){
@@ -88,6 +88,8 @@ var MarketDetailContainer = React.createClass({
       <div className="marketdetail-content container">
         <br />
         <MarketDetailCard dialog={this.state.dialog}
+                          balance={this.props.balance}
+                          updateBalance={this.props.updateBalance}
                           dialogContent={this.state.dialogContent}
                           openDialog={this.openDialog}
                           closeDialog={this.closeDialog}

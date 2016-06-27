@@ -33,7 +33,13 @@ var AppNavbar = React.createClass({
         iconElementRight={
           <IconMenu
             iconButtonElement={
-              <IconButton><IconMenuIcon /></IconButton>
+              <div className="appbar-nav">
+                <div className="appbar-nav__info-container">
+                  <span>Saldo Disponível</span>
+                  <div className="appbar-nav__info-holder">R$ {this.props.balance.toFixed(2)}</div>
+                </div>
+                <IconButton iconStyle={{fill:'rgb(255,255,255)'}}><IconMenuIcon /></IconButton>
+              </div>
             }
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -43,7 +49,8 @@ var AppNavbar = React.createClass({
             <MenuItem primaryText="Sair" onTouchTap={this._logout} />
           </IconMenu>
         }
-      />
+      >
+      </AppBar>
     );
   }
 });
