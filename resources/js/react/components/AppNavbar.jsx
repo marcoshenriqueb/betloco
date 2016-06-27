@@ -3,7 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenuIcon from 'material-ui/svg-icons/navigation/menu';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { browserHistory } from 'react-router';
 
@@ -27,12 +27,13 @@ var AppNavbar = React.createClass({
     return (
       <AppBar
         title="BetLoco"
+        onTitleTouchTap={this._marketRoute}
         showMenuIconButton={false}
         iconElementLeft={<IconButton><NavigationClose /></IconButton>}
         iconElementRight={
           <IconMenu
             iconButtonElement={
-              <IconButton><MoreVertIcon /></IconButton>
+              <IconButton><IconMenuIcon /></IconButton>
             }
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}

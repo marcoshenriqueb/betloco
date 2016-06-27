@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var stylus = require('gulp-stylus');
 var browserify = require('browserify');
+var watchify = require('watchify');
+var livereactload = require('livereactload');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
@@ -13,16 +15,26 @@ gulp.task('stylus', function () {
 });
 
 gulp.task('script', function() {
-  browserify('./resources/js/app.js')
-  .transform(babelify, {presets: ["es2015", "react"]})
-  .bundle()
-  .pipe(source('app.bundled.js'))
-  .pipe(buffer())
-  // .pipe(uglify())
-  .pipe(gulp.dest('./front/static/front/js'));
+  var b = browserify('./resources/js/app.js', {
+      cache: {},
+      packageCache: {},
+      plugin: [livereactload],
+      transform: [[babelify, {presets: ["es2015", "react"]}]]
+    })
+  var w = watchify(b);
+  rebundle();
+  return w.on("update", rebundle);
+
+  function rebundle(){
+    w.bundle()
+    .pipe(source('app.bundled.js'))
+    .pipe(buffer())
+    // .pipe(uglify())
+    .pipe(gulp.dest('./front/static/front/js'));
+  }
 });
 
 gulp.task('watch', ['stylus', 'script'], function() {
   gulp.watch('./resources/stylus/**/*.styl', ['stylus']);
-  gulp.watch('./resources/js/**/*', ['script']);
+  // gulp.watch('./resources/js/**/*', ['script']);
 });
