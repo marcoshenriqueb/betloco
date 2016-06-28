@@ -1,4 +1,4 @@
-from market.models import Choice, Operation, Order
+from market.models import Choice, Operation, Order, Market
 
 class OrderEngine():
     """Responsible for orders price-time matching"""
@@ -69,3 +69,17 @@ class OrderEngine():
     def findMatchingOffers(self):
         self.defineOffersArray()
         self.executeOrder()
+
+class LiquidationEngine():
+    """Responsible for market liquidation after event outcome"""
+    def __init__(self, market_id):
+        self.market = Market.objects.get(pk=market_id)
+        self.cancelPendingOrders()
+
+    def cancelPendingOrders(self):
+        choices = self.market.choices.all()
+        for c in choices:
+            pending_orders = c.order_set.filter(from_order__isnull=True) \
+                                    .filter(to_order__isnull=True) \
+                                    .filter(deleted=0) \
+                                    .update(deleted=1)

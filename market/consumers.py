@@ -2,6 +2,7 @@
 from channels import Group
 from channels.sessions import enforce_ordering
 from channels.auth import channel_session_user, channel_session_user_from_http
+from engine.engine import LiquidationEngine
 from .models import Market, Choice
 from .serializers import MarketDetailSerializer
 import json
@@ -35,4 +36,4 @@ def ws_disconnect(message):
         Group("chat-%s" % message.channel_session['room']).discard(message.reply_channel)
 
 def liquidate_market(message):
-    print('liquidating')
+    LiquidationEngine(message.content['market_id'])
