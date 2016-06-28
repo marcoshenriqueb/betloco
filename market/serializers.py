@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Event, Market, Choice, EventType, EventCategory, Order, Operation, Sum, Q
 from transaction.models import Transaction
+from django.utils import timezone
 
 class OrderSerializer(serializers.ModelSerializer):
     # user = serializers.StringRelatedField(read_only=True)
@@ -113,6 +114,8 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         fields = ('price', 'amount', 'user', 'choice')
 
     def validate(self, data):
+        if data['choice'].market.event.deadline < timezone.now():
+            raise serializers.ValidationError("Market has ended already!")
         user_id = self.context['request'].user.id
         # Validates sell orders
         if data['amount'] < 0:
