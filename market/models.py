@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum, Q, F
+from django.db.models import Sum, Q, F, Case, When
 import operator, functools
 from itertools import chain
 
@@ -208,6 +208,26 @@ class Choice(models.Model):
 
 class OrderManager(models.Manager):
     """docstring for OrderManager"""
+    def getPlayerPositions(self, user_id):
+        positions = self.filter(user__id=user_id) \
+                       .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+                       .values('choice__id').annotate(position=Sum(Case(
+                            When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
+                            When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                            When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
+                            When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
+                        )))
+        positive_positions = [p for p in positions if p['position'] > 0]
+        for p in positive_positions:
+            p['choice'] = Choice.objects.filter(pk=p['choice__id']).values(
+                                                                    'id',
+                                                                    'title',
+                                                                    'market__id',
+                                                                    'market__title',
+                                                                    'market__title_short'
+                                                                ).get()
+        return positive_positions
+
     def getOpenOrders(self, user_id, market_id=None):
         if market_id:
             return self.filter(user__id=user_id).filter(choice__market__id=market_id) \

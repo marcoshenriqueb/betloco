@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework import generics, filters
 from rest_framework.response import Response
 from .models import Event, Market, Choice, Order
-from .serializers import MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
+from .serializers import ChoiceSerializer, MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
 from channels import Channel
 import json
 
@@ -57,3 +57,9 @@ class OpenOrdersView(APIView):
             })
 
         return Response(True)
+
+class PlayerPositionsView(APIView):
+    """docstring for PlayerPositionsView"""
+    def get(self, request):
+        positions = Order.objects.getPlayerPositions(request.user.id)
+        return Response(positions)
