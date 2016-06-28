@@ -2,6 +2,7 @@ import React from 'react';
 import req from 'reqwest';
 import MultipleMarketTable from './eventDetail/MultipleMarketTable.jsx';
 import Detail from './marketDetail/Details.jsx';
+import Breadcrumb from './general/Breadcrumb.jsx';
 
 var EventDetailContainer = React.createClass({
   getInitialState: function() {
@@ -22,10 +23,22 @@ var EventDetailContainer = React.createClass({
     this.getEvent();
   },
   render: function() {
+    var breadcrumb = null;
+    if (this.state._event.title != undefined) {
+      var path = [
+        {
+          title: this.state._event.title,
+          path: null
+        }
+      ]
+      breadcrumb = (
+        <Breadcrumb path={path} />
+      )
+    }
     return (
       <div className="marketdetail-content container">
-        <br/>
-        <h2>{this.state._event.title}</h2>
+        {breadcrumb}
+        <h2 style={{marginTop:10}}>{this.state._event.title}</h2>
         <MultipleMarketTable _event={this.state._event} />
         <br/>
         <Detail market={this.state._event} />

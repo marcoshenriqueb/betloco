@@ -104,7 +104,7 @@ var OpenOrders = React.createClass({
             }}
           />
           <FlatButton
-            label="cancelar"
+            label="desmarcar"
             onTouchTap={this.onCancelClick}
             style={{
               margin: 12,

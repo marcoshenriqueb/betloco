@@ -27,6 +27,7 @@ var AppNavbar = React.createClass({
     return (
       <AppBar
         title="BetLoco"
+        titleStyle={{cursor:'pointer'}}
         onTitleTouchTap={this._marketRoute}
         showMenuIconButton={false}
         iconElementLeft={<IconButton><NavigationClose /></IconButton>}

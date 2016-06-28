@@ -36,7 +36,7 @@ var MarketDetailCard = React.createClass({
                        closeDialog={this.props.closeDialog}
                        dialogContent={this.props.dialogContent}
                        custody={this.props.custody} />
-          <h2>{this.props.market.title}</h2>
+          <h2 style={{marginTop:10}}>{this.props.market.title}</h2>
           <div className="orderrequest-container">
             {this.props.market.choices.map((choice) => {
               return <OrderRequest openDialog={this.props.openDialog}

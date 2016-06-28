@@ -1,6 +1,7 @@
 import React from 'react';
 import req from 'reqwest';
 import MarketDetailCard from './marketDetail/MarketDetailCard.jsx';
+import Breadcrumb from './general/Breadcrumb.jsx';
 
 var MarketDetailContainer = React.createClass({
   getInitialState: function() {
@@ -84,9 +85,37 @@ var MarketDetailContainer = React.createClass({
     this.setState({dialog: false});
   },
   render: function() {
+    var breadcrumb = null;
+    if (this.state.market.event != undefined) {
+      if (this.state.market.event.markets.length > 1) {
+        var path = [
+          {
+            title: this.state.market.event.title,
+            path: '/app/evento/' + this.state.market.event.id + '/'
+          },
+          {
+            title: this.state.market.title_short,
+            path: null
+          }
+        ]
+        breadcrumb = (
+          <Breadcrumb path={path} />
+        )
+      }else {
+        var path = [
+          {
+            title: this.state.market.title,
+            path: null
+          }
+        ]
+        breadcrumb = (
+          <Breadcrumb path={path} />
+        )
+      }
+    }
     return (
       <div className="marketdetail-content container">
-        <br />
+        {breadcrumb}
         <MarketDetailCard dialog={this.state.dialog}
                           balance={this.props.balance}
                           updateBalance={this.props.updateBalance}

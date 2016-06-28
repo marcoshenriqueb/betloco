@@ -167,3 +167,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   color: rgba(0,0,0,0.6);
   font-weight: bold;
 }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+}
