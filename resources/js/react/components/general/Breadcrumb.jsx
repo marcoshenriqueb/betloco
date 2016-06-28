@@ -5,7 +5,7 @@ import ActionHome from 'material-ui/svg-icons/action/home';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { IndexLink } from 'react-router';
 
-var color = 'rgba(0,0,0,.6)';
+var color = 'rgba(0, 0, 0, 0.541176)';
 var Breadcrumb = React.createClass({
   render: function() {
     var path = [];
