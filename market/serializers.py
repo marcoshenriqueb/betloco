@@ -37,10 +37,11 @@ class MarketSerializer(serializers.ModelSerializer):
     choices = ChoiceSerializer(many=True)
 
     class Meta:
-        model = Event
+        model = Market
         fields = (
             'id',
             'title',
+            'title_short',
             'choices',
             'volume'
         )
@@ -71,11 +72,12 @@ class MarketDetailSerializer(serializers.ModelSerializer):
     event = EventSerializer()
 
     class Meta:
-        model = Event
+        model = Market
         fields = (
             'id',
             'event',
             'title',
+            'title_short',
             'choices',
             'volume'
         )

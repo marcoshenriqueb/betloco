@@ -47,7 +47,7 @@ var MultipleMarketTable = React.createClass({
         var prob = (yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price*100 / totalPrice : 0;
         return (
           <TableRow key={k}>
-            <TableRowColumn style={styles.choice} className="multiple-market-table__choice">{m.title}</TableRowColumn>
+            <TableRowColumn style={styles.choice} className="multiple-market-table__choice">{m.title_short}</TableRowColumn>
             <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price : '0'}</TableRowColumn>
             <TableRowColumn style={styles.td}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price : '0'}</TableRowColumn>
             <TableRowColumn style={styles.td}>{prob.toFixed(1)}%</TableRowColumn>

@@ -62,7 +62,8 @@ class Event(models.Model):
 
 class Market(models.Model):
     """docstring for Market"""
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=150)
+    title_short = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="markets")
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
