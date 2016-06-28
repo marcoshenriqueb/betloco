@@ -42,6 +42,7 @@ var OrderRequest = React.createClass({
         position: 0
       };
     }
+    console.log(disableSell);
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
@@ -50,10 +51,10 @@ var OrderRequest = React.createClass({
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">
             <div className="orderrequest-card__buy-column">
-              <FlatButton onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
+              <FlatButton disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
             </div>
             <div className="orderrequest-card__sell-column">
-              <FlatButton onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
+              <FlatButton disabled={disableSell} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
             </div>
           </div>
         </CardActions>
