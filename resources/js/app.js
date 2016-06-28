@@ -16,12 +16,15 @@ import MarketContainer from './react/components/MarketContainer.jsx';
 import ProfileContainer from './react/components/ProfileContainer.jsx';
 import MarketDetailContainer from './react/components/MarketDetailContainer.jsx';
 import EventDetailContainer from './react/components/EventDetailContainer.jsx';
+import Position from './react/components/profile/Position.jsx';
 
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route component={App}>
       <Route path="/app/" component={MarketContainer} />
-      <Route path="/app/perfil/" component={ProfileContainer} />
+      <Route path="/app/perfil" component={ProfileContainer}>
+        <Route path="minhas-posicoes" component={Position}/>
+      </Route>
       <Route path="/app/mercado/:id" component={MarketDetailContainer} />
       <Route path="/app/evento/:id" component={EventDetailContainer} />
     </Route>

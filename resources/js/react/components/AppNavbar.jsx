@@ -18,7 +18,7 @@ var AppNavbar = React.createClass({
     window.location = "/accounts/logout/";
   },
   _profileRoute: function(){
-    browserHistory.push('/app/perfil/');
+    browserHistory.push('/app/perfil/minhas-posicoes/');
   },
   _marketRoute: function(){
     browserHistory.push('/app/');

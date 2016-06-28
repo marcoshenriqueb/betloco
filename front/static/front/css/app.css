@@ -42,6 +42,20 @@ h3 {
   color: rgba(0,0,0,0.6);
   font-weight: 500;
 }
+@media (min-width: 768px) {
+  .profile-container {
+    display: flex;
+    align-items: stretch;
+    padding: 0 40px;
+  }
+  .profile-menu-container {
+    width: 224px;
+  }
+  .profile-content-container {
+    width: calc(100% - 224px);
+    padding: 0 20px;
+  }
+}
 .app-content {
   display: flex;
   flex-direction: column;
