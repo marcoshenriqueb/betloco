@@ -42,7 +42,7 @@ var OrderRequest = React.createClass({
         position: 0
       };
     }
-    console.log(disableSell);
+    var disableSell = this.props.disableOrderRequest || custody.position == 0;
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">

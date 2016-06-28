@@ -975,8 +975,8 @@ require("./app.js", entryId$$);
       "./TableHeaderColumn": 68,
       "./TableRow": 69,
       "./TableRowColumn": 70,
-      "./TableBody": 65,
-      "./TableHeader": 67
+      "./TableHeader": 67,
+      "./TableBody": 65
     },
     "hash": "59a2192194f3d99b0f1018686c383e0e"
   },
@@ -1495,10 +1495,10 @@ require("./app.js", entryId$$);
       "./plugins/transition": 114,
       "./plugins/flexboxOld": 111,
       "./plugins/flex": 109,
-      "./plugins/gradient": 112,
       "./plugins/calc": 107,
       "./plugins/cursor": 108,
-      "./plugins/sizing": 113
+      "./plugins/sizing": 113,
+      "./plugins/gradient": 112
     },
     "hash": "cf6458e7ecaa54c794150e161413d9fd"
   },
@@ -1586,10 +1586,10 @@ require("./app.js", entryId$$);
     "source": "var hashClear = require('./_hashClear'),\n    hashDelete = require('./_hashDelete'),\n    hashGet = require('./_hashGet'),\n    hashHas = require('./_hashHas'),\n    hashSet = require('./_hashSet');\n\n/**\n * Creates a hash object.\n *\n * @private\n * @constructor\n * @param {Array} [entries] The key-value pairs to cache.\n */\nfunction Hash(entries) {\n  var index = -1,\n      length = entries ? entries.length : 0;\n\n  this.clear();\n  while (++index < length) {\n    var entry = entries[index];\n    this.set(entry[0], entry[1]);\n  }\n}\n\n// Add methods to `Hash`.\nHash.prototype.clear = hashClear;\nHash.prototype['delete'] = hashDelete;\nHash.prototype.get = hashGet;\nHash.prototype.has = hashHas;\nHash.prototype.set = hashSet;\n\nmodule.exports = Hash;\n",
     "deps": {
       "./_hashDelete": 179,
-      "./_hashSet": 182,
       "./_hashClear": 178,
       "./_hashGet": 180,
-      "./_hashHas": 181
+      "./_hashHas": 181,
+      "./_hashSet": 182
     },
     "hash": "c528d5ef7f249597e9f4df1d8212ecc2"
   },
@@ -1600,10 +1600,10 @@ require("./app.js", entryId$$);
     "source": "var listCacheClear = require('./_listCacheClear'),\n    listCacheDelete = require('./_listCacheDelete'),\n    listCacheGet = require('./_listCacheGet'),\n    listCacheHas = require('./_listCacheHas'),\n    listCacheSet = require('./_listCacheSet');\n\n/**\n * Creates an list cache object.\n *\n * @private\n * @constructor\n * @param {Array} [entries] The key-value pairs to cache.\n */\nfunction ListCache(entries) {\n  var index = -1,\n      length = entries ? entries.length : 0;\n\n  this.clear();\n  while (++index < length) {\n    var entry = entries[index];\n    this.set(entry[0], entry[1]);\n  }\n}\n\n// Add methods to `ListCache`.\nListCache.prototype.clear = listCacheClear;\nListCache.prototype['delete'] = listCacheDelete;\nListCache.prototype.get = listCacheGet;\nListCache.prototype.has = listCacheHas;\nListCache.prototype.set = listCacheSet;\n\nmodule.exports = ListCache;\n",
     "deps": {
       "./_listCacheClear": 194,
-      "./_listCacheSet": 198,
       "./_listCacheDelete": 195,
       "./_listCacheGet": 196,
-      "./_listCacheHas": 197
+      "./_listCacheHas": 197,
+      "./_listCacheSet": 198
     },
     "hash": "d00ac27f0067e63b0b6bc5a8d06fcd85"
   },
@@ -1624,10 +1624,10 @@ require("./app.js", entryId$$);
     "file": "/var/www/python/betloco/node_modules/material-ui/node_modules/lodash/_MapCache.js",
     "source": "var mapCacheClear = require('./_mapCacheClear'),\n    mapCacheDelete = require('./_mapCacheDelete'),\n    mapCacheGet = require('./_mapCacheGet'),\n    mapCacheHas = require('./_mapCacheHas'),\n    mapCacheSet = require('./_mapCacheSet');\n\n/**\n * Creates a map cache object to store key-value pairs.\n *\n * @private\n * @constructor\n * @param {Array} [entries] The key-value pairs to cache.\n */\nfunction MapCache(entries) {\n  var index = -1,\n      length = entries ? entries.length : 0;\n\n  this.clear();\n  while (++index < length) {\n    var entry = entries[index];\n    this.set(entry[0], entry[1]);\n  }\n}\n\n// Add methods to `MapCache`.\nMapCache.prototype.clear = mapCacheClear;\nMapCache.prototype['delete'] = mapCacheDelete;\nMapCache.prototype.get = mapCacheGet;\nMapCache.prototype.has = mapCacheHas;\nMapCache.prototype.set = mapCacheSet;\n\nmodule.exports = MapCache;\n",
     "deps": {
-      "./_mapCacheSet": 203,
       "./_mapCacheDelete": 200,
       "./_mapCacheGet": 201,
       "./_mapCacheHas": 202,
+      "./_mapCacheSet": 203,
       "./_mapCacheClear": 199
     },
     "hash": "e83fbd89a4da5691f6c1fee95679693b"
@@ -2148,11 +2148,11 @@ require("./app.js", entryId$$);
     "source": "var DataView = require('./_DataView'),\n    Map = require('./_Map'),\n    Promise = require('./_Promise'),\n    Set = require('./_Set'),\n    WeakMap = require('./_WeakMap'),\n    toSource = require('./_toSource');\n\n/** `Object#toString` result references. */\nvar mapTag = '[object Map]',\n    objectTag = '[object Object]',\n    promiseTag = '[object Promise]',\n    setTag = '[object Set]',\n    weakMapTag = '[object WeakMap]';\n\nvar dataViewTag = '[object DataView]';\n\n/** Used for built-in method references. */\nvar objectProto = Object.prototype;\n\n/**\n * Used to resolve the\n * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)\n * of values.\n */\nvar objectToString = objectProto.toString;\n\n/** Used to detect maps, sets, and weakmaps. */\nvar dataViewCtorString = toSource(DataView),\n    mapCtorString = toSource(Map),\n    promiseCtorString = toSource(Promise),\n    setCtorString = toSource(Set),\n    weakMapCtorString = toSource(WeakMap);\n\n/**\n * Gets the `toStringTag` of `value`.\n *\n * @private\n * @param {*} value The value to query.\n * @returns {string} Returns the `toStringTag`.\n */\nfunction getTag(value) {\n  return objectToString.call(value);\n}\n\n// Fallback for data views, maps, sets, and weak maps in IE 11,\n// for data views in Edge, and promises in Node.js.\nif ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||\n    (Map && getTag(new Map) != mapTag) ||\n    (Promise && getTag(Promise.resolve()) != promiseTag) ||\n    (Set && getTag(new Set) != setTag) ||\n    (WeakMap && getTag(new WeakMap) != weakMapTag)) {\n  getTag = function(value) {\n    var result = objectToString.call(value),\n        Ctor = result == objectTag ? value.constructor : undefined,\n        ctorString = Ctor ? toSource(Ctor) : undefined;\n\n    if (ctorString) {\n      switch (ctorString) {\n        case dataViewCtorString: return dataViewTag;\n        case mapCtorString: return mapTag;\n        case promiseCtorString: return promiseTag;\n        case setCtorString: return setTag;\n        case weakMapCtorString: return weakMapTag;\n      }\n    }\n    return result;\n  };\n}\n\nmodule.exports = getTag;\n",
     "deps": {
       "./_toSource": 213,
-      "./_DataView": 123,
       "./_Map": 126,
       "./_Promise": 128,
       "./_Set": 130,
-      "./_WeakMap": 134
+      "./_WeakMap": 134,
+      "./_DataView": 123
     },
     "hash": "9ec568ee26155b68558f262deb607864"
   },
@@ -3494,10 +3494,10 @@ require("./app.js", entryId$$);
     "source": "arguments[4][124][0].apply(exports,arguments)",
     "deps": {
       "./_hashDelete": 364,
-      "./_hashSet": 367,
       "./_hashClear": 363,
       "./_hashGet": 365,
       "./_hashHas": 366,
+      "./_hashSet": 367,
       "dup": 124
     },
     "hash": "9634798b0d6d8ca5cc6fe6038f971bdb"
@@ -3511,10 +3511,10 @@ require("./app.js", entryId$$);
     "source": "arguments[4][125][0].apply(exports,arguments)",
     "deps": {
       "./_listCacheClear": 379,
-      "./_listCacheSet": 383,
       "./_listCacheDelete": 380,
       "./_listCacheGet": 381,
       "./_listCacheHas": 382,
+      "./_listCacheSet": 383,
       "dup": 125
     },
     "hash": "3ee0866b7e256e12930e9a1681a10c70"
@@ -3541,10 +3541,10 @@ require("./app.js", entryId$$);
     "file": "/var/www/python/betloco/node_modules/react-proxy/node_modules/lodash/_MapCache.js",
     "source": "arguments[4][127][0].apply(exports,arguments)",
     "deps": {
-      "./_mapCacheSet": 388,
       "./_mapCacheDelete": 385,
       "./_mapCacheGet": 386,
       "./_mapCacheHas": 387,
+      "./_mapCacheSet": 388,
       "./_mapCacheClear": 384,
       "dup": 127
     },
@@ -3874,9 +3874,9 @@ require("./app.js", entryId$$);
     "deps": {
       "./identity": 411,
       "./isArray": 413,
-      "./property": 425,
+      "./_baseMatchesProperty": 339,
       "./_baseMatches": 338,
-      "./_baseMatchesProperty": 339
+      "./property": 425
     },
     "hash": "c0afffd453201ac29e0ca75e0c7e1842"
   },
@@ -3912,11 +3912,11 @@ require("./app.js", entryId$$);
     "deps": {
       "./_matchesStrictComparable": 390,
       "./_isKey": 374,
-      "./_isStrictComparable": 378,
       "./_toKey": 402,
+      "./_isStrictComparable": 378,
+      "./get": 409,
       "./hasIn": 410,
-      "./_baseIsEqual": 332,
-      "./get": 409
+      "./_baseIsEqual": 332
     },
     "hash": "fb7995afc1aa6260060b1593a9a5ecd2"
   },
@@ -4050,9 +4050,9 @@ require("./app.js", entryId$$);
     "file": "/var/www/python/betloco/node_modules/react-proxy/node_modules/lodash/_createFind.js",
     "source": "var baseIteratee = require('./_baseIteratee'),\n    isArrayLike = require('./isArrayLike'),\n    keys = require('./keys');\n\n/**\n * Creates a `_.find` or `_.findLast` function.\n *\n * @private\n * @param {Function} findIndexFunc The function to find the collection index.\n * @returns {Function} Returns the new find function.\n */\nfunction createFind(findIndexFunc) {\n  return function(collection, predicate, fromIndex) {\n    var iterable = Object(collection);\n    predicate = baseIteratee(predicate, 3);\n    if (!isArrayLike(collection)) {\n      var props = keys(collection);\n    }\n    var index = findIndexFunc(props || collection, function(value, key) {\n      if (props) {\n        key = value;\n        value = iterable[key];\n      }\n      return predicate(value, key, iterable);\n    }, fromIndex);\n    return index > -1 ? collection[props ? props[index] : index] : undefined;\n  };\n}\n\nmodule.exports = createFind;\n",
     "deps": {
+      "./_baseIteratee": 336,
       "./isArrayLike": 414,
-      "./keys": 423,
-      "./_baseIteratee": 336
+      "./keys": 423
     },
     "hash": "a1a6178472f142346d5a055aee745b69"
   },
@@ -4747,8 +4747,8 @@ require("./app.js", entryId$$);
     "file": "/var/www/python/betloco/node_modules/react-proxy/node_modules/lodash/find.js",
     "source": "var createFind = require('./_createFind'),\n    findIndex = require('./findIndex');\n\n/**\n * Iterates over elements of `collection`, returning the first element\n * `predicate` returns truthy for. The predicate is invoked with three\n * arguments: (value, index|key, collection).\n *\n * @static\n * @memberOf _\n * @since 0.1.0\n * @category Collection\n * @param {Array|Object} collection The collection to search.\n * @param {Array|Function|Object|string} [predicate=_.identity]\n *  The function invoked per iteration.\n * @param {number} [fromIndex=0] The index to search from.\n * @returns {*} Returns the matched element, else `undefined`.\n * @example\n *\n * var users = [\n *   { 'user': 'barney',  'age': 36, 'active': true },\n *   { 'user': 'fred',    'age': 40, 'active': false },\n *   { 'user': 'pebbles', 'age': 1,  'active': true }\n * ];\n *\n * _.find(users, function(o) { return o.age < 40; });\n * // => object for 'barney'\n *\n * // The `_.matches` iteratee shorthand.\n * _.find(users, { 'age': 1, 'active': true });\n * // => object for 'pebbles'\n *\n * // The `_.matchesProperty` iteratee shorthand.\n * _.find(users, ['active', false]);\n * // => object for 'fred'\n *\n * // The `_.property` iteratee shorthand.\n * _.find(users, 'active');\n * // => object for 'barney'\n */\nvar find = createFind(findIndex);\n\nmodule.exports = find;\n",
     "deps": {
-      "./findIndex": 408,
-      "./_createFind": 351
+      "./_createFind": 351,
+      "./findIndex": 408
     },
     "hash": "56b7c4cc5582437c0b71acaf5e92539c"
   },
@@ -4759,8 +4759,8 @@ require("./app.js", entryId$$);
     "source": "var baseFindIndex = require('./_baseFindIndex'),\n    baseIteratee = require('./_baseIteratee'),\n    toInteger = require('./toInteger');\n\n/* Built-in method references for those with the same name as other `lodash` methods. */\nvar nativeMax = Math.max;\n\n/**\n * This method is like `_.find` except that it returns the index of the first\n * element `predicate` returns truthy for instead of the element itself.\n *\n * @static\n * @memberOf _\n * @since 1.1.0\n * @category Array\n * @param {Array} array The array to search.\n * @param {Array|Function|Object|string} [predicate=_.identity]\n *  The function invoked per iteration.\n * @param {number} [fromIndex=0] The index to search from.\n * @returns {number} Returns the index of the found element, else `-1`.\n * @example\n *\n * var users = [\n *   { 'user': 'barney',  'active': false },\n *   { 'user': 'fred',    'active': false },\n *   { 'user': 'pebbles', 'active': true }\n * ];\n *\n * _.findIndex(users, function(o) { return o.user == 'barney'; });\n * // => 0\n *\n * // The `_.matches` iteratee shorthand.\n * _.findIndex(users, { 'user': 'fred', 'active': false });\n * // => 1\n *\n * // The `_.matchesProperty` iteratee shorthand.\n * _.findIndex(users, ['active', false]);\n * // => 0\n *\n * // The `_.property` iteratee shorthand.\n * _.findIndex(users, 'active');\n * // => 2\n */\nfunction findIndex(array, predicate, fromIndex) {\n  var length = array ? array.length : 0;\n  if (!length) {\n    return -1;\n  }\n  var index = fromIndex == null ? 0 : toInteger(fromIndex);\n  if (index < 0) {\n    index = nativeMax(length + index, 0);\n  }\n  return baseFindIndex(array, baseIteratee(predicate, 3), index);\n}\n\nmodule.exports = findIndex;\n",
     "deps": {
       "./_baseFindIndex": 326,
-      "./_baseIteratee": 336,
-      "./toInteger": 428
+      "./toInteger": 428,
+      "./_baseIteratee": 336
     },
     "hash": "ccafe2ccdd7dc844e15c2fb3ad41615c"
   },
@@ -4972,8 +4972,8 @@ require("./app.js", entryId$$);
     "source": "var baseProperty = require('./_baseProperty'),\n    basePropertyDeep = require('./_basePropertyDeep'),\n    isKey = require('./_isKey'),\n    toKey = require('./_toKey');\n\n/**\n * Creates a function that returns the value at `path` of a given object.\n *\n * @static\n * @memberOf _\n * @since 2.4.0\n * @category Util\n * @param {Array|string} path The path of the property to get.\n * @returns {Function} Returns the new accessor function.\n * @example\n *\n * var objects = [\n *   { 'a': { 'b': 2 } },\n *   { 'a': { 'b': 1 } }\n * ];\n *\n * _.map(objects, _.property('a.b'));\n * // => [2, 1]\n *\n * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');\n * // => [1, 2]\n */\nfunction property(path) {\n  return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);\n}\n\nmodule.exports = property;\n",
     "deps": {
       "./_baseProperty": 340,
-      "./_toKey": 402,
       "./_isKey": 374,
+      "./_toKey": 402,
       "./_basePropertyDeep": 341
     },
     "hash": "1df54f8aab323900a23f283067b2a06d"
@@ -5365,8 +5365,8 @@ require("./app.js", entryId$$);
       "./isActive": 462,
       "./computeChangedRoutes": 453,
       "./TransitionUtils": 450,
-      "./matchRoutes": 465,
-      "./getComponents": 458
+      "./getComponents": 458,
+      "./matchRoutes": 465
     },
     "hash": "ad2c78cd537137e133430d9b34e96ba8"
   },
@@ -5423,24 +5423,24 @@ require("./app.js", entryId$$);
       "./withRouter": 469,
       "./applyRouterMiddleware": 451,
       "./PatternUtils": 440,
-      "./Route": 443,
-      "./RouteContext": 444,
       "./RoutingContext": 449,
       "./History": 433,
       "./RouteUtils": 445,
       "./IndexRedirect": 435,
       "./Link": 439,
       "./IndexRoute": 436,
-      "./match": 464,
-      "./hashHistory": 460,
-      "./useRoutes": 468,
       "./Redirect": 442,
       "./Lifecycle": 438,
+      "./Router": 446,
+      "./Route": 443,
+      "./RouteContext": 444,
       "./PropTypes": 441,
       "./RouterContext": 447,
       "./browserHistory": 452,
       "./useRouterHistory": 467,
-      "./Router": 446,
+      "./hashHistory": 460,
+      "./useRoutes": 468,
+      "./match": 464,
       "./createMemoryHistory": 454
     },
     "hash": "1232fb20a9599de9610589987154c56a"
@@ -5477,8 +5477,8 @@ require("./app.js", entryId$$);
       "./createMemoryHistory": 454,
       "./RouteUtils": 445,
       "invariant": 492,
-      "./createTransitionManager": 456,
-      "./RouterUtils": 448
+      "./RouterUtils": 448,
+      "./createTransitionManager": 456
     },
     "hash": "2b9d3b4f86bf808c1e62435032461d3b"
   },
@@ -5526,8 +5526,8 @@ require("./app.js", entryId$$);
     "deps": {
       "_process": 2,
       "./routerWarning": 466,
-      "history/lib/useQueries": 485,
-      "./createTransitionManager": 456
+      "./createTransitionManager": 456,
+      "history/lib/useQueries": 485
     },
     "hash": "d376570aed831982327813e1b859b875"
   },
@@ -6314,8 +6314,8 @@ require("./app.js", entryId$$);
     "file": "/var/www/python/betloco/node_modules/react/lib/ReactComponentBrowserEnvironment.js",
     "source": "/**\n * Copyright 2013-present, Facebook, Inc.\n * All rights reserved.\n *\n * This source code is licensed under the BSD-style license found in the\n * LICENSE file in the root directory of this source tree. An additional grant\n * of patent rights can be found in the PATENTS file in the same directory.\n *\n * @providesModule ReactComponentBrowserEnvironment\n */\n\n'use strict';\n\nvar DOMChildrenOperations = require('./DOMChildrenOperations');\nvar ReactDOMIDOperations = require('./ReactDOMIDOperations');\n\n/**\n * Abstracts away all functionality of the reconciler that requires knowledge of\n * the browser context. TODO: These callers should be refactored to avoid the\n * need for this injection.\n */\nvar ReactComponentBrowserEnvironment = {\n\n  processChildrenUpdates: ReactDOMIDOperations.dangerouslyProcessChildrenUpdates,\n\n  replaceNodeWithMarkup: DOMChildrenOperations.dangerouslyReplaceNodeWithMarkup,\n\n  /**\n   * If a particular environment requires that some resources be cleaned up,\n   * specify this in the injected Mixin. In the DOM, we would likely want to\n   * purge any cached node ID lookups.\n   *\n   * @private\n   */\n  unmountIDFromEnvironment: function (rootNodeID) {}\n\n};\n\nmodule.exports = ReactComponentBrowserEnvironment;",
     "deps": {
-      "./DOMChildrenOperations": 506,
-      "./ReactDOMIDOperations": 546
+      "./ReactDOMIDOperations": 546,
+      "./DOMChildrenOperations": 506
     },
     "hash": "9de68e4661b20febf06ffeca9ac8b510"
   },
@@ -6437,9 +6437,9 @@ require("./app.js", entryId$$);
       "./ReactServerRenderingTransaction": 587,
       "./ReactDOMOption": 549,
       "./AutoFocusUtils": 500,
-      "./ReactDOMInput": 547,
       "./ReactDOMSelect": 550,
       "./ReactDOMTextarea": 553,
+      "./ReactDOMInput": 547,
       "./ReactMultiChild": 574,
       "./CSSPropertyOperations": 503,
       "./DOMPropertyOperations": 510
@@ -6708,15 +6708,15 @@ require("./app.js", entryId$$);
       "./ReactDOMTreeTraversal": 554,
       "./ReactDefaultBatchingStrategy": 557,
       "./ChangeEventPlugin": 505,
-      "./SelectEventPlugin": 594,
+      "./ReactReconcileTransaction": 584,
+      "./ReactDOMTextComponent": 552,
       "./EnterLeaveEventPlugin": 514,
       "./ReactEventListener": 564,
       "./ReactInjection": 567,
-      "./ReactComponentBrowserEnvironment": 531,
       "./BeforeInputEventPlugin": 501,
       "./SimpleEventPlugin": 595,
-      "./ReactReconcileTransaction": 584,
-      "./ReactDOMTextComponent": 552,
+      "./SelectEventPlugin": 594,
+      "./ReactComponentBrowserEnvironment": 531,
       "./ReactDOMComponent": 538
     },
     "hash": "317f7912748736269bbc2c60a087158e"
@@ -7964,15 +7964,15 @@ require("./app.js", entryId$$);
     "file": "/var/www/python/betloco/resources/js/app.js",
     "source": "'use strict';\n\nvar _react = require('react');\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = require('react-dom');\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nvar _reactRouter = require('react-router');\n\nvar _reactTapEventPlugin = require('react-tap-event-plugin');\n\nvar _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);\n\nvar _App = require('./react/App.jsx');\n\nvar _App2 = _interopRequireDefault(_App);\n\nvar _MarketContainer = require('./react/components/MarketContainer.jsx');\n\nvar _MarketContainer2 = _interopRequireDefault(_MarketContainer);\n\nvar _ProfileContainer = require('./react/components/ProfileContainer.jsx');\n\nvar _ProfileContainer2 = _interopRequireDefault(_ProfileContainer);\n\nvar _MarketDetailContainer = require('./react/components/MarketDetailContainer.jsx');\n\nvar _MarketDetailContainer2 = _interopRequireDefault(_MarketDetailContainer);\n\nvar _EventDetailContainer = require('./react/components/EventDetailContainer.jsx');\n\nvar _EventDetailContainer2 = _interopRequireDefault(_EventDetailContainer);\n\nvar _Position = require('./react/components/profile/Position.jsx');\n\nvar _Position2 = _interopRequireDefault(_Position);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n// Needed for onTouchTap\n// Check this repo:\n// https://github.com/zilverline/react-tap-event-plugin\n(0, _reactTapEventPlugin2.default)();\n// Here we put our React instance to the global scope. Make sure you do not put it\n// into production and make sure that you close and open your console if the\n// DEV-TOOLS does not display\n// window.React = React;\n\n_reactDom2.default.render(_react2.default.createElement(\n  _reactRouter.Router,\n  { history: _reactRouter.browserHistory },\n  _react2.default.createElement(\n    _reactRouter.Route,\n    { component: _App2.default },\n    _react2.default.createElement(_reactRouter.Route, { path: '/app/', component: _MarketContainer2.default }),\n    _react2.default.createElement(\n      _reactRouter.Route,\n      { path: '/app/perfil', component: _ProfileContainer2.default },\n      _react2.default.createElement(_reactRouter.Route, { path: 'minhas-posicoes', component: _Position2.default })\n    ),\n    _react2.default.createElement(_reactRouter.Route, { path: '/app/mercado/:id', component: _MarketDetailContainer2.default }),\n    _react2.default.createElement(_reactRouter.Route, { path: '/app/evento/:id', component: _EventDetailContainer2.default })\n  )\n), document.getElementById('app'));\n\n// ReactDOM.render(<App />, document.getElementById('app'));\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBOzs7O0FBQ0E7Ozs7QUFDQTs7QUFLQTs7OztBQU1BOzs7O0FBQ0E7Ozs7QUFDQTs7OztBQUNBOzs7O0FBQ0E7Ozs7QUFDQTs7Ozs7Ozs7O0FBTkE7Ozs7OztBQVFBLG1CQUFTLE1BQVQsQ0FDRTtBQUFBO0FBQUEsSUFBUSxvQ0FBUjtBQUNFO0FBQUE7QUFBQSxNQUFPLHdCQUFQO0FBQ0Usd0RBQU8sTUFBSyxPQUFaLEVBQW9CLG9DQUFwQixHQURGO0FBRUU7QUFBQTtBQUFBLFFBQU8sTUFBSyxhQUFaLEVBQTBCLHFDQUExQjtBQUNFLDBEQUFPLE1BQUssaUJBQVosRUFBOEIsNkJBQTlCO0FBREYsS0FGRjtBQUtFLHdEQUFPLE1BQUssa0JBQVosRUFBK0IsMENBQS9CLEdBTEY7QUFNRSx3REFBTyxNQUFLLGlCQUFaLEVBQThCLHlDQUE5QjtBQU5GO0FBREYsQ0FERixFQVdHLFNBQVMsY0FBVCxDQUF3QixLQUF4QixDQVhIIiwiZmlsZSI6ImFwcC5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgUmVhY3RET00gZnJvbSAncmVhY3QtZG9tJztcbmltcG9ydCB7IFJvdXRlciwgUm91dGUsIExpbmssIGJyb3dzZXJIaXN0b3J5IH0gZnJvbSAncmVhY3Qtcm91dGVyJ1xuLy8gSGVyZSB3ZSBwdXQgb3VyIFJlYWN0IGluc3RhbmNlIHRvIHRoZSBnbG9iYWwgc2NvcGUuIE1ha2Ugc3VyZSB5b3UgZG8gbm90IHB1dCBpdFxuLy8gaW50byBwcm9kdWN0aW9uIGFuZCBtYWtlIHN1cmUgdGhhdCB5b3UgY2xvc2UgYW5kIG9wZW4geW91ciBjb25zb2xlIGlmIHRoZVxuLy8gREVWLVRPT0xTIGRvZXMgbm90IGRpc3BsYXlcbi8vIHdpbmRvdy5SZWFjdCA9IFJlYWN0O1xuaW1wb3J0IGluamVjdFRhcEV2ZW50UGx1Z2luIGZyb20gJ3JlYWN0LXRhcC1ldmVudC1wbHVnaW4nO1xuXG4vLyBOZWVkZWQgZm9yIG9uVG91Y2hUYXBcbi8vIENoZWNrIHRoaXMgcmVwbzpcbi8vIGh0dHBzOi8vZ2l0aHViLmNvbS96aWx2ZXJsaW5lL3JlYWN0LXRhcC1ldmVudC1wbHVnaW5cbmluamVjdFRhcEV2ZW50UGx1Z2luKCk7XG5pbXBvcnQgQXBwIGZyb20gJy4vcmVhY3QvQXBwLmpzeCc7XG5pbXBvcnQgTWFya2V0Q29udGFpbmVyIGZyb20gJy4vcmVhY3QvY29tcG9uZW50cy9NYXJrZXRDb250YWluZXIuanN4JztcbmltcG9ydCBQcm9maWxlQ29udGFpbmVyIGZyb20gJy4vcmVhY3QvY29tcG9uZW50cy9Qcm9maWxlQ29udGFpbmVyLmpzeCc7XG5pbXBvcnQgTWFya2V0RGV0YWlsQ29udGFpbmVyIGZyb20gJy4vcmVhY3QvY29tcG9uZW50cy9NYXJrZXREZXRhaWxDb250YWluZXIuanN4JztcbmltcG9ydCBFdmVudERldGFpbENvbnRhaW5lciBmcm9tICcuL3JlYWN0L2NvbXBvbmVudHMvRXZlbnREZXRhaWxDb250YWluZXIuanN4JztcbmltcG9ydCBQb3NpdGlvbiBmcm9tICcuL3JlYWN0L2NvbXBvbmVudHMvcHJvZmlsZS9Qb3NpdGlvbi5qc3gnO1xuXG5SZWFjdERPTS5yZW5kZXIoKFxuICA8Um91dGVyIGhpc3Rvcnk9e2Jyb3dzZXJIaXN0b3J5fT5cbiAgICA8Um91dGUgY29tcG9uZW50PXtBcHB9PlxuICAgICAgPFJvdXRlIHBhdGg9XCIvYXBwL1wiIGNvbXBvbmVudD17TWFya2V0Q29udGFpbmVyfSAvPlxuICAgICAgPFJvdXRlIHBhdGg9XCIvYXBwL3BlcmZpbFwiIGNvbXBvbmVudD17UHJvZmlsZUNvbnRhaW5lcn0+XG4gICAgICAgIDxSb3V0ZSBwYXRoPVwibWluaGFzLXBvc2ljb2VzXCIgY29tcG9uZW50PXtQb3NpdGlvbn0vPlxuICAgICAgPC9Sb3V0ZT5cbiAgICAgIDxSb3V0ZSBwYXRoPVwiL2FwcC9tZXJjYWRvLzppZFwiIGNvbXBvbmVudD17TWFya2V0RGV0YWlsQ29udGFpbmVyfSAvPlxuICAgICAgPFJvdXRlIHBhdGg9XCIvYXBwL2V2ZW50by86aWRcIiBjb21wb25lbnQ9e0V2ZW50RGV0YWlsQ29udGFpbmVyfSAvPlxuICAgIDwvUm91dGU+XG4gIDwvUm91dGVyPlxuKSwgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2FwcCcpKVxuXG4vLyBSZWFjdERPTS5yZW5kZXIoPEFwcCAvPiwgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2FwcCcpKTtcbiJdfQ==",
     "deps": {
+      "./react/components/profile/Position.jsx": 691,
       "react-tap-event-plugin": 499,
       "react-router": 461,
       "react": 667,
-      "./react/components/EventDetailContainer.jsx": 673,
       "react-dom": 298,
       "./react/components/ProfileContainer.jsx": 676,
       "./react/components/MarketContainer.jsx": 674,
       "./react/App.jsx": 671,
-      "./react/components/profile/Position.jsx": 691,
+      "./react/components/EventDetailContainer.jsx": 673,
       "./react/components/MarketDetailContainer.jsx": 675
     },
     "hash": "d4b58117959dd23e30468ca498d7eac8"
@@ -8002,11 +8002,11 @@ require("./app.js", entryId$$);
       "react-router": 461,
       "livereactload/babel-transform": 3,
       "material-ui/MenuItem": 53,
+      "material-ui/IconButton": 41,
       "material-ui/svg-icons/navigation/close": 280,
       "material-ui/svg-icons/navigation/menu": 283,
       "material-ui/AppBar": 14,
-      "material-ui/IconMenu": 43,
-      "material-ui/IconButton": 41
+      "material-ui/IconMenu": 43
     },
     "hash": "d2b32751db8c4aa42285d01d9c348a64"
   },
@@ -8018,10 +8018,10 @@ require("./app.js", entryId$$);
     "deps": {
       "react": 667,
       "reqwest": 668,
-      "livereactload/babel-transform": 3,
-      "./eventDetail/MultipleMarketTable.jsx": 677,
+      "./marketDetail/Details.jsx": 680,
       "./general/Breadcrumb.jsx": 678,
-      "./marketDetail/Details.jsx": 680
+      "./eventDetail/MultipleMarketTable.jsx": 677,
+      "livereactload/babel-transform": 3
     },
     "hash": "d42785e428ccf67b2567eff221b77c74"
   },
@@ -8064,15 +8064,15 @@ require("./app.js", entryId$$);
       "react": 667,
       "react-router": 461,
       "livereactload/babel-transform": 3,
-      "material-ui/svg-icons/editor/monetization-on": 274,
       "material-ui/svg-icons/social/person": 284,
       "material-ui/svg-icons/action/trending-up": 272,
       "material-ui/svg-icons/action/settings": 271,
       "material-ui/svg-icons/action/power-settings-new": 270,
+      "material-ui/svg-icons/action/history": 268,
       "material-ui/Divider": 32,
       "material-ui/FontIcon": 39,
       "material-ui/Paper": 55,
-      "material-ui/svg-icons/action/history": 268,
+      "material-ui/svg-icons/editor/monetization-on": 274,
       "material-ui/Menu": 50,
       "material-ui/MenuItem": 53
     },
@@ -8087,10 +8087,10 @@ require("./app.js", entryId$$);
       "react": 667,
       "react-router": 461,
       "livereactload/babel-transform": 3,
+      "material-ui/svg-icons/action/gavel": 267,
       "material-ui/IconButton": 41,
       "material-ui/Card": 24,
-      "material-ui/Table": 71,
-      "material-ui/svg-icons/action/gavel": 267
+      "material-ui/Table": 71
     },
     "hash": "b17e924a9612f15b6819e6f435b7edd6"
   },
@@ -8208,7 +8208,7 @@ require("./app.js", entryId$$);
     "id": 685,
     "index": 685,
     "file": "/var/www/python/betloco/resources/js/react/components/marketDetail/OrderRequest.jsx",
-    "source": "'use strict';\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _react2 = require('react');\n\nvar _react3 = _interopRequireDefault(_react2);\n\nvar _babelTransform = require('livereactload/babel-transform');\n\nvar _babelTransform2 = _interopRequireDefault(_babelTransform);\n\nvar _Card = require('material-ui/Card');\n\nvar _FlatButton = require('material-ui/FlatButton');\n\nvar _FlatButton2 = _interopRequireDefault(_FlatButton);\n\nvar _Table = require('material-ui/Table');\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar _components = {\n  _component: {}\n};\n\nvar _livereactloadBabelTransform2 = (0, _babelTransform2.default)({\n  filename: '/var/www/python/betloco/resources/js/react/components/marketDetail/OrderRequest.jsx',\n  components: _components,\n  locals: [],\n  imports: [_react3.default]\n});\n\nfunction _wrapComponent(id) {\n  return function (Component) {\n    return _livereactloadBabelTransform2(Component, id);\n  };\n}\n\nvar styles = {\n  card: {\n    display: 'inline-block'\n  },\n  cardpadding: {\n    padding: 10\n  },\n  buyselllbl: {\n    'fontSize': 14,\n    'paddingRight': 8,\n    'paddingLeft': 8\n  },\n  buysellbtn: {\n    'minWidth': 40\n  },\n  cardheadertitle: {\n    color: 'rgb(255,255,255)',\n    'marginLeft': 8\n  },\n  cardtext: {\n    paddingTop: 0\n  }\n};\n\nvar OrderRequest = _wrapComponent('_component')(_react3.default.createClass({\n  displayName: 'OrderRequest',\n\n  openBuy: function openBuy() {\n    this.props.openDialog(this.props.choice, true);\n  },\n  openSell: function openSell() {\n    this.props.openDialog(this.props.choice, false);\n  },\n  render: function render() {\n    if (this.props.custody) {\n      var custody = this.props.custody;\n    } else {\n      var custody = {\n        position: 0\n      };\n    }\n    console.log(disableSell);\n    return _react3.default.createElement(\n      _Card.Card,\n      { style: styles.card, className: 'orderrequest-card' },\n      _react3.default.createElement(\n        'div',\n        { className: 'orderrequest-card__header' },\n        _react3.default.createElement(\n          'p',\n          null,\n          this.props.choice.title,\n          ' (',\n          this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price * 100 : 0,\n          '%)'\n        )\n      ),\n      _react3.default.createElement(\n        _Card.CardActions,\n        { style: styles.cardpadding },\n        _react3.default.createElement(\n          'div',\n          { className: 'orderrequest-card__orders-column' },\n          _react3.default.createElement(\n            'div',\n            { className: 'orderrequest-card__buy-column' },\n            _react3.default.createElement(_FlatButton2.default, { disabled: this.props.disableOrderRequest, onClick: this.openBuy, style: styles.buysellbtn, labelStyle: styles.buyselllbl, label: 'Comprar' })\n          ),\n          _react3.default.createElement(\n            'div',\n            { className: 'orderrequest-card__sell-column' },\n            _react3.default.createElement(_FlatButton2.default, { disabled: disableSell, onClick: this.openSell, style: styles.buysellbtn, labelStyle: styles.buyselllbl, label: 'Vender' })\n          )\n        )\n      ),\n      _react3.default.createElement(\n        _Card.CardText,\n        { style: styles.cardtext, className: 'orderrequest-card__details' },\n        _react3.default.createElement(\n          'span',\n          null,\n          _react3.default.createElement(\n            'strong',\n            null,\n            'R$ ',\n            this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price : 0\n          ),\n          '/papel'\n        ),\n        _react3.default.createElement('br', null),\n        _react3.default.createElement(\n          'span',\n          null,\n          _react3.default.createElement(\n            'strong',\n            null,\n            custody.position\n          ),\n          ' papéis em custódia'\n        )\n      )\n    );\n  }\n}));\n\nexports.default = OrderRequest;\n//# sourceMappingURL=data:application/json;base64,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d0NlLFkiLCJmaWxlIjoiT3JkZXJSZXF1ZXN0LmpzeCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQge0NhcmQsIENhcmRBY3Rpb25zLCBDYXJkVGV4dH0gZnJvbSAnbWF0ZXJpYWwtdWkvQ2FyZCc7XG5pbXBvcnQgRmxhdEJ1dHRvbiBmcm9tICdtYXRlcmlhbC11aS9GbGF0QnV0dG9uJztcbmltcG9ydCB7VGFibGUsIFRhYmxlQm9keSwgVGFibGVIZWFkZXIsIFRhYmxlSGVhZGVyQ29sdW1uLCBUYWJsZVJvdywgVGFibGVSb3dDb2x1bW59IGZyb20gJ21hdGVyaWFsLXVpL1RhYmxlJztcblxudmFyIHN0eWxlcyA9IHtcbiAgY2FyZDoge1xuICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snXG4gIH0sXG4gIGNhcmRwYWRkaW5nOiB7XG4gICAgcGFkZGluZzogMTBcbiAgfSxcbiAgYnV5c2VsbGxibDoge1xuICAgICdmb250U2l6ZSc6IDE0LFxuICAgICdwYWRkaW5nUmlnaHQnOiA4LFxuICAgICdwYWRkaW5nTGVmdCc6IDhcbiAgfSxcbiAgYnV5c2VsbGJ0bjoge1xuICAgICdtaW5XaWR0aCc6IDQwXG4gIH0sXG4gIGNhcmRoZWFkZXJ0aXRsZToge1xuICAgIGNvbG9yOiAncmdiKDI1NSwyNTUsMjU1KScsXG4gICAgJ21hcmdpbkxlZnQnOiA4XG4gIH0sXG4gIGNhcmR0ZXh0OiB7XG4gICAgcGFkZGluZ1RvcDogMFxuICB9XG59XG5cbnZhciBPcmRlclJlcXVlc3QgPSBSZWFjdC5jcmVhdGVDbGFzcyh7XG4gIG9wZW5CdXk6IGZ1bmN0aW9uKCl7XG4gICAgdGhpcy5wcm9wcy5vcGVuRGlhbG9nKHRoaXMucHJvcHMuY2hvaWNlLCB0cnVlKTtcbiAgfSxcbiAgb3BlblNlbGw6IGZ1bmN0aW9uKCl7XG4gICAgdGhpcy5wcm9wcy5vcGVuRGlhbG9nKHRoaXMucHJvcHMuY2hvaWNlLCBmYWxzZSk7XG4gIH0sXG4gIHJlbmRlcjogZnVuY3Rpb24oKSB7XG4gICAgaWYgKHRoaXMucHJvcHMuY3VzdG9keSkge1xuICAgICAgdmFyIGN1c3RvZHkgPSB0aGlzLnByb3BzLmN1c3RvZHk7XG4gICAgfWVsc2Uge1xuICAgICAgdmFyIGN1c3RvZHkgPSB7XG4gICAgICAgIHBvc2l0aW9uOiAwXG4gICAgICB9O1xuICAgIH1cbiAgICBjb25zb2xlLmxvZyhkaXNhYmxlU2VsbCk7XG4gICAgcmV0dXJuIChcbiAgICAgIDxDYXJkIHN0eWxlPXtzdHlsZXMuY2FyZH0gY2xhc3NOYW1lPVwib3JkZXJyZXF1ZXN0LWNhcmRcIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJvcmRlcnJlcXVlc3QtY2FyZF9faGVhZGVyXCI+XG4gICAgICAgICAgPHA+e3RoaXMucHJvcHMuY2hvaWNlLnRpdGxlfSAoe3RoaXMucHJvcHMuY2hvaWNlLmxhc3RDb21wbGV0ZU9yZGVyICE9IG51bGwgPyB0aGlzLnByb3BzLmNob2ljZS5sYXN0Q29tcGxldGVPcmRlci5wcmljZSAqIDEwMCA6IDB9JSk8L3A+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICA8Q2FyZEFjdGlvbnMgc3R5bGU9e3N0eWxlcy5jYXJkcGFkZGluZ30+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJvcmRlcnJlcXVlc3QtY2FyZF9fb3JkZXJzLWNvbHVtblwiPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJvcmRlcnJlcXVlc3QtY2FyZF9fYnV5LWNvbHVtblwiPlxuICAgICAgICAgICAgICA8RmxhdEJ1dHRvbiBkaXNhYmxlZD17dGhpcy5wcm9wcy5kaXNhYmxlT3JkZXJSZXF1ZXN0fSBvbkNsaWNrPXt0aGlzLm9wZW5CdXl9IHN0eWxlPXtzdHlsZXMuYnV5c2VsbGJ0bn0gbGFiZWxTdHlsZT17c3R5bGVzLmJ1eXNlbGxsYmx9IGxhYmVsPVwiQ29tcHJhclwiIC8+XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwib3JkZXJyZXF1ZXN0LWNhcmRfX3NlbGwtY29sdW1uXCI+XG4gICAgICAgICAgICAgIDxGbGF0QnV0dG9uIGRpc2FibGVkPXtkaXNhYmxlU2VsbH0gb25DbGljaz17dGhpcy5vcGVuU2VsbH0gc3R5bGU9e3N0eWxlcy5idXlzZWxsYnRufSBsYWJlbFN0eWxlPXtzdHlsZXMuYnV5c2VsbGxibH0gbGFiZWw9XCJWZW5kZXJcIiAvPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvQ2FyZEFjdGlvbnM+XG4gICAgICAgIDxDYXJkVGV4dCBzdHlsZT17c3R5bGVzLmNhcmR0ZXh0fSBjbGFzc05hbWU9XCJvcmRlcnJlcXVlc3QtY2FyZF9fZGV0YWlsc1wiPlxuICAgICAgICAgIDxzcGFuPjxzdHJvbmc+UiQge3RoaXMucHJvcHMuY2hvaWNlLmxhc3RDb21wbGV0ZU9yZGVyICE9IG51bGwgPyB0aGlzLnByb3BzLmNob2ljZS5sYXN0Q29tcGxldGVPcmRlci5wcmljZSA6IDB9PC9zdHJvbmc+L3BhcGVsPC9zcGFuPjxiciAvPlxuICAgICAgICAgIDxzcGFuPjxzdHJvbmc+e2N1c3RvZHkucG9zaXRpb259PC9zdHJvbmc+IHBhcMOpaXMgZW0gY3VzdMOzZGlhPC9zcGFuPlxuICAgICAgICA8L0NhcmRUZXh0PlxuICAgICAgPC9DYXJkPlxuICAgICk7XG4gIH1cbn0pO1xuXG5leHBvcnQgZGVmYXVsdCBPcmRlclJlcXVlc3Q7XG4iXX0=",
+    "source": "'use strict';\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _react2 = require('react');\n\nvar _react3 = _interopRequireDefault(_react2);\n\nvar _babelTransform = require('livereactload/babel-transform');\n\nvar _babelTransform2 = _interopRequireDefault(_babelTransform);\n\nvar _Card = require('material-ui/Card');\n\nvar _FlatButton = require('material-ui/FlatButton');\n\nvar _FlatButton2 = _interopRequireDefault(_FlatButton);\n\nvar _Table = require('material-ui/Table');\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar _components = {\n  _component: {}\n};\n\nvar _livereactloadBabelTransform2 = (0, _babelTransform2.default)({\n  filename: '/var/www/python/betloco/resources/js/react/components/marketDetail/OrderRequest.jsx',\n  components: _components,\n  locals: [],\n  imports: [_react3.default]\n});\n\nfunction _wrapComponent(id) {\n  return function (Component) {\n    return _livereactloadBabelTransform2(Component, id);\n  };\n}\n\nvar styles = {\n  card: {\n    display: 'inline-block'\n  },\n  cardpadding: {\n    padding: 10\n  },\n  buyselllbl: {\n    'fontSize': 14,\n    'paddingRight': 8,\n    'paddingLeft': 8\n  },\n  buysellbtn: {\n    'minWidth': 40\n  },\n  cardheadertitle: {\n    color: 'rgb(255,255,255)',\n    'marginLeft': 8\n  },\n  cardtext: {\n    paddingTop: 0\n  }\n};\n\nvar OrderRequest = _wrapComponent('_component')(_react3.default.createClass({\n  displayName: 'OrderRequest',\n\n  openBuy: function openBuy() {\n    this.props.openDialog(this.props.choice, true);\n  },\n  openSell: function openSell() {\n    this.props.openDialog(this.props.choice, false);\n  },\n  render: function render() {\n    if (this.props.custody) {\n      var custody = this.props.custody;\n    } else {\n      var custody = {\n        position: 0\n      };\n    }\n    var disableSell = this.props.disableOrderRequest || custody.position == 0;\n    return _react3.default.createElement(\n      _Card.Card,\n      { style: styles.card, className: 'orderrequest-card' },\n      _react3.default.createElement(\n        'div',\n        { className: 'orderrequest-card__header' },\n        _react3.default.createElement(\n          'p',\n          null,\n          this.props.choice.title,\n          ' (',\n          this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price * 100 : 0,\n          '%)'\n        )\n      ),\n      _react3.default.createElement(\n        _Card.CardActions,\n        { style: styles.cardpadding },\n        _react3.default.createElement(\n          'div',\n          { className: 'orderrequest-card__orders-column' },\n          _react3.default.createElement(\n            'div',\n            { className: 'orderrequest-card__buy-column' },\n            _react3.default.createElement(_FlatButton2.default, { disabled: this.props.disableOrderRequest, onClick: this.openBuy, style: styles.buysellbtn, labelStyle: styles.buyselllbl, label: 'Comprar' })\n          ),\n          _react3.default.createElement(\n            'div',\n            { className: 'orderrequest-card__sell-column' },\n            _react3.default.createElement(_FlatButton2.default, { disabled: disableSell, onClick: this.openSell, style: styles.buysellbtn, labelStyle: styles.buyselllbl, label: 'Vender' })\n          )\n        )\n      ),\n      _react3.default.createElement(\n        _Card.CardText,\n        { style: styles.cardtext, className: 'orderrequest-card__details' },\n        _react3.default.createElement(\n          'span',\n          null,\n          _react3.default.createElement(\n            'strong',\n            null,\n            'R$ ',\n            this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price : 0\n          ),\n          '/papel'\n        ),\n        _react3.default.createElement('br', null),\n        _react3.default.createElement(\n          'span',\n          null,\n          _react3.default.createElement(\n            'strong',\n            null,\n            custody.position\n          ),\n          ' papéis em custódia'\n        )\n      )\n    );\n  }\n}));\n\nexports.default = OrderRequest;\n//# sourceMappingURL=data:application/json;base64,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LEtBREY7QUFxQkQ7QUFyQ2tDLENBQWxCLENBQWYsQ0FBSjs7a0JBd0NlLFkiLCJmaWxlIjoiT3JkZXJSZXF1ZXN0LmpzeCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQge0NhcmQsIENhcmRBY3Rpb25zLCBDYXJkVGV4dH0gZnJvbSAnbWF0ZXJpYWwtdWkvQ2FyZCc7XG5pbXBvcnQgRmxhdEJ1dHRvbiBmcm9tICdtYXRlcmlhbC11aS9GbGF0QnV0dG9uJztcbmltcG9ydCB7VGFibGUsIFRhYmxlQm9keSwgVGFibGVIZWFkZXIsIFRhYmxlSGVhZGVyQ29sdW1uLCBUYWJsZVJvdywgVGFibGVSb3dDb2x1bW59IGZyb20gJ21hdGVyaWFsLXVpL1RhYmxlJztcblxudmFyIHN0eWxlcyA9IHtcbiAgY2FyZDoge1xuICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snXG4gIH0sXG4gIGNhcmRwYWRkaW5nOiB7XG4gICAgcGFkZGluZzogMTBcbiAgfSxcbiAgYnV5c2VsbGxibDoge1xuICAgICdmb250U2l6ZSc6IDE0LFxuICAgICdwYWRkaW5nUmlnaHQnOiA4LFxuICAgICdwYWRkaW5nTGVmdCc6IDhcbiAgfSxcbiAgYnV5c2VsbGJ0bjoge1xuICAgICdtaW5XaWR0aCc6IDQwXG4gIH0sXG4gIGNhcmRoZWFkZXJ0aXRsZToge1xuICAgIGNvbG9yOiAncmdiKDI1NSwyNTUsMjU1KScsXG4gICAgJ21hcmdpbkxlZnQnOiA4XG4gIH0sXG4gIGNhcmR0ZXh0OiB7XG4gICAgcGFkZGluZ1RvcDogMFxuICB9XG59XG5cbnZhciBPcmRlclJlcXVlc3QgPSBSZWFjdC5jcmVhdGVDbGFzcyh7XG4gIG9wZW5CdXk6IGZ1bmN0aW9uKCl7XG4gICAgdGhpcy5wcm9wcy5vcGVuRGlhbG9nKHRoaXMucHJvcHMuY2hvaWNlLCB0cnVlKTtcbiAgfSxcbiAgb3BlblNlbGw6IGZ1bmN0aW9uKCl7XG4gICAgdGhpcy5wcm9wcy5vcGVuRGlhbG9nKHRoaXMucHJvcHMuY2hvaWNlLCBmYWxzZSk7XG4gIH0sXG4gIHJlbmRlcjogZnVuY3Rpb24oKSB7XG4gICAgaWYgKHRoaXMucHJvcHMuY3VzdG9keSkge1xuICAgICAgdmFyIGN1c3RvZHkgPSB0aGlzLnByb3BzLmN1c3RvZHk7XG4gICAgfWVsc2Uge1xuICAgICAgdmFyIGN1c3RvZHkgPSB7XG4gICAgICAgIHBvc2l0aW9uOiAwXG4gICAgICB9O1xuICAgIH1cbiAgICB2YXIgZGlzYWJsZVNlbGwgPSB0aGlzLnByb3BzLmRpc2FibGVPcmRlclJlcXVlc3QgfHwgY3VzdG9keS5wb3NpdGlvbiA9PSAwO1xuICAgIHJldHVybiAoXG4gICAgICA8Q2FyZCBzdHlsZT17c3R5bGVzLmNhcmR9IGNsYXNzTmFtZT1cIm9yZGVycmVxdWVzdC1jYXJkXCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwib3JkZXJyZXF1ZXN0LWNhcmRfX2hlYWRlclwiPlxuICAgICAgICAgIDxwPnt0aGlzLnByb3BzLmNob2ljZS50aXRsZX0gKHt0aGlzLnByb3BzLmNob2ljZS5sYXN0Q29tcGxldGVPcmRlciAhPSBudWxsID8gdGhpcy5wcm9wcy5jaG9pY2UubGFzdENvbXBsZXRlT3JkZXIucHJpY2UgKiAxMDAgOiAwfSUpPC9wPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPENhcmRBY3Rpb25zIHN0eWxlPXtzdHlsZXMuY2FyZHBhZGRpbmd9PlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwib3JkZXJyZXF1ZXN0LWNhcmRfX29yZGVycy1jb2x1bW5cIj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwib3JkZXJyZXF1ZXN0LWNhcmRfX2J1eS1jb2x1bW5cIj5cbiAgICAgICAgICAgICAgPEZsYXRCdXR0b24gZGlzYWJsZWQ9e3RoaXMucHJvcHMuZGlzYWJsZU9yZGVyUmVxdWVzdH0gb25DbGljaz17dGhpcy5vcGVuQnV5fSBzdHlsZT17c3R5bGVzLmJ1eXNlbGxidG59IGxhYmVsU3R5bGU9e3N0eWxlcy5idXlzZWxsbGJsfSBsYWJlbD1cIkNvbXByYXJcIiAvPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm9yZGVycmVxdWVzdC1jYXJkX19zZWxsLWNvbHVtblwiPlxuICAgICAgICAgICAgICA8RmxhdEJ1dHRvbiBkaXNhYmxlZD17ZGlzYWJsZVNlbGx9IG9uQ2xpY2s9e3RoaXMub3BlblNlbGx9IHN0eWxlPXtzdHlsZXMuYnV5c2VsbGJ0bn0gbGFiZWxTdHlsZT17c3R5bGVzLmJ1eXNlbGxsYmx9IGxhYmVsPVwiVmVuZGVyXCIgLz5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L0NhcmRBY3Rpb25zPlxuICAgICAgICA8Q2FyZFRleHQgc3R5bGU9e3N0eWxlcy5jYXJkdGV4dH0gY2xhc3NOYW1lPVwib3JkZXJyZXF1ZXN0LWNhcmRfX2RldGFpbHNcIj5cbiAgICAgICAgICA8c3Bhbj48c3Ryb25nPlIkIHt0aGlzLnByb3BzLmNob2ljZS5sYXN0Q29tcGxldGVPcmRlciAhPSBudWxsID8gdGhpcy5wcm9wcy5jaG9pY2UubGFzdENvbXBsZXRlT3JkZXIucHJpY2UgOiAwfTwvc3Ryb25nPi9wYXBlbDwvc3Bhbj48YnIgLz5cbiAgICAgICAgICA8c3Bhbj48c3Ryb25nPntjdXN0b2R5LnBvc2l0aW9ufTwvc3Ryb25nPiBwYXDDqWlzIGVtIGN1c3TDs2RpYTwvc3Bhbj5cbiAgICAgICAgPC9DYXJkVGV4dD5cbiAgICAgIDwvQ2FyZD5cbiAgICApO1xuICB9XG59KTtcblxuZXhwb3J0IGRlZmF1bHQgT3JkZXJSZXF1ZXN0O1xuIl19",
     "deps": {
       "react": 667,
       "livereactload/babel-transform": 3,
@@ -8216,7 +8216,7 @@ require("./app.js", entryId$$);
       "material-ui/FlatButton": 35,
       "material-ui/Table": 71
     },
-    "hash": "fbd2091a3f032e8d269c2fe5dde62523"
+    "hash": "4f5243c7e80db9802eb7c2353902fdc1"
   },
   "686": {
     "id": 686,
