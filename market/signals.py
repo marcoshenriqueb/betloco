@@ -1,8 +1,10 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Order
+from .models import Order, Choice
 from engine.engine import OrderEngine
 from channels import Channel
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 import json
 
 @receiver(post_save, sender=Order)
@@ -16,3 +18,22 @@ def postSaveOrder(sender, instance, created, **kwargs):
             "room": 'market-' + str(pk),
             "message": json.dumps({'pk': str(pk)})
         })
+
+@receiver(pre_save, sender=Choice)
+def preSaveChoice(sender, instance, *args, **kwargs):
+    if instance.winner:
+        choices = instance.market.choices.all()
+        for c in choices:
+            if c.winner:
+                raise ValidationError('Cannot choose two winners!!!')
+
+@receiver(post_save, sender=Choice)
+def postSaveChoice(sender, instance, created, **kwargs):
+    if not created and instance.market.liquidated == 0:
+        if instance.market.event.deadline < timezone.now() and instance.winner:
+            m = instance.market
+            m.liquidated = 1
+            m.save()
+            Channel("liquidate-market").send({
+                "market_id": instance.market.id
+            })

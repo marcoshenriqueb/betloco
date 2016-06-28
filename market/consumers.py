@@ -33,3 +33,6 @@ def market_update(message):
 def ws_disconnect(message):
     if message.user.is_authenticated():
         Group("chat-%s" % message.channel_session['room']).discard(message.reply_channel)
+
+def liquidate_market(message):
+    print('liquidating')

@@ -39,7 +39,6 @@ class Event(models.Model):
     deadline = models.DateTimeField(auto_now=False, auto_now_add=False, null=False, blank=False)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
-    closed = models.BooleanField(default=0)
 
     def __str__(self):
         return self.title
@@ -66,6 +65,7 @@ class Market(models.Model):
     title = models.CharField(max_length=150)
     title_short = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="markets")
+    liquidated = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
 
@@ -129,6 +129,7 @@ class Choice(models.Model):
     """docstring for Choice"""
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
     title = models.CharField(max_length=100)
+    winner = models.BooleanField(default=0)
     objects = ChoiceManager()
 
     def __str__(self):
