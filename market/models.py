@@ -199,6 +199,17 @@ class Choice(models.Model):
 
 class OrderManager(models.Manager):
     """docstring for OrderManager"""
+    def getAllMarketPositions(self, market_id):
+        positions = self.filter(choice__market__id=market_id).values('user__id', 'choice__id') \
+                        .annotate(position=Sum(Case(
+                            When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
+                            When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                            When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
+                            When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
+                        )))
+        positive_positions = [p for p in positions if p['position'] > 0]
+        return positive_positions
+
     def getPlayerPositions(self, user_id):
         positions = self.filter(user__id=user_id) \
                        .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \

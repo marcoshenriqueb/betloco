@@ -77,7 +77,15 @@ class LiquidationEngine():
     """Responsible for market liquidation after event outcome"""
     def __init__(self, market_id):
         self.market = Market.objects.get(pk=market_id)
+        self.winningId = self.getWinningChoiceId()
         self.cancelPendingOrders()
+        self.placeLoosingOrders()
+
+    def getWinningChoiceId(self):
+        choices = self.market.choices.all()
+        for c in choices:
+            if c.winner:
+                return c.id
 
     def cancelPendingOrders(self):
         choices = self.market.choices.all()
@@ -87,5 +95,16 @@ class LiquidationEngine():
                                     .filter(deleted=0) \
                                     .update(deleted=1)
 
-    # def placeLoosingOrders(self):
-    #     self.market.order_set
+    def placeLoosingOrders(self):
+        positions = Order.objects.getAllMarketPositions(self.market.id)
+        for p in positions:
+            price = 0
+            if p['choice__id'] == self.winningId:
+                price = 1
+            Order.objects.create(
+                user_id=p['user__id'],
+                choice_id=p['choice__id'],
+                amount=p['position']*-1,
+                price=price,
+                from_liquidation=1
+            )
