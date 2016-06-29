@@ -52,7 +52,7 @@ class Event(models.Model):
                     q.append(Q(to_order__choice__id=c.id))
 
             q_query = functools.reduce(operator.or_, q)
-            result = Operation.objects.filter(q_query) \
+            result = Operation.objects.filter(q_query).filter(from_liquidation=0) \
                             .aggregate(Sum('amount'))['amount__sum']
             return result or 0
         except TypeError as e:
@@ -80,7 +80,7 @@ class Market(models.Model):
                 q.append(Q(to_order__choice__id=c.id))
 
             q_query = functools.reduce(operator.or_, q)
-            result = Operation.objects.filter(q_query) \
+            result = Operation.objects.filter(q_query).filter(from_liquidation=0) \
                             .aggregate(Sum('amount'))['amount__sum']
             return result or 0
         except TypeError as e:
@@ -99,29 +99,17 @@ class ChoiceManager(models.Manager):
             choices = self.filter(market__id=market_id)
         result = {}
         for c in choices:
-            v1 = c.order_set.filter(user__id=user_id) \
-                            .filter(amount__gt=0) \
-                            .filter(from_order__isnull=False) \
-                            .aggregate(custody=Sum('from_order__amount'))['custody'] \
-                            or 0
-            v2 = c.order_set.filter(user__id=user_id) \
-                            .filter(amount__lt=0) \
-                            .filter(from_order__isnull=False) \
-                            .aggregate(custody=Sum('from_order__amount'))['custody'] \
-                            or 0
-            v3 = c.order_set.filter(user__id=user_id) \
-                            .filter(amount__gt=0) \
-                            .filter(to_order__isnull=False) \
-                            .aggregate(custody=Sum('to_order__amount'))['custody'] \
-                            or 0
-            v4 = c.order_set.filter(user__id=user_id) \
-                            .filter(amount__lt=0) \
-                            .filter(to_order__isnull=False) \
-                            .aggregate(custody=Sum('to_order__amount'))['custody'] \
-                            or 0
+            v = c.order_set.filter(user__id=user_id) \
+                       .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+                       .aggregate(position=Sum(Case(
+                            When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
+                            When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                            When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
+                            When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
+                        )))['position'] or 0
             result[c.id] = {
                 'choice': c.title,
-                'position': v1 - v2 + v3 - v4
+                'position': v
             }
         return result
 
@@ -137,6 +125,7 @@ class Choice(models.Model):
 
     def _getLastCompleteOrder(self):
         o = Operation.objects.filter(Q(from_order__choice__id=self.id) | Q(to_order__choice__id=self.id)) \
+                             .filter(from_liquidation=0) \
                              .order_by('-created_at')[0:1].get()
         order = self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
         if order.id == o.from_order_id:
@@ -235,11 +224,13 @@ class OrderManager(models.Manager):
             return self.filter(user__id=user_id).filter(choice__market__id=market_id) \
                                                 .filter(from_order__isnull=True) \
                                                 .filter(to_order__isnull=True) \
-                                                .filter(deleted=0)
+                                                .filter(deleted=0) \
+                                                .filter(from_liquidation=0)
         else:
             return self.filter(user__id=user_id).filter(from_order__isnull=True) \
                                                 .filter(to_order__isnull=True) \
-                                                .filter(deleted=0)
+                                                .filter(deleted=0) \
+                                                .filter(from_liquidation=0)
 
     def deleteOpenOrders(self, user_id, orders):
         for o in orders:
@@ -257,6 +248,7 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
     residual = models.BooleanField(default=0)
     deleted = models.BooleanField(default=0)
+    from_liquidation = models.BooleanField(default=0)
     matches = models.ManyToManyField('self',
                                        through='Operation',
                                        through_fields=('from_order', 'to_order'),
@@ -274,6 +266,7 @@ class Operation(models.Model):
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
     amount = models.PositiveIntegerField(blank=False, null=False)
     price = models.FloatField(validators = [MinValueValidator(0.0), MaxValueValidator(1.0)])
+    from_liquidation = models.BooleanField(default=0)
 
     class Meta:
         unique_together = (('from_order', 'to_order'),)

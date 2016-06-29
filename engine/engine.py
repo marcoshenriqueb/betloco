@@ -1,4 +1,5 @@
 from market.models import Choice, Operation, Order, Market
+from django.contrib.auth.models import User
 
 class OrderEngine():
     """Responsible for orders price-time matching"""
@@ -31,7 +32,8 @@ class OrderEngine():
                     from_order=self.order,
                     to_order=o,
                     amount=amount,
-                    price=price
+                    price=price,
+                    from_liquidation=self.order.from_liquidation
                 )
                 # Breaks loop if remaning amount is less than this offer amount
                 # That means that the current offer was completely executed
@@ -61,7 +63,8 @@ class OrderEngine():
                     choice=self.remainingAmountOffer.choice,
                     amount=self.amountBalance,
                     price=self.remainingAmountOffer.price,
-                    residual=1
+                    residual=1,
+                    from_liquidation=self.remainingAmountOffer.from_liquidation
                 )
                 o.created_at = self.remainingAmountOffer.created_at
                 o.save()
@@ -83,3 +86,6 @@ class LiquidationEngine():
                                     .filter(to_order__isnull=True) \
                                     .filter(deleted=0) \
                                     .update(deleted=1)
+
+    # def placeLoosingOrders(self):
+    #     self.market.order_set
