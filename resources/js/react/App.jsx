@@ -14,7 +14,7 @@ var App = React.createClass({
     var that = this;
     req('/api/transactions/balance/?format=json').then(function(response){
       that.setState({
-        balance: response
+        balance: response.total
       });
     });
   },

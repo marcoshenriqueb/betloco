@@ -30,6 +30,9 @@ var ProfileContainer = React.createClass({
   _historyRoute: function(){
     browserHistory.push('/app/perfil/historico-transacoes/');
   },
+  _fundsRoute: function(){
+    browserHistory.push('/app/perfil/fundos/');
+  },
   _logout: function(){
     window.location = "/accounts/logout/";
   },
@@ -41,7 +44,7 @@ var ProfileContainer = React.createClass({
             <Menu>
               <MenuItem primaryText="Minhas posições" onTouchTap={this._positionRoute} leftIcon={<TrendingUp />} />
               <MenuItem primaryText="Histórico" onTouchTap={this._historyRoute} leftIcon={<_History />} />
-              <MenuItem primaryText="Fundos" leftIcon={<Money />} />
+              <MenuItem primaryText="Fundos" onTouchTap={this._fundsRoute} leftIcon={<Money />} />
               <Divider />
               <MenuItem primaryText="Configurações" leftIcon={<Settings />} />
               <Divider />

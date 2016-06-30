@@ -38,7 +38,13 @@ class TransactionManager(models.Manager):
            .aggregate(balance=Sum(F('amount')*F('price'), output_field=models.FloatField()))['balance'] or 0
         toOrderOperations = Operation.objects.filter(to_order__user__id=user_id) \
            .aggregate(balance=Sum(F('to_order__amount')*F('to_order__price'), output_field=models.FloatField()))['balance'] or 0
-        return transactions - buyOrders - fromOrderBuyOperations + fromOrderSellOperations - toOrderOperations
+        return {
+            'total': transactions - buyOrders - fromOrderBuyOperations + fromOrderSellOperations - toOrderOperations,
+            'transactions': transactions,
+            'buyOrders': buyOrders,
+            'operations': - fromOrderBuyOperations + fromOrderSellOperations - toOrderOperations
+        }
+
 
 class Transaction(models.Model):
     """docstring for Transaction"""
