@@ -5,6 +5,7 @@ import MenuItem from 'material-ui/MenuItem';
 import _History from 'material-ui/svg-icons/action/history';
 import Money from 'material-ui/svg-icons/editor/monetization-on';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
+import ActionGavel from 'material-ui/svg-icons/action/gavel';
 import Divider from 'material-ui/Divider';
 import Settings from 'material-ui/svg-icons/action/settings';
 import Power from 'material-ui/svg-icons/action/power-settings-new';
@@ -27,6 +28,9 @@ var ProfileContainer = React.createClass({
   _positionRoute: function(){
     browserHistory.push('/app/perfil/minhas-posicoes/');
   },
+  _ordersRoute: function(){
+    browserHistory.push('/app/perfil/minhas-ordens/');
+  },
   _historyRoute: function(){
     browserHistory.push('/app/perfil/historico-transacoes/');
   },
@@ -43,6 +47,7 @@ var ProfileContainer = React.createClass({
           <Paper style={style.paper}>
             <Menu>
               <MenuItem primaryText="Minhas posições" onTouchTap={this._positionRoute} leftIcon={<TrendingUp />} />
+              <MenuItem primaryText="Minhas Ordens" onTouchTap={this._ordersRoute} leftIcon={<ActionGavel />} />
               <MenuItem primaryText="Histórico" onTouchTap={this._historyRoute} leftIcon={<_History />} />
               <MenuItem primaryText="Fundos" onTouchTap={this._fundsRoute} leftIcon={<Money />} />
               <Divider />

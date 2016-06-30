@@ -67,7 +67,7 @@ var Funds = React.createClass({
                 <TableRow>
                   <TableRowColumn className="multiple-market-table__choice"
                                   style={styles.firstColumn}>
-                    Perdas/Ganhos em operações (R$)
+                    Ganhos/Perdas em operações (R$)
                   </TableRowColumn>
                   <TableRowColumn style={styles.secondColumn}>{this.state.funds.operations}</TableRowColumn>
                 </TableRow>

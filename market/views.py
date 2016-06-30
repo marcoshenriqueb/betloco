@@ -44,7 +44,7 @@ class OpenOrdersView(APIView):
         market = None
         if 'market' in request.query_params:
             market = request.query_params['market']
-        return Response(Order.objects.getOpenOrders(request.user.id, market).values('id', 'choice', 'price', 'amount'))
+        return Response(Order.objects.getOpenOrders(request.user.id, market))
 
     def delete(self, request):
         Order.objects.deleteOpenOrders(request.user.id, json.loads(request.query_params['orders']))
