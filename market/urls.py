@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', views.DetailEvent.as_view()),
     url(r'^choice/(?P<pk>[0-9]+)/$', views.DetailMarket.as_view()),
     url(r'^my-positions/$', views.PlayerPositionsView.as_view()),
+    url(r'^my-history/$', views.PlayerHistoryView.as_view()),
 ]

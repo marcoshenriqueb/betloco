@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum, Q, F, Case, When
+from django.db.models import Sum, Avg, Q, F, Case, When
 import operator, functools
 from itertools import chain
 
@@ -229,6 +229,30 @@ class OrderManager(models.Manager):
                                                                     'market__title_short'
                                                                 ).get()
         return positive_positions
+
+    def getPlayerHistory(self, user_id):
+        history = self.filter(user__id=user_id) \
+                       .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+                       .values('id').annotate(
+                            amount_sum=Sum(Case(
+                                When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
+                                When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                                When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
+                                When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
+                            )),
+                            price_avg=Avg(Case(
+                                When(from_order__isnull=False, then='from_order__price'),
+                                When(to_order__isnull=False, then='price')
+                            ))
+                        ).values(
+                            'id',
+                            'choice__market__title',
+                            'choice__market__title_short',
+                            'choice__title',
+                            'amount_sum',
+                            'price_avg'
+                        )
+        return history
 
     def getOpenOrders(self, user_id, market_id=None):
         if market_id:

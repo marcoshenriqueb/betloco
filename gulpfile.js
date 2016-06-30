@@ -18,7 +18,7 @@ gulp.task('script', function() {
   var b = browserify('./resources/js/app.js', {
       cache: {},
       packageCache: {},
-      // plugin: [livereactload],
+      plugin: [livereactload],
       transform: [[babelify, {presets: ["es2015", "react"]}]]
     })
   var w = watchify(b);
@@ -29,7 +29,7 @@ gulp.task('script', function() {
     w.bundle()
     .pipe(source('app.bundled.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('./front/static/front/js'));
   }
 });

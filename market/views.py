@@ -63,3 +63,9 @@ class PlayerPositionsView(APIView):
     def get(self, request):
         positions = Order.objects.getPlayerPositions(request.user.id)
         return Response(positions)
+
+class PlayerHistoryView(APIView):
+    """docstring for PlayerHistoryView"""
+    def get(self, request):
+        history = Order.objects.getPlayerHistory(request.user.id)
+        return Response(history)
