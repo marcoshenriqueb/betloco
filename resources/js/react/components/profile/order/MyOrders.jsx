@@ -51,7 +51,7 @@ var MyOrders = React.createClass({
     }
     return (
       <div>
-        <h2 style={{marginTop:20}}>Posições em Aberto</h2>
+        <h2 style={{marginTop:20}}>Ordens em Aberto</h2>
         <Card initiallyExpanded={true}>
           <CardText expandable={true}>
             <Table>
