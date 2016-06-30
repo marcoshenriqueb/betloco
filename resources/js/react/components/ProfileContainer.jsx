@@ -6,7 +6,6 @@ import _History from 'material-ui/svg-icons/action/history';
 import Money from 'material-ui/svg-icons/editor/monetization-on';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import Divider from 'material-ui/Divider';
-import Person from 'material-ui/svg-icons/social/person';
 import Settings from 'material-ui/svg-icons/action/settings';
 import Power from 'material-ui/svg-icons/action/power-settings-new';
 import FontIcon from 'material-ui/FontIcon';
@@ -28,6 +27,9 @@ var ProfileContainer = React.createClass({
   _positionRoute: function(){
     browserHistory.push('/app/perfil/minhas-posicoes/');
   },
+  _logout: function(){
+    window.location = "/accounts/logout/";
+  },
   render: function() {
     return (
       <div className="profile-container">
@@ -38,10 +40,9 @@ var ProfileContainer = React.createClass({
               <MenuItem primaryText="Histórico" leftIcon={<_History />} />
               <MenuItem primaryText="Fundos" leftIcon={<Money />} />
               <Divider />
-              <MenuItem primaryText="Perfil" leftIcon={<Person />} />
               <MenuItem primaryText="Configurações" leftIcon={<Settings />} />
               <Divider />
-              <MenuItem primaryText="Sair" leftIcon={<Power />} />
+              <MenuItem primaryText="Sair" onTouchTap={this._logout} leftIcon={<Power />} />
             </Menu>
           </Paper>
         </div>
