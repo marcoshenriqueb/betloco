@@ -250,6 +250,7 @@ class OrderManager(models.Manager):
                             'choice__market__title_short',
                             'choice__title',
                             'amount_sum',
+                            'created_at',
                             'price_avg'
                         )
         return history

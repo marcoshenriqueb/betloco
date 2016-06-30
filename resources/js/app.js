@@ -17,6 +17,7 @@ import ProfileContainer from './react/components/ProfileContainer.jsx';
 import MarketDetailContainer from './react/components/MarketDetailContainer.jsx';
 import EventDetailContainer from './react/components/EventDetailContainer.jsx';
 import Position from './react/components/profile/position/Position.jsx';
+import MyHistory from './react/components/profile/history/MyHistory.jsx';
 
 ReactDOM.render((
   <Router history={browserHistory}>
@@ -24,6 +25,7 @@ ReactDOM.render((
       <Route path="/app/" component={MarketContainer} />
       <Route path="/app/perfil" component={ProfileContainer}>
         <Route path="minhas-posicoes" component={Position}/>
+        <Route path="historico-transacoes" component={MyHistory}/>
       </Route>
       <Route path="/app/mercado/:id" component={MarketDetailContainer} />
       <Route path="/app/evento/:id" component={EventDetailContainer} />
