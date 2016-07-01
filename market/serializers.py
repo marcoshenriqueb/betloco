@@ -146,7 +146,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             if o > 0:
                 raise serializers.ValidationError("Can't place bets on both Yes and No!")
             balance = Transaction.objects.balance(self.context['request'].user.id)
-            if data['amount']*data['price'] > balance:
+            if data['amount']*data['price'] > balance['total']:
                 raise serializers.ValidationError("Not enough cash to place the order!")
 
         return data
