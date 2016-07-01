@@ -20,6 +20,7 @@ import Position from './react/components/profile/position/Position.jsx';
 import MyHistory from './react/components/profile/history/MyHistory.jsx';
 import Funds from './react/components/profile/funds/Funds.jsx';
 import MyOrders from './react/components/profile/order/MyOrders.jsx';
+import MyConfig from './react/components/profile/config/MyConfig.jsx';
 
 ReactDOM.render((
   <Router history={browserHistory}>
@@ -30,6 +31,7 @@ ReactDOM.render((
         <Route path="minhas-ordens" component={MyOrders}/>
         <Route path="historico-transacoes" component={MyHistory}/>
         <Route path="fundos" component={Funds}/>
+        <Route path="minhas-configuracoes" component={MyConfig}/>
       </Route>
       <Route path="/app/mercado/:id" component={MarketDetailContainer} />
       <Route path="/app/evento/:id" component={EventDetailContainer} />
