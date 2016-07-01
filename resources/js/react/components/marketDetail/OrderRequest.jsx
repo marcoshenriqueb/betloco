@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, CardActions, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 var styles = {
@@ -16,7 +16,8 @@ var styles = {
     'paddingLeft': 8
   },
   buysellbtn: {
-    'minWidth': 40
+    'minWidth': 40,
+    'margin': 5
   },
   cardheadertitle: {
     color: 'rgb(255,255,255)',
@@ -51,10 +52,10 @@ var OrderRequest = React.createClass({
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">
             <div className="orderrequest-card__buy-column">
-              <FlatButton disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
+              <RaisedButton primary={true} disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
             </div>
             <div className="orderrequest-card__sell-column">
-              <FlatButton disabled={disableSell} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
+              <RaisedButton secondary={true} disabled={disableSell} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
             </div>
           </div>
         </CardActions>

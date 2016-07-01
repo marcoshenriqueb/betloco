@@ -79,7 +79,7 @@ class LiquidationEngine():
         self.market = Market.objects.get(pk=market_id)
         self.winningId = self.getWinningChoiceId()
         self.cancelPendingOrders()
-        self.placeLoosingOrders()
+        self.placeLiquidationOrders()
 
     def getWinningChoiceId(self):
         choices = self.market.choices.all()
@@ -95,7 +95,7 @@ class LiquidationEngine():
                                     .filter(deleted=0) \
                                     .update(deleted=1)
 
-    def placeLoosingOrders(self):
+    def placeLiquidationOrders(self):
         positions = Order.objects.getAllMarketPositions(self.market.id)
         for p in positions:
             price = 0
