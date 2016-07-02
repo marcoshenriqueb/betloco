@@ -69,6 +69,8 @@ var EventCard = React.createClass({
       <Card className="marketcard">
         <CardTitle
           title={this.props._event.title}
+          titleStyle={{cursor:'pointer'}}
+          onTouchTap={this.goToMarketDetail}
           subtitle={
             <div className="marketcard-subtitle">
               <span>Mercado: {this.props._event.event_type}</span>
