@@ -13,38 +13,43 @@ var styles = {
 
 var Details = React.createClass({
   render: function() {
+    if (Object.keys(this.props.market).length !== 0 || this.props.market.constructor !== Object) {
+      return (
+        <Card initiallyExpanded={true}>
+          <CardHeader actAsExpander={true} showExpandableButton={true} title="Detalhes do Mercado" />
+          <CardText expandable={true} style={styles.noPaddingTop}>
+            <p style={styles.noMarginTop}>{this.props.market.description}</p>
+            <Table>
+              <TableBody displayRowCheckbox={false}
+                         showRowHover={true}>
+                <TableRow>
+                  <TableRowColumn>Taxa:</TableRowColumn>
+                  <TableRowColumn>{this.props.market.trading_fee * 100}%</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>Volume(papéis):</TableRowColumn>
+                  <TableRowColumn>{this.props.market.volume}</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>Data de Encerramento:</TableRowColumn>
+                  <TableRowColumn>{this.props.market.deadline}</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>Data de Criação:</TableRowColumn>
+                  <TableRowColumn>{this.props.market.created_at}</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>Autor:</TableRowColumn>
+                  <TableRowColumn>{this.props.market.user}</TableRowColumn>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardText>
+        </Card>
+      )
+    }
     return (
-      <Card initiallyExpanded={true}>
-        <CardHeader actAsExpander={true} showExpandableButton={true} title="Detalhes do Mercado" />
-        <CardText expandable={true} style={styles.noPaddingTop}>
-          <p style={styles.noMarginTop}>{this.props.market.description}</p>
-          <Table>
-            <TableBody displayRowCheckbox={false}
-                       showRowHover={true}>
-              <TableRow>
-                <TableRowColumn>Taxa:</TableRowColumn>
-                <TableRowColumn>{this.props.market.trading_fee * 100}%</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>Volume(papéis):</TableRowColumn>
-                <TableRowColumn>{this.props.market.volume}</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>Data de Encerramento:</TableRowColumn>
-                <TableRowColumn>{this.props.market.deadline}</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>Data de Criação:</TableRowColumn>
-                <TableRowColumn>{this.props.market.created_at}</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>Autor:</TableRowColumn>
-                <TableRowColumn>{this.props.market.user}</TableRowColumn>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardText>
-      </Card>
+      <div/>
     );
   }
 });

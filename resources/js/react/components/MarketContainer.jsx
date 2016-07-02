@@ -54,10 +54,26 @@ var MarketContainer = React.createClass({
         </FloatingActionButton>
       );
     }
+    var markets = (
+      <div>
+        <br/>
+        <div className="bouncer">
+          <div className="bounce1"></div>
+          <div className="bounce2"></div>
+          <div className="bounce3"></div>
+        </div>
+        <br/>
+      </div>
+    );
+    if (this.state.events.length > 0) {
+      markets = (
+        <_Event events={this.state.events} search={this.state.search} />
+      );
+    }
     return (
       <div className="app-content">
         <SearchComp search={this.state.search} onUserInput={this.handleUserInput} />
-        <_Event events={this.state.events} search={this.state.search} />
+        {markets}
         {nextPageButton}
         <br />
         <br />
