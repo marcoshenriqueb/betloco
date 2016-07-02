@@ -29,7 +29,7 @@ var EventCard = React.createClass({
         <div key={k}>
           <div className="marketcard-predictions__choices">
             <h5>{c.title}</h5>
-            <p>({c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 + '%' : '0%'})</p>
+            <p>{c.lastCompleteOrder != null ? (c.lastCompleteOrder.price * 100).toFixed(1) + '%' : '0%'}</p>
           </div>
           <LinearProgress style={style.linear}
                           mode="determinate"

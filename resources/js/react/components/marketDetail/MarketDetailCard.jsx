@@ -55,9 +55,15 @@ var MarketDetailCard = React.createClass({
           </h2>
           <div className="orderrequest-container">
             {this.props.market.choices.map((choice) => {
+              var disable = false;
+              for (var k in this.props.custody) {
+                if (k != choice.id && this.props.custody[k].position > 0) {
+                  disable = true;
+                }
+              }
               return <OrderRequest openDialog={this.props.openDialog}
                                    choice={choice}
-                                   disableOrderRequest={disableOrderRequest}
+                                   disableOrderRequest={disableOrderRequest || disable}
                                    custody={this.props.custody[choice.id]}
                                    key={choice.id} />
             })}
