@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'transaction',
     'rest_framework',
     'allauth',
+    'django.contrib.algoliasearch',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
@@ -87,6 +88,11 @@ except ImportError:
 
     DATABASES = {
         'default': {}
+    }
+    ALGOLIA = {
+        'APPLICATION_ID': "I1N0D7FVQX",
+        'API_KEY': "79ac62468de382e1756e0e10b4924a9b",
+        'INDEX_SUFFIX': 'staging'
     }
     import dj_database_url
     db_from_env = dj_database_url.config(conn_max_age=500)

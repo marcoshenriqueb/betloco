@@ -1,7 +1,11 @@
+algoliasearch==1.9.0
+algoliasearch-django==1.2.4
 asgi-redis==0.13.1
 asgiref==0.13.3
 autobahn==0.14.1
+cffi==1.7.0
 channels==0.14.1
+cryptography==1.4
 daphne==0.12.1
 defusedxml==0.4.1
 dj-database-url==0.4.1
@@ -11,9 +15,14 @@ django-filter==0.13.0
 django-redis-cache==1.6.5
 djangorestframework==3.3.3
 gunicorn==19.6.0
+idna==2.1
 msgpack-python==0.4.7
+ndg-httpsclient==0.4.1
 oauthlib==1.1.1
 psycopg2==2.6.1
+pyasn1==0.1.9
+pycparser==2.14
+pyOpenSSL==16.0.0
 python3-openid==3.0.10
 redis==2.10.5
 requests==2.10.0

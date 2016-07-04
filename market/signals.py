@@ -1,6 +1,6 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
-from .models import Order, Choice
+from .models import Order, Choice, Event
 from engine.engine import OrderEngine
 from channels import Channel
 from django.utils import timezone
@@ -37,3 +37,15 @@ def postSaveChoice(sender, instance, created, **kwargs):
             Channel("liquidate-market").send({
                 "market_id": instance.market.id
             })
+
+# @receiver(post_save, sender=Event)
+# def postSaveEvent(sender, instance, created, **kwargs):
+#     Channel("event-save").send({
+#         "event_id": instance.id
+#     })
+#
+# @receiver(pre_delete, sender=Event)
+# def preDeleteEvent(sender, instance, **kwargs):
+#     Channel("event-delete").send({
+#         "event_id": instance.id
+#     })

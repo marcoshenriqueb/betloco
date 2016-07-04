@@ -6,6 +6,7 @@ from engine.engine import LiquidationEngine
 from .models import Market, Choice
 from .serializers import MarketDetailSerializer
 import json
+from .search import Algolia
 
 # Connected to websocket.connect
 @enforce_ordering(slight=True)
