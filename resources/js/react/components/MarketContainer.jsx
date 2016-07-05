@@ -8,12 +8,15 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 var MarketContainer = React.createClass({
   getInitialState: function() {
     return {
-      events: [],
+      events: null,
       search: '',
       next: null
     };
   },
   getEvents: function(search){
+    this.setState({
+      events: null
+    });
     var url = '/api/markets/?format=json';
     if (search != undefined) {
       url += '&query=' + search;
@@ -67,7 +70,7 @@ var MarketContainer = React.createClass({
         <br/>
       </div>
     );
-    if (this.state.events.length > 0) {
+    if (this.state.events != null) {
       markets = (
         <_Event events={this.state.events} search={this.state.search} />
       );

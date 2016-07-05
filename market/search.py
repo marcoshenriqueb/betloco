@@ -29,7 +29,6 @@ class ElasticSearch():
         try:
             self.es.indices.get("events-index")
         except ElasticsearchException as e:
-            print("passei aqui")
             self.es.indices.create(
                 index="events-index",
                 body={
