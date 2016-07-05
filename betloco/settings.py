@@ -120,6 +120,12 @@ except ImportError:
         },
     }
 
+    ELASTICSEARCH = {
+        'URL': "http://paas:be8c797e43ed4c7bd9bb5128cbfe0f3e@dori-us-east-1.searchly.com",
+        'INDEX_SUFFIX': 'stage'
+    }
+
+
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 

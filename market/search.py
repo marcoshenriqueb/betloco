@@ -23,9 +23,7 @@ class Algolia():
 class ElasticSearch():
     """search with ElasticSearch"""
     def __init__(self):
-        self.es = Elasticsearch([
-            {'host': settings.ELASTICSEARCH['HOST'], 'port': settings.ELASTICSEARCH['PORT']}
-        ])
+        self.es = Elasticsearch([settings.ELASTICSEARCH['URL']])
 
     def indexEvents(self):
         try:
@@ -44,24 +42,8 @@ class ElasticSearch():
                         }
                       }
                     }
-                 },
-                "mappings": {
-                    "test": {
-                      "properties": {
-                        "title": {
-                          "type": "string",
-                          "analyzer": "standard",
-                          "fields": {
-                            "folded": {
-                              "type": "string",
-                              "analyzer": "default"
-                            }
-                          }
-                        }
-                      }
-                    }
-                }
-              }
+                 }
+               }
             )
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
@@ -88,8 +70,8 @@ class ElasticSearch():
                     doc_type="events",
                     body={
                         "query":{
-                            "filtered":{
-                                "query":{"match_all":{}},
+                            "bool":{
+                                "must":{"match_all":{}},
                             },
                         },
                         "from": page*pagination,
@@ -102,8 +84,8 @@ class ElasticSearch():
                     doc_type="events",
                     body={
                         "query":{
-                            "filtered":{
-                                "query":{
+                            "bool":{
+                                "must":{
                                     "multi_match": {
                                       "type": "most_fields",
                                       "query": query,
