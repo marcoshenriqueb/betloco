@@ -34,12 +34,24 @@ class ElasticSearch():
                 body={
                 "settings": {
                     "analysis": {
-                      "analyzer": {
-                        "default": {
-                          "tokenizer": "standard",
-                          "filter":  [ "lowercase", "asciifolding" ]
+                          "filter": {
+                            "autocomplete_filter": {
+                                "type": "edge_ngram",
+                                "min_gram": 1,
+                                "max_gram": 20
+                            }
+                        },
+                        "analyzer": {
+                            "default": {
+                                "type":      "custom",
+                                "tokenizer": "standard",
+                                "filter": [
+                                    "lowercase",
+                                    "asciifolding",
+                                    "autocomplete_filter"
+                                ]
+                            }
                         }
-                      }
                     }
                  }
                }
@@ -60,6 +72,12 @@ class ElasticSearch():
                 helpers.bulk(self.es, data)
             except ElasticsearchException as e:
                 print(str(e))
+
+    def deleteEventIndex(self):
+        try:
+            self.es.indices.delete("events-index")
+        except ElasticsearchException as e:
+            print('error')
 
     def search(self, query=None, pagination=10, page=0):
         try:
