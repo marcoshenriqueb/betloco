@@ -14,6 +14,7 @@ django-allauth==0.25.2
 django-filter==0.13.0
 django-redis-cache==1.6.5
 djangorestframework==3.3.3
+elasticsearch==2.3.0
 gunicorn==19.6.0
 idna==2.1
 msgpack-python==0.4.7
@@ -30,5 +31,6 @@ requests-oauthlib==0.6.1
 six==1.10.0
 Twisted==16.2.0
 txaio==2.5.1
+urllib3==1.16
 whitenoise==3.2
 zope.interface==4.2.0
