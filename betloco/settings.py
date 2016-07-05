@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-
+from urllib.parse import urlparse
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -119,13 +119,15 @@ except ImportError:
             },"ROUTING": "betloco.routing.channel_routing",
         },
     }
-
+    es = urlparse(os.environ.get('SEARCHBOX_URL') or 'http://127.0.0.1:9200/')
+    port = es.port or 80
     ELASTICSEARCH = {
-        'URL': "http://paas:be8c797e43ed4c7bd9bb5128cbfe0f3e@dori-us-east-1.searchly.com",
+        'URL': es.scheme + '://' + es.hostname + ':' + str(port),
         'INDEX_SUFFIX': 'stage'
     }
-
-
+    if es.username:
+        ELASTICSEARCH['URL'] = es.scheme + '://'+ es.username + ':' + es.password + '@' + es.hostname + ':' + str(port)
+        
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
