@@ -3,17 +3,22 @@ from rest_framework import generics, filters
 from rest_framework.response import Response
 from .models import Event, Market, Choice, Order
 from .serializers import ChoiceSerializer, MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
+from .search import ElasticSearch
 from channels import Channel
 import json
 
-class ListEvents(generics.ListAPIView):
+class ListEvents(APIView):
     """
     View to list all events in the system.
     """
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('title',)
+    def get(self, request):
+        es = ElasticSearch()
+        query = None
+        if 'query' in request.query_params:
+            query = request.query_params['query']
+        if 'page' not in request.query_params:
+            return Response(es.search(query))
+        return Response(es.search(query, page=request.query_params['page']))
 
 class DetailEvent(generics.RetrieveAPIView):
     """

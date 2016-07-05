@@ -3,6 +3,7 @@ from django.conf import settings
 from .models import Event
 from .serializers import EventSerializer
 from elasticsearch import helpers, Elasticsearch, ElasticsearchException
+from django.utils import timezone
 
 class Algolia():
     """search with Algolia"""
@@ -27,6 +28,41 @@ class ElasticSearch():
         ])
 
     def indexEvents(self):
+        try:
+            self.es.indices.get("events-index")
+        except ElasticsearchException as e:
+            print("passei aqui")
+            self.es.indices.create(
+                index="events-index",
+                body={
+                "settings": {
+                    "analysis": {
+                      "analyzer": {
+                        "default": {
+                          "tokenizer": "standard",
+                          "filter":  [ "lowercase", "asciifolding" ]
+                        }
+                      }
+                    }
+                 },
+                "mappings": {
+                    "test": {
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "analyzer": "standard",
+                          "fields": {
+                            "folded": {
+                              "type": "string",
+                              "analyzer": "default"
+                            }
+                          }
+                        }
+                      }
+                    }
+                }
+              }
+            )
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
         data = []
@@ -41,11 +77,52 @@ class ElasticSearch():
         if len(data) > 0:
             try:
                 helpers.bulk(self.es, data)
-            except Exception as e:
+            except ElasticsearchException as e:
                 print(str(e))
 
-    def search(self, query):
+    def search(self, query=None, pagination=10, page=0):
         try:
-            self.es.search(index="events-index", doc_type="events", body={"query":{"title":query}})
+            if query is None or len(query) < 3:
+                result = self.es.search(
+                    index="events-index",
+                    doc_type="events",
+                    body={
+                        "query":{
+                            "filtered":{
+                                "query":{"match_all":{}},
+                            },
+                        },
+                        "from": page*pagination,
+                        "size": pagination
+                    }
+                )
+            else:
+                result = self.es.search(
+                    index="events-index",
+                    doc_type="events",
+                    body={
+                        "query":{
+                            "filtered":{
+                                "query":{
+                                    "multi_match": {
+                                      "type": "most_fields",
+                                      "query": query,
+                                      "fields": [
+                                            "title",
+                                            "title.folded"
+                                        ]
+                                    }
+                                }
+                            },
+                        },
+                        "from": page*pagination,
+                        "size": pagination
+                    }
+                )
+            if result['hits']['total'] <= (int(page)+1)*int(pagination):
+                result['next'] = None
+            else:
+                result['next'] = int(page) + 1
+            return result
         except ElasticsearchException as e:
             print(e.args)

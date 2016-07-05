@@ -16,20 +16,22 @@ var MarketContainer = React.createClass({
   getEvents: function(search){
     var url = '/api/markets/?format=json';
     if (search != undefined) {
-      url += '&search=' + search;
+      url += '&query=' + search;
     }
     var that = this;
     req(url).then(function(response){
       that.setState({
-        events: response.results,
+        events: response.hits.hits,
         next: response.next
       });
     });
   },
   getNextEventPage: function(){
+    var url = '/api/markets/?format=json&page=' + this.state.next;
+    url += '&query=' + this.state.search;
     var that = this;
-    req(this.state.next).then(function(response){
-      var events = that.state.events.concat(response.results);
+    req(url).then(function(response){
+      var events = that.state.events.concat(response.hits.hits);
       that.setState({
         events: events,
         next: response.next

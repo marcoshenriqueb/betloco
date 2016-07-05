@@ -6,4 +6,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         e = ElasticSearch()
-        return e.search("will ether")
+        e.indexEvents()
