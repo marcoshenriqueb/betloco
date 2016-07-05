@@ -63,7 +63,7 @@ class ElasticSearch():
 
     def search(self, query=None, pagination=10, page=0):
         try:
-            if query is None or len(query) < 3:
+            if query is None or len(query) == 0:
                 result = self.es.search(
                     index="events-index",
                     doc_type="events",
