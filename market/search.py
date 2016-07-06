@@ -56,7 +56,7 @@ class ElasticSearch():
                  }
                }
             )
-        events = Event.objects.all()
+        events = Event.objects.filter(deadline__gte=timezone.now()).all()
         serializer = EventSerializer(events, many=True)
         data = []
         for e in serializer.data:
