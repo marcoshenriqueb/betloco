@@ -64,13 +64,6 @@ var Funds = React.createClass({
                   </TableRowColumn>
                   <TableRowColumn style={styles.secondColumn}>{this.state.funds.buyOrders}</TableRowColumn>
                 </TableRow>
-                <TableRow>
-                  <TableRowColumn className="multiple-market-table__choice"
-                                  style={styles.firstColumn}>
-                    Ganhos/Perdas em operações (R$)
-                  </TableRowColumn>
-                  <TableRowColumn style={styles.secondColumn}>{this.state.funds.operations}</TableRowColumn>
-                </TableRow>
               </TableBody>
             </Table>
           </CardText>

@@ -40,7 +40,7 @@ var MyOrders = React.createClass({
           </TableRowColumn>
           <TableRowColumn>{o.choice__title}</TableRowColumn>
           <TableRowColumn>{o.amount}</TableRowColumn>
-          <TableRowColumn>{o.price}</TableRowColumn>
+          <TableRowColumn>{o.price*100}¢</TableRowColumn>
           <TableRowColumn>
             <IndexLink to={'/app/mercado/' + o.choice__market__id + '/'}>
               <Open/>
@@ -61,7 +61,7 @@ var MyOrders = React.createClass({
                   <TableHeaderColumn style={styles.firstColumn}>Mercado</TableHeaderColumn>
                   <TableHeaderColumn>Posição</TableHeaderColumn>
                   <TableHeaderColumn>Qtde</TableHeaderColumn>
-                  <TableHeaderColumn>Preço R$</TableHeaderColumn>
+                  <TableHeaderColumn>Preço</TableHeaderColumn>
                   <TableHeaderColumn>Link</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
