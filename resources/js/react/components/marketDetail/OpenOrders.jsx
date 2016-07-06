@@ -88,8 +88,8 @@ var OpenOrders = React.createClass({
                   <TableRowColumn>{choices[o.choice]}</TableRowColumn>
                   <TableRowColumn>{(o.amount < 0) ? 'Venda' : 'Compra'}</TableRowColumn>
                   <TableRowColumn>{(o.amount < 0) ? o.amount*-1 : o.amount}</TableRowColumn>
-                  <TableRowColumn>{o.price}</TableRowColumn>
-                  <TableRowColumn>R$ {(o.amount < 0) ? o.price*o.amount*-1 : o.price*o.amount}</TableRowColumn>
+                  <TableRowColumn>{o.price*100}¢</TableRowColumn>
+                  <TableRowColumn>R$ {((o.amount < 0) ? o.price*o.amount*-1 : o.price*o.amount).toFixed(2)}</TableRowColumn>
                 </TableRow>
               ))}
             </TableBody>

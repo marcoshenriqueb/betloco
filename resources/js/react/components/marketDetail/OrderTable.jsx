@@ -21,7 +21,7 @@ var OrderTable = React.createClass({
     if (this.props.orders.length > 0) {
       orders = this.props.orders.map((o, k) => {
         return <TableRow style={styles.rowheight} key={k}>
-                <TableRowColumn style={styles.rowheight}>R$ {o.price.toFixed(2)}</TableRowColumn>
+                <TableRowColumn style={styles.rowheight}>{o.price.toFixed(2)*100}¢</TableRowColumn>
                 <TableRowColumn style={styles.rowheight}>{o.amount}</TableRowColumn>
               </TableRow>
       })

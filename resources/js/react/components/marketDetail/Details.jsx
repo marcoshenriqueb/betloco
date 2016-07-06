@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import moment from 'moment';
 
 var styles = {
   noMarginTop: {
@@ -23,20 +24,16 @@ var Details = React.createClass({
               <TableBody displayRowCheckbox={false}
                          showRowHover={true}>
                 <TableRow>
-                  <TableRowColumn>Taxa:</TableRowColumn>
-                  <TableRowColumn>{this.props.market.trading_fee * 100}%</TableRowColumn>
-                </TableRow>
-                <TableRow>
                   <TableRowColumn>Volume(papéis):</TableRowColumn>
                   <TableRowColumn>{this.props.market.volume}</TableRowColumn>
                 </TableRow>
                 <TableRow>
                   <TableRowColumn>Data de Encerramento:</TableRowColumn>
-                  <TableRowColumn>{this.props.market.deadline}</TableRowColumn>
+                  <TableRowColumn>{moment(this.props.market.deadline).format("DD/MM/YYYY HH:mm")}</TableRowColumn>
                 </TableRow>
                 <TableRow>
                   <TableRowColumn>Data de Criação:</TableRowColumn>
-                  <TableRowColumn>{this.props.market.created_at}</TableRowColumn>
+                  <TableRowColumn>{moment(this.props.market.created_at).format("DD/MM/YYYY HH:mm")}</TableRowColumn>
                 </TableRow>
                 <TableRow>
                   <TableRowColumn>Autor:</TableRowColumn>

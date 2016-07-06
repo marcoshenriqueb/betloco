@@ -48,8 +48,8 @@ var MultipleMarketTable = React.createClass({
         return (
           <TableRow key={k}>
             <TableRowColumn style={styles.choice} className="multiple-market-table__choice">{m.title_short}</TableRowColumn>
-            <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price : '0'}</TableRowColumn>
-            <TableRowColumn style={styles.td}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price : '0'}</TableRowColumn>
+            <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price*100+'¢' : '0'}</TableRowColumn>
+            <TableRowColumn style={styles.td}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price*100+'¢' : '0'}</TableRowColumn>
             <TableRowColumn style={styles.td}>{prob.toFixed(1)}%</TableRowColumn>
             <TableRowColumn style={styles.td}>{m.volume}</TableRowColumn>
             <TableRowColumn style={styles.td}>
@@ -70,8 +70,8 @@ var MultipleMarketTable = React.createClass({
                          adjustForCheckbox={false}>
                 <TableRow>
                   <TableHeaderColumn >Escolha</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.td}>Preço Sim (R$)</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.td}>Preço Não (R$)</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.td}>Preço Sim</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.td}>Preço Não</TableHeaderColumn>
                   <TableHeaderColumn style={styles.td}>Probabilidade</TableHeaderColumn>
                   <TableHeaderColumn style={styles.td}>Papéis negociados</TableHeaderColumn>
                   <TableHeaderColumn style={styles.td}></TableHeaderColumn>

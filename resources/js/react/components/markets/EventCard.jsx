@@ -3,6 +3,7 @@ import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import { browserHistory } from 'react-router';
+import moment from 'moment';
 
 var style = {
   linear: {
@@ -29,7 +30,7 @@ var EventCard = React.createClass({
         <div key={k}>
           <div className="marketcard-predictions__choices">
             <h5>{c.title}</h5>
-            <p>{c.lastCompleteOrder != null ? (c.lastCompleteOrder.price * 100).toFixed(1) + '%' : '0%'}</p>
+            <p>{c.lastCompleteOrder != null ? '(' + (c.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'}</p>
           </div>
           <LinearProgress style={style.linear}
                           mode="determinate"
@@ -74,9 +75,8 @@ var EventCard = React.createClass({
           subtitle={
             <div className="marketcard-subtitle">
               <span>Mercado: {this.props._event._source.event_type}</span>
-              <span>Taxa: {this.props._event._source.trading_fee * 100}%</span>
               <span>Volume: {this.props._event._source.volume} papéis negociados</span>
-              <span>Encerramento: {this.props._event._source.deadline}</span>
+              <span>Encerramento: {moment(this.props._event._source.deadline).format("DD/MM/YYYY HH:mm")}</span>
             </div>
           }
         />
