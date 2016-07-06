@@ -25,16 +25,24 @@ var OrderDialog = React.createClass({
     };
   },
   handleAmountChange: function(e){
-    if (!isNaN(e.target.value)) {
+    if (!isNaN(e.target.value) && Number.isInteger(Number(e.target.value))) {
+      var amount = Number(e.target.value);
+      if (Number(e.target.value) == 0) {
+        amount = '';
+      }
       this.setState({
-        amount: e.target.value
+        amount: amount
       })
     }
   },
   handlePriceChange: function(e){
-    if (!isNaN(e.target.value) && e.target.value < 100 && e.target.value >= 0) {
+    if (!isNaN(e.target.value) && e.target.value < 100 && e.target.value >= 0 && Number.isInteger(Number(e.target.value))) {
+      var price = Number(e.target.value);
+      if (Number(e.target.value) == 0) {
+        price = '';
+      }
       this.setState({
-        price: e.target.value
+        price: price
       })
     }
   },
