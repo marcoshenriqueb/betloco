@@ -29,12 +29,12 @@ gulp.task('script', function() {
     w.bundle()
     .pipe(source('app.bundled.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('./front/static/front/js'));
   }
 });
 
-gulp.task('watch', ['apply-prod-env', 'stylus', 'script'], function() {
+gulp.task('watch', ['stylus', 'script'], function() {
   gulp.watch('./resources/stylus/**/*.styl', ['stylus']);
   // gulp.watch('./resources/js/**/*', ['script']);
 });

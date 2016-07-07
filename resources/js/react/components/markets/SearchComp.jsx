@@ -1,18 +1,26 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import {fullWhite} from 'material-ui/styles/colors';
+import FilterIcon from 'material-ui/svg-icons/content/filter-list';
 
-const style = {
+var style = {
   paper: {
     padding: 20,
     margin: 20,
-    textAlign: 'center',
-    display: 'inline-block'
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   textField: {
-    width: '90%'
+    width: '100%'
   }
 };
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+  style.textField.width = '90%';
+}
 
 var SearchComp = React.createClass({
   handleSearchChange: function(val){
@@ -20,14 +28,25 @@ var SearchComp = React.createClass({
   },
 
   render: function() {
+    var filterToogle = null;
+    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+      filterToogle = (
+        <FloatingActionButton
+          primary={true}
+          mini={true}>
+          <FilterIcon color={fullWhite} />
+        </FloatingActionButton>
+      )
+    }
     return (
       <Paper className="container" style={style.paper} zDepth={1}>
-      <TextField
-        style={style.textField}
-        hintText="Procurar mercados"
-        value={this.props.search}
-        onChange={this.handleSearchChange}
-      />
+        <TextField
+          style={style.textField}
+          hintText="Procurar mercados"
+          value={this.props.search}
+          onChange={this.handleSearchChange}
+        />
+        {filterToogle}
       </Paper>
     );
   }
