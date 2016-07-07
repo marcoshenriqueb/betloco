@@ -39,7 +39,7 @@ h3 {
   border-radius: 2px;
   padding: 2px 8px 0 8px;
   background-color: #fff;
-  color: rgba(0,0,0,0.6);
+  color: rgba(0,0,0,0.541);
   font-weight: 500;
 }
 @media (min-width: 768px) {
@@ -69,14 +69,20 @@ h3 {
   flex-direction: column;
   align-items: center;
 }
-.marketcard-subtitle {
+.marketcard-subtitle,
+.marketcard-warning {
   max-width: 100%;
   display: flex;
   flex-wrap: wrap;
 }
-.marketcard-subtitle span {
+.marketcard-subtitle span,
+.marketcard-warning span {
   margin-right: 20px;
   white-space: nowrap;
+  color: rgba(0,0,0,0.541);
+}
+.marketcard-warning span {
+  font-size: 12px;
 }
 .marketcard {
   margin-bottom: 15px;
@@ -244,7 +250,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   box-shadow: none;
 }
 .multiple-market-table__choice {
-  color: rgba(0,0,0,0.6);
+  color: rgba(0,0,0,0.541);
   font-weight: bold;
 }
 .breadcrumb {

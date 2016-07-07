@@ -59,8 +59,10 @@ class ElasticSearch():
         events = Event.objects.filter(deadline__gte=timezone.now()).all()
         serializer = EventSerializer(events, many=True)
         data = []
+        now_time = timezone.now()
         for e in serializer.data:
             d = dict(e)
+            d['updated_at'] = now_time
             data.append({
                 "_index": "events-index",
                 "_type": "events",

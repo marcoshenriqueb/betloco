@@ -84,6 +84,10 @@ var EventCard = React.createClass({
           {
             textContent
           }
+          <br/>
+          <div className="marketcard-warning">
+            <span>*Última atualização de preço: {moment(this.props._event._source.updated_at).format("DD/MM/YYYY HH:mm")}</span>
+          </div>
         </CardText>
         <CardActions>
           <FlatButton onTouchTap={this.goToMarketDetail} primary={true} label="Ver Mercado" />
