@@ -121,8 +121,8 @@ class ElasticSearch():
                             },
                         },
                         "sort" : [
-                            {order.split('|')[0] : {"order" : order.split('|')[1]}},
-                            { "_score": { "order": "desc" }}
+                            { "_score": { "order": "desc" }},
+                            {order.split('|')[0] : {"order" : order.split('|')[1]}}
                         ],
                         "from": page*pagination,
                         "size": pagination
