@@ -23,7 +23,6 @@ var MarketContainer = React.createClass({
     var url = '/api/markets/?format=json';
     if (this.state.search.length > 0) {
       url += '&query=' + this.state.search;
-      console.log(this.state.search);
     }
     url += '&expired=' + this.state.checked;
     url += '&category=' + this.state.category;
