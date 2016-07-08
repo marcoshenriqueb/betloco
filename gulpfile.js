@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var stylus = require('gulp-stylus');
 var browserify = require('browserify');
 var watchify = require('watchify');
+var errorify = require('errorify');
 var livereactload = require('livereactload');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -18,10 +19,11 @@ gulp.task('script', function() {
   var b = browserify('./resources/js/app.js', {
       cache: {},
       packageCache: {},
-      // plugin: [livereactload],
+      plugin: [errorify],
       transform: [[babelify, {presets: ["es2015", "react"]}]]
     })
   var w = watchify(b);
+
   rebundle();
   return w.on("update", rebundle);
 
@@ -29,12 +31,12 @@ gulp.task('script', function() {
     w.bundle()
     .pipe(source('app.bundled.js'))
     .pipe(buffer())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('./front/static/front/js'));
   }
 });
 
-gulp.task('watch', ['stylus', 'script'], function() {
+gulp.task('watch', ['apply-prod-env', 'stylus', 'script'], function() {
   gulp.watch('./resources/stylus/**/*.styl', ['stylus']);
   // gulp.watch('./resources/js/**/*', ['script']);
 });

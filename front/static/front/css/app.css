@@ -64,6 +64,10 @@ h3 {
 .container {
   width: 95%;
 }
+.filter-container {
+  display: flex;
+  align-items: flex-end;
+}
 .markets-container {
   display: flex;
   flex-direction: column;
