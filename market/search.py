@@ -120,6 +120,10 @@ class ElasticSearch():
                                 }
                             },
                         },
+                        "sort" : [
+                            {order.split('|')[0] : {"order" : order.split('|')[1]}},
+                            "_score"
+                        ],
                         "from": page*pagination,
                         "size": pagination
                     }
