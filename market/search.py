@@ -95,7 +95,7 @@ class ElasticSearch():
                         },
                         "sort" : [
                             {order.split('|')[0] : {"order" : order.split('|')[1]}},
-                            "_score"
+                            { "_score": { "order": "desc" }}
                         ],
                         "from": page*pagination,
                         "size": pagination
@@ -121,8 +121,8 @@ class ElasticSearch():
                             },
                         },
                         "sort" : [
-                            "_score",
-                            {order.split('|')[0] : {"order" : order.split('|')[1]}}
+                            {order.split('|')[0] : {"order" : order.split('|')[1]}},
+                            { "_score": { "order": "desc" }}
                         ],
                         "from": page*pagination,
                         "size": pagination
