@@ -10,7 +10,10 @@ var MarketContainer = React.createClass({
     return {
       events: null,
       search: '',
-      next: null
+      next: null,
+      checked: false,
+      category: 'todas',
+      order: 'created_at|desc'
     };
   },
   getEvents: function(search){
@@ -21,6 +24,9 @@ var MarketContainer = React.createClass({
     if (search != undefined) {
       url += '&query=' + search;
     }
+    url += '&expired=' + this.state.checked;
+    url += '&category=' + this.state.category;
+    url += '&order=' + this.state.order;
     var that = this;
     req(url).then(function(response){
       that.setState({
@@ -52,6 +58,21 @@ var MarketContainer = React.createClass({
       search: filterText,
     });
   },
+  handleCheck: function(){
+    this.setState({
+      checked: !this.state.checked
+    });
+  },
+  handleCategoryChange: function(e, k, v){
+    this.setState({
+      category: v
+    });
+  },
+  handleOrderChange: function(e, k, v){
+    this.setState({
+      order: v
+    });
+  },
   render: function() {
     var nextPageButton = null;
     if (this.state.next != null) {
@@ -79,7 +100,14 @@ var MarketContainer = React.createClass({
     }
     return (
       <div className="app-content">
-        <SearchComp search={this.state.search} onUserInput={this.handleUserInput} />
+        <SearchComp search={this.state.search}
+                    onUserInput={this.handleUserInput}
+                    checked={this.state.checked}
+                    handleCheck={this.handleCheck}
+                    category={this.state.category}
+                    handleCategoryChange={this.handleCategoryChange}
+                    order={this.state.order}
+                    handleOrderChange={this.handleOrderChange} />
         {markets}
         {nextPageButton}
         <br />

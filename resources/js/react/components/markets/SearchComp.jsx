@@ -38,15 +38,12 @@ var checkbox = false;
 var SearchComp = React.createClass({
   getInitialState: function(){
     return {
-      expanded: false,
-      checked: false
+      expanded: false
     }
   },
   handleCheck: function(c){
-    c.checked = !this.state.checked;
-    this.setState({
-      checked: !this.state.checked
-    });
+    c.checked = !this.props.checked;
+    this.props.handleCheck();
   },
   handleSearchChange: function(val){
     this.props.onUserInput(val.target.value);
@@ -56,7 +53,6 @@ var SearchComp = React.createClass({
       checkbox = document.getElementById('check');
       if (checkbox) {
         checkbox.addEventListener('click', (e)=>{
-          console.log('click');
           this.handleCheck(checkbox.children[0]);
         })
       }
@@ -99,27 +95,25 @@ var SearchComp = React.createClass({
         />
         <CardText expandable={true} style={{paddingTop:0}}>
           <div className="filter-container">
-            <SelectField value={1}
-                         onChange={this.handleChange}
+            <SelectField value={this.props.category}
+                         onChange={this.props.handleCategoryChange}
                          floatingLabelText="Categoria"
-                         autoWidth={true}
                          style={style.firstSelect}>
-              <MenuItem value={1} primaryText="Todas" />
-              <MenuItem value={2} primaryText="Política" />
-              <MenuItem value={3} primaryText="Esportes" />
-              <MenuItem value={4} primaryText="Economia" />
+              <MenuItem value="todas" primaryText="Todas" />
+              <MenuItem value="politica" primaryText="Política" />
+              <MenuItem value="esportes" primaryText="Esportes" />
+              <MenuItem value="economia" primaryText="Economia" />
             </SelectField>
-            <SelectField value={1}
-                         onChange={this.handleChange}
+            <SelectField value={this.props.order}
+                         onChange={this.props.handleOrderChange}
                          floatingLabelText="Ordem"
-                         autoWidth={true}
                          style={style.secSelect}>
-              <MenuItem value={1} primaryText="Mais novo" />
-              <MenuItem value={2} primaryText="Mais antigo" />
-              <MenuItem value={3} primaryText="Maior volume" />
-              <MenuItem value={4} primaryText="Menor volume" />
-              <MenuItem value={4} primaryText="Mais perto de vencer" />
-              <MenuItem value={4} primaryText="Mais longe de vencer" />
+              <MenuItem value="created_at|desc" primaryText="Mais novo" />
+              <MenuItem value="created_at|asc" primaryText="Mais antigo" />
+              <MenuItem value="volume|desc" primaryText="Maior volume" />
+              <MenuItem value="volume|asc" primaryText="Menor volume" />
+              <MenuItem value="deadline|asc" primaryText="Mais perto de vencer" />
+              <MenuItem value="deadline|desc" primaryText="Mais longe de vencer" />
             </SelectField>
             <p id="check">
               <input type="checkbox" />
