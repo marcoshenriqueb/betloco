@@ -54663,13 +54663,14 @@ var MarketContainer = _react2.default.createClass({
       order: 'created_at|desc'
     };
   },
-  getEvents: function getEvents(search) {
+  getEvents: function getEvents() {
     this.setState({
       events: null
     });
     var url = '/api/markets/?format=json';
-    if (search != undefined) {
-      url += '&query=' + search;
+    if (this.state.search.length > 0) {
+      url += '&query=' + this.state.search;
+      console.log(this.state.search);
     }
     url += '&expired=' + this.state.checked;
     url += '&category=' + this.state.category;
@@ -54698,26 +54699,41 @@ var MarketContainer = _react2.default.createClass({
     this.getEvents();
   },
   handleUserInput: function handleUserInput(filterText) {
-    if (filterText.length > 3 || filterText.length == 0) {
-      this.getEvents(filterText);
-    }
+    var _this = this;
+
     this.setState({
       search: filterText
+    }, function () {
+      if (filterText.length > 3 || filterText.length == 0) {
+        _this.getEvents();
+      }
     });
   },
   handleCheck: function handleCheck() {
+    var _this2 = this;
+
     this.setState({
       checked: !this.state.checked
+    }, function () {
+      _this2.getEvents();
     });
   },
   handleCategoryChange: function handleCategoryChange(e, k, v) {
+    var _this3 = this;
+
     this.setState({
       category: v
+    }, function () {
+      _this3.getEvents();
     });
   },
   handleOrderChange: function handleOrderChange(e, k, v) {
+    var _this4 = this;
+
     this.setState({
       order: v
+    }, function () {
+      _this4.getEvents();
     });
   },
   render: function render() {

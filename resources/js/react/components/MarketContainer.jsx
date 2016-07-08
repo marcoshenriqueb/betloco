@@ -16,13 +16,14 @@ var MarketContainer = React.createClass({
       order: 'created_at|desc'
     };
   },
-  getEvents: function(search){
+  getEvents: function(){
     this.setState({
       events: null
     });
     var url = '/api/markets/?format=json';
-    if (search != undefined) {
-      url += '&query=' + search;
+    if (this.state.search.length > 0) {
+      url += '&query=' + this.state.search;
+      console.log(this.state.search);
     }
     url += '&expired=' + this.state.checked;
     url += '&category=' + this.state.category;
@@ -51,26 +52,33 @@ var MarketContainer = React.createClass({
     this.getEvents();
   },
   handleUserInput: function(filterText) {
-    if (filterText.length > 3 || filterText.length == 0) {
-      this.getEvents(filterText);
-    }
     this.setState({
       search: filterText,
+    }, ()=>{
+      if (filterText.length > 3 || filterText.length == 0) {
+        this.getEvents();
+      }
     });
   },
   handleCheck: function(){
     this.setState({
       checked: !this.state.checked
+    }, ()=>{
+      this.getEvents();
     });
   },
   handleCategoryChange: function(e, k, v){
     this.setState({
       category: v
+    }, ()=>{
+      this.getEvents();
     });
   },
   handleOrderChange: function(e, k, v){
     this.setState({
       order: v
+    }, ()=>{
+      this.getEvents();
     });
   },
   render: function() {
