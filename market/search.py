@@ -37,7 +37,7 @@ class ElasticSearch():
                           "filter": {
                             "autocomplete_filter": {
                                 "type": "edge_ngram",
-                                "min_gram": 4,
+                                "min_gram": 2,
                                 "max_gram": 20
                             }
                         },
@@ -46,6 +46,7 @@ class ElasticSearch():
                                 "type":      "custom",
                                 "tokenizer": "standard",
                                 "filter": [
+                                    "standard",
                                     "lowercase",
                                     "asciifolding",
                                     "autocomplete_filter"
