@@ -220,7 +220,7 @@ class ElasticSearch():
                  }
                }
             )
-        events = Event.objects.filter(deadline__gte=timezone.now()).all()
+        events = Event.objects.filter().all()
         serializer = EventSerializer(events, many=True)
         data = []
         now_time = timezone.now()
@@ -287,6 +287,20 @@ class ElasticSearch():
                         }
                     }
                 }
+            if expired == 'false':
+                _range = {
+                    "range": {
+                        "deadline":{
+                            "gte" : "now"
+                        }
+                    }
+                }
+                if 'filter' in body['query']['bool']:
+                    body['query']['bool']['filter'] = _range
+                else:
+                    body['query']['bool'] = {
+                        "filter": _range
+                    }
             result = self.es.search(
                 index="events-index",
                 doc_type="events",
