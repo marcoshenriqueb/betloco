@@ -182,13 +182,11 @@ class ElasticSearch():
                                 "include_in_all": False
                             },
                             "created_at":{
-                                "type": "string",
-                                "index": "no",
+                                "type": "date",
                                 "include_in_all": False
                             },
                             "deadline":{
-                                "type": "string",
-                                "index": "no",
+                                "type": "date",
                                 "include_in_all": False
                             },
                             "updated_at":{
@@ -198,7 +196,6 @@ class ElasticSearch():
                             },
                             "volume":{
                                 "type": "integer",
-                                "index": "no",
                                 "include_in_all": False
                             }
                         }
