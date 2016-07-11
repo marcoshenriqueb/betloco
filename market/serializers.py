@@ -27,7 +27,7 @@ class ChoiceSerializer(serializers.ModelSerializer):
 class EventCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = EventCategory
-        fields = ('id', 'name',)
+        fields = ('id', 'name', 'code')
 
 class EventTypeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,7 +50,7 @@ class MarketSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     event_type = serializers.StringRelatedField()
-    event_category = serializers.StringRelatedField()
+    event_category = EventCategorySerializer()
     markets = MarketSerializer(many=True)
 
     class Meta:

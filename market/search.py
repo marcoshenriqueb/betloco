@@ -172,9 +172,22 @@ class ElasticSearch():
                                 "include_in_all": False
                             },
                             "event_category":{
-                                "type": "string",
-                                "index": "no",
-                                "include_in_all": False
+                                "type": "nested",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "index": "no",
+                                        "include_in_all": False
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "index": "no",
+                                        "include_in_all": False
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    }
+                                }
                             },
                             "event_type":{
                                 "type": "string",
