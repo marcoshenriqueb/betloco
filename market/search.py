@@ -185,7 +185,9 @@ class ElasticSearch():
                                         "include_in_all": False
                                     },
                                     "code": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "index": "not_analyzed",
+                                        "include_in_all": False
                                     }
                                 }
                             },
@@ -196,10 +198,12 @@ class ElasticSearch():
                             },
                             "created_at":{
                                 "type": "date",
+                                "index": "not_analyzed",
                                 "include_in_all": False
                             },
                             "deadline":{
                                 "type": "date",
+                                "index": "not_analyzed",
                                 "include_in_all": False
                             },
                             "updated_at":{
@@ -259,10 +263,27 @@ class ElasticSearch():
                 }
             else:
                 body["query"] = {
-                    "match": {
-                        "_all": {
-                            "query": query,
-                            "operator": "and"
+                    "bool": {
+                        "must":{
+                            "match": {
+                                "_all": {
+                                    "query": query,
+                                    "operator": "and"
+                                }
+                            }
+                        }
+                    }
+                }
+            if category != 'todas':
+                body['query']['bool']['filter'] = {
+                    "nested": {
+                        "path": "event_category",
+                        "filter": {
+                            "bool": {
+                                "must": {
+                                    "term": {"event_category.code": category}
+                                }
+                            }
                         }
                     }
                 }
@@ -277,4 +298,5 @@ class ElasticSearch():
                 result['next'] = int(page) + 1
             return result
         except ElasticsearchException as e:
-            print(e.args)
+            import json
+            print(json.dumps(e.args, indent=4, sort_keys=True))

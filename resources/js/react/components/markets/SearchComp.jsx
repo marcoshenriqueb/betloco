@@ -100,9 +100,9 @@ var SearchComp = React.createClass({
                          floatingLabelText="Categoria"
                          style={style.firstSelect}>
               <MenuItem value="todas" primaryText="Todas" />
-              <MenuItem value="politica" primaryText="Política" />
-              <MenuItem value="esportes" primaryText="Esportes" />
-              <MenuItem value="economia" primaryText="Economia" />
+              <MenuItem value="pol" primaryText="Política" />
+              <MenuItem value="spo" primaryText="Esportes" />
+              <MenuItem value="eco" primaryText="Economia" />
             </SelectField>
             <SelectField value={this.props.order}
                          onChange={this.props.handleOrderChange}

@@ -54,7 +54,7 @@ var MarketContainer = React.createClass({
     this.setState({
       search: filterText,
     }, ()=>{
-      if (filterText.length > 3 || filterText.length == 0) {
+      if (filterText.length > 2 || filterText.length == 0) {
         this.getEvents();
       }
     });
