@@ -34,23 +34,172 @@ class ElasticSearch():
                 body={
                 "settings": {
                     "analysis": {
-                          "filter": {
-                            "autocomplete_filter": {
-                                "type": "edge_ngram",
+                        "filter": {
+                            "nGram_filter":{
+                                "type": "nGram",
                                 "min_gram": 2,
-                                "max_gram": 20
+                                "max_gram": 20,
+                                "token_chars": [
+                                    "letter",
+                                    "digit",
+                                    "punctuation",
+                                    "symbol"
+                                ]
                             }
                         },
                         "analyzer": {
-                            "default": {
-                                "type":      "custom",
-                                "tokenizer": "standard",
+                            "nGram_analyzer": {
+                                "type": "custom",
+                                "tokenizer": "whitespace",
                                 "filter": [
-                                    "standard",
                                     "lowercase",
                                     "asciifolding",
-                                    "autocomplete_filter"
+                                    "nGram_filter"
                                 ]
+                            },
+                            "whitespace_analyzer": {
+                               "type": "custom",
+                               "tokenizer": "whitespace",
+                               "filter": [
+                                  "lowercase",
+                                  "asciifolding"
+                               ]
+                            }
+                        }
+                    }
+                 },
+                 "mappings":{
+                    "events": {
+                        "_all": {
+                            "analyzer": "nGram_analyzer",
+                            "search_analyzer": "whitespace_analyzer"
+                        },
+                        "properties":{
+                            "title":{
+                                "type": "string"
+                            },
+                            "id":{
+                                "type": "integer",
+                                "index": "no",
+                                "include_in_all": False
+                            },
+                            "markets":{
+                                "type": "nested",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "integer",
+                                        "index": "no",
+                                        "include_in_all": False
+                                    },
+                                    "choices": {
+                                        "type": "nested",
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "index": "no",
+                                                "include_in_all": False
+                                            },
+                                            "id": {
+                                                "type": "integer",
+                                                "index": "no",
+                                                "include_in_all": False
+                                            },
+                                            "topSells": {
+                                                "type": "nested",
+                                                "properties": {
+                                                    "amount": {
+                                                        "type": "integer",
+                                                        "index": "no",
+                                                        "include_in_all": False
+                                                    },
+                                                    "price":{
+                                                        "type": "float",
+                                                        "index": "no",
+                                                        "include_in_all": False
+                                                    }
+                                                }
+                                            },
+                                            "topBuys": {
+                                                "type": "nested",
+                                                "properties": {
+                                                    "amount": {
+                                                        "type": "integer",
+                                                        "index": "no",
+                                                        "include_in_all": False
+                                                    },
+                                                    "price":{
+                                                        "type": "float",
+                                                        "index": "no",
+                                                        "include_in_all": False
+                                                    }
+                                                }
+                                            },
+                                            "lastCompletedOrder": {
+                                                "type": "nested",
+                                                "properties": {
+                                                    "amount": {
+                                                        "type": "integer",
+                                                        "index": "no",
+                                                        "include_in_all": False
+                                                    },
+                                                    "price":{
+                                                        "type": "float",
+                                                        "index": "no",
+                                                        "include_in_all": False
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "volume": {
+                                        "type": "integer",
+                                        "index": "no",
+                                        "include_in_all": False
+                                    },
+                                    "title_short": {
+                                        "type": "string",
+                                        "index": "no",
+                                        "include_in_all": False
+                                    }
+                                }
+                            },
+                            "user":{
+                                "type": "string",
+                                "index": "no",
+                                "include_in_all": False
+                            },
+                            "event_category":{
+                                "type": "string",
+                                "index": "no",
+                                "include_in_all": False
+                            },
+                            "event_type":{
+                                "type": "string",
+                                "index": "no",
+                                "include_in_all": False
+                            },
+                            "created_at":{
+                                "type": "string",
+                                "index": "no",
+                                "include_in_all": False
+                            },
+                            "deadline":{
+                                "type": "string",
+                                "index": "no",
+                                "include_in_all": False
+                            },
+                            "updated_at":{
+                                "type": "string",
+                                "index": "no",
+                                "include_in_all": False
+                            },
+                            "volume":{
+                                "type": "integer",
+                                "index": "no",
+                                "include_in_all": False
                             }
                         }
                     }
@@ -99,17 +248,11 @@ class ElasticSearch():
                     }
                 }
             else:
-                body['query'] = {
-                    "bool":{
-                        "must":{
-                            "multi_match": {
-                              "type": "most_fields",
-                              "query": query,
-                              "fields": [
-                                    "title",
-                                    "title.folded"
-                                ]
-                            }
+                body["query"] = {
+                    "match": {
+                        "_all": {
+                            "query": query,
+                            "operator": "and"
                         }
                     }
                 }

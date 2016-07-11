@@ -13,7 +13,7 @@ var MarketContainer = React.createClass({
       next: null,
       checked: false,
       category: 'todas',
-      order: 'created_at|desc'
+      order: '_score|desc'
     };
   },
   getEvents: function(){

@@ -108,6 +108,7 @@ var SearchComp = React.createClass({
                          onChange={this.props.handleOrderChange}
                          floatingLabelText="Ordem"
                          style={style.secSelect}>
+              <MenuItem value="_score|desc" primaryText="Relevância" />
               <MenuItem value="created_at|desc" primaryText="Mais novo" />
               <MenuItem value="created_at|asc" primaryText="Mais antigo" />
               <MenuItem value="volume|desc" primaryText="Maior volume" />

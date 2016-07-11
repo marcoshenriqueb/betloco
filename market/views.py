@@ -17,7 +17,7 @@ class ListEvents(APIView):
         page = 0 if 'page' not in request.query_params else request.query_params['page']
         expired = False if 'expired' not in request.query_params else request.query_params['expired']
         category = 'todas' if 'category' not in request.query_params else request.query_params['category']
-        order = 'created_at|desc' if 'order' not in request.query_params else request.query_params['order']
+        order = '_score|desc' if 'order' not in request.query_params else request.query_params['order']
         return Response(es.search(query, page=page, expired=expired, order=order, category=category))
 
 class DetailEvent(generics.RetrieveAPIView):
