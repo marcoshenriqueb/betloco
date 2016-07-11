@@ -37,7 +37,7 @@ class ElasticSearch():
                         "filter": {
                             "nGram_filter":{
                                 "type": "nGram",
-                                "min_gram": 2,
+                                "min_gram": 1,
                                 "max_gram": 20,
                                 "token_chars": [
                                     "letter",
