@@ -106,6 +106,7 @@ var MarketDetailContainer = React.createClass({
       }else {
         var path = [
           {
+            title_short: this.state.market.title_short,
             title: this.state.market.title,
             path: null
           }
