@@ -66,7 +66,7 @@ class Market(models.Model):
     title = models.CharField(max_length=150)
     title_short = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="markets")
-    liquidated = models.BooleanField(default=0)
+    liquidated = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
 
@@ -118,7 +118,7 @@ class Choice(models.Model):
     """docstring for Choice"""
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
     title = models.CharField(max_length=100)
-    winner = models.BooleanField(default=0)
+    winner = models.BooleanField(default=False)
     objects = ChoiceManager()
 
     def __str__(self):
@@ -285,9 +285,9 @@ class Order(models.Model):
     price = models.FloatField(validators = [MinValueValidator(0.0), MaxValueValidator(1.0)])
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
-    residual = models.BooleanField(default=0)
-    deleted = models.BooleanField(default=0)
-    from_liquidation = models.BooleanField(default=0)
+    residual = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
+    from_liquidation = models.BooleanField(default=False)
     matches = models.ManyToManyField('self',
                                        through='Operation',
                                        through_fields=('from_order', 'to_order'),
@@ -305,7 +305,7 @@ class Operation(models.Model):
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
     amount = models.PositiveIntegerField(blank=False, null=False)
     price = models.FloatField(validators = [MinValueValidator(0.0), MaxValueValidator(1.0)])
-    from_liquidation = models.BooleanField(default=0)
+    from_liquidation = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (('from_order', 'to_order'),)
