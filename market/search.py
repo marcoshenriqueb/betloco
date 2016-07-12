@@ -274,8 +274,9 @@ class ElasticSearch():
                         }
                     }
                 }
+            nested = False
             if category != 'todas':
-                body['query']['bool']['filter'] = {
+                nested = {
                     "nested": {
                         "path": "event_category",
                         "filter": {
@@ -287,14 +288,22 @@ class ElasticSearch():
                         }
                     }
                 }
+                body['query']['bool']['filter'] = nested
             if expired == 'false':
                 _range = {
                     "deadline":{
                             "gte" : "now"
                     }
                 }
-                if 'filter' in body['query']['bool'] and 'nested' in body['query']['bool']['filter']:
-                    body['query']['bool']['filter']['nested']['filter']['range'] = _range
+                if nested:
+                    body['query']['bool']['filter'] = {
+                        "bool":{
+                            "must": nested,
+                            "filter": {
+                                "range": _range,
+                            }
+                        }
+                    }
                 else:
                     body['query']['bool'] = {
                         "filter": {
