@@ -17,16 +17,18 @@ var styles = {
   },
   tdBig: {
     textAlign: 'center',
-    display: 'none'
+    display: 'none',
+    width: 80
   },
   choice: {
     fontSize: 18,
-    width: 160
+    width: 150
   }
 }
 
 if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   styles.tdBig.display = "table-cell";
+  styles.tdBig.width = 'inherit';
   styles.choice.width = 250;
 }
 
@@ -65,8 +67,8 @@ var MultipleMarketTable = React.createClass({
             <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price*100+'¢' : '0'}</TableRowColumn>
             <TableRowColumn style={styles.tdBig}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price*100+'¢' : '0'}</TableRowColumn>
             <TableRowColumn style={styles.tdBig}>{prob.toFixed(1)}%</TableRowColumn>
-            <TableRowColumn style={styles.tdBig}>{m.volume}</TableRowColumn>
-            <TableRowColumn style={styles.td}>
+            <TableRowColumn style={styles.td}>{m.volume}</TableRowColumn>
+            <TableRowColumn style={styles.tdBig}>
               <IndexLink to={'/app/mercado/' + m.id + '/'}>
                 <IconButton><ActionGavel color="rgb(0, 188, 212)" /></IconButton>
               </IndexLink>
@@ -87,8 +89,8 @@ var MultipleMarketTable = React.createClass({
                   <TableHeaderColumn style={styles.td}>Preço Sim</TableHeaderColumn>
                   <TableHeaderColumn style={styles.tdBig}>Preço Não</TableHeaderColumn>
                   <TableHeaderColumn style={styles.tdBig}>Probabilidade</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.tdBig}>Papéis negociados</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.td}></TableHeaderColumn>
+                  <TableHeaderColumn style={styles.td}>Volume</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.tdBig}></TableHeaderColumn>
                 </TableRow>
               </TableHeader>
               <TableBody showRowHover={true}

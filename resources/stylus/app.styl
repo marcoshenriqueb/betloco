@@ -43,7 +43,13 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   font-weight: bold;
   a
     color: gray_color
-    
+    text-decoration: underline;
+
 .breadcrumb
   display: flex;
   align-items: center;
+
+@media(min-width:768px)
+  .multiple-market-table__choice
+    a
+      text-decoration: none;

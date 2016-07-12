@@ -271,8 +271,14 @@ textarea.materialize-textarea:focus:not([readonly]) {
 }
 .multiple-market-table__choice a {
   color: rgba(0,0,0,0.541);
+  text-decoration: underline;
 }
 .breadcrumb {
   display: flex;
   align-items: center;
+}
+@media (min-width: 768px) {
+  .multiple-market-table__choice a {
+    text-decoration: none;
+  }
 }
