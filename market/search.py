@@ -255,6 +255,7 @@ class ElasticSearch():
                 "from": int(page)*int(pagination),
                 "size": int(pagination)
             }
+            q = None
             if query is None or len(query) == 0:
                 body['query'] = {
                     "bool":{
@@ -262,15 +263,16 @@ class ElasticSearch():
                     }
                 }
             else:
+                q = {
+                    "_all": {
+                        "query": query,
+                        "operator": "and"
+                    }
+                }
                 body["query"] = {
                     "bool": {
                         "must":{
-                            "match": {
-                                "_all": {
-                                    "query": query,
-                                    "operator": "and"
-                                }
-                            }
+                            "match": q
                         }
                     }
                 }
@@ -310,6 +312,16 @@ class ElasticSearch():
                             "range": _range
                         }
                     }
+                if q == None:
+                    body['query']['bool']['must'] = {
+                        "match_all": {}
+                    }
+                else:
+                    body['query']['bool']['must'] = {
+                        "match": q
+                    }
+            import json
+            print(json.dumps(body, indent=4, sort_keys=True))
             result = self.es.search(
                 index="events-index",
                 doc_type="events",
@@ -321,6 +333,4 @@ class ElasticSearch():
                 result['next'] = int(page) + 1
             return result
         except ElasticsearchException as e:
-            import json
-            print(json.dumps(body, indent=4, sort_keys=True))
             print(json.dumps(e.args, indent=4, sort_keys=True))
