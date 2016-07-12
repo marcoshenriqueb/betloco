@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconMenuIcon from 'material-ui/svg-icons/navigation/menu';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { browserHistory } from 'react-router';
+import { IndexLink } from 'react-router';
 
 const styles = {
   title: {
@@ -26,9 +27,11 @@ var AppNavbar = React.createClass({
   render: function() {
     return (
       <AppBar
-        title="BetLoco"
-        titleStyle={{cursor:'pointer'}}
-        onTitleTouchTap={this._marketRoute}
+        title={
+          <IndexLink style={{color:'white'}} to='/app/'>
+            BetLoco
+          </IndexLink>
+        }
         showMenuIconButton={false}
         iconElementLeft={<IconButton><NavigationClose /></IconButton>}
         iconElementRight={
