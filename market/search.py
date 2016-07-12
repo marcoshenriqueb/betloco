@@ -289,18 +289,20 @@ class ElasticSearch():
                 }
             if expired == 'false':
                 _range = {
-                    "range": {
-                        "deadline":{
+                    "deadline":{
                             "gte" : "now"
-                        }
                     }
                 }
-                if 'filter' in body['query']['bool']:
-                    body['query']['bool']['filter'] = _range
+                if 'nested' in body['query']['bool']['filter']:
+                    body['query']['bool']['filter']['nested']['filter']['range'] = _range
                 else:
                     body['query']['bool'] = {
-                        "filter": _range
+                        "filter": {
+                            "range": _range
+                        }
                     }
+            import json
+            print(json.dumps(body, indent=4, sort_keys=True))
             result = self.es.search(
                 index="events-index",
                 doc_type="events",
@@ -312,5 +314,4 @@ class ElasticSearch():
                 result['next'] = int(page) + 1
             return result
         except ElasticsearchException as e:
-            import json
             print(json.dumps(e.args, indent=4, sort_keys=True))
