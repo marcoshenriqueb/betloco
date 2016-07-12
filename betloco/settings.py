@@ -127,7 +127,7 @@ except ImportError:
     }
     if es.username:
         ELASTICSEARCH['URL'] = es.scheme + '://'+ es.username + ':' + es.password + '@' + es.hostname + ':' + str(port)
-        
+
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 

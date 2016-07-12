@@ -320,8 +320,6 @@ class ElasticSearch():
                     body['query']['bool']['must'] = {
                         "match": q
                     }
-            import json
-            print(json.dumps(body, indent=4, sort_keys=True))
             result = self.es.search(
                 index="events-index",
                 doc_type="events",
@@ -333,4 +331,6 @@ class ElasticSearch():
                 result['next'] = int(page) + 1
             return result
         except ElasticsearchException as e:
+            import json
+            print(json.dumps(body, indent=4, sort_keys=True))
             print(json.dumps(e.args, indent=4, sort_keys=True))

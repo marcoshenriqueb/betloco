@@ -1,12 +1,19 @@
 from django.contrib import admin
 from .models import Event, EventType, EventCategory, Market, Choice, Order, Operation
 
+class MarketInline(admin.TabularInline):
+    """docstring for MarketInline"""
+    model = Market
+
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     exclude = ('user',)
     list_display = ('id', 'title', 'event_type', 'event_category', 'user', 'updated_at')
     list_display_links = ('title',)
     list_filter = ('updated_at', 'event_type', 'event_category')
+    inlines = [
+        MarketInline,
+    ]
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
