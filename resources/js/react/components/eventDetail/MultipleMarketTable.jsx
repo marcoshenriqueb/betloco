@@ -15,9 +15,19 @@ var styles = {
   td: {
     textAlign: 'center'
   },
+  tdBig: {
+    textAlign: 'center',
+    display: 'none'
+  },
   choice: {
-    fontSize: 18
+    fontSize: 18,
+    width: 160
   }
+}
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+  styles.tdBig.display = "table-cell";
+  styles.choice.width = 250;
 }
 
 var MultipleMarketTable = React.createClass({
@@ -47,11 +57,15 @@ var MultipleMarketTable = React.createClass({
         var prob = (yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price*100 / totalPrice : 0;
         return (
           <TableRow key={k}>
-            <TableRowColumn style={styles.choice} className="multiple-market-table__choice">{m.title_short}</TableRowColumn>
+            <TableRowColumn style={styles.choice} className="multiple-market-table__choice">
+              <IndexLink to={'/app/mercado/' + m.id + '/'}>
+                {m.title_short}
+              </IndexLink>
+            </TableRowColumn>
             <TableRowColumn style={styles.td}>{(yes.lastCompleteOrder != null) ? yes.lastCompleteOrder.price*100+'¢' : '0'}</TableRowColumn>
-            <TableRowColumn style={styles.td}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price*100+'¢' : '0'}</TableRowColumn>
-            <TableRowColumn style={styles.td}>{prob.toFixed(1)}%</TableRowColumn>
-            <TableRowColumn style={styles.td}>{m.volume}</TableRowColumn>
+            <TableRowColumn style={styles.tdBig}>{(no.lastCompleteOrder != null) ? no.lastCompleteOrder.price*100+'¢' : '0'}</TableRowColumn>
+            <TableRowColumn style={styles.tdBig}>{prob.toFixed(1)}%</TableRowColumn>
+            <TableRowColumn style={styles.tdBig}>{m.volume}</TableRowColumn>
             <TableRowColumn style={styles.td}>
               <IndexLink to={'/app/mercado/' + m.id + '/'}>
                 <IconButton><ActionGavel color="rgb(0, 188, 212)" /></IconButton>
@@ -69,11 +83,11 @@ var MultipleMarketTable = React.createClass({
                          displaySelectAll={false}
                          adjustForCheckbox={false}>
                 <TableRow>
-                  <TableHeaderColumn >Escolha</TableHeaderColumn>
+                  <TableHeaderColumn style={{width: styles.choice.width}}>Escolha</TableHeaderColumn>
                   <TableHeaderColumn style={styles.td}>Preço Sim</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.td}>Preço Não</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.td}>Probabilidade</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.td}>Papéis negociados</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.tdBig}>Preço Não</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.tdBig}>Probabilidade</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.tdBig}>Papéis negociados</TableHeaderColumn>
                   <TableHeaderColumn style={styles.td}></TableHeaderColumn>
                 </TableRow>
               </TableHeader>

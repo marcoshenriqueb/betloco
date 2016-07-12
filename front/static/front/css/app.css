@@ -269,6 +269,9 @@ textarea.materialize-textarea:focus:not([readonly]) {
   color: rgba(0,0,0,0.541);
   font-weight: bold;
 }
+.multiple-market-table__choice a {
+  color: rgba(0,0,0,0.541);
+}
 .breadcrumb {
   display: flex;
   align-items: center;
