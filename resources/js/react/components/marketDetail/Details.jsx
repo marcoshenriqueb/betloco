@@ -12,6 +12,13 @@ var styles = {
   }
 }
 
+if (document.documentElement.clientWidth <= window.gvar.breakpoint){
+  styles.td = {
+    paddingRight: 10,
+    paddingLeft: 10
+  };
+}
+
 var Details = React.createClass({
   render: function() {
     if (Object.keys(this.props.market).length !== 0 || this.props.market.constructor !== Object) {
@@ -24,20 +31,20 @@ var Details = React.createClass({
               <TableBody displayRowCheckbox={false}
                          showRowHover={true}>
                 <TableRow>
-                  <TableRowColumn>Volume(papéis):</TableRowColumn>
-                  <TableRowColumn>{this.props.market.volume}</TableRowColumn>
+                  <TableRowColumn style={styles.td}>Volume(papéis):</TableRowColumn>
+                  <TableRowColumn style={styles.td}>{this.props.market.volume}</TableRowColumn>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Data de Encerramento:</TableRowColumn>
-                  <TableRowColumn>{moment(this.props.market.deadline).format("DD/MM/YYYY HH:mm")}</TableRowColumn>
+                  <TableRowColumn style={styles.td}>Encerramento:</TableRowColumn>
+                  <TableRowColumn style={styles.td}>{moment(this.props.market.deadline).format("DD/MM/YYYY HH:mm")}</TableRowColumn>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Data de Criação:</TableRowColumn>
-                  <TableRowColumn>{moment(this.props.market.created_at).format("DD/MM/YYYY HH:mm")}</TableRowColumn>
+                  <TableRowColumn style={styles.td}>Criação:</TableRowColumn>
+                  <TableRowColumn style={styles.td}>{moment(this.props.market.created_at).format("DD/MM/YYYY HH:mm")}</TableRowColumn>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Autor:</TableRowColumn>
-                  <TableRowColumn>{this.props.market.user}</TableRowColumn>
+                  <TableRowColumn style={styles.td}>Autor:</TableRowColumn>
+                  <TableRowColumn style={styles.td}>{this.props.market.user}</TableRowColumn>
                 </TableRow>
               </TableBody>
             </Table>

@@ -3,7 +3,9 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 
 var styles = {
   rowheight:{
-    height: 40
+    height: 40,
+    paddingRight: 10,
+    paddingLeft: 10
   },
   header: {
     height: 40
@@ -11,8 +13,17 @@ var styles = {
   th:{
     color: 'inherit',
     fontWeight : 'inherit',
-    height: 40
+    height: 40,
+    paddingRight: 10,
+    paddingLeft: 10
   }
+}
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint){
+  styles.rowheight.paddingRight = 24;
+  styles.rowheight.paddingLeft = 24;
+  styles.th.paddingRight = 24;
+  styles.th.paddingLeft = 24;
 }
 
 var OrderTable = React.createClass({

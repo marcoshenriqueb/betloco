@@ -4,6 +4,17 @@ import MultipleMarketTable from './eventDetail/MultipleMarketTable.jsx';
 import Detail from './marketDetail/Details.jsx';
 import Breadcrumb from './general/Breadcrumb.jsx';
 
+var style = {
+  title:{
+    marginTop:10,
+    fontSize: 22
+  }
+}
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint){
+  style.title.fontSize = 28;
+}
+
 var EventDetailContainer = React.createClass({
   getInitialState: function() {
     return {
@@ -39,7 +50,7 @@ var EventDetailContainer = React.createClass({
     return (
       <div className="marketdetail-content container">
         {breadcrumb}
-        <h2 style={{marginTop:10}}>{this.state._event.title}</h2>
+        <h2 style={style.title}>{this.state._event.title}</h2>
         <MultipleMarketTable _event={this.state._event} />
         <br/>
         <Detail market={this.state._event} />

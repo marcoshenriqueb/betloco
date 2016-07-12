@@ -17,19 +17,29 @@ var styles = {
   },
   tdBig: {
     textAlign: 'center',
-    display: 'none',
-    width: 80
+    display: 'none'
   },
   choice: {
-    fontSize: 18,
-    width: 150
+    fontSize: 16,
+    width: 120
+  },
+  choiceHeader: {
+    width: 120
   }
 }
 
 if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   styles.tdBig.display = "table-cell";
-  styles.tdBig.width = 'inherit';
   styles.choice.width = 250;
+  styles.choiceHeader.width = 250;
+  styles.choice.fontSize = 18;
+}else {
+  styles.td.paddingRight = 10;
+  styles.td.paddingLeft = 10;
+  styles.choice.paddingLeft = 10;
+  styles.choice.paddingRight = 10;
+  styles.choiceHeader.paddingLeft = 10;
+  styles.choiceHeader.paddingRight = 10;
 }
 
 var MultipleMarketTable = React.createClass({
@@ -85,9 +95,9 @@ var MultipleMarketTable = React.createClass({
                          displaySelectAll={false}
                          adjustForCheckbox={false}>
                 <TableRow>
-                  <TableHeaderColumn style={{width: styles.choice.width}}>Escolha</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.td}>Preço Sim</TableHeaderColumn>
-                  <TableHeaderColumn style={styles.tdBig}>Preço Não</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.choiceHeader}>Escolha</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.td}>Sim</TableHeaderColumn>
+                  <TableHeaderColumn style={styles.tdBig}>Não</TableHeaderColumn>
                   <TableHeaderColumn style={styles.tdBig}>Probabilidade</TableHeaderColumn>
                   <TableHeaderColumn style={styles.td}>Volume</TableHeaderColumn>
                   <TableHeaderColumn style={styles.tdBig}></TableHeaderColumn>
