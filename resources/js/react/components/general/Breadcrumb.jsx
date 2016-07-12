@@ -6,22 +6,37 @@ import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { IndexLink } from 'react-router';
 
 var color = 'rgba(0, 0, 0, 0.541176)';
+var style = {
+  container: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  label: {
+    fontSize: 12,
+    color: color
+  }
+}
+
 var Breadcrumb = React.createClass({
   render: function() {
     var path = [];
     var parray = this.props.path;
     for (var k in parray) {
+      var title = "evento";
+      if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+        title = parray[k].title;
+      }
       if (parray[k].path != null) {
-        path.push(<div key={k} style={{display:'flex', alignItems:'center'}}>
+        path.push(<div key={k} style={style.container}>
           <ArrowRight color={color} />
           <IndexLink to={parray[k].path}>
-            <FlatButton label={parray[k].title} labelStyle={{fontSize:12,color:color}}/>
+            <FlatButton label={title} labelStyle={style.label}/>
           </IndexLink>
         </div>)
       }else {
-        path.push(<div key={k} style={{display:'flex', alignItems:'center'}}>
+        path.push(<div key={k} style={style.container}>
           <ArrowRight color={color} />
-          <FlatButton disabled={true} label={parray[k].title} labelStyle={{fontSize:12,color:color}}/>
+          <FlatButton disabled={true} label={parray[k].title} labelStyle={style.label}/>
         </div>)
       }
     }
