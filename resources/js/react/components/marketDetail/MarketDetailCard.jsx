@@ -12,8 +12,17 @@ import moment from 'moment';
 var styles = {
   cardtext: {
     paddingTop: 0
+  },
+  title:{
+    marginTop:10,
+    fontSize: 22
   }
 }
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint){
+  styles.title.fontSize = 28;
+}
+
 var bgcolor = "rgb(255, 64, 129)";
 
 var MarketDetailCard = React.createClass({
@@ -49,7 +58,7 @@ var MarketDetailCard = React.createClass({
                        closeDialog={this.props.closeDialog}
                        dialogContent={this.props.dialogContent}
                        custody={this.props.custody} />
-          <h2 style={{marginTop:10}}>
+          <h2 style={styles.title}>
             {this.props.market.title}
             {marketClosed}
           </h2>
