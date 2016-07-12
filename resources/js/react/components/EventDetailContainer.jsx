@@ -27,6 +27,7 @@ var EventDetailContainer = React.createClass({
     if (this.state._event.title != undefined) {
       var path = [
         {
+          title_short: "evento",
           title: this.state._event.title,
           path: null
         }

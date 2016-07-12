@@ -22,7 +22,7 @@ var Breadcrumb = React.createClass({
     var path = [];
     var parray = this.props.path;
     for (var k in parray) {
-      var title = "evento";
+      var title = parray[k].title_short;
       if (document.documentElement.clientWidth > window.gvar.breakpoint) {
         title = parray[k].title;
       }
@@ -36,7 +36,7 @@ var Breadcrumb = React.createClass({
       }else {
         path.push(<div key={k} style={style.container}>
           <ArrowRight color={color} />
-          <FlatButton disabled={true} label={parray[k].title} labelStyle={style.label}/>
+          <FlatButton disabled={true} label={title} labelStyle={style.label}/>
         </div>)
       }
     }

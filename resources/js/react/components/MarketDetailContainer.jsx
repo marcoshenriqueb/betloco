@@ -90,10 +90,12 @@ var MarketDetailContainer = React.createClass({
       if (this.state.market.event.markets.length > 1) {
         var path = [
           {
+            title_short: "evento",
             title: this.state.market.event.title,
             path: '/app/evento/' + this.state.market.event.id + '/'
           },
           {
+            title_short: this.state.market.title_short,
             title: this.state.market.title_short,
             path: null
           }

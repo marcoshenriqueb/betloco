@@ -54595,6 +54595,7 @@ var EventDetailContainer = _react2.default.createClass({
     var breadcrumb = null;
     if (this.state._event.title != undefined) {
       var path = [{
+        title_short: "evento",
         title: this.state._event.title,
         path: null
       }];
@@ -54896,9 +54897,11 @@ var MarketDetailContainer = _react2.default.createClass({
     if (this.state.market.event != undefined) {
       if (this.state.market.event.markets.length > 1) {
         var path = [{
+          title_short: "evento",
           title: this.state.market.event.title,
           path: '/app/evento/' + this.state.market.event.id + '/'
         }, {
+          title_short: this.state.market.title_short,
           title: this.state.market.title_short,
           path: null
         }];
@@ -55284,7 +55287,7 @@ var Breadcrumb = _react2.default.createClass({
     var path = [];
     var parray = this.props.path;
     for (var k in parray) {
-      var title = "evento";
+      var title = parray[k].title_short;
       if (document.documentElement.clientWidth > window.gvar.breakpoint) {
         title = parray[k].title;
       }
@@ -55304,7 +55307,7 @@ var Breadcrumb = _react2.default.createClass({
           'div',
           { key: k, style: style.container },
           _react2.default.createElement(_keyboardArrowRight2.default, { color: color }),
-          _react2.default.createElement(_FlatButton2.default, { disabled: true, label: parray[k].title, labelStyle: style.label })
+          _react2.default.createElement(_FlatButton2.default, { disabled: true, label: title, labelStyle: style.label })
         ));
       }
     }
