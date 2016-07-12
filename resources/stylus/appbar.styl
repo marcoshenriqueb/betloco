@@ -4,7 +4,7 @@
   align-items: center;
 
 .appbar-nav__info-container
-  margin-right: 80px;
+  margin-right: 20px;
   display: flex;
   align-items: center;
 
@@ -12,6 +12,7 @@
     font-weight: 600
     text-transform: uppercase;
     margin-right: 10px
+    display: none;
 
 .appbar-nav__info-holder
   border-radius: 2px;
@@ -19,3 +20,9 @@
   background-color: white_color
   color gray_color
   font-weight: 500;
+
+@media(min-width:768px)
+  .appbar-nav__info-container
+    margin-right: 80px;
+    span
+      display: block;
