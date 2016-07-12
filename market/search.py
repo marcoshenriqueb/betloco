@@ -245,15 +245,15 @@ class ElasticSearch():
         except ElasticsearchException as e:
             print('error')
 
-    def search(self, query=None, pagination=10, page=0, expired=0, order="created_at|desc", category="todas"):
+    def search(self, query=None, pagination=2, page=0, expired=0, order="created_at|desc", category="todas"):
         try:
             body = {
                 "sort" : [
                     {order.split('|')[0] : {"order" : order.split('|')[1]}},
                     { "_score": { "order": "desc" }}
                 ],
-                "from": page*pagination,
-                "size": pagination
+                "from": int(page)*int(pagination),
+                "size": int(pagination)
             }
             if query is None or len(query) == 0:
                 body['query'] = {
