@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
+import { IndexLink } from 'react-router';
 
 var style = {
   linear: {
@@ -56,7 +57,9 @@ var EventCard = React.createClass({
         return (
           <div key={k}>
             <div className="marketcard-predictions__choices">
-              <h5>{m.title_short}</h5>
+              <IndexLink to={'/app/mercado/' + m.id + '/'}>
+                <h5>{m.title_short}</h5>
+              </IndexLink>
               <p>({prob.toFixed(1)}%)</p>
             </div>
             <LinearProgress style={style.linear}
