@@ -245,7 +245,7 @@ class ElasticSearch():
         except ElasticsearchException as e:
             print('error')
 
-    def search(self, query=None, pagination=2, page=0, expired=0, order="created_at|desc", category="todas"):
+    def search(self, query=None, pagination=10, page=0, expired=0, order="created_at|desc", category="todas"):
         try:
             body = {
                 "sort" : [
