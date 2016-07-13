@@ -99,7 +99,7 @@ except ImportError:
     DATABASES['default'].update(db_from_env)
 
     from urllib.parse import urlparse
-    redis_url = urlparse(os.environ.get('REDISCLOUD_URL'))
+    redis_url = urlparse(os.environ.get('REDIS_URL'))
     CACHES = {
             'default': {
                 'BACKEND': 'redis_cache.RedisCache',
