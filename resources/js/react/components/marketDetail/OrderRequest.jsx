@@ -48,7 +48,7 @@ var OrderRequest = React.createClass({
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
-          <p>{this.props.choice.title} ({this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price * 100 : 0}%)</p>
+          <p>{this.props.choice.title} ({this.props.choice.lastCompleteOrder != null ? (this.props.choice.lastCompleteOrder.price * 100).toFixed(0) : 0}%)</p>
         </div>
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">
@@ -61,7 +61,7 @@ var OrderRequest = React.createClass({
           </div>
         </CardActions>
         <CardText style={styles.cardtext} className="orderrequest-card__details">
-          <span><strong>{this.props.choice.lastCompleteOrder != null ? this.props.choice.lastCompleteOrder.price*100 : 0}¢</strong>/papel</span><br />
+          <span><strong>{this.props.choice.lastCompleteOrder != null ? (this.props.choice.lastCompleteOrder.price*100).toFixed(0) : 0}¢</strong>/papel</span><br />
           <span><strong>{custody.position}</strong> papéis em custódia</span>
         </CardText>
       </Card>
