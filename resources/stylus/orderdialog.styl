@@ -7,8 +7,19 @@
   margin-right: 20px
 
 .order-dialog__form
-  padding: 0 15px 0 15px
-  max-width: 256px
+  padding: 0 0 0 0
+  max-width: 100%
+
+.order-dialog__form__inputs
+  width: 50%
 
 .order-dialog__form-help
   font-size: 12px
+
+@media(min-width:768px)
+  .order-dialog__form
+    padding: 0 15px 0 15px
+    max-width: 256px
+
+  .order-dialog__form__inputs
+    width: auto

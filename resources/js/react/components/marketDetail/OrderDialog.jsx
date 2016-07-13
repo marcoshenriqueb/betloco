@@ -6,16 +6,6 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 
-var styles = {
-  dialog:{
-    width: "100%"
-  }
-}
-
-if (document.documentElement.clientWidth > window.gvar.breakpoint){
-  styles.dialog.width = 556;
-}
-
 var OrderDialog = React.createClass({
   getInitialState: function(){
     return {
@@ -27,6 +17,9 @@ var OrderDialog = React.createClass({
       error: false,
       disabled: false
     };
+  },
+  componentDidUpdate: function(props, state){
+    console.log(state);
   },
   handleAmountChange: function(e){
     if (!isNaN(e.target.value) && Number.isInteger(Number(e.target.value))) {
@@ -130,6 +123,20 @@ var OrderDialog = React.createClass({
     this.props.closeDialog();
   },
   render: function(){
+    var styles = {
+      dialog:{
+        width: "100%"
+      },
+      body: {
+        padding: "0px 10px 10px 10px"
+      }
+    }
+    var autoScroll = true;
+    if (document.documentElement.clientWidth > window.gvar.breakpoint){
+      styles.dialog.width = 556;
+      styles.body.padding = "0px 24px 24px 24px";
+      autoScroll = false;
+    }
     if (this.props.dialogContent == undefined) {
       return (<div/>)
     }
@@ -196,8 +203,11 @@ var OrderDialog = React.createClass({
       <Dialog
           title={title}
           contentStyle={styles.dialog}
+          bodyStyle={styles.body}
           actions={actions}
           autoDetectWindowHeight={false}
+          repositionOnUpdate={true}
+          autoScrollBodyContent={autoScroll}
           modal={false}
           open={this.props.dialog}>
         {content}

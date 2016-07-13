@@ -46,20 +46,23 @@ var PlaceOrderDialog = React.createClass({
         {orderTable}
         <div className="order-dialog__form">
           {formTitle}
-          <TextField
-            value={this.props.amount}
-            onChange={this.props.handleAmountChange}
-            floatingLabelText="Número de papéis"
-            style={style.input}
-            errorText={amountError}
-          /><br />
-          <TextField
-            value={this.props.price}
-            onChange={this.props.handlePriceChange}
-            floatingLabelText="Preço (¢1 à ¢99)"
-            style={style.input}
-            errorText={priceError}
-          /><br />
+          <div className="order-dialog__form__inputs">
+            <TextField
+              value={this.props.amount}
+              onChange={this.props.handleAmountChange}
+              floatingLabelText="Número de papéis"
+              style={style.input}
+              errorText={amountError}
+            /><br />
+            <TextField
+              value={this.props.price}
+              onChange={this.props.handlePriceChange}
+              floatingLabelText="Preço (¢1 à ¢99)"
+              style={style.input}
+              errorText={priceError}
+            />
+          </div>
+          <br />
           <span className="order-dialog__form-help">O preço deve ser em centavos, de ¢1 a ¢99, representando a probabilidade de 1% a 99%.</span>
         </div>
       </div>
