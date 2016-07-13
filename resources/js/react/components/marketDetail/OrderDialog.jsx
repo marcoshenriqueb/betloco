@@ -18,9 +18,6 @@ var OrderDialog = React.createClass({
       disabled: false
     };
   },
-  componentDidUpdate: function(props, state){
-    console.log(state);
-  },
   handleAmountChange: function(e){
     if (!isNaN(e.target.value) && Number.isInteger(Number(e.target.value))) {
       var amount = Number(e.target.value);
@@ -32,6 +29,20 @@ var OrderDialog = React.createClass({
       })
     }
   },
+  addAmount: function(){
+    this.setState({
+      amount: Number(this.state.amount) + 100
+    });
+  },
+  removeAmount: function(){
+    var amount = 0;
+    if (this.state.amount > 100) {
+      amount = Number(this.state.amount) - 100;
+    }
+    this.setState({
+      amount: amount
+    });
+  },
   handlePriceChange: function(e){
     if (!isNaN(e.target.value) && e.target.value < 100 && e.target.value >= 0 && Number.isInteger(Number(e.target.value))) {
       var price = Number(e.target.value);
@@ -42,6 +53,16 @@ var OrderDialog = React.createClass({
         price: price
       })
     }
+  },
+  addBestPrice: function(){
+    if (this.props.dialogContent.buy) {
+      var order = this.props.dialogContent.choice.topBuys[0];
+    }else {
+      var order = this.props.dialogContent.choice.topSells[0];
+    }
+    this.setState({
+      price: order.price*100
+    });
   },
   handleOrder: function(){
     if (this.state.amount.length != 0) {
@@ -164,7 +185,10 @@ var OrderDialog = React.createClass({
                           price={this.state.price}
                           priceError={this.state.priceError}
                           handleAmountChange={this.handleAmountChange}
-                          handlePriceChange={this.handlePriceChange} />
+                          handlePriceChange={this.handlePriceChange}
+                          addAmount={this.addAmount}
+                          removeAmount={this.removeAmount}
+                          addBestPrice={this.addBestPrice} />
       );
     }else if (1) {
       var actions = [

@@ -182,7 +182,17 @@ th {
   padding: 0 0 0 0;
   max-width: 100%;
 }
+.order-dialog__form__inputs__container {
+  display: flex;
+}
 .order-dialog__form__inputs {
+  width: 50%;
+}
+.order-dialog__form__buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   width: 50%;
 }
 .order-dialog__form-help {
@@ -195,6 +205,9 @@ th {
   }
   .order-dialog__form__inputs {
     width: auto;
+  }
+  .order-dialog__form__buttons {
+    display: none;
   }
 }
 .bouncer > div {
