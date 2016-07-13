@@ -21,6 +21,7 @@ var PlaceOrderDialog = React.createClass({
       var orders = this.props.dialogContent.choice.topSells;
     }
     var orderTable = null;
+    var formTitle = null;
     if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       orderTable = (
         <Paper zDepth={1}
@@ -34,6 +35,9 @@ var PlaceOrderDialog = React.createClass({
                         }} />
         </Paper>
       )
+      formTitle = (
+        <span>Nova ordem</span>
+      )
     }
     var amountError = this.props.amountError ? "Digite uma quantidade" : "";
     var priceError = this.props.priceError ? "Digite um preço" : "";
@@ -41,7 +45,7 @@ var PlaceOrderDialog = React.createClass({
       <div className="order-dialog">
         {orderTable}
         <div className="order-dialog__form">
-          <span>Nova ordem</span><br/>
+          {formTitle}
           <TextField
             value={this.props.amount}
             onChange={this.props.handleAmountChange}
