@@ -12,7 +12,24 @@ var styles = {
   },
   noPaddingTop: {
     paddingTop: 0
+  },
+  th: {
+    paddingRight: 10,
+    paddingLeft: 10
+  },
+  thBig: {
+    display: 'none',
+    paddingRight: 10,
+    paddingLeft: 10
   }
+}
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint){
+  styles.thBig.display = "table-cell";
+  styles.thBig.paddingRight = 24;
+  styles.thBig.paddingLeft = 24;
+  styles.th.paddingRight = 24;
+  styles.th.paddingLeft = 24;
 }
 
 var OpenOrders = React.createClass({
@@ -64,6 +81,14 @@ var OpenOrders = React.createClass({
     this.props.choices.map((c)=> {
       choices[c.id] = c.title
     });
+    var calculateAmount = function(a){
+      return a;
+    }
+    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+      calculateAmount = function(a){
+        return (a < 0) ? a*-1 : a;
+      }
+    }
     return (
       <Card initiallyExpanded={true}>
         <CardHeader actAsExpander={true} showExpandableButton={true} title="Minhas Ordens em aberto" />
@@ -75,21 +100,21 @@ var OpenOrders = React.createClass({
                        displaySelectAll={true}
                        adjustForCheckbox={true}>
               <TableRow>
-                <TableHeaderColumn>Título</TableHeaderColumn>
-                <TableHeaderColumn>Tipo</TableHeaderColumn>
-                <TableHeaderColumn>Qtde</TableHeaderColumn>
-                <TableHeaderColumn>Preço</TableHeaderColumn>
-                <TableHeaderColumn>Valor</TableHeaderColumn>
+                <TableHeaderColumn style={styles.th}>Título</TableHeaderColumn>
+                <TableHeaderColumn style={styles.thBig}>Tipo</TableHeaderColumn>
+                <TableHeaderColumn style={styles.th}>Qtde</TableHeaderColumn>
+                <TableHeaderColumn style={styles.th}>Preço</TableHeaderColumn>
+                <TableHeaderColumn style={styles.thBig}>Valor</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody showRowHover={true} deselectOnClickaway={false}>
               {this.props.orders.map((o, k)=> (
                 <TableRow selected={this.state.selectedOrders.indexOf(k) >= 0} key={k}>
-                  <TableRowColumn>{choices[o.choice]}</TableRowColumn>
-                  <TableRowColumn>{(o.amount < 0) ? 'Venda' : 'Compra'}</TableRowColumn>
-                  <TableRowColumn>{(o.amount < 0) ? o.amount*-1 : o.amount}</TableRowColumn>
-                  <TableRowColumn>{o.price*100}¢</TableRowColumn>
-                  <TableRowColumn>R$ {((o.amount < 0) ? o.price*o.amount*-1 : o.price*o.amount).toFixed(2)}</TableRowColumn>
+                  <TableRowColumn style={styles.th}>{choices[o.choice]}</TableRowColumn>
+                  <TableRowColumn style={styles.thBig}>{(o.amount < 0) ? 'Venda' : 'Compra'}</TableRowColumn>
+                  <TableRowColumn style={styles.th}>{calculateAmount(o.amount)}</TableRowColumn>
+                  <TableRowColumn style={styles.th}>{o.price*100}¢</TableRowColumn>
+                  <TableRowColumn style={styles.thBig}>R$ {((o.amount < 0) ? o.price*o.amount*-1 : o.price*o.amount).toFixed(2)}</TableRowColumn>
                 </TableRow>
               ))}
             </TableBody>
