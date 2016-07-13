@@ -15,6 +15,11 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
 
 var PlaceOrderDialog = React.createClass({
   render: function(){
+    if (this.props.dialogContent.buy) {
+      var orders = this.props.dialogContent.choice.topBuys;
+    }else {
+      var orders = this.props.dialogContent.choice.topSells;
+    }
     var orderTable = null;
     if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       orderTable = (
@@ -29,11 +34,6 @@ var PlaceOrderDialog = React.createClass({
                         }} />
         </Paper>
       )
-    }
-    if (this.props.dialogContent.buy) {
-      var orders = this.props.dialogContent.choice.topBuys;
-    }else {
-      var orders = this.props.dialogContent.choice.topSells;
     }
     var amountError = this.props.amountError ? "Digite uma quantidade" : "";
     var priceError = this.props.priceError ? "Digite um preço" : "";

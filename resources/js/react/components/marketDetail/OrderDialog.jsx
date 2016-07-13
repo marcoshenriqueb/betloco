@@ -197,6 +197,7 @@ var OrderDialog = React.createClass({
           title={title}
           contentStyle={styles.dialog}
           actions={actions}
+          autoDetectWindowHeight={false}
           modal={false}
           open={this.props.dialog}>
         {content}
