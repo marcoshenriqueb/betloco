@@ -86,6 +86,21 @@ var ConfirmOrderDialog = React.createClass({
         }
       ])
     }
+    if (document.documentElement.clientWidth <= window.gvar.breakpoint) {
+      for (var k in rows) {
+        for (var i in rows[k].th) {
+          if (rows[k].th[i].style != null) {
+            rows[k].th[i].style.paddingRight = 10;
+            rows[k].th[i].style.paddingLeft = 10;
+          }else {
+            rows[k].th[i].style = {
+              paddingLeft: 10,
+              paddingRight: 10
+            }
+          }
+        }
+      }
+    }
     return(
       <div>
         <Table>

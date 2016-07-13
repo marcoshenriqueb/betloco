@@ -13,7 +13,23 @@ var style = {
   },
   cardtext: {
     'paddingTop': 0
+  },
+  title: {
+    cursor:'pointer',
+    fontSize: 20,
+    lineHeight: '24px',
+    marginBottom: 10
+  },
+  marketTitle: {
+    fontSize: 20
   }
+}
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+  style.title.fontSize = 24;
+  style.title.lineHeight = '36px';
+  style.title.marginBottom = 0;
+  style.marketTitle = null;
 }
 
 var EventCard = React.createClass({
@@ -30,7 +46,7 @@ var EventCard = React.createClass({
         return (
         <div key={k}>
           <div className="marketcard-predictions__choices">
-            <h5>{c.title}</h5>
+            <h5 style={style.marketTitle}>{c.title}</h5>
             <p>{c.lastCompleteOrder != null ? '(' + (c.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'}</p>
           </div>
           <LinearProgress style={style.linear}
@@ -58,7 +74,7 @@ var EventCard = React.createClass({
           <div key={k}>
             <div className="marketcard-predictions__choices">
               <IndexLink to={'/app/mercado/' + m.id + '/'}>
-                <h5>{m.title_short}</h5>
+                <h5 style={style.marketTitle}>{m.title_short}</h5>
               </IndexLink>
               <p>({prob.toFixed(1)}%)</p>
             </div>
@@ -73,7 +89,7 @@ var EventCard = React.createClass({
       <Card className="marketcard">
         <CardTitle
           title={this.props._event._source.title}
-          titleStyle={{cursor:'pointer'}}
+          titleStyle={style.title}
           onTouchTap={this.goToMarketDetail}
           subtitle={
             <div className="marketcard-subtitle">

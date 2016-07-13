@@ -5,7 +5,8 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 
 var styles = {
   card: {
-    display: 'inline-block'
+    display: 'inline-block',
+    marginBottom: 10
   },
   cardpadding: {
     padding: 10

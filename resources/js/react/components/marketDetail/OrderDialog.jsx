@@ -8,8 +8,12 @@ import Dialog from 'material-ui/Dialog';
 
 var styles = {
   dialog:{
-    width: 556
+    width: "100%"
   }
+}
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint){
+  styles.dialog.width = 556;
 }
 
 var OrderDialog = React.createClass({
