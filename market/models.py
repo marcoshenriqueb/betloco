@@ -269,7 +269,7 @@ class OrderManager(models.Manager):
                                                 .filter(to_order__isnull=True) \
                                                 .filter(deleted=0) \
                                                 .filter(from_liquidation=0) \
-                                                .values('id', 'choice__market__title', 'choice__market__id', 'choice__title', 'price', 'amount')
+                                                .values('id', 'choice__market__title', 'choice__market__title_short', 'choice__market__id', 'choice__title', 'price', 'amount')
 
     def deleteOpenOrders(self, user_id, orders):
         for o in orders:

@@ -5,10 +5,48 @@ import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import moment from 'moment';
 
-var styles = {
+var style = {
+  title:{
+    margin: "20px 10px 10px 10px",
+    fontSize: 22
+  },
   firstColumn: {
-    width: 450
+    paddingRight: 10,
+    paddingLeft: 10,
+    width: 150
+  },
+  firstRowColumn: {
+    fontSize:15,
+    paddingRight: 10,
+    paddingLeft: 10,
+    width: 150
+  },
+  th: {
+    paddingRight: 10,
+    paddingLeft: 10
+  },
+  thBig: {
+    display: 'none'
+  },
+  thDate: {
+    width: 80,
+    paddingRight: 10,
+    paddingLeft: 10
   }
+}
+
+if (document.documentElement.clientWidth > window.gvar.breakpoint){
+  style.title.fontSize = 28;
+  style.th.paddingLeft = 24;
+  style.th.paddingRight = 24;
+  style.thBig.display = 'table-cell';
+  style.thDate.width = 180;
+  style.firstColumn.paddingLeft = 24;
+  style.firstColumn.paddingRight = 24;
+  style.firstColumn.width = 450;
+  style.firstRowColumn.paddingLeft = 24;
+  style.firstRowColumn.paddingRight = 24;
+  style.firstRowColumn.width = 450;
 }
 
 var MyHistory = React.createClass({
@@ -30,35 +68,52 @@ var MyHistory = React.createClass({
     this.getHistory();
   },
   render: function(){
+    var returnTitle = function(p){
+      return p.choice__market__title_short;
+    }
+    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+      returnTitle = function(p){
+        return p.choice__market__title;
+      }
+    }
     var rows = null;
     if (this.state.history.length > 0) {
       rows = this.state.history.map((h, k)=> (
         <TableRow key={k}>
           <TableRowColumn className="multiple-market-table__choice"
-                          style={{width:styles.firstColumn.width, fontSize:14}}>
-            {h.choice__market__title}
+                          style={style.firstRowColumn}>
+            {returnTitle(h)}
           </TableRowColumn>
-          <TableRowColumn style={{width:80}}>{h.choice__title}</TableRowColumn>
-          <TableRowColumn>{h.amount_sum}</TableRowColumn>
-          <TableRowColumn>{h.price_avg.toFixed(2) * h.amount_sum}</TableRowColumn>
-          <TableRowColumn style={{width:180}}>{moment(h.created_at).format('DD/MM/YYYY HH:mm')}</TableRowColumn>
+          <TableRowColumn style={style.thBig}>{h.choice__title}</TableRowColumn>
+          <TableRowColumn style={style.thBig}>{h.amount_sum}</TableRowColumn>
+          <TableRowColumn style={style.th}>{h.price_avg.toFixed(2) * h.amount_sum}</TableRowColumn>
+          <TableRowColumn style={style.thDate}>
+            {
+              (document.documentElement.clientWidth > window.gvar.breakpoint) ?
+                moment(h.created_at).format('DD/MM/YYYY HH:mm')
+              :
+                moment(h.created_at).format('DD/MM/YY')
+            }
+          </TableRowColumn>
         </TableRow>
       ));
     }
     return (
       <div>
-        <h2 style={{marginTop:20}}>Histórico de transações</h2>
+        <h2 style={style.title}>Histórico de transações</h2>
         <Card initiallyExpanded={true}>
           <CardText expandable={true}>
             <Table>
               <TableHeader adjustForCheckbox={false}
                            displaySelectAll={false}>
                 <TableRow>
-                  <TableHeaderColumn style={styles.firstColumn}>Mercado</TableHeaderColumn>
-                  <TableHeaderColumn style={{width:80}}>Posição</TableHeaderColumn>
-                  <TableHeaderColumn>Qtde</TableHeaderColumn>
-                  <TableHeaderColumn>Valor (R$)</TableHeaderColumn>
-                  <TableHeaderColumn style={{width:180}}>Data Ordem</TableHeaderColumn>
+                  <TableHeaderColumn style={style.firstColumn}>Mercado</TableHeaderColumn>
+                  <TableHeaderColumn style={style.thBig}>Posição</TableHeaderColumn>
+                  <TableHeaderColumn style={style.thBig}>Qtde</TableHeaderColumn>
+                  <TableHeaderColumn style={style.th}>
+                    {(document.documentElement.clientWidth > window.gvar.breakpoint) ? "Valor (R$)":"R$"}
+                  </TableHeaderColumn>
+                  <TableHeaderColumn style={style.thDate}>Data Ordem</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
               <TableBody displayRowCheckbox={false}
