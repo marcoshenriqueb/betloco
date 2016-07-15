@@ -52,7 +52,7 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
 var MyHistory = React.createClass({
   getInitialState: function() {
     return {
-      history: []
+      history: false
     };
   },
   getHistory: function(){
@@ -68,6 +68,22 @@ var MyHistory = React.createClass({
     this.getHistory();
   },
   render: function(){
+    if (this.state.history === false) {
+      return (
+        <div>
+          <h2 style={style.title}>Histórico de transações</h2>
+          <br/>
+          <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
+            <div className="bouncer">
+              <div className="bounce1"></div>
+              <div className="bounce2"></div>
+              <div className="bounce3"></div>
+            </div>
+          </div>
+          <br/>
+        </div>
+      )
+    }
     var returnTitle = function(p){
       return p.choice__market__title_short;
     }

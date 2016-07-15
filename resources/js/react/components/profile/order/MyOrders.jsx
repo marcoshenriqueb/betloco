@@ -46,7 +46,7 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
 var MyOrders = React.createClass({
   getInitialState: function() {
     return {
-      orders: []
+      orders: false
     };
   },
   getOrders: function(){
@@ -62,6 +62,22 @@ var MyOrders = React.createClass({
     this.getOrders();
   },
   render: function(){
+    if (this.state.orders === false) {
+      return (
+        <div>
+          <h2 style={style.title}>Ordens em Aberto</h2>
+          <br/>
+          <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
+            <div className="bouncer">
+              <div className="bounce1"></div>
+              <div className="bounce2"></div>
+              <div className="bounce3"></div>
+            </div>
+          </div>
+          <br/>
+        </div>
+      )
+    }
     var returnTitle = function(p){
       return p.choice__market__title_short;
     }
