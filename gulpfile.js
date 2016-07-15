@@ -36,7 +36,7 @@ gulp.task('script', function() {
   }
 });
 
-gulp.task('watch', ['apply-prod-env' ,'stylus', 'script'], function() {
+gulp.task('watch', ['apply-prod-env', 'stylus', 'script'], function() {
   gulp.watch('./resources/stylus/**/*.styl', ['stylus']);
   // gulp.watch('./resources/js/**/*', ['script']);
 });
