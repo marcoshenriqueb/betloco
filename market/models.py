@@ -280,7 +280,7 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     """docstring for Order"""
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    choice = models.ForeignKey(Choice, on_delete=models.PROTECT)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     amount = models.IntegerField(blank=False, null=False)
     price = models.FloatField(validators = [MinValueValidator(0.0), MaxValueValidator(1.0)])
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
@@ -299,8 +299,8 @@ class Order(models.Model):
 
 class Operation(models.Model):
     """docstring for Operation"""
-    from_order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='from_order')
-    to_order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='to_order')
+    from_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='from_order')
+    to_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='to_order')
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
     amount = models.PositiveIntegerField(blank=False, null=False)
