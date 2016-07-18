@@ -69,9 +69,9 @@ class TransactionManager(models.Manager):
                 'count': c,
                 'markets': e
             }
-        total_risk = None
+        total_risk = 0
         for k, e in events_wc.items():
-            events_risk = 0
+            events_risk = None
             count = 0
             if len(e['markets']) > 1:
                 for m in e['markets']:
