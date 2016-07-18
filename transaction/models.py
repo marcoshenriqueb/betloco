@@ -88,7 +88,7 @@ class TransactionManager(models.Manager):
                         elif n['choice__title'] == "Não" and m['choice__market__id'] == n['choice__market__id']:
                             risk += n['balance']
                         else:
-                            risk -= n['balance']
+                            risk += n['balance'] - n['amount_sum']
                     if events_risk < risk:
                         events_risk = risk
                 if int(e['count']) > count:
@@ -97,7 +97,7 @@ class TransactionManager(models.Manager):
                         if n['choice__title'] == "Sim":
                             risk += n['balance']
                         else:
-                            risk -= n['balance']
+                            risk += n['balance'] - n['amount_sum']
                     if events_risk < risk:
                         events_risk = risk
                 total_risk += events_risk
