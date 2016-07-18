@@ -69,7 +69,7 @@ class TransactionManager(models.Manager):
                 'count': c,
                 'markets': e
             }
-        total_risk = 0
+        total_risk = None
         for k, e in events_wc.items():
             events_risk = 0
             count = 0
@@ -86,7 +86,7 @@ class TransactionManager(models.Manager):
                             risk += n['balance']
                         else:
                             risk += n['balance'] - n['amount_sum']
-                    if events_risk < risk:
+                    if events_risk is None or events_risk < risk:
                         events_risk = risk
                 if int(e['count']) > count:
                     risk = 0
@@ -95,7 +95,7 @@ class TransactionManager(models.Manager):
                             risk += n['balance']
                         else:
                             risk += n['balance'] - n['amount_sum']
-                    if events_risk < risk:
+                    if events_risk is None or events_risk < risk:
                         events_risk = risk
                 total_risk += events_risk
             else:
