@@ -22,7 +22,7 @@ var OrderBook = React.createClass({
         <p className="warning">Não há ordens de {this.props.choice.title}</p>
       </CardText>
     )
-    if (this.props.choice.topBuys.length > 0 &&this.props.choice.topSells.length > 0) {
+    if (this.props.choice.topBuys.length > 0 || this.props.choice.topSells.length > 0) {
       expanded = true;
       content = (
         <CardText expandable={true} style={styles.cardtext} className="orderbook-card__details">
