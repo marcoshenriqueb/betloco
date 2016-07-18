@@ -72,16 +72,13 @@ class TransactionManager(models.Manager):
         total_risk = 0
         for k, e in events_wc.items():
             events_risk = 0
-            yes_count = 0
-            no_count = 0
+            count = 0
             if len(e['markets']) > 1:
                 for m in e['markets']:
                     winner_id = False
                     if m['choice__title'] == 'Sim':
-                        yes_count += 1
                         winner_id = m['choice__id']
-                    else:
-                        no_count += 1
+                    count += 1
                     risk = 0
                     for n in e['markets']:
                         if winner_id and n['choice__id'] == winner_id:
@@ -94,7 +91,7 @@ class TransactionManager(models.Manager):
                             risk -= n['balance']
                     if events_risk < risk:
                         events_risk = risk
-                if int(e['count']) > yes_count:
+                if int(e['count']) > count:
                     risk = 0
                     for n in e['markets']:
                         if n['choice__title'] == "Sim":
