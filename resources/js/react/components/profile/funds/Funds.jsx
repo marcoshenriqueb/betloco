@@ -29,8 +29,6 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   style.firstColumn.paddingLeft = 24;
   style.firstColumn.paddingRight = 24;
   style.firstColumn.width = 700;
-  style.firstColumn.fontSize = 18;
-  style.secondColumn.fontSize = 18;
   style.secondColumn.paddingLeft = 24;
   style.secondColumn.paddingRight = 24;
 }

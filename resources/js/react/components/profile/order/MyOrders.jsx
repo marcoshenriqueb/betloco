@@ -62,10 +62,11 @@ var MyOrders = React.createClass({
     this.getOrders();
   },
   render: function(){
+    var title = (<h2 style={style.title}>Ordens em Aberto</h2>);
     if (this.state.orders === false) {
       return (
         <div>
-          <h2 style={style.title}>Ordens em Aberto</h2>
+          {title}
           <br/>
           <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
             <div className="bouncer">
@@ -77,7 +78,15 @@ var MyOrders = React.createClass({
           <br/>
         </div>
       )
+    }else if (this.state.orders.length == 0) {
+      return (
+        <div>
+          {title}
+          <p className="error-warning">Você não tem nenhuma ordem em aberto</p>
+        </div>
+      )
     }
+
     var returnTitle = function(p){
       return p.choice__market__title_short;
     }
@@ -116,7 +125,7 @@ var MyOrders = React.createClass({
     }
     return (
       <div>
-        <h2 style={style.title}>Ordens em Aberto</h2>
+        {title}
         <Card initiallyExpanded={true}>
           <CardText expandable={true}>
             <Table>

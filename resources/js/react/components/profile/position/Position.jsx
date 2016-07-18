@@ -62,10 +62,11 @@ var Position = React.createClass({
     this.getPositions();
   },
   render: function(){
+    var title = (<h2 style={style.title}>Posições</h2>);
     if (this.state.positions === false) {
       return (
         <div>
-          <h2 style={style.title}>Posições</h2>
+          {title}
           <br/>
           <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
             <div className="bouncer">
@@ -75,6 +76,13 @@ var Position = React.createClass({
             </div>
           </div>
           <br/>
+        </div>
+      )
+    }else if (this.state.positions.length == 0) {
+      return (
+        <div>
+          {title}
+          <p className="error-warning">Você não tem posição em nenhum mercado</p>
         </div>
       )
     }
@@ -106,7 +114,7 @@ var Position = React.createClass({
     }
     return (
       <div>
-        <h2 style={style.title}>Posições</h2>
+        {title}
         <Card initiallyExpanded={true}>
           <CardText expandable={true}>
             <Table>

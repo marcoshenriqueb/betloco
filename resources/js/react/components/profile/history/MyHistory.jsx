@@ -68,10 +68,11 @@ var MyHistory = React.createClass({
     this.getHistory();
   },
   render: function(){
+    var title = (<h2 style={style.title}>Histórico de transações</h2>);
     if (this.state.history === false) {
       return (
         <div>
-          <h2 style={style.title}>Histórico de transações</h2>
+          {title}
           <br/>
           <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
             <div className="bouncer">
@@ -81,6 +82,13 @@ var MyHistory = React.createClass({
             </div>
           </div>
           <br/>
+        </div>
+      )
+    }else if (this.state.history.length == 0) {
+      return (
+        <div>
+          {title}
+          <p className="error-warning">Você não tem nenhuma transação realizada</p>
         </div>
       )
     }
@@ -116,7 +124,7 @@ var MyHistory = React.createClass({
     }
     return (
       <div>
-        <h2 style={style.title}>Histórico de transações</h2>
+        {title}
         <Card initiallyExpanded={true}>
           <CardText expandable={true}>
             <Table>
