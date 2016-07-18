@@ -75,13 +75,10 @@ class TransactionManager(models.Manager):
             count = 0
             if len(e['markets']) > 1:
                 for m in e['markets']:
-                    winner_id = False
-                    if m['choice__title'] == 'Sim':
-                        winner_id = m['choice__id']
                     count += 1
                     risk = 0
                     for n in e['markets']:
-                        if winner_id and n['choice__id'] == winner_id:
+                        if n['choice__title'] == "Sim" and m['choice__market__id'] == n['choice__market__id']:
                             risk += n['balance'] - n['amount_sum']
                         elif n['choice__title'] == "Sim":
                             risk += n['balance']
