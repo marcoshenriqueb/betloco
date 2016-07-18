@@ -95,7 +95,7 @@ var Funds = React.createClass({
                                   style={style.firstColumn}>
                     Provisão em ordens (R$)
                   </TableRowColumn>
-                  <TableRowColumn style={style.secondColumn}>{this.state.funds.buyOrders}</TableRowColumn>
+                  <TableRowColumn style={style.secondColumn}>{this.state.funds.risk}</TableRowColumn>
                 </TableRow>
               </TableBody>
             </Table>

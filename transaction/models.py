@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from market.models import Order, Sum, F, Operation
+from market.models import Order, Event, Sum, F, Operation, When
+from django.db.models import Max, Case, Count
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Currency(models.Model):
@@ -24,25 +25,93 @@ class TransactionType(models.Model):
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id):
-        transactions = self.filter(user__id=user_id).filter(transaction_type__id=1).aggregate(balance=Sum('value'))['balance'] or 0
-        buyOrders = Order.objects.filter(user__id=user_id).filter(from_order__isnull=True) \
-            .filter(to_order__isnull=True) \
-            .filter(amount__gt=0) \
-            .filter(deleted=0) \
-            .aggregate(balance=Sum(F('amount')*F('price'), output_field=models.FloatField()))['balance'] or 0
-        fromOrderBuyOperations = Operation.objects.filter(from_order__user__id=user_id) \
-           .filter(from_order__amount__gt=0) \
-           .aggregate(balance=Sum(F('amount')*F('price'), output_field=models.FloatField()))['balance'] or 0
-        fromOrderSellOperations = Operation.objects.filter(from_order__user__id=user_id) \
-           .filter(from_order__amount__lt=0) \
-           .aggregate(balance=Sum(F('amount')*F('price'), output_field=models.FloatField()))['balance'] or 0
-        toOrderOperations = Operation.objects.filter(to_order__user__id=user_id) \
-           .aggregate(balance=Sum(F('to_order__amount')*F('to_order__price'), output_field=models.FloatField()))['balance'] or 0
+        transactions = self.filter(user__id=user_id).aggregate(balance=Sum('value'))['balance'] or 0
+        orders = Order.objects.filter(user__id=user_id).filter(deleted=0).values('choice__market__id') \
+                              .annotate(balance=Sum(Case(
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=F('amount')*F('price')),
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__lt=0, then=0),
+                                  When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
+                                  When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')*F('from_order__price')),
+                                  When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')*F('price')),
+                                  When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')*F('price')),
+                                  output_field=models.FloatField()
+                                )),
+                                amount_sum=Sum(Case(
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=F('amount')),
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__lt=0, then=0),
+                                  When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')),
+                                  When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                                  When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')),
+                                  When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')),
+                                  output_field=models.IntegerField()
+                                ))
+                              ).values('choice__market__id',
+                                       'choice__id',
+                                       'choice__title',
+                                       'balance',
+                                       'amount_sum',
+                                       'choice__market__event__id')
+                            #   .aggregate(balance_sum=Sum('balance'))
+        events = {}
+        for o in orders:
+            if o['choice__market__event__id'] in events:
+                events[o['choice__market__event__id']].append(o)
+            else:
+                events[o['choice__market__event__id']] = [o,]
+        markets_count = Event.objects.filter(id__in=events.keys()).values('id').annotate(Count('markets'))
+        events_wc = {}
+        for k, e in events.items():
+            c = 0
+            for m in markets_count:
+                if m['id'] == k:
+                    c = m['markets__count']
+            events_wc[k] = {
+                'count': c,
+                'markets': e
+            }
+        total_risk = 0
+        for k, e in events_wc.items():
+            events_risk = 0
+            yes_count = 0
+            no_count = 0
+            if len(e['markets']) > 1:
+                for m in e['markets']:
+                    winner_id = False
+                    if m['choice__title'] == 'Sim':
+                        yes_count += 1
+                        winner_id = m['choice__id']
+                    else:
+                        no_count += 1
+                    risk = 0
+                    for n in e['markets']:
+                        if winner_id and n['choice__id'] == winner_id:
+                            risk += n['balance'] - n['amount_sum']
+                        elif n['choice__title'] == "Sim":
+                            risk += n['balance']
+                        elif n['choice__title'] == "Não" and m['choice__market__id'] == n['choice__market__id']:
+                            risk += n['balance']
+                        else:
+                            risk -= n['balance']
+                    if events_risk < risk:
+                        events_risk = risk
+                if int(e['count']) > yes_count:
+                    risk = 0
+                    for n in e['markets']:
+                        if n['choice__title'] == "Sim":
+                            risk += n['balance']
+                        else:
+                            risk -= n['balance']
+                    if events_risk < risk:
+                        events_risk = risk
+                total_risk += events_risk
+            else:
+                for m in e['markets']:
+                    total_risk += m['balance']
+
         return {
-            'total': transactions - buyOrders - fromOrderBuyOperations + fromOrderSellOperations - toOrderOperations,
+            'total': transactions - total_risk,
             'transactions': transactions,
-            'buyOrders': buyOrders,
-            'operations': - fromOrderBuyOperations + fromOrderSellOperations - toOrderOperations
+            'risk': total_risk
         }
 
 
