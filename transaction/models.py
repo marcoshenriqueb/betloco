@@ -24,7 +24,7 @@ class TransactionType(models.Model):
 
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
-    def balance(self, user_id):
+    def balance(self, user_id, new_order=None):
         transactions = self.filter(user__id=user_id).aggregate(balance=Sum('value'))['balance'] or 0
         orders = Order.objects.filter(user__id=user_id).filter(deleted=0).values('choice__market__id') \
                               .annotate(balance=Sum(Case(
@@ -78,6 +78,9 @@ class TransactionManager(models.Manager):
                             #   .aggregate(balance_sum=Sum('balance'))
         events = {}
         for o in orders:
+            if new_order is not None and int(o['choice__id']) == new_order['choice'].id:
+                o['amount_sum'] += int(new_order['amount'])
+                o['balance'] += int(abs(new_order['amount']))*int(new_order['price'])
             if o['choice__market__event__id'] in events:
                 events[o['choice__market__event__id']].append(o)
             else:
