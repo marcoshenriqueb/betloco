@@ -202,3 +202,9 @@ REST_FRAMEWORK = {
 }
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@sandbox36e0be12d3de4e0abb9a70914d6ee5de.mailgun.org'
+EMAIL_HOST_PASSWORD = '1f79ad6d5d12b23bf75b5c80b7ba3bfc'
+EMAIL_PORT = 587

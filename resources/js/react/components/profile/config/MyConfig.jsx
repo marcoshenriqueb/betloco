@@ -41,6 +41,9 @@ var MyConfig = React.createClass({
   componentDidMount: function() {
     this.getFunds();
   },
+  passwordReset: function(){
+    window.location = '/accounts/password/change/';
+  },
   render: function(){
     if (this.state.user === false) {
       return (
@@ -85,6 +88,7 @@ var MyConfig = React.createClass({
             /><br/>
             <FlatButton
               label="Redefinir senha"
+              onTouchTap={this.passwordReset}
               secondary={true}
             />
           </CardText>
