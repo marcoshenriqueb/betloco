@@ -40,18 +40,18 @@ var ConfirmOrderDialog = React.createClass({
           {content: 'Preço', style: null},
           {content: this.props.price + '¢', style: styles.right}
         ]
-      },
-      {
-        border: true,
-        th: [
-          {content: 'Valor Total', style: null},
-          {content: "R$" + total, style: styles.right}
-        ]
       }
     ]
     if (this.props.buy) {
       var remaining = this.props.balance - total;
       rows = rows.concat([
+        {
+          border: true,
+          th: [
+            {content: 'Provisão máxima', style: null},
+            {content: "R$" + total, style: styles.right}
+          ]
+        },
         {
           border: true,
           th: [
