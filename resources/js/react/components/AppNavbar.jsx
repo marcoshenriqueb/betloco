@@ -48,9 +48,9 @@ var AppNavbar = React.createClass({
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           >
-            <MenuItem primaryText="Mercados" onTouchTap={this._marketRoute} />
-            <MenuItem primaryText="Perfil" onTouchTap={this._profileRoute} />
-            <MenuItem primaryText="Sair" onTouchTap={this._logout} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Mercados" onTouchTap={this._marketRoute} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Perfil" onTouchTap={this._profileRoute} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout} />
           </IconMenu>
         }
       >

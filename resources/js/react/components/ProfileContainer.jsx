@@ -77,14 +77,14 @@ var ProfileContainer = React.createClass({
       submenu = (
         <Paper style={style.paper}>
           <Menu>
-            <MenuItem primaryText="Minhas posições" onTouchTap={this._positionRoute} leftIcon={<TrendingUp />} />
-            <MenuItem primaryText="Minhas Ordens" onTouchTap={this._ordersRoute} leftIcon={<ActionGavel />} />
-            <MenuItem primaryText="Histórico" onTouchTap={this._historyRoute} leftIcon={<_History />} />
-            <MenuItem primaryText="Fundos" onTouchTap={this._fundsRoute} leftIcon={<Money />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Minhas posições" onTouchTap={this._positionRoute} leftIcon={<TrendingUp />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Minhas Ordens" onTouchTap={this._ordersRoute} leftIcon={<ActionGavel />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Histórico" onTouchTap={this._historyRoute} leftIcon={<_History />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Fundos" onTouchTap={this._fundsRoute} leftIcon={<Money />} />
             <Divider />
-            <MenuItem primaryText="Configurações" onTouchTap={this._configRoute} leftIcon={<Settings />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Configurações" onTouchTap={this._configRoute} leftIcon={<Settings />} />
             <Divider />
-            <MenuItem primaryText="Sair" onTouchTap={this._logout} leftIcon={<Power />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout} leftIcon={<Power />} />
           </Menu>
         </Paper>
       )
