@@ -80,7 +80,7 @@ class TransactionManager(models.Manager):
         for o in orders:
             if new_order is not None and int(o['choice__id']) == new_order['choice'].id:
                 o['amount_sum'] += int(new_order['amount'])
-                o['balance'] += int(new_order['amount'])*int(new_order['price'])
+                o['balance'] += int(new_order['amount'])*float(new_order['price'])
             if o['choice__market__event__id'] in events:
                 events[o['choice__market__event__id']].append(o)
             else:
