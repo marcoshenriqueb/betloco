@@ -28,27 +28,51 @@ class TransactionManager(models.Manager):
         transactions = self.filter(user__id=user_id).aggregate(balance=Sum('value'))['balance'] or 0
         orders = Order.objects.filter(user__id=user_id).filter(deleted=0).values('choice__market__id') \
                               .annotate(balance=Sum(Case(
-                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=F('amount')*F('price')),
-                                  When(from_order__isnull=True, to_order__isnull=True, amount__lt=0, then=0),
                                   When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
                                   When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')*F('from_order__price')),
                                   When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')*F('price')),
                                   When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')*F('price')),
+                                  default=0,
                                   output_field=models.FloatField()
                                 )),
                                 amount_sum=Sum(Case(
-                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=F('amount')),
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=0),
                                   When(from_order__isnull=True, to_order__isnull=True, amount__lt=0, then=0),
                                   When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')),
                                   When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
                                   When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')),
                                   When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')),
+                                  default=0,
+                                  output_field=models.IntegerField()
+                                )),
+                                sell_orders_balance=Sum(Case(
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__lt=0, then=-1*F('amount')*F('price')),
+                                  default=0,
+                                  output_field=models.FloatField()
+                                )),
+                                sell_orders_amount=Sum(Case(
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__lt=0, then=-1*F('amount')),
+                                  default=0,
+                                  output_field=models.IntegerField()
+                                )),
+                                buy_orders_balance=Sum(Case(
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=F('amount')*F('price')),
+                                  default=0,
+                                  output_field=models.FloatField()
+                                )),
+                                buy_orders_amount=Sum(Case(
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then='amount'),
+                                  default=0,
                                   output_field=models.IntegerField()
                                 ))
                               ).values('choice__market__id',
                                        'choice__id',
                                        'choice__title',
                                        'balance',
+                                       'sell_orders_balance',
+                                       'buy_orders_balance',
+                                       'sell_orders_amount',
+                                       'buy_orders_amount',
                                        'amount_sum',
                                        'choice__market__event__id')
                             #   .aggregate(balance_sum=Sum('balance'))
@@ -80,12 +104,16 @@ class TransactionManager(models.Manager):
                     for n in e['markets']:
                         if n['choice__title'] == "Sim" and m['choice__market__id'] == n['choice__market__id']:
                             risk += n['balance'] - n['amount_sum']
+                            risk -= n['sell_orders_balance'] - n['sell_orders_amount']
                         elif n['choice__title'] == "Sim":
                             risk += n['balance']
+                            risk += n['buy_orders_balance']
                         elif n['choice__title'] == "Não" and m['choice__market__id'] == n['choice__market__id']:
                             risk += n['balance']
+                            risk += n['buy_orders_balance']
                         else:
                             risk += n['balance'] - n['amount_sum']
+                            risk -= n['sell_orders_balance'] - n['sell_orders_amount']
                     if events_risk is None or events_risk < risk:
                         events_risk = risk
                 if int(e['count']) > count:
@@ -93,8 +121,10 @@ class TransactionManager(models.Manager):
                     for n in e['markets']:
                         if n['choice__title'] == "Sim":
                             risk += n['balance']
+                            risk += n['buy_orders_balance']
                         else:
                             risk += n['balance'] - n['amount_sum']
+                            risk -= n['sell_orders_balance'] - n['sell_orders_amount']
                     if events_risk is None or events_risk < risk:
                         events_risk = risk
                 total_risk += events_risk
