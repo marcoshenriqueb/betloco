@@ -130,7 +130,7 @@ class TransactionManager(models.Manager):
                 total_risk += events_risk
             else:
                 for m in e['markets']:
-                    total_risk += m['balance']
+                    total_risk += m['balance'] + m['buy_orders_balance'] + m['sell_orders_balance']
 
         return {
             'total': transactions - total_risk,
