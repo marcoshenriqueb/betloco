@@ -11,7 +11,7 @@ import Settings from 'material-ui/svg-icons/action/settings';
 import Power from 'material-ui/svg-icons/action/power-settings-new';
 import FontIcon from 'material-ui/FontIcon';
 import { browserHistory } from 'react-router';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import IconButton from 'material-ui/IconButton';
 
 const style = {
   paper: {
@@ -23,9 +23,16 @@ const style = {
     textAlign: 'center',
     lineHeight: '24px',
   },
+  iconColor:"rgba(255,255,255,.7)",
+  selectedIconcolor:"rgba(255,255,255,1)"
 };
 
 var ProfileContainer = React.createClass({
+  getInitialState: function(){
+    return {
+      intital: 0
+    }
+  },
   _positionRoute: function(){
     browserHistory.push('/app/perfil/minhas-posicoes/');
   },
@@ -44,34 +51,41 @@ var ProfileContainer = React.createClass({
   _logout: function(){
     window.location = "/accounts/logout/";
   },
-  tabChange: function(e){
-    console.log(e);
+  shouldComponentUpdate: function(){
+    return true;
   },
   render: function() {
+    var positionColor = style.iconColor;
+    var ordersColor = style.iconColor;
+    var historyColor = style.iconColor;
+    var fundsColor = style.iconColor;
+    var configColor = style.iconColor;
     switch (window.location.pathname.split('/')[3]) {
       case 'minhas-ordens':
-        var initial = 1;
+        ordersColor = style.selectedIconcolor;
         break;
       case 'historico-transacoes':
-        var initial = 2;
+        historyColor = style.selectedIconcolor;
         break;
       case 'fundos':
-        var initial = 3;
+        fundsColor = style.selectedIconcolor;
         break;
       case 'minhas-configuracoes':
-        var initial = 4;
+        configColor = style.selectedIconcolor;
         break;
       default:
-        var initial = 0;
+        positionColor = style.selectedIconcolor;
     }
     var submenu = (
-      <Tabs onChange={this.tabChange} initialSelectedIndex={initial}>
-        <Tab icon={<TrendingUp />} onClick={this._positionRoute} />
-        <Tab icon={<ActionGavel />} onClick={this._ordersRoute} />
-        <Tab icon={<_History />} onClick={this._historyRoute} />
-        <Tab icon={<Money />} onClick={this._fundsRoute} />
-        <Tab icon={<Settings />} onClick={this._configRoute} />
-      </Tabs>
+      <div className="profile-mobile-menu">
+        <ul className="profile-mobile-menu__list">
+          <li onTouchTap={this._positionRoute}><IconButton><TrendingUp color={positionColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={this._ordersRoute}><IconButton><ActionGavel color={ordersColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={this._historyRoute}><IconButton><_History color={historyColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={this._fundsRoute}><IconButton><Money color={fundsColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={this._configRoute}><IconButton><Settings color={configColor} className="profile-mobile-menu__item" /></IconButton></li>
+        </ul>
+      </div>
     )
     if (document.documentElement.clientWidth > window.gvar.breakpoint){
       submenu = (

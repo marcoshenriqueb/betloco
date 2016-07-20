@@ -61,6 +61,19 @@ h3 {
     display: block;
   }
 }
+.profile-mobile-menu {
+  background-color: #00bcd4;
+  width: 100%;
+}
+.profile-mobile-menu__list {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
 @media (min-width: 768px) {
   .profile-container {
     display: flex;
