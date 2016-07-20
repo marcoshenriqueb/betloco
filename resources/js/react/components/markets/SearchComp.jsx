@@ -26,6 +26,9 @@ var style = {
   },
   secSelect: {
     marginRight: 40,
+  },
+  filterLabelStyle: {
+    fontSize: 16
   }
 };
 
@@ -98,7 +101,8 @@ var SearchComp = React.createClass({
             <SelectField value={this.props.category}
                          onChange={this.props.handleCategoryChange}
                          floatingLabelText="Categoria"
-                         style={style.firstSelect}>
+                         style={style.firstSelect}
+                         floatingLabelStyle={style.filterLabelStyle}>
               <MenuItem value="todas" primaryText="Todas" />
               <MenuItem value="pol" primaryText="Política" />
               <MenuItem value="spo" primaryText="Esportes" />
@@ -107,7 +111,8 @@ var SearchComp = React.createClass({
             <SelectField value={this.props.order}
                          onChange={this.props.handleOrderChange}
                          floatingLabelText="Ordem"
-                         style={style.secSelect}>
+                         style={style.secSelect}
+                         floatingLabelStyle={style.filterLabelStyle}>
               <MenuItem value="_score|desc" primaryText="Relevância" />
               <MenuItem value="created_at|desc" primaryText="Mais novo" />
               <MenuItem value="created_at|asc" primaryText="Mais antigo" />
