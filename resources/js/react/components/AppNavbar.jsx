@@ -40,7 +40,9 @@ var AppNavbar = React.createClass({
               <div className="appbar-nav">
                 <div className="appbar-nav__info-container">
                   <span>Saldo Disponível</span>
-                  <div className="appbar-nav__info-holder">R$ {this.props.balance.toFixed(2)}</div>
+                  <div className="appbar-nav__info-holder">
+                    R$ {(this.props.balance)?this.props.balance.total.toFixed(2):'0'}
+                  </div>
                 </div>
                 <IconButton iconStyle={{fill:'rgb(255,255,255)'}}><IconMenuIcon /></IconButton>
               </div>

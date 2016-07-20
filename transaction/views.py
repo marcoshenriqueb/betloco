@@ -4,6 +4,7 @@ from .serializers import TransactionSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Transaction
+import json
 
 class ListCreateTransaction(generics.ListCreateAPIView):
     """docstring for ListCreateTransaction"""
@@ -15,4 +16,7 @@ class ListCreateTransaction(generics.ListCreateAPIView):
 class BalanceView(APIView):
     """docstring for BalanceView"""
     def get(self, request):
-        return Response(Transaction.objects.balance(request.user.id))
+        preview = None
+        if 'preview' in request.query_params:
+            preview = json.loads(request.query_params['preview'])
+        return Response(Transaction.objects.balance(request.user.id, new_order=preview))

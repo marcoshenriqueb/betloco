@@ -214,6 +214,7 @@ var OrderDialog = React.createClass({
       var content = (
         <ConfirmOrderDialog amount={this.state.amount}
                             buy={this.props.dialogContent.buy}
+                            choice={this.props.dialogContent.choice}
                             price={this.state.price}
                             balance={this.props.balance}
                             custody={this.props.custody[this.props.dialogContent.choice.id]} />

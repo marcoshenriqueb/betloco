@@ -7,14 +7,14 @@ import Navbar from './components/AppNavbar.jsx';
 var App = React.createClass({
   getInitialState: function(){
     return {
-      balance: 0,
+      balance: false,
     };
   },
   getBalance: function(){
     var that = this;
     req('/api/transactions/balance/?format=json').then(function(response){
       that.setState({
-        balance: response.total
+        balance: response
       });
     });
   },

@@ -77,8 +77,10 @@ class TransactionManager(models.Manager):
                                        'choice__market__event__id')
                             #   .aggregate(balance_sum=Sum('balance'))
         events = {}
+        if new_order is not None:
+            choice_id = new_order['choice__id'] if 'choice__id' in new_order else new_order['choice'].id
         for o in orders:
-            if new_order is not None and int(o['choice__id']) == new_order['choice'].id:
+            if new_order is not None and int(o['choice__id']) == choice_id:
                 o['amount_sum'] += int(new_order['amount'])
                 o['balance'] += int(new_order['amount'])*float(new_order['price'])
             if o['choice__market__event__id'] in events:

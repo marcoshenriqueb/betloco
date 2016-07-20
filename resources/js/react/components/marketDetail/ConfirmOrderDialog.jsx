@@ -1,4 +1,5 @@
 import React from 'react';
+import req from 'reqwest';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 var styles = {
@@ -19,72 +20,90 @@ var styles = {
     textAlign: 'right'
   },
   bold:{
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    width: 200,
+    paddingLeft: 24,
+    paddingRight: 24
   }
 }
 
 var ConfirmOrderDialog = React.createClass({
+  getInitialState: function(){
+    return {
+      estimatedBalance: false
+    }
+  },
+  componentDidMount: function(){
+    console.log(this.state);
+    this.getEstimatedBalance();
+  },
+  getEstimatedBalance: function(){
+    var preview = {
+      amount: (this.props.buy) ? this.props.amount : this.props.amount*-1,
+      price: this.props.price/100,
+      choice__id: this.props.choice.id
+    }
+    var that = this;
+    req('/api/transactions/balance/?preview=' + encodeURI(JSON.stringify(preview)) + '&format=json').then(function(response){
+      that.setState({
+        estimatedBalance: response
+      });
+    });
+  },
   render: function(){
-    var total = this.props.amount * (this.props.price / 100);
     var rows = [
       {
         border: false,
         th: [
-          {content: 'Quantidade', style: null},
+          {content: 'Quantidade', style: {width:200}},
           {content: this.props.amount, style: styles.right}
         ]
       },
       {
         border: false,
         th: [
-          {content: 'Preço', style: null},
+          {content: 'Preço', style: {width:200}},
           {content: this.props.price + '¢', style: styles.right}
+        ]
+      },
+      {
+        border: true,
+        th: [
+          {content: 'Valor Total (R$)', style: {width:200}},
+          {content: this.props.price*this.props.amount, style: styles.right}
+        ]
+      },
+      {
+        border: true,
+        th: [
+          {content: 'Variação no Risco (R$)', style: styles.bold},
+          {content: (this.state.estimatedBalance)?this.state.estimatedBalance.risk-this.props.balance.risk:'0', style: styles.boldRight}
+        ]
+      },
+      {
+        border: true,
+        th: [
+          {content: 'Saldo Estimado (R$)', style: styles.bold},
+          {content: (this.state.estimatedBalance)?this.state.estimatedBalance.total:'0', style: styles.boldRight}
         ]
       }
     ]
-    if (this.props.buy) {
-      var remaining = this.props.balance - total;
-      rows = rows.concat([
-        {
-          border: true,
-          th: [
-            {content: 'Provisão máxima', style: null},
-            {content: "R$" + total, style: styles.right}
-          ]
-        },
-        {
-          border: true,
-          th: [
-            {content: 'Valor Disponível', style: styles.bold},
-            {content: 'R$' + this.props.balance, style: styles.boldRight}
-          ]
-        },
-        {
-          border: true,
-          th: [
-            {content: 'Valor Restante', style: styles.bold},
-            {content: 'R$' + remaining, style: styles.boldRight}
-          ]
-        }
-      ])
-    }else {
-      var remaining = this.props.custody.position - this.props.amount;
-      rows = rows.concat([
-        {
-          border: true,
-          th: [
-            {content: 'Quantidade Disponível', style: styles.bold},
-            {content: this.props.custody.position, style: styles.boldRight}
-          ]
-        },
+    if (!this.props.buy) {
+      var remaining = this.props.balance;
+      rows = [
+        rows[0],
+        rows[1],
+        rows[2],
         {
           border: true,
           th: [
             {content: 'Quantidade Restante', style: styles.bold},
-            {content: remaining, style: styles.boldRight}
+            {content: this.props.custody.position - this.props.amount, style: styles.boldRight}
           ]
-        }
-      ])
+        },
+        rows[3],
+        rows[4]
+      ]
     }
     if (document.documentElement.clientWidth <= window.gvar.breakpoint) {
       for (var k in rows) {
