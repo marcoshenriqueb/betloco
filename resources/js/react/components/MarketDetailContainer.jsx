@@ -6,7 +6,7 @@ import Breadcrumb from './general/Breadcrumb.jsx';
 var MarketDetailContainer = React.createClass({
   getInitialState: function() {
     return {
-      market: {},
+      market: null,
       custody: {},
       dialog: false,
       dialogContent: undefined,
@@ -85,6 +85,23 @@ var MarketDetailContainer = React.createClass({
     this.setState({dialog: false});
   },
   render: function() {
+    if (this.state.market == null) {
+      return (
+        <div style={{
+                  width:'100%',
+                  height: '60vh',
+                  display:'flex',
+                  justifyContent:'center',
+                  alignItems:'center'
+                }}>
+          <div className="bouncer">
+            <div className="bounce1"></div>
+            <div className="bounce2"></div>
+            <div className="bounce3"></div>
+          </div>
+        </div>
+      )
+    }
     var breadcrumb = null;
     if (this.state.market.event != undefined) {
       if (this.state.market.event.markets.length > 1) {

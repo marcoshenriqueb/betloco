@@ -18,7 +18,7 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
 var EventDetailContainer = React.createClass({
   getInitialState: function() {
     return {
-      _event: {},
+      _event: null,
     };
   },
   getEvent: function(){
@@ -34,6 +34,23 @@ var EventDetailContainer = React.createClass({
     this.getEvent();
   },
   render: function() {
+    if (this.state._event == null) {
+      return (
+        <div style={{
+                  width:'100%',
+                  height: '60vh',
+                  display:'flex',
+                  justifyContent:'center',
+                  alignItems:'center'
+                }}>
+          <div className="bouncer">
+            <div className="bounce1"></div>
+            <div className="bounce2"></div>
+            <div className="bounce3"></div>
+          </div>
+        </div>
+      )
+    }
     var breadcrumb = null;
     if (this.state._event.title != undefined) {
       var path = [
