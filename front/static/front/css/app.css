@@ -88,7 +88,7 @@ h3 {
     padding: 0 20px;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .profile-container {
     padding: 0 40px;
   }
@@ -147,7 +147,7 @@ h3 {
 .marketcard-predictions p {
   margin-bottom: 0;
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .container {
     width: 80%;
   }
