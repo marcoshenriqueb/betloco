@@ -80,7 +80,7 @@ var MultipleMarketTable = React.createClass({
             <TableRowColumn style={styles.td}>{m.volume}</TableRowColumn>
             <TableRowColumn style={styles.tdBig}>
               <IndexLink to={'/app/mercado/' + m.id + '/'}>
-                <IconButton><ActionGavel color="rgb(0, 188, 212)" /></IconButton>
+                <IconButton><ActionGavel color={window.gvar.primarycolor} /></IconButton>
               </IndexLink>
             </TableRowColumn>
           </TableRow>

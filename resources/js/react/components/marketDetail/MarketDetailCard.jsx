@@ -23,8 +23,6 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   styles.title.fontSize = 28;
 }
 
-var bgcolor = "rgb(255, 64, 129)";
-
 var MarketDetailCard = React.createClass({
   render: function() {
     if (this.props.market.choices != undefined) {
@@ -32,8 +30,8 @@ var MarketDetailCard = React.createClass({
       var disableOrderRequest = false;
       if (moment(this.props.market.event.deadline).isBefore()) {
         marketClosed = (
-          <Chip labelStyle={{color:'white', textTransform:'uppercase', fontWeight: 'bold'}}
-                backgroundColor={bgcolor}>Mercado Encerrado
+          <Chip labelStyle={{color:window.gvar.lightcolor, textTransform:'uppercase', fontWeight: 'bold'}}
+                backgroundColor={window.gvar.warningcolor}>Mercado Encerrado
           </Chip>
         )
         disableOrderRequest = true;

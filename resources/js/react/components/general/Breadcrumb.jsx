@@ -5,7 +5,7 @@ import ActionHome from 'material-ui/svg-icons/action/home';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { IndexLink } from 'react-router';
 
-var color = 'rgba(0, 0, 0, 0.541176)';
+var color = window.gvar.graycolor;
 var style = {
   container: {
     display: 'flex',

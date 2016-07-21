@@ -24,7 +24,7 @@ const style = {
     lineHeight: '24px',
   },
   iconColor:"rgba(255,255,255,.7)",
-  selectedIconcolor:"rgba(255,255,255,1)"
+  selectedIconcolor:window.gvar.lightcolor
 };
 
 var ProfileContainer = React.createClass({

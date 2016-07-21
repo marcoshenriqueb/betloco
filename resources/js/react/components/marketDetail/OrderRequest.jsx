@@ -20,10 +20,6 @@ var styles = {
     'minWidth': 40,
     'margin': 5
   },
-  cardheadertitle: {
-    color: 'rgb(255,255,255)',
-    'marginLeft': 8
-  },
   cardtext: {
     paddingTop: 0
   }

@@ -5,6 +5,8 @@ white_color = #FFF
 primary_color = rgb(0, 188, 212)
 success_color = #00d418
 warning_color = rgb(255, 64, 129)
+tablet_break = 768px
+desktop_break = 1024px
 
 *
   box-sizing: border-box;
@@ -60,7 +62,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   display: flex;
   align-items: center;
 
-@media(min-width:768px)
+@media(min-width:tablet_break)
   .multiple-market-table__choice
     a
       text-decoration: none;

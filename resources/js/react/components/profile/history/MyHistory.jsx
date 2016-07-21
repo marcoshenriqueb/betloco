@@ -40,12 +40,14 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   style.th.paddingLeft = 24;
   style.th.paddingRight = 24;
   style.thBig.display = 'table-cell';
-  style.thDate.width = 180;
   style.firstColumn.paddingLeft = 24;
   style.firstColumn.paddingRight = 24;
-  style.firstColumn.width = 450;
   style.firstRowColumn.paddingLeft = 24;
   style.firstRowColumn.paddingRight = 24;
+}
+if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+  style.thDate.width = 180;
+  style.firstColumn.width = 450;
   style.firstRowColumn.width = 450;
 }
 
@@ -95,7 +97,7 @@ var MyHistory = React.createClass({
     var returnTitle = function(p){
       return p.choice__market__title_short;
     }
-    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function(p){
         return p.choice__market__title;
       }
@@ -113,7 +115,7 @@ var MyHistory = React.createClass({
           <TableRowColumn style={style.th}>{h.price_avg.toFixed(2) * h.amount_sum}</TableRowColumn>
           <TableRowColumn style={style.thDate}>
             {
-              (document.documentElement.clientWidth > window.gvar.breakpoint) ?
+              (document.documentElement.clientWidth > window.gvar.desktopbreak) ?
                 moment(h.created_at).format('DD/MM/YYYY HH:mm')
               :
                 moment(h.created_at).format('DD/MM/YY')
@@ -135,7 +137,7 @@ var MyHistory = React.createClass({
                   <TableHeaderColumn style={style.thBig}>Posição</TableHeaderColumn>
                   <TableHeaderColumn style={style.thBig}>Qtde</TableHeaderColumn>
                   <TableHeaderColumn style={style.th}>
-                    {(document.documentElement.clientWidth > window.gvar.breakpoint) ? "Valor (R$)":"R$"}
+                    {(document.documentElement.clientWidth > window.gvar.desktopbreak) ? "Valor (R$)":"R$"}
                   </TableHeaderColumn>
                   <TableHeaderColumn style={style.thDate}>Data Ordem</TableHeaderColumn>
                 </TableRow>

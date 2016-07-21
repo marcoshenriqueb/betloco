@@ -8,13 +8,12 @@ import ContentRemove from 'material-ui/svg-icons/content/remove';
 import FlatButton from 'material-ui/FlatButton';
 import Money from 'material-ui/svg-icons/editor/attach-money';
 
-var primarycolor = window.gvar.primarycolor;
 var style = {
   input: {
     width: "100%"
   },
   icon: {
-    fill: primarycolor,
+    fill: window.gvar.primarycolor,
     marginTop: 15
   }
 }
@@ -43,8 +42,8 @@ var PlaceOrderDialog = React.createClass({
           <OrderTable buy={this.props.dialogContent.buy}
                         orders={orders}
                         headerStyle={{
-                          backgroundColor:"rgb(0, 188, 212)",
-                          color: "#fff",
+                          backgroundColor:window.gvar.primarycolor,
+                          color: window.gvar.lightcolor,
                           fontWeight: "bold"
                         }} />
         </Paper>

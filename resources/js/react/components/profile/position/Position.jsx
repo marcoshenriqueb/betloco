@@ -37,9 +37,11 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   style.thBig.display = 'table-cell';
   style.firstColumn.paddingLeft = 24;
   style.firstColumn.paddingRight = 24;
-  style.firstColumn.width = 500;
   style.firstRowColumn.paddingLeft = 24;
   style.firstRowColumn.paddingRight = 24;
+}
+if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+  style.firstColumn.width = 500;
   style.firstRowColumn.width = 500;
 }
 
@@ -89,7 +91,7 @@ var Position = React.createClass({
     var returnTitle = function(p){
       return p.choice.market__title_short;
     }
-    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function(p){
         return p.choice.market__title;
       }

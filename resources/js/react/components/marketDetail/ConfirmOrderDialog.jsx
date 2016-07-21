@@ -7,8 +7,8 @@ var styles = {
     textAlign: 'right'
   },
   header: {
-    backgroundColor:"rgb(0, 188, 212)",
-    color: "#fff",
+    backgroundColor:window.gvar.primarycolor,
+    color: window.gvar.lightcolor,
     fontWeight: "bold"
   },
   th:{

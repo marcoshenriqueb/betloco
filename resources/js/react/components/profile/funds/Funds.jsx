@@ -25,12 +25,15 @@ var style = {
 }
 
 if (document.documentElement.clientWidth > window.gvar.breakpoint){
+  style.firstColumn.width = 300;
   style.title.fontSize = 28;
   style.firstColumn.paddingLeft = 24;
   style.firstColumn.paddingRight = 24;
-  style.firstColumn.width = 700;
   style.secondColumn.paddingLeft = 24;
   style.secondColumn.paddingRight = 24;
+}
+if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+  style.firstColumn.width = 700;
 }
 
 var Funds = React.createClass({
