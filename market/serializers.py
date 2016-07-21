@@ -113,14 +113,14 @@ class CreateOrderSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['choice'].market.event.deadline < timezone.now():
-            raise serializers.ValidationError("Market has ended already!")
+            raise serializers.ValidationError("Esse mercado está encerrado!")
         user_id = self.context['request'].user.id
         # Validates sell orders
         if data['amount'] < 0:
             c = Choice.objects.custody(user_id, data['choice'].market.id, data['choice'].id)
             # Don't let user sell more than what he has
             if c[data['choice'].id]['position'] < (data['amount'] * (-1)):
-                raise serializers.ValidationError("Can't sell more than you have!")
+                raise serializers.ValidationError("Você não tem custódia para realizar a venda!")
             o = Order.objects.filter(user__id=self.context['request'].user.id) \
                              .filter(choice__id=data['choice'].id) \
                              .filter(from_order__isnull=True) \
@@ -131,21 +131,21 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             o *= -1
             # Don't let user sell more than he has plus the orders already sent
             if (c[data['choice'].id]['position'] - o) < (data['amount'] * (-1)):
-                raise serializers.ValidationError("Can't sell more than you have plus orders already sent!")
+                raise serializers.ValidationError("Você já tem ordens de venda, tente as cancelar!")
         # Validates buy orders
         elif data['amount'] > 0:
             c = Choice.objects.custody(user_id, data['choice'].market.id, not_choice_id=data['choice'].id)
             for k, v in c.items():
                 if int(v['position']) > 0:
-                    raise serializers.ValidationError("You can't bet against yourself!")
+                    raise serializers.ValidationError("Você não pode comprar Sim e Não ao mesmo tempo!")
 
             o = Order.objects.getOpenOrders(user_id, data['choice'].market.id) \
                                 .filter(~Q(choice__id=data['choice'].id)).count()
             if o > 0:
-                raise serializers.ValidationError("Can't place bets on both Yes and No!")
+                raise serializers.ValidationError("Você não pode colocar ordens de compra de Sim e Não no mesmo mercado!")
         balance = Transaction.objects.balance(self.context['request'].user.id, new_order=data)
         if balance['total'] < 0:
-            raise serializers.ValidationError("Not enough cash to place the order!")
+            raise serializers.ValidationError("Você não tem saldo suficiente!")
 
         return data
 
