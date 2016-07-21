@@ -1,9 +1,10 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views
-from front.views import AppView, HomeView
+from front.views import ChooseWinnerView, HomeView
 
 urlpatterns = [
+    url(r'^custom-admin/choose-winner/$', ChooseWinnerView.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^app/', include('front.urls')),
     url(r'^accounts/logout/$', views.logout, {'next_page': '/'}),

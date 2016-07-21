@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Sum, Avg, Q, F, Case, When
+from django.utils import timezone
 import operator, functools
 from itertools import chain
+from channels import Channel
 
 @models.IntegerField.register_lookup
 class AbsoluteValue(models.Transform):
@@ -61,6 +63,31 @@ class Event(models.Model):
 
     volume = property(_getVolume)
 
+class MarketManager(models.Manager):
+    """docstring for MarketManager"""
+    def set_winner(self, market_id):
+        if market_id:
+            e = self.get(id=market_id).event
+            if e.deadline < timezone.now():
+                choices = Choice.objects.filter(market__event__id=e.id)
+                if len(choices.filter(winner=1)) > 0:
+                    choices.update(winner=0)
+                    for c in choices:
+                        c.order_set.filter(from_liquidation=1).delete()
+                winner_market = self.get(id=market_id)
+                winner_market.choices.filter(title="Sim").update(winner=1)
+                Channel("liquidate-market").send({
+                    "market_id": winner_market.id
+                })
+                loosers_markets = e.markets.filter(~Q(id=market_id))
+                for m in loosers_markets:
+                    m.liquidated = 1
+                    m.save()
+                    m.choices.filter(title="Não").update(winner=1)
+                    Channel("liquidate-market").send({
+                        "market_id": m.id
+                    })
+
 class Market(models.Model):
     """docstring for Market"""
     title = models.CharField(max_length=150)
@@ -69,6 +96,7 @@ class Market(models.Model):
     liquidated = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
+    objects = MarketManager()
 
     def __str__(self):
         return self.title

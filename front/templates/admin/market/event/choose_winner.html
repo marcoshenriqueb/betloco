@@ -1,0 +1,21 @@
+<form method="post" action="/custom-admin/choose-winner/">
+  {% csrf_token %}
+  <input type="hidden" name="event-id" value="{{event__id}}">
+  <fieldset class="module aligned">
+    <h2>LIQUIDAÇÃO DE VENCEDOR</h2>
+    <div class="form-row">
+      <div>
+        <label class="required" for="event-winner">Vencedor</label>
+        <select name="event-winner">
+          <option value="">------</option>
+          {% for m in markets %}
+            <option value="{{m.id}}">{{m.title_short}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="submit-row">
+      <input style="float:left;" type="submit" value="Save">
+    </div>
+  </fieldset>
+</form>
