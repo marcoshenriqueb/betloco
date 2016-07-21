@@ -70,7 +70,7 @@ var ConfirmOrderDialog = React.createClass({
         border: true,
         th: [
           {content: 'Valor Total (R$)', style: {width:200}},
-          {content: (this.props.price/100)*this.props.amount, style: styles.right}
+          {content: ((this.props.price/100)*this.props.amount).toFixed(0), style: styles.right}
         ]
       },
       {
