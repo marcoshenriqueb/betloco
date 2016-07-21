@@ -61,6 +61,7 @@ var MarketDetailContainer = React.createClass({
         that.setState({
           market: m.market
         });
+        that.props.updateBalance();
         that.getCustody();
         that.getOpenOrders();
       }

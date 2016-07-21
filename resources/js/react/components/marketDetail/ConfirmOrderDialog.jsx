@@ -34,7 +34,6 @@ var ConfirmOrderDialog = React.createClass({
     }
   },
   componentDidMount: function(){
-    console.log(this.state);
     this.getEstimatedBalance();
   },
   getEstimatedBalance: function(){
@@ -45,6 +44,7 @@ var ConfirmOrderDialog = React.createClass({
     }
     var that = this;
     req('/api/transactions/balance/?preview=' + encodeURI(JSON.stringify(preview)) + '&format=json').then(function(response){
+      console.log(response);
       that.setState({
         estimatedBalance: response
       });

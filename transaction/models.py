@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from market.models import Order, Event, Sum, F, Operation, When
+from market.models import Order, Event, Choice, Sum, F, Operation, When
 from django.db.models import Max, Case, Count
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -79,14 +79,36 @@ class TransactionManager(models.Manager):
         events = {}
         if new_order is not None:
             choice_id = new_order['choice__id'] if 'choice__id' in new_order else new_order['choice'].id
+            new_order_added = False
         for o in orders:
             if new_order is not None and int(o['choice__id']) == choice_id:
+                new_order_added = True
                 o['amount_sum'] += int(new_order['amount'])
                 o['balance'] += int(new_order['amount'])*float(new_order['price'])
             if o['choice__market__event__id'] in events:
                 events[o['choice__market__event__id']].append(o)
             else:
                 events[o['choice__market__event__id']] = [o,]
+        if new_order is not None and not new_order_added:
+            c = Choice.objects.get(pk=choice_id)
+            m = c.market
+            e = m.event
+            result_order = {
+                'choice__id': choice_id,
+                'amount_sum': int(new_order['amount']),
+                'balance': int(new_order['amount'])*float(new_order['price']),
+                'choice__market__id': m.id,
+                'choice__title': c.title,
+                'sell_orders_balance': 0,
+                'buy_orders_balance': 0,
+                'sell_orders_amount': 0,
+                'buy_orders_amount': 0,
+                'choice__market__event__id': e.id
+            }
+            if e.id in events:
+                events[e.id].append(result_order)
+            else:
+                events[e.id] = [result_order,]
         markets_count = Event.objects.filter(id__in=events.keys()).values('id').annotate(Count('markets'))
         events_wc = {}
         for k, e in events.items():
