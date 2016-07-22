@@ -25,6 +25,29 @@ var AppNavbar = React.createClass({
     browserHistory.push('/app/');
   },
   render: function() {
+    var userData = null;
+    var menuItems = [
+      <MenuItem style={{cursor:'pointer'}} primaryText="Mercados" onTouchTap={this._marketRoute} />
+    ]
+    if (window.gvar.user != 'anom') {
+      userData = (
+        <div className="appbar-nav__info-container">
+          <span>Saldo Disponível</span>
+          <div className="appbar-nav__info-holder">
+            R$ {(this.props.balance)?this.props.balance.total.toFixed(2):'0'}
+          </div>
+        </div>
+      )
+      menuItems.push(
+        <MenuItem style={{cursor:'pointer'}} primaryText="Perfil" onTouchTap={this._profileRoute} />,
+        <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout} />
+      )
+    }else {
+      menuItems.push(
+        <MenuItem style={{cursor:'pointer'}} primaryText="Cadastro" />,
+        <MenuItem style={{cursor:'pointer'}} primaryText="Entrar" />
+      )
+    }
     return (
       <AppBar
         title={
@@ -38,21 +61,14 @@ var AppNavbar = React.createClass({
           <IconMenu
             iconButtonElement={
               <div className="appbar-nav">
-                <div className="appbar-nav__info-container">
-                  <span>Saldo Disponível</span>
-                  <div className="appbar-nav__info-holder">
-                    R$ {(this.props.balance)?this.props.balance.total.toFixed(2):'0'}
-                  </div>
-                </div>
+                {userData}
                 <IconButton iconStyle={{fill:'rgb(255,255,255)'}}><IconMenuIcon /></IconButton>
               </div>
             }
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           >
-            <MenuItem style={{cursor:'pointer'}} primaryText="Mercados" onTouchTap={this._marketRoute} />
-            <MenuItem style={{cursor:'pointer'}} primaryText="Perfil" onTouchTap={this._profileRoute} />
-            <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout} />
+            {menuItems}
           </IconMenu>
         }
       >

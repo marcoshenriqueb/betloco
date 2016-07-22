@@ -5,19 +5,15 @@ from market.models import Market
 class HomeView(View):
     """docstring for HomeView"""
     def get(self, request):
-        if not request.user.is_authenticated():
-            return render(request, 'front/home.html')
-
-        return redirect('/app/')
+        return render(request, 'front/home.html')
 
 class AppView(View):
     """docstring for AppView"""
     def get(self, request):
+        context = {'user': 'anom'}
         if request.user.is_authenticated():
-            context = {'user': request.user}
-            return render(request, 'front/app.html', context=context)
-
-        return redirect('/')
+            context = {'user': request.user.id}
+        return render(request, 'front/app.html', context=context)
 
 class ChooseWinnerView(View):
     """docstring for ChooseWinnerView"""

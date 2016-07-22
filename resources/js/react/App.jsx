@@ -4,6 +4,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navbar from './components/AppNavbar.jsx';
 
+const muiTheme = getMuiTheme({});
+
 var App = React.createClass({
   getInitialState: function(){
     return {
@@ -23,7 +25,7 @@ var App = React.createClass({
   },
   render: function() {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme()}>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div>
           <Navbar balance={this.state.balance} />
           {React.cloneElement(this.props.children, {

@@ -36,6 +36,10 @@ var MyConfig = React.createClass({
       that.setState({
         user: user
       });
+    }, function(){
+      that.setState({
+        user: 'anom'
+      });
     });
   },
   componentDidMount: function() {
@@ -61,36 +65,44 @@ var MyConfig = React.createClass({
         </div>
       )
     }
+    var content = (
+      <h5 className="subtitle" style={style.subtitle}>Usuário não logado</h5>
+    )
+    if (this.state.user != 'anom') {
+      content = [
+        <h5 className="subtitle" style={style.subtitle}>Perfil</h5>,
+        <TextField
+          style={style.textfield}
+          value={this.state.user.username}
+          floatingLabelText="Nome de usuário"
+          floatingLabelFixed={true}
+        />,<br/>,
+        <TextField
+          style={style.textfield}
+          value={this.state.user.email}
+          floatingLabelText="Email"
+          floatingLabelFixed={true}
+        />,<br/>,
+        <TextField
+          style={style.textfield}
+          value={this.state.user.password}
+          floatingLabelText="Password"
+          floatingLabelFixed={true}
+          type="password"
+        />,<br/>,
+        <FlatButton
+          label="Redefinir senha"
+          onTouchTap={this.passwordReset}
+          secondary={true}
+        />
+      ]
+    }
     return (
       <div>
         <h2 style={style.title}>Configurações</h2>
         <Card initiallyExpanded={true}>
           <CardText expandable={true}>
-            <h5 className="subtitle" style={style.subtitle}>Perfil</h5>
-            <TextField
-              style={style.textfield}
-              value={this.state.user.username}
-              floatingLabelText="Nome de usuário"
-              floatingLabelFixed={true}
-            /><br/>
-            <TextField
-              style={style.textfield}
-              value={this.state.user.email}
-              floatingLabelText="Email"
-              floatingLabelFixed={true}
-            /><br/>
-            <TextField
-              style={style.textfield}
-              value={this.state.user.password}
-              floatingLabelText="Password"
-              floatingLabelFixed={true}
-              type="password"
-            /><br/>
-            <FlatButton
-              label="Redefinir senha"
-              onTouchTap={this.passwordReset}
-              secondary={true}
-            />
+            {content}
           </CardText>
         </Card>
       </div>
