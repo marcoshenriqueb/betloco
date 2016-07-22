@@ -5,6 +5,8 @@ from market.models import Market
 class HomeView(View):
     """docstring for HomeView"""
     def get(self, request):
+        if request.user.is_authenticated():
+            return redirect('/app/')
         return render(request, 'front/home.html')
 
 class AppView(View):
