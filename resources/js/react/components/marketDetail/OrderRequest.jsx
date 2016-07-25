@@ -27,24 +27,22 @@ var styles = {
 
 var OrderRequest = React.createClass({
   openBuy: function(){
-    this.props.openDialog(this.props.choice, true);
+    this.props.openDialog(this.props.market, true);
   },
   openSell: function(){
-    this.props.openDialog(this.props.choice, false);
+    this.props.openDialog(this.props.market, false);
   },
   render: function() {
     if (this.props.custody) {
       var custody = this.props.custody;
     }else {
-      var custody = {
-        position: 0
-      };
+      var custody = 0;
     }
-    var disableSell = this.props.disableOrderRequest || custody.position == 0;
+    var disableSell = this.props.disableOrderRequest;
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
-          <p>{this.props.choice.title} ({this.props.choice.lastCompleteOrder != null ? (this.props.choice.lastCompleteOrder.price * 100).toFixed(0) : 0}%)</p>
+          <p>Nova ordem</p>
         </div>
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">
@@ -57,7 +55,7 @@ var OrderRequest = React.createClass({
           </div>
         </CardActions>
         <CardText style={styles.cardtext} className="orderrequest-card__details">
-          <span><strong>{custody.position}</strong> papéis em custódia</span>
+          <span><strong>{custody}</strong> papéis em custódia</span>
         </CardText>
       </Card>
     );

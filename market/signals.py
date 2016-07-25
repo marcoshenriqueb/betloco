@@ -12,7 +12,7 @@ def postSaveOrder(sender, instance, created, **kwargs):
         e = OrderEngine(instance)
         e.findMatchingOffers()
 
-        pk = instance.choice.market.id
+        pk = instance.market.id
         Channel("market-update").send({
             "room": 'market-' + str(pk),
             "message": json.dumps({'pk': str(pk)})

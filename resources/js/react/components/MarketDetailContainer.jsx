@@ -73,11 +73,11 @@ var MarketDetailContainer = React.createClass({
     this.connectToMarket();
     this.getOpenOrders();
   },
-  openDialog: function(choice, buy){
+  openDialog: function(market, buy){
     this.setState({
       dialog: true,
       dialogContent: {
-        choice: choice,
+        market: market,
         buy: buy
       }
     });

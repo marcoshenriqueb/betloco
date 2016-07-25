@@ -19,24 +19,24 @@ var OrderBook = React.createClass({
     var expanded = false;
     var content = (
       <CardText expandable={true} style={styles.cardtext} className="orderbook-card__details">
-        <p className="warning">Não há ordens de {this.props.choice.title}</p>
+        <p className="warning">Não há ordens nesse mercado</p>
       </CardText>
     )
-    if (this.props.choice.topBuys.length > 0 || this.props.choice.topSells.length > 0) {
+    if (this.props.market.topBuys.length > 0 || this.props.market.topSells.length > 0) {
       expanded = true;
       content = (
         <CardText expandable={true} style={styles.cardtext} className="orderbook-card__details">
           <OrderTable buy={true}
-                      orders={this.props.choice.topBuys} />
+                      orders={this.props.market.topBuys} />
 
           <OrderTable buy={false}
-                      orders={this.props.choice.topSells} />
+                      orders={this.props.market.topSells} />
         </CardText>
       )
     }
     return (
       <Card style={styles.card} className="orderbook-card" initiallyExpanded={expanded}>
-        <CardHeader actAsExpander={true} showExpandableButton={true} title={"Livro de Ofertas - " + this.props.choice.title} />
+        <CardHeader actAsExpander={true} showExpandableButton={true} title="Livro de Ofertas" />
         {content}
       </Card>
     );

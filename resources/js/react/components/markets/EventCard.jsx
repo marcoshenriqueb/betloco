@@ -42,34 +42,36 @@ var EventCard = React.createClass({
   },
   render: function() {
     if (this.props._event._source.markets.length == 1) {
-      var textContent = this.props._event._source.markets[0].choices.map((c, k) => {
-        return (
-        <div key={k}>
+      var m = this.props._event._source.markets[0]
+      var textContent = [
+        <div>
           <div className="marketcard-predictions__choices">
-            <h5 style={style.marketTitle}>{c.title}</h5>
-            <p>{c.lastCompleteOrder != null ? '(' + (c.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'}</p>
+            <h5 style={style.marketTitle}>Sim</h5>
+            <p>{m.lastCompleteOrder != null ? '(' + (m.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'}</p>
           </div>
           <LinearProgress style={style.linear}
                           mode="determinate"
-                          value={c.lastCompleteOrder != null ? c.lastCompleteOrder.price * 100 : 0} />
+                          value={m.lastCompleteOrder != null ? m.lastCompleteOrder.price * 100 : 0} />
+        </div>,
+        <div>
+          <div className="marketcard-predictions__choices">
+            <h5 style={style.marketTitle}>Não</h5>
+            <p>{m.lastCompleteOrder != null ? '(' + (100-(m.lastCompleteOrder.price * 100)).toFixed(1) + '%)' : '(0%)'}</p>
+          </div>
+          <LinearProgress style={style.linear}
+                          mode="determinate"
+                          value={m.lastCompleteOrder != null ? 100-(m.lastCompleteOrder.price * 100) : 0} />
         </div>
-      )})
+      ]
     }else {
       var totalPrice = 0;
       for (var k in this.props._event._source.markets) {
-        if (this.props._event._source.markets[k].choices[0].title == "Sim") {
-          var yes = this.props._event._source.markets[k].choices[0];
-          var no = this.props._event._source.markets[k].choices[1];
-        }else {
-          var yes = this.props._event._source.markets[k].choices[1];
-          var no = this.props._event._source.markets[k].choices[0];
-        }
-        if (yes.lastCompleteOrder != null) {
-          totalPrice += yes.lastCompleteOrder.price;
+        if (this.props._event._source.markets[k].lastCompleteOrder != null) {
+          totalPrice += this.props._event._source.markets[k].lastCompleteOrder.price;
         }
       }
       var textContent = this.props._event._source.markets.map((m, k)=> {
-        var prob = m.choices[0].lastCompleteOrder != null ? m.choices[0].lastCompleteOrder.price / totalPrice * 100 : 0;
+        var prob = m.lastCompleteOrder != null ? m.lastCompleteOrder.price / totalPrice * 100 : 0;
         return (
           <div key={k}>
             <div className="marketcard-predictions__choices">

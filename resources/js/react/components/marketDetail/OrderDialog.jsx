@@ -56,9 +56,9 @@ var OrderDialog = React.createClass({
   },
   addBestPrice: function(){
     if (this.props.dialogContent.buy) {
-      var order = this.props.dialogContent.choice.topBuys[0];
+      var order = this.props.dialogContent.market.topBuys[0];
     }else {
-      var order = this.props.dialogContent.choice.topSells[0];
+      var order = this.props.dialogContent.market.topSells[0];
     }
     this.setState({
       price: order.price*100
@@ -88,41 +88,30 @@ var OrderDialog = React.createClass({
     this.setState({
       disabled: true
     });
-    var choiceId = this.props.dialogContent.choice.id
-    if (this.props.dialogContent.buy && (this.state.price/100)*this.state.amount > this.props.balance) {
-      this.setState({
-        error: "Saldo insuficiente para completar a operação!"
-      });
-    }else if (!this.props.dialogContent.buy && this.state.amount > this.props.custody[choiceId].position) {
-      this.setState({
-        error: "Quantidade em custódia insuficiente para realizar a venda!"
-      });
-    }else {
-      var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
-      var data = {
-        price: this.state.price / 100,
-        amount: amount,
-        choice: this.props.dialogContent.choice.id
-      };
-      var that = this;
-      req({
-        url: '/api/markets/order/?format=json',
-        headers: {
-          'X-CSRFToken': document.getElementById('token').getAttribute('value')
-        },
-        method: 'post',
-        data: data
-      }).then(function(response){
-        that.returnStepAndClose();
-        that.props.updateBalance();
-      }).catch(function(response){
-        if (response.status == 400) {
-          that.setState({
-            error: JSON.parse(response.response).non_field_errors[0]
-          });
-        }
-      });
-    }
+    var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
+    var data = {
+      price: this.state.price / 100,
+      amount: amount,
+      market: this.props.dialogContent.market.id
+    };
+    var that = this;
+    req({
+      url: '/api/markets/order/?format=json',
+      headers: {
+        'X-CSRFToken': document.getElementById('token').getAttribute('value')
+      },
+      method: 'post',
+      data: data
+    }).then(function(response){
+      that.returnStepAndClose();
+      that.props.updateBalance();
+    }).catch(function(response){
+      if (response.status == 400) {
+        that.setState({
+          error: JSON.parse(response.response).non_field_errors[0]
+        });
+      }
+    });
   },
   returnStep: function(){
     this.setState({
@@ -161,8 +150,7 @@ var OrderDialog = React.createClass({
     if (this.props.dialogContent == undefined) {
       return (<div/>)
     }
-    var title = this.props.dialogContent.buy ? 'Compra de ' : 'Venda de ';
-    title += this.props.dialogContent.choice.title;
+    var title = this.props.dialogContent.buy ? 'Comprar' : 'Vender';
     if (this.state.content == 0) {
       var actions = [
         <FlatButton
@@ -214,10 +202,10 @@ var OrderDialog = React.createClass({
       var content = (
         <ConfirmOrderDialog amount={this.state.amount}
                             buy={this.props.dialogContent.buy}
-                            choice={this.props.dialogContent.choice}
+                            market={this.props.dialogContent.market}
                             price={this.state.price}
                             balance={this.props.balance}
-                            custody={this.props.custody[this.props.dialogContent.choice.id]} />
+                            custody={this.props.custody} />
       );
     }
     var error = null;

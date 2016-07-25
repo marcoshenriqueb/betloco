@@ -77,10 +77,6 @@ var OpenOrders = React.createClass({
     });
   },
   render: function() {
-    var choices = {}
-    this.props.choices.map((c)=> {
-      choices[c.id] = c.title
-    });
     var calculateAmount = function(a){
       return a;
     }
@@ -100,7 +96,6 @@ var OpenOrders = React.createClass({
                        displaySelectAll={true}
                        adjustForCheckbox={true}>
               <TableRow>
-                <TableHeaderColumn style={styles.th}>Título</TableHeaderColumn>
                 <TableHeaderColumn style={styles.thBig}>Tipo</TableHeaderColumn>
                 <TableHeaderColumn style={styles.th}>Qtde</TableHeaderColumn>
                 <TableHeaderColumn style={styles.th}>Preço</TableHeaderColumn>
@@ -110,7 +105,6 @@ var OpenOrders = React.createClass({
             <TableBody showRowHover={true} deselectOnClickaway={false}>
               {this.props.orders.map((o, k)=> (
                 <TableRow selected={this.state.selectedOrders.indexOf(k) >= 0} key={k}>
-                  <TableRowColumn style={styles.th}>{choices[o.choice]}</TableRowColumn>
                   <TableRowColumn style={styles.thBig}>{(o.amount < 0) ? 'Venda' : 'Compra'}</TableRowColumn>
                   <TableRowColumn style={styles.th}>{calculateAmount(o.amount)}</TableRowColumn>
                   <TableRowColumn style={styles.th}>{(o.price*100).toFixed(0)}¢</TableRowColumn>

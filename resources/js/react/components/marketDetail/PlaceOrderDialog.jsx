@@ -25,9 +25,9 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
 var PlaceOrderDialog = React.createClass({
   render: function(){
     if (this.props.dialogContent.buy) {
-      var orders = this.props.dialogContent.choice.topBuys;
+      var orders = this.props.dialogContent.market.topBuys;
     }else {
-      var orders = this.props.dialogContent.choice.topSells;
+      var orders = this.props.dialogContent.market.topSells;
     }
     var orderTable = null;
     var formTitle = null;

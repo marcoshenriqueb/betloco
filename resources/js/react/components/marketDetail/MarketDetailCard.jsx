@@ -25,7 +25,7 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
 
 var MarketDetailCard = React.createClass({
   render: function() {
-    if (this.props.market.choices != undefined) {
+    if (this.props.market != null) {
       var marketClosed = null;
       var disableOrderRequest = false;
       if (moment(this.props.market.event.deadline).isBefore()) {
@@ -39,8 +39,7 @@ var MarketDetailCard = React.createClass({
       if (this.props.orders.length > 0) {
         var openOrders = (
           <div>
-            <OpenOrders choices={this.props.market.choices}
-                      orders={this.props.orders}
+            <OpenOrders orders={this.props.orders}
                       onDeleteOrders={this.props.onDeleteOrders} />
             <br/>
           </div>
@@ -48,6 +47,7 @@ var MarketDetailCard = React.createClass({
       }else {
         var openOrders = null;
       }
+      var disable = false;
       return (
         <div>
           <OrderDialog dialog={this.props.dialog}
@@ -61,25 +61,14 @@ var MarketDetailCard = React.createClass({
             {marketClosed}
           </h2>
           <div className="orderrequest-container">
-            {this.props.market.choices.map((choice) => {
-              var disable = false;
-              for (var k in this.props.custody) {
-                if (k != choice.id && this.props.custody[k].position > 0) {
-                  disable = true;
-                }
-              }
-              return <OrderRequest openDialog={this.props.openDialog}
-                                   choice={choice}
-                                   disableOrderRequest={disableOrderRequest || disable}
-                                   custody={this.props.custody[choice.id]}
-                                   key={choice.id} />
-            })}
+            <OrderRequest openDialog={this.props.openDialog}
+                         market={this.props.market}
+                         disableOrderRequest={disableOrderRequest || disable}
+                         custody={this.props.custody} />
           </div>
           <br/>
           <div className="orderbook-container">
-            {this.props.market.choices.map((choice) => {
-              return <OrderBook choice={choice} key={choice.id} />
-            })}
+            <OrderBook market={this.props.market} />
           </div>
           <br/>
           {openOrders}

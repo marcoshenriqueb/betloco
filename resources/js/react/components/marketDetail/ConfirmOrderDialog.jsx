@@ -40,7 +40,7 @@ var ConfirmOrderDialog = React.createClass({
     var preview = {
       amount: (this.props.buy) ? this.props.amount : this.props.amount*-1,
       price: this.props.price/100,
-      choice__id: this.props.choice.id
+      market__id: this.props.market.id
     }
     var that = this;
     req('/api/transactions/balance/?preview=' + encodeURI(JSON.stringify(preview)) + '&format=json').then(function(response){
@@ -98,7 +98,7 @@ var ConfirmOrderDialog = React.createClass({
           border: true,
           th: [
             {content: 'Quantidade Restante', style: styles.bold},
-            {content: this.props.custody.position - this.props.amount, style: styles.boldRight}
+            {content: this.props.custody - this.props.amount, style: styles.boldRight}
           ]
         },
         rows[3],

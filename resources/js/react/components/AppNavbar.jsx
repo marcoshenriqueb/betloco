@@ -25,7 +25,7 @@ var AppNavbar = React.createClass({
   render: function() {
     var userData = null;
     var menuItems = [
-      <MenuItem style={{cursor:'pointer'}} primaryText="Mercados" onTouchTap={this._marketRoute} />
+      <MenuItem style={{cursor:'pointer'}} primaryText="Mercados" onTouchTap={this._marketRoute} key={0} />
     ]
     if (window.gvar.user != 'anom') {
       userData = (
@@ -37,13 +37,13 @@ var AppNavbar = React.createClass({
         </div>
       )
       menuItems.push(
-        <MenuItem style={{cursor:'pointer'}} primaryText="Perfil" onTouchTap={this._profileRoute} />,
-        <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout} />
+        <MenuItem style={{cursor:'pointer'}} primaryText="Perfil" onTouchTap={this._profileRoute}  key={1} />,
+        <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout}  key={2} />
       )
     }else {
       menuItems.push(
-        <MenuItem style={{cursor:'pointer'}} primaryText="Cadastro" />,
-        <MenuItem style={{cursor:'pointer'}} primaryText="Entrar" />
+        <MenuItem style={{cursor:'pointer'}} primaryText="Cadastro"  key={1} />,
+        <MenuItem style={{cursor:'pointer'}} primaryText="Entrar"  key={2} />
       )
     }
 
