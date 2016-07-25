@@ -90,11 +90,11 @@ var MyOrders = React.createClass({
     }
 
     var returnTitle = function(p){
-      return p.choice__market__title_short;
+      return p.market__title_short;
     }
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function(p){
-        return p.choice__market__title;
+        return p.market__title;
       }
     }
     var rows = null;
@@ -105,7 +105,6 @@ var MyOrders = React.createClass({
                           style={style.firstRowColumn}>
             {returnTitle(o)}
           </TableRowColumn>
-          <TableRowColumn style={style.thBig}>{o.choice__title}</TableRowColumn>
           {
             (document.documentElement.clientWidth > window.gvar.breakpoint) ?
               (
@@ -118,7 +117,7 @@ var MyOrders = React.createClass({
           }
           <TableRowColumn style={style.thBig}>{(o.price*100).toFixed(0)}¢</TableRowColumn>
           <TableRowColumn style={style.th}>
-            <IndexLink to={'/app/mercado/' + o.choice__market__id + '/'}>
+            <IndexLink to={'/app/mercado/' + o.market__id + '/'}>
               <Open/>
             </IndexLink>
           </TableRowColumn>
@@ -135,7 +134,6 @@ var MyOrders = React.createClass({
                            displaySelectAll={false}>
                 <TableRow>
                   <TableHeaderColumn style={style.firstColumn}>Mercado</TableHeaderColumn>
-                  <TableHeaderColumn style={style.thBig}>Posição</TableHeaderColumn>
                   <TableHeaderColumn style={style.th}>
                     {(document.documentElement.clientWidth > window.gvar.breakpoint) ? "Qtde":"R$"}
                   </TableHeaderColumn>

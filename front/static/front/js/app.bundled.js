@@ -55050,26 +55050,12 @@ var MultipleMarketTable = _react2.default.createClass({
     if (this.props._event.markets != undefined && this.props._event.markets.length > 1) {
       var totalPrice = 0;
       for (var k in this.props._event.markets) {
-        if (this.props._event.markets[k].choices[0].title == "Sim") {
-          var yes = this.props._event.markets[k].choices[0];
-          var no = this.props._event.markets[k].choices[1];
-        } else {
-          var yes = this.props._event.markets[k].choices[1];
-          var no = this.props._event.markets[k].choices[0];
-        }
-        if (yes.lastCompleteOrder != null) {
-          totalPrice += yes.lastCompleteOrder.price;
+        if (this.props._event.markets[k].lastCompleteOrder != null) {
+          totalPrice += this.props._event.markets[k].lastCompleteOrder.price;
         }
       }
       var rows = this.props._event.markets.map(function (m, k) {
-        if (m.choices[0].title == "Sim") {
-          var yes = m.choices[0];
-          var no = m.choices[1];
-        } else {
-          var yes = m.choices[1];
-          var no = m.choices[0];
-        }
-        var prob = yes.lastCompleteOrder != null ? yes.lastCompleteOrder.price * 100 / totalPrice : 0;
+        var prob = m.lastCompleteOrder != null ? m.lastCompleteOrder.price * 100 / totalPrice : 0;
         return _react2.default.createElement(
           _Table.TableRow,
           { key: k },
@@ -55085,12 +55071,7 @@ var MultipleMarketTable = _react2.default.createClass({
           _react2.default.createElement(
             _Table.TableRowColumn,
             { style: styles.td },
-            yes.lastCompleteOrder != null ? (yes.lastCompleteOrder.price * 100).toFixed(0) + '¢' : '0'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.tdBig },
-            no.lastCompleteOrder != null ? (no.lastCompleteOrder.price * 100).toFixed(0) + '¢' : '0'
+            m.lastCompleteOrder != null ? (m.lastCompleteOrder.price * 100).toFixed(0) + '¢' : '0'
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
@@ -55144,12 +55125,7 @@ var MultipleMarketTable = _react2.default.createClass({
                 _react2.default.createElement(
                   _Table.TableHeaderColumn,
                   { style: styles.td },
-                  'Sim'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: styles.tdBig },
-                  'Não'
+                  'Preço'
                 ),
                 _react2.default.createElement(
                   _Table.TableHeaderColumn,
@@ -55337,7 +55313,6 @@ var ConfirmOrderDialog = _react2.default.createClass({
     };
     var that = this;
     (0, _reqwest2.default)('/api/transactions/balance/?preview=' + encodeURI(JSON.stringify(preview)) + '&format=json').then(function (response) {
-      console.log(response);
       that.setState({
         estimatedBalance: response
       });
@@ -57519,11 +57494,11 @@ var MyHistory = _react2.default.createClass({
       );
     }
     var returnTitle = function returnTitle(p) {
-      return p.choice__market__title_short;
+      return p.market__title_short;
     };
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function returnTitle(p) {
-        return p.choice__market__title;
+        return p.market__title;
       };
     }
     var rows = null;
@@ -57537,11 +57512,6 @@ var MyHistory = _react2.default.createClass({
             { className: 'multiple-market-table__choice',
               style: style.firstRowColumn },
             returnTitle(h)
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: style.thBig },
-            h.choice__title
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
@@ -57585,11 +57555,6 @@ var MyHistory = _react2.default.createClass({
                   _Table.TableHeaderColumn,
                   { style: style.firstColumn },
                   'Mercado'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: style.thBig },
-                  'Posição'
                 ),
                 _react2.default.createElement(
                   _Table.TableHeaderColumn,
@@ -57749,11 +57714,11 @@ var MyOrders = _react2.default.createClass({
     }
 
     var returnTitle = function returnTitle(p) {
-      return p.choice__market__title_short;
+      return p.market__title_short;
     };
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function returnTitle(p) {
-        return p.choice__market__title;
+        return p.market__title;
       };
     }
     var rows = null;
@@ -57767,11 +57732,6 @@ var MyOrders = _react2.default.createClass({
             { className: 'multiple-market-table__choice',
               style: style.firstRowColumn },
             returnTitle(o)
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: style.thBig },
-            o.choice__title
           ),
           document.documentElement.clientWidth > window.gvar.breakpoint ? _react2.default.createElement(
             _Table.TableRowColumn,
@@ -57793,7 +57753,7 @@ var MyOrders = _react2.default.createClass({
             { style: style.th },
             _react2.default.createElement(
               _reactRouter.IndexLink,
-              { to: '/app/mercado/' + o.choice__market__id + '/' },
+              { to: '/app/mercado/' + o.market__id + '/' },
               _react2.default.createElement(_openInBrowser2.default, null)
             )
           )
@@ -57824,11 +57784,6 @@ var MyOrders = _react2.default.createClass({
                   _Table.TableHeaderColumn,
                   { style: style.firstColumn },
                   'Mercado'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: style.thBig },
-                  'Posição'
                 ),
                 _react2.default.createElement(
                   _Table.TableHeaderColumn,
@@ -57987,13 +57942,14 @@ var Position = _react2.default.createClass({
       );
     }
     var returnTitle = function returnTitle(p) {
-      return p.choice.market__title_short;
+      return p.market.title_short;
     };
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function returnTitle(p) {
-        return p.choice.market__title;
+        return p.market.title;
       };
     }
+    console.log(this.state.positions);
     var rows = null;
     if (this.state.positions.length > 0) {
       rows = this.state.positions.map(function (p, k) {
@@ -58008,11 +57964,6 @@ var Position = _react2.default.createClass({
           ),
           _react2.default.createElement(
             _Table.TableRowColumn,
-            { style: style.thBig },
-            p.choice.title
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
             { style: style.th },
             p.position
           ),
@@ -58021,7 +57972,7 @@ var Position = _react2.default.createClass({
             { style: style.th },
             _react2.default.createElement(
               _reactRouter.IndexLink,
-              { to: '/app/mercado/' + p.choice.market__id + '/' },
+              { to: '/app/mercado/' + p.market__id + '/' },
               _react2.default.createElement(_openInBrowser2.default, null)
             )
           )
@@ -58052,11 +58003,6 @@ var Position = _react2.default.createClass({
                   _Table.TableHeaderColumn,
                   { style: style.firstColumn },
                   'Mercado'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: style.thBig },
-                  'Posição'
                 ),
                 _react2.default.createElement(
                   _Table.TableHeaderColumn,

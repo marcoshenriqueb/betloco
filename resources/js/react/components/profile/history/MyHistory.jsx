@@ -95,11 +95,11 @@ var MyHistory = React.createClass({
       )
     }
     var returnTitle = function(p){
-      return p.choice__market__title_short;
+      return p.market__title_short;
     }
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function(p){
-        return p.choice__market__title;
+        return p.market__title;
       }
     }
     var rows = null;
@@ -110,7 +110,6 @@ var MyHistory = React.createClass({
                           style={style.firstRowColumn}>
             {returnTitle(h)}
           </TableRowColumn>
-          <TableRowColumn style={style.thBig}>{h.choice__title}</TableRowColumn>
           <TableRowColumn style={style.thBig}>{h.amount_sum}</TableRowColumn>
           <TableRowColumn style={style.th}>{h.price_avg.toFixed(2) * h.amount_sum}</TableRowColumn>
           <TableRowColumn style={style.thDate}>
@@ -134,7 +133,6 @@ var MyHistory = React.createClass({
                            displaySelectAll={false}>
                 <TableRow>
                   <TableHeaderColumn style={style.firstColumn}>Mercado</TableHeaderColumn>
-                  <TableHeaderColumn style={style.thBig}>Posição</TableHeaderColumn>
                   <TableHeaderColumn style={style.thBig}>Qtde</TableHeaderColumn>
                   <TableHeaderColumn style={style.th}>
                     {(document.documentElement.clientWidth > window.gvar.desktopbreak) ? "Valor (R$)":"R$"}

@@ -85,12 +85,13 @@ class LiquidationEngine():
     def placeLiquidationOrders(self):
         positions = Order.objects.getAllMarketPositions(self.market.id)
         for p in positions:
+            print(p)
             price = 0
             if self.market.winner:
                 price = 1
             Order.objects.create(
                 user_id=p['user__id'],
-                choice_id=p['choice__id'],
+                market_id=p['market__id'],
                 amount=p['position']*-1,
                 price=price,
                 from_liquidation=1

@@ -192,7 +192,7 @@ class OrderManager(models.Manager):
                             When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
                             When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
                         )))
-        positive_positions = [p for p in positions if p['position'] > 0]
+        positive_positions = [p for p in positions if p['position'] != 0]
         return positive_positions
 
     def getPlayerPositions(self, user_id):
@@ -204,7 +204,7 @@ class OrderManager(models.Manager):
                             When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
                             When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
                         )))
-        positive_positions = [p for p in positions if p['position'] > 0]
+        positive_positions = [p for p in positions if p['position'] != 0]
         for p in positive_positions:
             p['market'] = Market.objects.filter(pk=p['market__id']).values(
                                                                     'id',

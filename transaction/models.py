@@ -127,7 +127,7 @@ class TransactionManager(models.Manager):
                             custody_risk = -1*((1-n['balance']/n['amount_sum'])*n['amount_sum']) \
                                             if n['amount_sum'] != 0 else 0
                             sell_risk = custody_risk - (1-n['sell_orders_balance']/n['sell_orders_amount'])*n['sell_orders_amount'] \
-                                        if n['sell_orders_amount'] != 0 else 0
+                                        if n['sell_orders_amount'] != 0 else custody_risk
                             risk += sell_risk
                         else:
                             custody_risk = n['balance']
@@ -147,16 +147,16 @@ class TransactionManager(models.Manager):
                 total_risk += events_risk
             else:
                 for m in e['markets']:
+                    risks = []
                     if m['amount_sum'] >= 0:
                         custody_risk = m['balance']
                         buy_risk = custody_risk + m['buy_orders_balance']
-                        sell_risk = ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
-                                    if m['sell_orders_amount'] != 0 else 0
+                        sell_risk = custody_risk - ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
+                                    if m['sell_orders_amount'] != 0 else custody_risk
                     else:
-                        custody_risk = (1-m['balance']/m['amount_sum'])*m['amount_sum'] \
-                                        if m['amount_sum'] != 0 else 0
+                        custody_risk = (1-m['balance']/m['amount_sum'])*m['amount_sum']
                         sell_risk = custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
-                                    if m['sell_orders_amount'] != 0 else 0
+                                    if m['sell_orders_amount'] != 0 else custody_risk
                         buy_risk = abs(custody_risk - m['buy_orders_balance'])
                     total_risk += max([custody_risk,sell_risk,buy_risk])
 

@@ -89,13 +89,14 @@ var Position = React.createClass({
       )
     }
     var returnTitle = function(p){
-      return p.choice.market__title_short;
+      return p.market.title_short;
     }
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
       returnTitle = function(p){
-        return p.choice.market__title;
+        return p.market.title;
       }
     }
+    console.log(this.state.positions);
     var rows = null;
     if (this.state.positions.length > 0) {
       rows = this.state.positions.map((p, k)=> (
@@ -104,10 +105,9 @@ var Position = React.createClass({
                           style={style.firstRowColumn}>
             {returnTitle(p)}
           </TableRowColumn>
-          <TableRowColumn style={style.thBig}>{p.choice.title}</TableRowColumn>
           <TableRowColumn style={style.th}>{p.position}</TableRowColumn>
           <TableRowColumn style={style.th}>
-            <IndexLink to={'/app/mercado/' + p.choice.market__id + '/'}>
+            <IndexLink to={'/app/mercado/' + p.market__id + '/'}>
               <Open/>
             </IndexLink>
           </TableRowColumn>
@@ -124,7 +124,6 @@ var Position = React.createClass({
                            displaySelectAll={false}>
                 <TableRow>
                   <TableHeaderColumn style={style.firstColumn}>Mercado</TableHeaderColumn>
-                  <TableHeaderColumn style={style.thBig}>Posição</TableHeaderColumn>
                   <TableHeaderColumn style={style.th}>Qtde</TableHeaderColumn>
                   <TableHeaderColumn style={style.th}>Link</TableHeaderColumn>
                 </TableRow>
