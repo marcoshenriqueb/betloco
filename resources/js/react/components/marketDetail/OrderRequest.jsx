@@ -38,7 +38,7 @@ var OrderRequest = React.createClass({
     }else {
       var custody = 0;
     }
-    var disableSell = this.props.disableOrderRequest;
+    console.log(custody);
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
@@ -50,7 +50,7 @@ var OrderRequest = React.createClass({
               <RaisedButton primary={true} disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
             </div>
             <div className="orderrequest-card__sell-column">
-              <RaisedButton secondary={true} disabled={disableSell} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
+              <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
             </div>
           </div>
         </CardActions>
