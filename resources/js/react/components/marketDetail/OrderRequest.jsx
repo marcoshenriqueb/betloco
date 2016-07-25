@@ -38,7 +38,6 @@ var OrderRequest = React.createClass({
     }else {
       var custody = 0;
     }
-    console.log(custody);
     return (
       <Card style={styles.card} className="orderrequest-card">
         <div className="orderrequest-card__header">
