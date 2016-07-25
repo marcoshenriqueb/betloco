@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, EventType, EventCategory, Market, Choice, Order, Operation
+from .models import Event, EventType, EventCategory, Market, Order, Operation
 
 class MarketInline(admin.TabularInline):
     """docstring for MarketInline"""
@@ -24,16 +24,10 @@ class MarketAdmin(admin.ModelAdmin):
     list_display = ('id', 'event', 'title', 'updated_at')
     list_display_links = ('title',)
 
-@admin.register(Choice)
-class ChoiceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'market')
-    list_display_links = ('title',)
-    search_fields = ['market__title']
-
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     exclude = ('user',)
-    list_display = ('id', 'amount', 'price', 'choice', 'user', 'updated_at')
+    list_display = ('id', 'amount', 'price', 'user', 'updated_at')
     list_display_links = ('id', 'amount')
     list_filter = ('updated_at',)
     search_fields = ['choice__market__title']

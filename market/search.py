@@ -94,63 +94,48 @@ class ElasticSearch():
                                         "index": "no",
                                         "include_in_all": False
                                     },
-                                    "choices": {
+                                    "topSells": {
                                         "type": "nested",
                                         "properties": {
-                                            "title": {
-                                                "type": "string",
-                                                "index": "no",
-                                                "include_in_all": False
-                                            },
-                                            "id": {
+                                            "amount": {
                                                 "type": "integer",
                                                 "index": "no",
                                                 "include_in_all": False
                                             },
-                                            "topSells": {
-                                                "type": "nested",
-                                                "properties": {
-                                                    "amount": {
-                                                        "type": "integer",
-                                                        "index": "no",
-                                                        "include_in_all": False
-                                                    },
-                                                    "price":{
-                                                        "type": "float",
-                                                        "index": "no",
-                                                        "include_in_all": False
-                                                    }
-                                                }
+                                            "price":{
+                                                "type": "float",
+                                                "index": "no",
+                                                "include_in_all": False
+                                            }
+                                        }
+                                    },
+                                    "topBuys": {
+                                        "type": "nested",
+                                        "properties": {
+                                            "amount": {
+                                                "type": "integer",
+                                                "index": "no",
+                                                "include_in_all": False
                                             },
-                                            "topBuys": {
-                                                "type": "nested",
-                                                "properties": {
-                                                    "amount": {
-                                                        "type": "integer",
-                                                        "index": "no",
-                                                        "include_in_all": False
-                                                    },
-                                                    "price":{
-                                                        "type": "float",
-                                                        "index": "no",
-                                                        "include_in_all": False
-                                                    }
-                                                }
+                                            "price":{
+                                                "type": "float",
+                                                "index": "no",
+                                                "include_in_all": False
+                                            }
+                                        }
+                                    },
+                                    "lastCompletedOrder": {
+                                        "type": "nested",
+                                        "properties": {
+                                            "amount": {
+                                                "type": "integer",
+                                                "index": "no",
+                                                "include_in_all": False
                                             },
-                                            "lastCompletedOrder": {
-                                                "type": "nested",
-                                                "properties": {
-                                                    "amount": {
-                                                        "type": "integer",
-                                                        "index": "no",
-                                                        "include_in_all": False
-                                                    },
-                                                    "price":{
-                                                        "type": "float",
-                                                        "index": "no",
-                                                        "include_in_all": False
-                                                    }
-                                                }
+                                            "price":{
+                                                "type": "float",
+                                                "index": "no",
+                                                "include_in_all": False
                                             }
                                         }
                                     },

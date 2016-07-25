@@ -7,11 +7,6 @@ import operator, functools
 from itertools import chain
 from channels import Channel
 
-@models.IntegerField.register_lookup
-class AbsoluteValue(models.Transform):
-    lookup_name = 'abs'
-    function = 'ABS'
-
 class EventType(models.Model):
     """docstring for EventType"""
     name = models.CharField(max_length=100)
@@ -50,9 +45,8 @@ class Event(models.Model):
         try:
             q = []
             for m in self.markets.all():
-                for c in m.choices.all():
-                    q.append(Q(from_order__choice__id=c.id))
-                    q.append(Q(to_order__choice__id=c.id))
+                q.append(Q(from_order__market__id=m.id))
+                q.append(Q(to_order__market__id=m.id))
 
             q_query = functools.reduce(operator.or_, q)
             result = Operation.objects.filter(q_query).filter(from_liquidation=0) \
@@ -69,13 +63,15 @@ class MarketManager(models.Manager):
         if market_id:
             e = self.get(id=market_id).event
             if e.deadline < timezone.now():
-                choices = Choice.objects.filter(market__event__id=e.id)
-                if len(choices.filter(winner=1)) > 0:
-                    choices.update(winner=0)
-                    for c in choices:
-                        c.order_set.filter(from_liquidation=1).delete()
-                winner_market = self.get(id=market_id)
-                winner_market.choices.filter(title="Sim").update(winner=1)
+                markets = Market.objects.filter(event__id=e.id)
+                if len(markets.filter(winner=1)) > 0:
+                    markets.update(winner=0)
+                    for m in markets:
+                        m.order_set.filter(from_liquidation=1).delete()
+                winner_market = markets.get(id=market_id)
+                winner_market.winner = 1
+                winner_market.liquidated = 1
+                winner_market.save()
                 Channel("liquidate-market").send({
                     "market_id": winner_market.id
                 })
@@ -83,10 +79,22 @@ class MarketManager(models.Manager):
                 for m in loosers_markets:
                     m.liquidated = 1
                     m.save()
-                    m.choices.filter(title="Não").update(winner=1)
                     Channel("liquidate-market").send({
                         "market_id": m.id
                     })
+
+    def custody(self, user_id, market_id):
+        market = self.get(id=market_id)
+        result = market.order_set.filter(user__id=user_id) \
+                   .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+                   .aggregate(position=Sum(Case(
+                        When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
+                        When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                        When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
+                        When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
+                    )))['position'] or 0
+        return result
+
 
 class Market(models.Model):
     """docstring for Market"""
@@ -94,6 +102,7 @@ class Market(models.Model):
     title_short = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="markets")
     liquidated = models.BooleanField(default=False)
+    winner = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, blank=True)
     objects = MarketManager()
@@ -104,10 +113,8 @@ class Market(models.Model):
     def _getVolume(self):
         try:
             q = []
-            for c in self.choices.all():
-                q.append(Q(from_order__choice__id=c.id))
-                q.append(Q(to_order__choice__id=c.id))
-
+            q.append(Q(from_order__market__id=self.id))
+            q.append(Q(to_order__market__id=self.id))
             q_query = functools.reduce(operator.or_, q)
             result = Operation.objects.filter(q_query).filter(from_liquidation=0) \
                             .aggregate(Sum('amount'))['amount__sum']
@@ -117,67 +124,14 @@ class Market(models.Model):
 
     volume = property(_getVolume)
 
-class ChoiceManager(models.Manager):
-    """docstring for ChoiceManager"""
-    def custody(self, user_id, market_id, choice_id=None, not_choice_id=None):
-        if choice_id:
-            choices = self.filter(id=choice_id)
-        elif not_choice_id:
-            choices = self.get(id=not_choice_id).market.choices.filter(~Q(id=not_choice_id))
-        else:
-            choices = self.filter(market__id=market_id)
-        result = {}
-        for c in choices:
-            v = c.order_set.filter(user__id=user_id) \
-                       .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
-                       .aggregate(position=Sum(Case(
-                            When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
-                            When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
-                            When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
-                            When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount'))
-                        )))['position'] or 0
-            result[c.id] = {
-                'choice': c.title,
-                'position': v
-            }
-        return result
-
-class Choice(models.Model):
-    """docstring for Choice"""
-    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="choices")
-    title = models.CharField(max_length=100)
-    winner = models.BooleanField(default=False)
-    objects = ChoiceManager()
-
-    def __str__(self):
-        return self.title
-
-    def _getLastCompleteOrder(self):
-        o = Operation.objects.filter(Q(from_order__choice__id=self.id) | Q(to_order__choice__id=self.id)) \
-                             .filter(from_liquidation=0) \
-                             .order_by('-created_at')[0:1].get()
-        order = self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
-        if order.id == o.from_order_id:
-            order.price = o.price
-        return order
-    lastCompleteOrder = property(_getLastCompleteOrder)
-
     def _getTopToBuy(self, limit=5, group=True):
-        cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
-                            .filter(from_order__isnull=True) \
-                            .filter(to_order__isnull=True) \
-                            .filter(~Q(choice__id=self.id)) \
-                            .filter(amount__gt=0) \
-                            .filter(deleted=0)
-        for o in cross_orders:
-            o.price = round(1 - o.price, 2)
         orders = self.order_set.filter(to_order__isnull=True) \
                             .filter(from_order__isnull=True) \
                             .filter(amount__lt=0) \
                             .filter(deleted=0)
         for o in orders:
             o.amount = o.amount * (-1)
-        l = list(chain(orders, cross_orders))
+        l = list(chain(orders,))
         l.sort(key=lambda x: (x.price, x.created_at), reverse=False)
         if group:
             precedingItem = None
@@ -195,20 +149,11 @@ class Choice(models.Model):
     topBuys = property(_getTopToBuy)
 
     def _getTopToSell(self, limit=5, group=True):
-        cross_orders = Order.objects.filter(choice__market__id=self.market.id) \
-                            .filter(from_order__isnull=True) \
-                            .filter(to_order__isnull=True) \
-                            .filter(~Q(choice__id=self.id)) \
-                            .filter(amount__lt=0) \
-                            .filter(deleted=0)
-        for o in cross_orders:
-            o.price = round(1 - o.price, 2)
-            o.amount = o.amount * (-1)
         orders = self.order_set.filter(to_order__isnull=True) \
                             .filter(from_order__isnull=True) \
                             .filter(amount__gt=0) \
                             .filter(deleted=0)
-        l = list(chain(orders, cross_orders))
+        l = list(chain(orders,))
         l.sort(key=lambda x: x.created_at, reverse=False)
         l.sort(key=lambda x: x.price, reverse=True)
         if group:
@@ -226,10 +171,21 @@ class Choice(models.Model):
 
     topSells = property(_getTopToSell)
 
+    def _getLastCompleteOrder(self):
+        o = Operation.objects.filter(Q(from_order__market__id=self.id) | Q(to_order__market__id=self.id)) \
+                             .filter(from_liquidation=0) \
+                             .order_by('-created_at')[0:1].get()
+        order = self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
+        if order.id == o.from_order_id:
+            order.price = o.price
+        return order
+    lastCompleteOrder = property(_getLastCompleteOrder)
+
+
 class OrderManager(models.Manager):
     """docstring for OrderManager"""
     def getAllMarketPositions(self, market_id):
-        positions = self.filter(choice__market__id=market_id).values('user__id', 'choice__id') \
+        positions = self.filter(market__id=market_id).values('user__id', 'market__id') \
                         .annotate(position=Sum(Case(
                             When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
                             When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
@@ -242,7 +198,7 @@ class OrderManager(models.Manager):
     def getPlayerPositions(self, user_id):
         positions = self.filter(user__id=user_id) \
                        .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
-                       .values('choice__id').annotate(position=Sum(Case(
+                       .values('market__id').annotate(position=Sum(Case(
                             When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
                             When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
                             When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
@@ -250,12 +206,10 @@ class OrderManager(models.Manager):
                         )))
         positive_positions = [p for p in positions if p['position'] > 0]
         for p in positive_positions:
-            p['choice'] = Choice.objects.filter(pk=p['choice__id']).values(
+            p['market'] = Market.objects.filter(pk=p['market__id']).values(
                                                                     'id',
                                                                     'title',
-                                                                    'market__id',
-                                                                    'market__title',
-                                                                    'market__title_short'
+                                                                    'title_short'
                                                                 ).get()
         return positive_positions
 
@@ -275,9 +229,8 @@ class OrderManager(models.Manager):
                             ))
                         ).values(
                             'id',
-                            'choice__market__title',
-                            'choice__market__title_short',
-                            'choice__title',
+                            'market__title',
+                            'market__title_short',
                             'amount_sum',
                             'created_at',
                             'price_avg'
@@ -286,18 +239,18 @@ class OrderManager(models.Manager):
 
     def getOpenOrders(self, user_id, market_id=None):
         if market_id:
-            return self.filter(user__id=user_id).filter(choice__market__id=market_id) \
+            return self.filter(user__id=user_id).filter(market__id=market_id) \
                                                 .filter(from_order__isnull=True) \
                                                 .filter(to_order__isnull=True) \
                                                 .filter(deleted=0) \
                                                 .filter(from_liquidation=0) \
-                                                .values('id', 'choice', 'price', 'amount')
+                                                .values('id', 'price', 'amount')
         else:
             return self.filter(user__id=user_id).filter(from_order__isnull=True) \
                                                 .filter(to_order__isnull=True) \
                                                 .filter(deleted=0) \
                                                 .filter(from_liquidation=0) \
-                                                .values('id', 'choice__market__title', 'choice__market__title_short', 'choice__market__id', 'choice__title', 'price', 'amount')
+                                                .values('id', 'market__title', 'market__title_short', 'market__id', 'price', 'amount')
 
     def deleteOpenOrders(self, user_id, orders):
         for o in orders:
@@ -308,7 +261,7 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     """docstring for Order"""
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    market = models.ForeignKey(Market, on_delete=models.CASCADE)
     amount = models.IntegerField(blank=False, null=False)
     price = models.FloatField(validators = [MinValueValidator(0.0), MaxValueValidator(1.0)])
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)

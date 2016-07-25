@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from market.models import Order, Event, Choice, Sum, F, Operation, When
+from market.models import Order, Event, Market, Sum, F, Operation, When
 from django.db.models import Max, Case, Count
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -26,7 +26,7 @@ class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id, new_order=None):
         transactions = self.filter(user__id=user_id).aggregate(balance=Sum('value'))['balance'] or 0
-        orders = Order.objects.filter(user__id=user_id).filter(deleted=0).values('choice__market__id') \
+        orders = Order.objects.filter(user__id=user_id).filter(deleted=0).values('market__id') \
                               .annotate(balance=Sum(Case(
                                   When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
                                   When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')*F('from_order__price')),
@@ -65,45 +65,39 @@ class TransactionManager(models.Manager):
                                   default=0,
                                   output_field=models.IntegerField()
                                 ))
-                              ).values('choice__market__id',
-                                       'choice__id',
-                                       'choice__title',
+                              ).values('market__id',
                                        'balance',
                                        'sell_orders_balance',
                                        'buy_orders_balance',
                                        'sell_orders_amount',
                                        'buy_orders_amount',
                                        'amount_sum',
-                                       'choice__market__event__id')
-                            #   .aggregate(balance_sum=Sum('balance'))
+                                       'market__event__id')
         events = {}
         if new_order is not None:
-            choice_id = new_order['choice__id'] if 'choice__id' in new_order else new_order['choice'].id
+            market_id = new_order['market__id'] if 'market__id' in new_order else new_order['market'].id
             new_order_added = False
         for o in orders:
-            if new_order is not None and int(o['choice__id']) == choice_id:
+            if new_order is not None and int(o['market__id']) == market_id:
                 new_order_added = True
                 o['amount_sum'] += int(new_order['amount'])
                 o['balance'] += int(new_order['amount'])*float(new_order['price'])
-            if o['choice__market__event__id'] in events:
-                events[o['choice__market__event__id']].append(o)
+            if o['market__event__id'] in events:
+                events[o['market__event__id']].append(o)
             else:
-                events[o['choice__market__event__id']] = [o,]
+                events[o['market__event__id']] = [o,]
         if new_order is not None and not new_order_added:
-            c = Choice.objects.get(pk=choice_id)
-            m = c.market
+            m = Market.objects.get(pk=market_id)
             e = m.event
             result_order = {
-                'choice__id': choice_id,
                 'amount_sum': int(new_order['amount']),
                 'balance': int(new_order['amount'])*float(new_order['price']),
-                'choice__market__id': m.id,
-                'choice__title': c.title,
+                'market__id': m.id,
                 'sell_orders_balance': 0,
                 'buy_orders_balance': 0,
                 'sell_orders_amount': 0,
                 'buy_orders_amount': 0,
-                'choice__market__event__id': e.id
+                'market__event__id': e.id
             }
             if e.id in events:
                 events[e.id].append(result_order)

@@ -3,7 +3,7 @@ from channels import Group
 from channels.sessions import enforce_ordering
 from channels.auth import channel_session_user, channel_session_user_from_http
 from engine.engine import LiquidationEngine
-from .models import Market, Choice
+from .models import Market
 from .serializers import MarketDetailSerializer
 import json
 from .search import Algolia

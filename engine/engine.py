@@ -1,4 +1,4 @@
-from market.models import Choice, Operation, Order, Market
+from market.models import Operation, Order, Market
 from django.contrib.auth.models import User
 
 class OrderEngine():
@@ -12,12 +12,12 @@ class OrderEngine():
     def defineOffersArray(self):
         currentOfferPrice = self.order.price
         if self.order.amount > 0:
-            array = self.order.choice._getTopToBuy(10000, group=False)
+            array = self.order.market._getTopToBuy(10000, group=False)
             self.offers = [o for o in array \
                         if o.price <= currentOfferPrice]
             self.amountBalance = self.order.amount
         elif self.order.amount < 0:
-            array = self.order.choice._getTopToSell(10000, group=False)
+            array = self.order.market._getTopToSell(10000, group=False)
             self.offers = [o for o in array \
                         if o.price >= currentOfferPrice]
             self.amountBalance = self.order.amount * (-1)
@@ -48,11 +48,7 @@ class OrderEngine():
 
             # Checks if what is left is not from current order
             if self.order.id != self.remainingAmountOffer.id:
-                if self.order.choice.id == self.remainingAmountOffer.choice.id:
-                    self.amountBalance = self.amountBalance if self.order.amount < 0 else self.amountBalance * (-1)
-                else:
-                    self.remainingAmountOffer.price = 1 - self.remainingAmountOffer.price
-                    self.amountBalance = self.amountBalance if self.order.amount > 0 else self.amountBalance * (-1)
+                self.amountBalance = self.amountBalance if self.order.amount < 0 else self.amountBalance * (-1)
             # If it is, saves to transaction the remaining
             else:
                 self.amountBalance = self.amountBalance if self.order.amount > 0 else self.amountBalance * (-1)
@@ -60,7 +56,7 @@ class OrderEngine():
             if self.amountBalance != 0:
                 o = Order.objects.create(
                     user=self.remainingAmountOffer.user,
-                    choice=self.remainingAmountOffer.choice,
+                    market=self.remainingAmountOffer.market,
                     amount=self.amountBalance,
                     price=self.remainingAmountOffer.price,
                     residual=1,
@@ -77,20 +73,11 @@ class LiquidationEngine():
     """Responsible for market liquidation after event outcome"""
     def __init__(self, market_id):
         self.market = Market.objects.get(pk=market_id)
-        self.winningId = self.getWinningChoiceId()
         self.cancelPendingOrders()
         self.placeLiquidationOrders()
 
-    def getWinningChoiceId(self):
-        choices = self.market.choices.all()
-        for c in choices:
-            if c.winner:
-                return c.id
-
     def cancelPendingOrders(self):
-        choices = self.market.choices.all()
-        for c in choices:
-            pending_orders = c.order_set.filter(from_order__isnull=True) \
+        pending_orders = self.market.order_set.filter(from_order__isnull=True) \
                                     .filter(to_order__isnull=True) \
                                     .filter(deleted=0) \
                                     .update(deleted=1)
@@ -99,7 +86,7 @@ class LiquidationEngine():
         positions = Order.objects.getAllMarketPositions(self.market.id)
         for p in positions:
             price = 0
-            if p['choice__id'] == self.winningId:
+            if self.market.winner:
                 price = 1
             Order.objects.create(
                 user_id=p['user__id'],

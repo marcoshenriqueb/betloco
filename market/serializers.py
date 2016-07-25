@@ -1,28 +1,12 @@
 from rest_framework import serializers
-from .models import Event, Market, Choice, EventType, EventCategory, Order, Operation, Sum, Q
+from .models import Event, Market, EventType, EventCategory, Order, Operation, Sum, Q
 from transaction.models import Transaction
 from django.utils import timezone
 
 class OrderSerializer(serializers.ModelSerializer):
-    # user = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Order
         fields = ('price', 'amount')
-
-class SimpleChoiceSerializer(serializers.ModelSerializer):
-    lastCompleteOrder = OrderSerializer()
-    class Meta:
-        model = Choice
-        fields = ('id', 'title', 'lastCompleteOrder')
-
-class ChoiceSerializer(serializers.ModelSerializer):
-    topBuys = OrderSerializer(many=True)
-    topSells = OrderSerializer(many=True)
-    lastCompleteOrder = OrderSerializer()
-
-    class Meta:
-        model = Choice
-        fields = ('id', 'title', 'topBuys', 'topSells', 'lastCompleteOrder')
 
 class EventCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,16 +19,14 @@ class EventTypeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name',)
 
 class MarketSerializer(serializers.ModelSerializer):
-    choices = ChoiceSerializer(many=True)
-
     class Meta:
         model = Market
         fields = (
             'id',
             'title',
             'title_short',
-            'choices',
-            'volume'
+            'volume',
+            'lastCompleteOrder'
         )
 
 class EventSerializer(serializers.ModelSerializer):
@@ -68,7 +50,6 @@ class EventSerializer(serializers.ModelSerializer):
         )
 
 class MarketDetailSerializer(serializers.ModelSerializer):
-    choices = ChoiceSerializer(many=True)
     event = EventSerializer()
 
     class Meta:
@@ -78,8 +59,10 @@ class MarketDetailSerializer(serializers.ModelSerializer):
             'event',
             'title',
             'title_short',
-            'choices',
-            'volume'
+            'volume',
+            'topBuys',
+            'topSells',
+            'lastCompleteOrder'
         )
 
 class EventDetailSerializer(serializers.ModelSerializer):
@@ -106,43 +89,16 @@ class EventDetailSerializer(serializers.ModelSerializer):
 class CreateOrderSerializer(serializers.ModelSerializer):
     """docstring for CreateOrderSerializer"""
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    choice = serializers.PrimaryKeyRelatedField(queryset=Choice.objects.all())
+    market = serializers.PrimaryKeyRelatedField(queryset=Market.objects.all())
     class Meta:
         model = Order
-        fields = ('price', 'amount', 'user', 'choice')
+        fields = ('price', 'amount', 'user', 'market')
 
     def validate(self, data):
-        if data['choice'].market.event.deadline < timezone.now():
+        if data['market'].event.deadline < timezone.now():
             raise serializers.ValidationError("Esse mercado está encerrado!")
         user_id = self.context['request'].user.id
         # Validates sell orders
-        if data['amount'] < 0:
-            c = Choice.objects.custody(user_id, data['choice'].market.id, data['choice'].id)
-            # Don't let user sell more than what he has
-            if c[data['choice'].id]['position'] < (data['amount'] * (-1)):
-                raise serializers.ValidationError("Você não tem custódia para realizar a venda!")
-            o = Order.objects.filter(user__id=self.context['request'].user.id) \
-                             .filter(choice__id=data['choice'].id) \
-                             .filter(from_order__isnull=True) \
-                             .filter(to_order__isnull=True) \
-                             .filter(amount__lt=0) \
-                             .filter(deleted=0) \
-                             .aggregate(pending=Sum('amount'))['pending'] or 0
-            o *= -1
-            # Don't let user sell more than he has plus the orders already sent
-            if (c[data['choice'].id]['position'] - o) < (data['amount'] * (-1)):
-                raise serializers.ValidationError("Você já tem ordens de venda, tente as cancelar!")
-        # Validates buy orders
-        elif data['amount'] > 0:
-            c = Choice.objects.custody(user_id, data['choice'].market.id, not_choice_id=data['choice'].id)
-            for k, v in c.items():
-                if int(v['position']) > 0:
-                    raise serializers.ValidationError("Você não pode comprar Sim e Não ao mesmo tempo!")
-
-            o = Order.objects.getOpenOrders(user_id, data['choice'].market.id) \
-                                .filter(~Q(choice__id=data['choice'].id)).count()
-            if o > 0:
-                raise serializers.ValidationError("Você não pode colocar ordens de compra de Sim e Não no mesmo mercado!")
         balance = Transaction.objects.balance(self.context['request'].user.id, new_order=data)
         if balance['total'] < 0:
             raise serializers.ValidationError("Você não tem saldo suficiente!")
@@ -154,5 +110,5 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             user=self.context['request'].user,
             price=validated_data['price'],
             amount=validated_data['amount'],
-            choice=validated_data['choice']
+            market=validated_data['market']
         )

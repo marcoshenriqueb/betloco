@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework import generics, filters
 from rest_framework.response import Response
-from .models import Event, Market, Choice, Order
-from .serializers import ChoiceSerializer, MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
+from .models import Event, Market, Order
+from .serializers import MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
 from .search import ElasticSearch
 from channels import Channel
 import json
@@ -41,7 +41,7 @@ class CreateOrder(generics.CreateAPIView):
 class CustodyView(APIView):
     """Show user custody"""
     def get(self, request, pk):
-        return Response(Choice.objects.custody(request.user.id, pk))
+        return Response(Market.objects.custody(request.user.id, pk))
 
 class OpenOrdersView(APIView):
     """Show user open orders"""
