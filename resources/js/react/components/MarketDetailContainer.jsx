@@ -7,7 +7,7 @@ var MarketDetailContainer = React.createClass({
   getInitialState: function() {
     return {
       market: null,
-      custody: {},
+      custody: false,
       dialog: false,
       dialogContent: undefined,
       orders: []
