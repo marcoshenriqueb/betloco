@@ -46,7 +46,7 @@ var OrderRequest = React.createClass({
         <CardActions style={styles.cardpadding}>
           <div className="orderrequest-card__orders-column">
             <div className="orderrequest-card__buy-column">
-              <RaisedButton primary={true} disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
+              <RaisedButton backgroundColor={window.gvar.successcolor} labelColor="white" disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
             </div>
             <div className="orderrequest-card__sell-column">
               <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />

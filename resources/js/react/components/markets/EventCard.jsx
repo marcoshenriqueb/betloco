@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
@@ -16,20 +16,25 @@ var style = {
   },
   title: {
     cursor:'pointer',
-    fontSize: 20,
+    fontSize: 24,
+    fontWeight: '400',
     lineHeight: '24px',
     marginBottom: 10
   },
   marketTitle: {
-    fontSize: 20
+    fontSize: 20,
+    fontWeight: '400'
+  },
+  btn: {
+    marginLeft: 10
   }
 }
 
 if (document.documentElement.clientWidth > window.gvar.breakpoint) {
-  style.title.fontSize = 24;
+  style.title.fontSize = 28;
   style.title.lineHeight = '36px';
   style.title.marginBottom = 0;
-  style.marketTitle = null;
+  style.marketTitle.fontSize = 24;
 }
 
 var EventCard = React.createClass({
@@ -111,7 +116,7 @@ var EventCard = React.createClass({
           </div>
         </CardText>
         <CardActions>
-          <FlatButton onTouchTap={this.goToMarketDetail} primary={true} label="Ver Mercado" />
+          <RaisedButton style={style.btn} onTouchTap={this.goToMarketDetail} primary={true} label="Ver Mercado" />
         </CardActions>
       </Card>
     );

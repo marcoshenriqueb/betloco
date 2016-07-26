@@ -3,8 +3,20 @@ import req from 'reqwest';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navbar from './components/AppNavbar.jsx';
+import {blueGrey500} from 'material-ui/styles/colors';
 
-const muiTheme = getMuiTheme({});
+const muiTheme = getMuiTheme({
+  fontFamily: "'Open Sans', sans-serif",
+  raisedButton: {
+    fontWeight: '700'
+  },
+  flatButton: {
+    fontWeight: '700'
+  },
+  palette: {
+    primary1Color: blueGrey500
+  }
+});
 
 var App = React.createClass({
   getInitialState: function(){

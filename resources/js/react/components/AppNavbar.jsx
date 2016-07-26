@@ -25,42 +25,90 @@ var AppNavbar = React.createClass({
   render: function() {
     var userData = null;
     var menuItems = [
-      <MenuItem style={{cursor:'pointer'}} primaryText="Mercados" onTouchTap={this._marketRoute} key={0} />
+      {
+        style:{cursor:'pointer'},
+        text: "Mercados",
+        touch: this._marketRoute
+      }
     ]
     if (window.gvar.user != 'anom') {
       userData = (
         <div className="appbar-nav__info-container">
-          <span>Saldo Disponível</span>
-          <div className="appbar-nav__info-holder">
-            R$ {(this.props.balance)?this.props.balance.total.toFixed(2):'0'}
+          <div className="appbar-nav__info">
+            <span>Disponível</span>
+            <div className="appbar-nav__info-holder">
+              R$ {(this.props.balance)?this.props.balance.total.toFixed(2):'0'}
+            </div>
           </div>
+          {
+            (document.documentElement.clientWidth > window.gvar.desktopbreak) ?
+            <div className="appbar-nav__info appbar-nav__info-warning">
+              <span>Risco</span>
+              <div className="appbar-nav__info-holder">
+                R$ {(this.props.balance)?this.props.balance.risk.toFixed(2):'0'}
+              </div>
+            </div> : null
+          }
         </div>
       )
       menuItems.push(
-        <MenuItem style={{cursor:'pointer'}} primaryText="Perfil" onTouchTap={this._profileRoute}  key={1} />,
-        <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout}  key={2} />
+        {
+          style:{cursor:'pointer'},
+          text: "Perfil",
+          touch: this._profileRoute
+        },
+        {
+          style:{cursor:'pointer'},
+          text: "Sair",
+          touch: this._logout
+        }
       )
     }else {
       menuItems.push(
-        <MenuItem style={{cursor:'pointer'}} primaryText="Cadastro"  key={1} />,
-        <MenuItem style={{cursor:'pointer'}} primaryText="Entrar"  key={2} />
+        {
+          style:{cursor:'pointer'},
+          text: "Cadastro",
+          touch: null
+        },
+        {
+          style:{cursor:'pointer'},
+          text: "Entrar",
+          touch: null
+        }
       )
     }
-
+    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+      var appnav = (
+        <ul className="appbar-nav__list">
+          {menuItems.map((i,k)=> (
+            <li style={i.style} onTouchTap={i.touch} key={k} >
+              {i.text}
+            </li>
+          ))}
+        </ul>
+      )
+    }else {
+      var appnav = (
+        <IconMenu
+          iconButtonElement={<IconButton iconStyle={{fill:'rgb(255,255,255)'}}><IconMenuIcon /></IconButton>}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+        >
+          {menuItems.map((i,k)=> (
+            <MenuItem style={i.style} primaryText={i.text} onTouchTap={i.touch} key={k} />
+          ))}
+        </IconMenu>
+      )
+    }
+    console.log(appnav);
     return (
       <div className="appbar">
         <IndexLink style={{color:'white'}} to='/app/'>
-          <h1 className="appbar-logo">BetLoco</h1>
+          <h1 className="appbar-logo">Guroo</h1>
         </IndexLink>
         <div className="appbar-nav">
           {userData}
-          <IconMenu
-            iconButtonElement={<IconButton iconStyle={{fill:'rgb(255,255,255)'}}><IconMenuIcon /></IconButton>}
-            targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-          >
-            {menuItems}
-          </IconMenu>
+          {appnav}
         </div>
       </div>
     );
