@@ -5,7 +5,7 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Money from 'material-ui/svg-icons/editor/attach-money';
 
 var style = {
@@ -18,10 +18,6 @@ var style = {
   }
 }
 
-if (document.documentElement.clientWidth > window.gvar.breakpoint) {
-  style.input = null;
-}
-
 var PlaceOrderDialog = React.createClass({
   render: function(){
     if (this.props.dialogContent.buy) {
@@ -32,8 +28,10 @@ var PlaceOrderDialog = React.createClass({
     var orderTable = null;
     var formTitle = null;
     var bestOfferButton = false;
+    var bestPrice = '--';
     if (orders.length > 0) {
       bestOfferButton = true;
+      bestPrice = (orders[0].price*100).toFixed(0) + '¢'
     }
     if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       orderTable = (
@@ -95,9 +93,8 @@ var PlaceOrderDialog = React.createClass({
                 </IconButton>
               </div>
               <div>
-                <FlatButton
-                  label="Melhor oferta"
-                  keyboardFocused={true}
+                <RaisedButton
+                  label={bestPrice}
                   labelPosition="before"
                   style={{marginTop:20}}
                   primary={true}

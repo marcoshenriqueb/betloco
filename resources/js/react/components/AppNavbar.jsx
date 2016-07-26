@@ -10,6 +10,11 @@ const styles = {
   title: {
     cursor: 'pointer',
   },
+  menuItem: {
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    fontSize: 14
+  }
 };
 
 var AppNavbar = React.createClass({
@@ -26,7 +31,7 @@ var AppNavbar = React.createClass({
     var userData = null;
     var menuItems = [
       {
-        style:{cursor:'pointer'},
+        style:styles.menuItem,
         text: "Mercados",
         touch: this._marketRoute
       }
@@ -41,7 +46,7 @@ var AppNavbar = React.createClass({
             </div>
           </div>
           {
-            (document.documentElement.clientWidth > window.gvar.desktopbreak) ?
+            (document.documentElement.clientWidth > window.gvar.breakpoint) ?
             <div className="appbar-nav__info appbar-nav__info-warning">
               <span>Risco</span>
               <div className="appbar-nav__info-holder">
@@ -53,12 +58,12 @@ var AppNavbar = React.createClass({
       )
       menuItems.push(
         {
-          style:{cursor:'pointer'},
+          style:styles.menuItem,
           text: "Perfil",
           touch: this._profileRoute
         },
         {
-          style:{cursor:'pointer'},
+          style:styles.menuItem,
           text: "Sair",
           touch: this._logout
         }
@@ -66,22 +71,32 @@ var AppNavbar = React.createClass({
     }else {
       menuItems.push(
         {
-          style:{cursor:'pointer'},
+          style:styles.menuItem,
           text: "Cadastro",
           touch: null
         },
         {
-          style:{cursor:'pointer'},
+          style:styles.menuItem,
           text: "Entrar",
           touch: null
         }
       )
     }
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+      switch (window.location.pathname.split('/')[2]) {
+        case 'perfil':
+          menuItems[1].className = "active";
+          break;
+        case '':
+          menuItems[0].className = "active";
+          break;
+        default:
+
+      }
       var appnav = (
         <ul className="appbar-nav__list">
           {menuItems.map((i,k)=> (
-            <li style={i.style} onTouchTap={i.touch} key={k} >
+            <li style={i.style} className={i.className} onTouchTap={i.touch} key={k} >
               {i.text}
             </li>
           ))}
@@ -100,7 +115,6 @@ var AppNavbar = React.createClass({
         </IconMenu>
       )
     }
-    console.log(appnav);
     return (
       <div className="appbar">
         <IndexLink style={{color:'white'}} to='/app/'>

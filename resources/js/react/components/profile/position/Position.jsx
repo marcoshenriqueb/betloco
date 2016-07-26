@@ -96,7 +96,6 @@ var Position = React.createClass({
         return p.market.title;
       }
     }
-    console.log(this.state.positions);
     var rows = null;
     if (this.state.positions.length > 0) {
       rows = this.state.positions.map((p, k)=> (

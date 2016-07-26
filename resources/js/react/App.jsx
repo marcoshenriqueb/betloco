@@ -13,6 +13,9 @@ const muiTheme = getMuiTheme({
   flatButton: {
     fontWeight: '700'
   },
+  menuItem:{
+    textTransform: 'uppercase'
+  },
   palette: {
     primary1Color: blueGrey500
   }

@@ -151,6 +151,7 @@ var OrderDialog = React.createClass({
       return (<div/>)
     }
     var title = this.props.dialogContent.buy ? 'Comprar' : 'Vender';
+    var btnColor = this.props.dialogContent.buy ? window.gvar.successcolor : window.gvar.warningcolor;
     if (this.state.content == 0) {
       var actions = [
         <FlatButton
@@ -158,10 +159,10 @@ var OrderDialog = React.createClass({
           primary={true}
           onTouchTap={this.returnStepAndClose}
         />,
-        <FlatButton
+        <RaisedButton
           label={this.props.dialogContent.buy ? 'Comprar' : 'Vender'}
-          primary={true}
-          keyboardFocused={true}
+          backgroundColor={btnColor}
+          labelColor="white"
           onTouchTap={this.handleOrder}
         />,
       ];
@@ -185,10 +186,10 @@ var OrderDialog = React.createClass({
           primary={true}
           onTouchTap={this.returnStepAndClose}
         />,
-        <FlatButton
+        <RaisedButton
           label="Confirmar"
-          primary={true}
-          keyboardFocused={true}
+          backgroundColor={btnColor}
+          labelColor="white"
           onTouchTap={this.handleConfirmOrder}
           disabled={this.state.disabled}
         />,
