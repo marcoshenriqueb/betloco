@@ -19,11 +19,13 @@ var style = {
     fontSize: 24,
     fontWeight: '400',
     lineHeight: '24px',
-    marginBottom: 10
+    marginBottom: 10,
+    fontFamily: window.gvar.titlefont
   },
   marketTitle: {
     fontSize: 20,
-    fontWeight: '400'
+    fontWeight: '400',
+    fontFamily: window.gvar.titlefont
   },
   btn: {
     marginLeft: 10
@@ -31,10 +33,10 @@ var style = {
 }
 
 if (document.documentElement.clientWidth > window.gvar.breakpoint) {
-  style.title.fontSize = 28;
   style.title.lineHeight = '36px';
   style.title.marginBottom = 0;
-  style.marketTitle.fontSize = 24;
+  style.marketTitle.fontSize = 22;
+  style.title.fontSize = 28;
 }
 
 var EventCard = React.createClass({
