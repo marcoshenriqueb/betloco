@@ -115,54 +115,70 @@ class TransactionManager(models.Manager):
                 'markets': e
             }
         total_risk = 0
+        balance = 0
         for k, e in events_wc.items():
             events_risk = None
             count = 0
-            if len(e['markets']) > 1:
+            position_count = 0
+            for m in e['markets']:
+                if m['amount_sum'] != 0 or m['sell_orders_amount'] != 0 or m['buy_orders_amount'] != 0:
+                    position_count += 1
+            if position_count > 1:
                 for m in e['markets']:
-                    count += 1
-                    risk = 0
-                    for n in e['markets']:
-                        if m['market__id'] == n['market__id']:
-                            custody_risk = -1*((1-n['balance']/n['amount_sum'])*n['amount_sum']) \
-                                            if n['amount_sum'] != 0 else 0
-                            sell_risk = custody_risk - (1-n['sell_orders_balance']/n['sell_orders_amount'])*n['sell_orders_amount'] \
-                                        if n['sell_orders_amount'] != 0 else custody_risk
-                            risk += sell_risk
-                        else:
-                            custody_risk = n['balance']
-                            buy_risk = custody_risk + n['buy_orders_balance']
-                            risk += buy_risk
-
-                    if events_risk is None or events_risk < risk:
-                        events_risk = risk
+                    if m['amount_sum'] != 0 or m['sell_orders_amount'] != 0 or m['buy_orders_amount'] != 0:
+                        count += 1
+                        risk = 0
+                        for n in e['markets']:
+                            if n['amount_sum'] != 0 or n['sell_orders_amount'] != 0 or n['buy_orders_amount'] != 0:
+                                if m['market__id'] == n['market__id']:
+                                    custody_risk = -1*((1-n['balance']/n['amount_sum'])*n['amount_sum']) \
+                                                    if n['amount_sum'] != 0 else 0
+                                    sell_risk = custody_risk - (1-n['sell_orders_balance']/n['sell_orders_amount'])*n['sell_orders_amount'] \
+                                                if n['sell_orders_amount'] != 0 else custody_risk
+                                    risk += sell_risk
+                                else:
+                                    custody_risk = n['balance']
+                                    buy_risk = custody_risk + n['buy_orders_balance']
+                                    risk += buy_risk
+                        if events_risk is None or events_risk < risk:
+                            events_risk = risk
+                    else:
+                        balance += m['balance']
                 if int(e['count']) > count:
                     risk = 0
                     for n in e['markets']:
-                        custody_risk = n['balance']
-                        buy_risk = custody_risk + n['buy_orders_balance']
-                        risk += buy_risk
+                        if n['amount_sum'] != 0 or n['sell_orders_amount'] != 0 or n['buy_orders_amount'] != 0:
+                            custody_risk = n['balance']
+                            buy_risk = custody_risk + n['buy_orders_balance']
+                            risk += buy_risk
                     if events_risk is None or events_risk < risk:
                         events_risk = risk
                 total_risk += events_risk
             else:
                 for m in e['markets']:
                     risks = []
-                    if m['amount_sum'] >= 0:
+                    if m['amount_sum'] > 0:
                         custody_risk = m['balance']
                         buy_risk = custody_risk + m['buy_orders_balance']
-                        sell_risk = custody_risk - ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
-                                    if m['sell_orders_amount'] != 0 else custody_risk
-                    else:
-                        custody_risk = (1-m['balance']/m['amount_sum'])*m['amount_sum']
-                        sell_risk = custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
-                                    if m['sell_orders_amount'] != 0 else custody_risk
+                        sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
+                                    if m['sell_orders_amount'] != 0 else custody_risk)
+                    elif m['amount_sum'] < 0:
+                        custody_risk = abs((1-m['balance']/m['amount_sum'])*m['amount_sum'])
+                        sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
+                                    if m['sell_orders_amount'] != 0 else custody_risk)
                         buy_risk = abs(custody_risk - m['buy_orders_balance'])
+                    else:
+                        custody_risk = 0
+                        buy_risk = custody_risk
+                        sell_risk = custody_risk
+                        balance += m['balance']
+
                     total_risk += max([custody_risk,sell_risk,buy_risk])
 
         return {
-            'total': transactions - total_risk,
+            'total': transactions - total_risk - balance,
             'transactions': transactions,
+            'balance': balance*-1,
             'risk': total_risk
         }
 
