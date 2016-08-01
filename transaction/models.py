@@ -118,6 +118,7 @@ class TransactionManager(models.Manager):
         balance = 0
         for k, e in events_wc.items():
             events_risk = None
+            events_balance = None
             count = 0
             position_count = 0
             for m in e['markets']:
@@ -128,6 +129,7 @@ class TransactionManager(models.Manager):
                     if m['amount_sum'] != 0 or m['sell_orders_amount'] != 0 or m['buy_orders_amount'] != 0:
                         count += 1
                         risk = 0
+                        balance_sum = 0
                         for n in e['markets']:
                             if n['amount_sum'] != 0 or n['sell_orders_amount'] != 0 or n['buy_orders_amount'] != 0:
                                 if m['market__id'] == n['market__id']:
@@ -140,20 +142,24 @@ class TransactionManager(models.Manager):
                                     custody_risk = n['balance'] if n['amount_sum'] != 0 else 0
                                     buy_risk = custody_risk + n['buy_orders_balance']
                                     risk += buy_risk
-                                balance += n['balance'] if n['amount_sum'] == 0 else 0
+                                balance_sum += n['balance'] if n['amount_sum'] == 0 else 0
                         if events_risk is None or events_risk < risk:
                             events_risk = risk
+                            events_balance = balance_sum
                     else:
                         balance += m['balance']
                 if int(e['count']) > count:
                     risk = 0
+                    balance_sum = 0
                     for n in e['markets']:
                         if n['amount_sum'] != 0 or n['sell_orders_amount'] != 0 or n['buy_orders_amount'] != 0:
-                            custody_risk = n['balance']
+                            custody_risk = n['balance'] if n['amount_sum'] != 0 else 0
                             buy_risk = custody_risk + n['buy_orders_balance']
                             risk += buy_risk
+                        balance_sum += n['balance'] if n['amount_sum'] == 0 else 0
                     if events_risk is None or events_risk < risk:
                         events_risk = risk
+                        events_balance = balance_sum
                 total_risk += events_risk
             else:
                 for m in e['markets']:
