@@ -160,10 +160,11 @@ class TransactionManager(models.Manager):
                     risks = []
                     if m['amount_sum'] != 0 or m['sell_orders_amount'] != 0 or m['buy_orders_amount'] != 0:
                         if m['amount_sum'] >= 0:
-                            custody_risk = m['balance']
+                            custody_risk = m['balance'] if m['amount_sum'] != 0 else 0
                             buy_risk = custody_risk + m['buy_orders_balance']
                             sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
                                         if m['sell_orders_amount'] != 0 else custody_risk)
+                            balance += m['balance'] if m['amount_sum'] == 0 else 0
                         else:
                             custody_risk = abs((1-m['balance']/m['amount_sum'])*m['amount_sum'])
                             sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
