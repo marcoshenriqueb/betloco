@@ -43,7 +43,7 @@ h3 {
   padding: 5px 25px;
 }
 .appbar {
-  background-color: #607d8b;
+  background-color: #616161;
   height: 64px;
   width: 100%;
   display: flex;
@@ -128,7 +128,7 @@ h3 {
   }
 }
 .profile-mobile-menu {
-  background-color: #607d8b;
+  background-color: #616161;
   width: 100%;
 }
 .profile-mobile-menu__list {
@@ -225,7 +225,7 @@ h3 {
   margin-right: 20px;
 }
 .orderrequest-card__header {
-  background-color: #607d8b;
+  background-color: #616161;
   color: #fff;
   padding: 10px 15px;
 }
@@ -304,7 +304,7 @@ th {
   margin: 0 5px;
   width: 18px;
   height: 18px;
-  background-color: #607d8b;
+  background-color: #616161;
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;

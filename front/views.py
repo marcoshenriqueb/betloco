@@ -21,6 +21,7 @@ class ChooseWinnerView(View):
     """docstring for ChooseWinnerView"""
     def post(self, request):
         if request.user.is_staff:
-            result = Market.objects.set_winner(request.POST['event-winner'])
+            market_id = request.POST['market-id'] if 'market-id' in request.POST else False
+            result = Market.objects.set_winner(request.POST['event-winner'], market_id=market_id)
             return redirect('/admin/market/event/' + request.POST['event-id'] + '/change/')
         return redirect('/')

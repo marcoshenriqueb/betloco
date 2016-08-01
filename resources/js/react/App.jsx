@@ -3,7 +3,7 @@ import req from 'reqwest';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navbar from './components/AppNavbar.jsx';
-import {blueGrey500} from 'material-ui/styles/colors';
+import {grey700} from 'material-ui/styles/colors';
 
 const muiTheme = getMuiTheme({
   fontFamily: "'Open Sans', sans-serif",
@@ -17,7 +17,7 @@ const muiTheme = getMuiTheme({
     textTransform: 'uppercase'
   },
   palette: {
-    primary1Color: blueGrey500
+    primary1Color: grey700
   }
 });
 

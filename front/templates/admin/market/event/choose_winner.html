@@ -1,6 +1,9 @@
 <form method="post" action="/custom-admin/choose-winner/">
   {% csrf_token %}
   <input type="hidden" name="event-id" value="{{event__id}}">
+  {% if markets|length == 1 %}
+    <input type="hidden" name="market-id" value="{{markets.0.id}}">
+  {% endif %}
   <fieldset class="module aligned">
     <h2>LIQUIDAÇÃO DE VENCEDOR</h2>
     <div class="form-row">
@@ -8,9 +11,16 @@
         <label class="required" for="event-winner">Vencedor</label>
         <select name="event-winner">
           <option value="">------</option>
-          {% for m in markets %}
-            <option value="{{m.id}}">{{m.title_short}}</option>
-          {% endfor %}
+          {% if markets|length > 1 %}
+            {% for m in markets %}
+              <option value="{{m.id}}">{{m.title_short}}</option>
+            {% endfor %}
+          {% else %}
+            {% for m in markets %}
+              <option value="true">Sim</option>
+              <option value="false">Não</option>
+            {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>

@@ -59,23 +59,29 @@ class Event(models.Model):
 
 class MarketManager(models.Manager):
     """docstring for MarketManager"""
-    def set_winner(self, market_id):
-        if market_id:
-            e = self.get(id=market_id).event
+    def set_winner(self, winner_id, market_id=False):
+        if winner_id:
+            winner_choice = True
+            if winner_id == 'true':
+                winner_id = market_id
+            elif winner_id == 'false':
+                winner_id = market_id
+                winner_choice = False
+            e = self.get(id=winner_id).event
             if e.deadline < timezone.now():
                 markets = Market.objects.filter(event__id=e.id)
                 if len(markets.filter(winner=1)) > 0:
                     markets.update(winner=0)
                     for m in markets:
                         m.order_set.filter(from_liquidation=1).delete()
-                winner_market = markets.get(id=market_id)
-                winner_market.winner = 1
+                winner_market = markets.get(id=winner_id)
+                winner_market.winner = 1 if winner_choice == True else 0
                 winner_market.liquidated = 1
                 winner_market.save()
                 Channel("liquidate-market").send({
                     "market_id": winner_market.id
                 })
-                loosers_markets = e.markets.filter(~Q(id=market_id))
+                loosers_markets = e.markets.filter(~Q(id=winner_id))
                 for m in loosers_markets:
                     m.liquidated = 1
                     m.save()
