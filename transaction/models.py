@@ -137,7 +137,7 @@ class TransactionManager(models.Manager):
                                                 if n['sell_orders_amount'] != 0 else custody_risk
                                     risk += sell_risk
                                 else:
-                                    custody_risk = n['balance'] if n['amount_sum'] != 0
+                                    custody_risk = n['balance'] if n['amount_sum'] != 0 else 0
                                     buy_risk = custody_risk + n['buy_orders_balance']
                                     risk += buy_risk
                                 balance += n['balance'] if n['amount_sum'] == 0 else 0
