@@ -27,11 +27,21 @@ var OrderBook = React.createClass({
       content = (
         <CardText expandable={true} style={styles.cardtext} className="orderbook-card__details">
           <OrderTable buy={true}
-                      orders={this.props.market.topBuys} />
+                      inverted={true}
+                      headerStyle={{
+                        backgroundColor:window.gvar.primarycolor,
+                        color: window.gvar.lightcolor,
+                        fontWeight: "bold"
+                      }}
+                      orders={this.props.market.topSells} />
 
           <OrderTable buy={false}
-                      inverted={true}
-                      orders={this.props.market.topSells} />
+                      headerStyle={{
+                        backgroundColor:window.gvar.primarycolor,
+                        color: window.gvar.lightcolor,
+                        fontWeight: "bold"
+                      }}
+                      orders={this.props.market.topBuys} />
         </CardText>
       )
     }

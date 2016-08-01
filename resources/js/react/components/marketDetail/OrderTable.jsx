@@ -42,7 +42,7 @@ var OrderTable = React.createClass({
       })
     }
     var title = this.props.buy ? "Compra" : "Venda";
-    if (this.props.headerStyle != undefined) {
+    if (this.props.headerStyle != undefined && this.props.headerStyle != false) {
       styles.header = this.props.headerStyle;
     }
     var title = this.props.buy ? "Compra" : "Venda";
