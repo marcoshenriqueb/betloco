@@ -4,24 +4,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 var styles = {
-  card: {
-    display: 'inline-block',
-    marginBottom: 10
-  },
-  cardpadding: {
-    padding: 10
-  },
   buyselllbl: {
     'fontSize': 14,
     'paddingRight': 8,
     'paddingLeft': 8
   },
   buysellbtn: {
-    'minWidth': 40,
-    'margin': 5
-  },
-  cardtext: {
-    paddingTop: 0
+    'width': 87,
+    'margin': 5,
+    'marginLeft': 0
   }
 }
 
@@ -39,24 +30,18 @@ var OrderRequest = React.createClass({
       var custody = 0;
     }
     return (
-      <Card style={styles.card} className="orderrequest-card">
-        <div className="orderrequest-card__header">
-          <p>Nova ordem</p>
-        </div>
-        <CardActions style={styles.cardpadding}>
-          <div className="orderrequest-card__orders-column">
-            <div className="orderrequest-card__buy-column">
-              <RaisedButton backgroundColor={window.gvar.successcolor} labelColor="white" disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
-            </div>
-            <div className="orderrequest-card__sell-column">
-              <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
-            </div>
-          </div>
-        </CardActions>
-        <CardText style={styles.cardtext} className="orderrequest-card__details">
-          <span><strong>{custody}</strong> papéis em custódia</span>
-        </CardText>
-      </Card>
+      <div className="order-request">
+        <span className="order-request__subtitle">Último negócio: {(this.props.market.lastCompleteOrder.price*100).toFixed(0)}¢</span>
+        <br/>
+        <span className="order-request__subtitle">{custody} papéis em custódia</span>
+        <br/>
+        <br/>
+        <RaisedButton backgroundColor={window.gvar.successcolor} labelColor="white" disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
+        <span className="order-request__subtitle">Clique e deixe uma ordem caso acredite que o evento ocorrerá.</span>
+        <br/>
+        <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
+        <span className="order-request__subtitle">Clique e deixe uma ordem caso acredite que o evento não ocorrerá.</span>
+      </div>
     );
   }
 });

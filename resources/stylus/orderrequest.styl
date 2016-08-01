@@ -1,28 +1,10 @@
-.orderrequest-title
-  display: block;
+.order-request
+  width: 100%
+  padding: 0 5px
 
-.orderrequest-card
-  margin-right: 20px
+.order-request__subtitle
+  font-size: 13px
 
-.orderrequest-card__header
-  background-color: primary_color
-  color white_color
-  padding: 10px 15px
-
-  p
-    margin: 0
-    font-size: 16px
-    font-weight: bold;
-.orderrequest-card__orders-column
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-.orderrequest-card__buy-column, .orderrequest-card__sell-column
-  width: 50%
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-.orderrequest-card__details
-  span
-    font-size: 13px
+@media(min-width:tablet_break)
+  .order-request__subtitle
+    font-size: 14px

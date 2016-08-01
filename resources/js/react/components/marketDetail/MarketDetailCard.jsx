@@ -15,7 +15,7 @@ var styles = {
   },
   title:{
     marginTop:10,
-    marginBottom:10,
+    marginBottom:5,
     fontSize: 24
   }
 }

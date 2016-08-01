@@ -218,36 +218,17 @@ h3 {
     width: 80%;
   }
 }
-.orderrequest-title {
-  display: block;
+.order-request {
+  width: 100%;
+  padding: 0 5px;
 }
-.orderrequest-card {
-  margin-right: 20px;
-}
-.orderrequest-card__header {
-  background-color: #616161;
-  color: #fff;
-  padding: 10px 15px;
-}
-.orderrequest-card__header p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-}
-.orderrequest-card__orders-column {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-}
-.orderrequest-card__buy-column,
-.orderrequest-card__sell-column {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.orderrequest-card__details span {
+.order-request__subtitle {
   font-size: 13px;
+}
+@media (min-width: 768px) {
+  .order-request__subtitle {
+    font-size: 14px;
+  }
 }
 .orderbook-container {
   width: 100%;
