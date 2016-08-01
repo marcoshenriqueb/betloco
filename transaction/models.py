@@ -132,7 +132,7 @@ class TransactionManager(models.Manager):
                             if n['amount_sum'] != 0 or n['sell_orders_amount'] != 0 or n['buy_orders_amount'] != 0:
                                 if m['market__id'] == n['market__id']:
                                     custody_risk = -1*((1-n['balance']/n['amount_sum'])*n['amount_sum']) \
-                                                    if n['amount_sum'] != 0 else 0
+                                                    if n['amount_sum'] != 0 else n['balance']
                                     sell_risk = custody_risk - (1-n['sell_orders_balance']/n['sell_orders_amount'])*n['sell_orders_amount'] \
                                                 if n['sell_orders_amount'] != 0 else custody_risk
                                     risk += sell_risk
