@@ -32,8 +32,12 @@ var OrderTable = React.createClass({
     if (this.props.orders.length > 0) {
       orders = this.props.orders.map((o, k) => {
         return <TableRow style={styles.rowheight} key={k}>
-                <TableRowColumn style={styles.rowheight}>{(o.price*100).toFixed(0)}¢</TableRowColumn>
-                <TableRowColumn style={styles.rowheight}>{o.amount}</TableRowColumn>
+                <TableRowColumn style={styles.rowheight}>
+                  {(!this.props.inverted)?(o.price*100).toFixed(0) + '¢':o.amount}
+                </TableRowColumn>
+                <TableRowColumn style={styles.rowheight}>
+                  {(!this.props.inverted)?o.amount:(o.price*100).toFixed(0) + '¢'}
+                </TableRowColumn>
               </TableRow>
       })
     }
@@ -51,8 +55,12 @@ var OrderTable = React.createClass({
             <TableHeaderColumn style={styles.rowheight}></TableHeaderColumn>
           </TableRow>
           <TableRow style={styles.rowheight}>
-            <TableHeaderColumn style={styles.rowheight}>Preço</TableHeaderColumn>
-            <TableHeaderColumn style={styles.rowheight}>Qtde</TableHeaderColumn>
+            <TableHeaderColumn style={styles.rowheight}>
+              {(!this.props.inverted)?'Preço':'Qtde'}
+            </TableHeaderColumn>
+            <TableHeaderColumn style={styles.rowheight}>
+              {(!this.props.inverted)?'Qtde':'Preço'}
+            </TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}

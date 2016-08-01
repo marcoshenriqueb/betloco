@@ -30,6 +30,7 @@ var OrderBook = React.createClass({
                       orders={this.props.market.topBuys} />
 
           <OrderTable buy={false}
+                      inverted={true}
                       orders={this.props.market.topSells} />
         </CardText>
       )

@@ -69,21 +69,21 @@ var ConfirmOrderDialog = React.createClass({
         border: true,
         th: [
           {content: 'Valor Total (R$)', style: {width:200}},
-          {content: ((this.props.price/100)*this.props.amount).toFixed(0), style: styles.right}
+          {content: ((this.props.price/100)*this.props.amount).toFixed(2), style: styles.right}
         ]
       },
       {
         border: true,
         th: [
           {content: 'Variação no Risco (R$)', style: styles.bold},
-          {content: (this.state.estimatedBalance)?this.state.estimatedBalance.risk-this.props.balance.risk:'0', style: styles.boldRight}
+          {content: (this.state.estimatedBalance)?(this.state.estimatedBalance.risk-this.props.balance.risk).toFixed(2):'0', style: styles.boldRight}
         ]
       },
       {
         border: true,
         th: [
           {content: 'Saldo Estimado (R$)', style: styles.bold},
-          {content: (this.state.estimatedBalance)?this.state.estimatedBalance.total:'0', style: styles.boldRight}
+          {content: (this.state.estimatedBalance)?(this.state.estimatedBalance.total).toFixed(2):'0', style: styles.boldRight}
         ]
       }
     ]
