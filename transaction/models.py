@@ -80,6 +80,14 @@ class TransactionManager(models.Manager):
         for o in orders:
             netOrders = Order.objects.filter(user__id=user_id).filter(deleted=0).filter(market__id=o['market__id']) \
                                      .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+                                     .annotate(exec_amount=Sum(Case(
+                                         When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
+                                         When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                                         When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
+                                         When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')),
+                                         default=0,
+                                         output_field=models.FloatField()
+                                       ))) \
                                      .annotate(balance=Sum(Case(
                                          When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
                                          When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')*F('from_order__price')),
@@ -98,17 +106,17 @@ class TransactionManager(models.Manager):
             previous_balance = 0
             balance_counter = 0
             for netOrder in netOrders:
-                amount_counter += netOrder.amount
+                amount_counter += netOrder.exec_amount
                 if sign > 0 and amount_counter <= 0:
                     sign = 0 if amount_counter == 0 else -1
-                    balance_counter += (1-(amount_counter/netOrder.amount))*netOrder.balance
+                    balance_counter += (1-(amount_counter/netOrder.exec_amount))*netOrder.balance
                     previous_balance += balance_counter
-                    balance_counter = (amount_counter/netOrder.amount)*netOrder.balance
+                    balance_counter = (amount_counter/netOrder.exec_amount)*netOrder.balance
                 elif sign < 0 and amount_counter >= 0:
                     sign = 0 if amount_counter == 0 else 1
-                    balance_counter += (1-(amount_counter/netOrder.amount))*netOrder.balance
+                    balance_counter += (1-(amount_counter/netOrder.exec_amount))*netOrder.balance
                     previous_balance += balance_counter
-                    balance_counter = (amount_counter/netOrder.amount)*netOrder.balance
+                    balance_counter = (amount_counter/netOrder.exec_amount)*netOrder.balance
                 else:
                     if amount_counter > 0:
                         sign = 1
