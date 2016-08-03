@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from market.models import Order, Event, Market, Sum, F, Operation, When
-from django.db.models import Max, Case, Count
+from django.db.models import Max, Case, Count, Q
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Currency(models.Model):
@@ -36,8 +36,8 @@ class TransactionManager(models.Manager):
                                   output_field=models.FloatField()
                                 )),
                                 amount_sum=Sum(Case(
-                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=0),
                                   When(from_order__isnull=True, to_order__isnull=True, amount__lt=0, then=0),
+                                  When(from_order__isnull=True, to_order__isnull=True, amount__gt=0, then=0),
                                   When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')),
                                   When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
                                   When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')),
@@ -67,17 +67,53 @@ class TransactionManager(models.Manager):
                                 ))
                               ).values('market__id',
                                        'balance',
+                                       'amount_sum',
                                        'sell_orders_balance',
                                        'buy_orders_balance',
                                        'sell_orders_amount',
                                        'buy_orders_amount',
-                                       'amount_sum',
                                        'market__event__id')
         events = {}
         if new_order is not None:
             market_id = new_order['market__id'] if 'market__id' in new_order else new_order['market'].id
             new_order_added = False
         for o in orders:
+            netOrders = Order.objects.filter(user__id=user_id).filter(deleted=0).filter(market__id=o['market__id']) \
+                                     .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+                                     .annotate(balance=Sum(Case(
+                                         When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
+                                         When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')*F('from_order__price')),
+                                         When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')*F('price')),
+                                         When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')*F('price')),
+                                         default=0,
+                                         output_field=models.FloatField()
+                                       )))
+            sign = 0
+            amount_counter = 0
+            previous_balance = 0
+            balance_counter = 0
+            for netOrder in netOrders:
+                amount_counter += netOrder.amount
+                if sign > 0 and amount_counter <= 0:
+                    sign = 0 if amount_counter == 0 else -1
+                    balance_counter += (1-((amount_counter/netOrder.amount)*-1))*netOrder.balance
+                    previous_balance += balance_counter
+                    balance_counter = ((amount_counter/netOrder.amount)*-1)*netOrder.balance
+                elif sign < 0 and amount_counter >= 0:
+                    sign = 0 if amount_counter == 0 else 1
+                    balance_counter += (1-((amount_counter/netOrder.amount)*-1))*netOrder.balance
+                    previous_balance += balance_counter
+                    balance_counter = ((amount_counter/netOrder.amount)*-1)*netOrder.balance
+                else:
+                    if amount_counter > 0:
+                        sign = 1
+                    elif amount_counter < 0:
+                        sign = -1
+                    else:
+                        sign = 0
+                    balance_counter += netOrder.balance
+            o['balance'] = balance_counter
+            o['netBalance'] = previous_balance
             if new_order is not None and int(o['market__id']) == market_id:
                 new_order_added = True
                 o['amount_sum'] += int(new_order['amount'])
@@ -93,6 +129,7 @@ class TransactionManager(models.Manager):
                 'amount_sum': int(new_order['amount']),
                 'balance': int(new_order['amount'])*float(new_order['price']),
                 'market__id': m.id,
+                'netBalance': 0,
                 'sell_orders_balance': 0,
                 'buy_orders_balance': 0,
                 'sell_orders_amount': 0,
@@ -137,14 +174,12 @@ class TransactionManager(models.Manager):
                                                 if n['sell_orders_amount'] != 0 else custody_risk
                                     risk += sell_risk
                                 else:
-                                    custody_risk = n['balance'] if n['amount_sum'] != 0 else 0
+                                    custody_risk = n['balance']
                                     buy_risk = custody_risk + n['buy_orders_balance']
                                     risk += buy_risk
                         if events_risk is None or events_risk < risk:
                             events_risk = risk
-                        balance += m['balance'] if m['amount_sum'] == 0 else 0
-                    else:
-                        balance += m['balance']
+                    balance += m['netBalance']
                 if int(e['count']) > count:
                     risk = 0
                     for n in e['markets']:
@@ -160,11 +195,11 @@ class TransactionManager(models.Manager):
                     risks = []
                     if m['amount_sum'] != 0 or m['sell_orders_amount'] != 0 or m['buy_orders_amount'] != 0:
                         if m['amount_sum'] >= 0:
-                            custody_risk = m['balance'] if m['amount_sum'] != 0 else 0
+                            custody_risk = m['balance']
                             buy_risk = custody_risk + m['buy_orders_balance']
                             sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
                                         if m['sell_orders_amount'] != 0 else custody_risk)
-                            balance += m['balance'] if m['amount_sum'] == 0 else 0
+                            balance += m['netBalance']
                         else:
                             custody_risk = abs((1-m['balance']/m['amount_sum'])*m['amount_sum'])
                             sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
@@ -174,7 +209,7 @@ class TransactionManager(models.Manager):
                         custody_risk = 0
                         buy_risk = custody_risk
                         sell_risk = custody_risk
-                        balance += m['balance']
+                        balance += m['netBalance']
 
                     total_risk += max([custody_risk,sell_risk,buy_risk])
 
