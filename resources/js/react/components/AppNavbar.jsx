@@ -118,7 +118,7 @@ var AppNavbar = React.createClass({
     return (
       <div className="appbar">
         <IndexLink style={{color:'white'}} to='/app/'>
-          <h1 className="appbar-logo">Guroooo</h1>
+          <h1 className="appbar-logo">Guroo</h1>
         </IndexLink>
         <div className="appbar-nav">
           {userData}
