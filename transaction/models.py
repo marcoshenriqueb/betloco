@@ -95,17 +95,23 @@ class TransactionManager(models.Manager):
             print('-------------------')
             for netOrder in netOrders:
                 amount_counter += netOrder.amount
+                print(sign)
+                print(amount_counter)
+                print('----')
                 if sign > 0 and amount_counter <= 0:
+                    print(1)
                     sign = 0 if amount_counter == 0 else -1
                     balance_counter += (1-(amount_counter/netOrder.amount))*netOrder.balance
                     previous_balance += balance_counter
                     balance_counter = (amount_counter/netOrder.amount)*netOrder.balance
                 elif sign < 0 and amount_counter >= 0:
+                    print(2)
                     sign = 0 if amount_counter == 0 else 1
                     balance_counter += (1-(amount_counter/netOrder.amount))*netOrder.balance
                     previous_balance += balance_counter
                     balance_counter = (amount_counter/netOrder.amount)*netOrder.balance
                 else:
+                    print(3)
                     if amount_counter > 0:
                         sign = 1
                     elif amount_counter < 0:
