@@ -92,7 +92,6 @@ class TransactionManager(models.Manager):
             amount_counter = 0
             previous_balance = 0
             balance_counter = 0
-            print('----------------')
             for netOrder in netOrders:
                 amount_counter += netOrder.amount
                 if sign > 0 and amount_counter <= 0:
@@ -113,8 +112,6 @@ class TransactionManager(models.Manager):
                     else:
                         sign = 0
                     balance_counter += netOrder.balance
-                # print(previous_balance)
-                # print(balance_counter)
             o['balance'] = balance_counter
             o['netBalance'] = previous_balance
             if new_order is not None and int(o['market__id']) == market_id:
