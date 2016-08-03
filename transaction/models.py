@@ -129,8 +129,14 @@ class TransactionManager(models.Manager):
             o['netBalance'] = previous_balance
             if new_order is not None and int(o['market__id']) == market_id:
                 new_order_added = True
+                if (amount_counter > 0 and int(new_order['amount']) < 0 and abs(int(new_order['amount'])) >= abs(amount_counter)) \
+                    or (amount_counter < 0 and int(new_order['amount']) > 0 and abs(int(new_order['amount'])) >= abs(amount_counter)):
+                    amount_counter += int(new_order['amount'])
+                    o['netBalance'] = o['balance'] + (1-(amount_counter/int(new_order['amount'])))*(int(new_order['amount'])*float(new_order['price']))
+                    o['balance'] = (amount_counter/int(new_order['amount']))*(int(new_order['amount'])*float(new_order['price']))
+                else:
+                    o['balance'] += int(new_order['amount'])*float(new_order['price'])
                 o['amount_sum'] += int(new_order['amount'])
-                o['balance'] += int(new_order['amount'])*float(new_order['price'])
             if o['market__event__id'] in events:
                 events[o['market__event__id']].append(o)
             else:
