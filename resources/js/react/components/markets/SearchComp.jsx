@@ -2,7 +2,7 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import {Card, CardActions, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import IconButton from 'material-ui/IconButton';
 import {fullWhite} from 'material-ui/styles/colors';
 import FilterIcon from 'material-ui/svg-icons/content/filter-list';
 import SelectField from 'material-ui/SelectField';
@@ -26,6 +26,15 @@ var style = {
   },
   secSelect: {
     marginRight: 40,
+  },
+  mediumIcon: {
+    width: 36,
+    height: 36,
+  },
+  medium: {
+    width: 72,
+    height: 72,
+    padding: 18,
   },
   filterLabelStyle: {
     fontSize: 16
@@ -68,16 +77,17 @@ var SearchComp = React.createClass({
     var filterToogle = null;
     if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       filterToogle = (
-        <FloatingActionButton
+        <IconButton
           primary={true}
-          mini={true}
+          iconStyle={style.mediumIcon}
+          style={style.medium}
           onTouchTap={()=>{
             this.setState({
               expanded: !this.state.expanded
             });
           }}>
-          <FilterIcon color={fullWhite} />
-        </FloatingActionButton>
+          <FilterIcon color={window.gvar.primarycolor} />
+        </IconButton>
       )
     }
     return (

@@ -56986,9 +56986,9 @@ var _TextField = require('material-ui/TextField');
 
 var _TextField2 = _interopRequireDefault(_TextField);
 
-var _FloatingActionButton = require('material-ui/FloatingActionButton');
+var _IconButton = require('material-ui/IconButton');
 
-var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
+var _IconButton2 = _interopRequireDefault(_IconButton);
 
 var _colors = require('material-ui/styles/colors');
 
@@ -57024,6 +57024,15 @@ var style = {
   },
   secSelect: {
     marginRight: 40
+  },
+  mediumIcon: {
+    width: 36,
+    height: 36
+  },
+  medium: {
+    width: 72,
+    height: 72,
+    padding: 18
   },
   filterLabelStyle: {
     fontSize: 16
@@ -57072,16 +57081,17 @@ var SearchComp = _react2.default.createClass({
     var filterToogle = null;
     if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       filterToogle = _react2.default.createElement(
-        _FloatingActionButton2.default,
+        _IconButton2.default,
         {
           primary: true,
-          mini: true,
+          iconStyle: style.mediumIcon,
+          style: style.medium,
           onTouchTap: function onTouchTap() {
             _this2.setState({
               expanded: !_this2.state.expanded
             });
           } },
-        _react2.default.createElement(_filterList2.default, { color: _colors.fullWhite })
+        _react2.default.createElement(_filterList2.default, { color: window.gvar.primarycolor })
       );
     }
     return _react2.default.createElement(
@@ -57152,7 +57162,7 @@ var SearchComp = _react2.default.createClass({
 
 exports.default = SearchComp;
 
-},{"material-ui/Card":12,"material-ui/FloatingActionButton":27,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/SelectField":52,"material-ui/TextField":70,"material-ui/styles/colors":254,"material-ui/svg-icons/content/filter-list":269,"react":536}],559:[function(require,module,exports){
+},{"material-ui/Card":12,"material-ui/IconButton":31,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/SelectField":52,"material-ui/TextField":70,"material-ui/styles/colors":254,"material-ui/svg-icons/content/filter-list":269,"react":536}],559:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
