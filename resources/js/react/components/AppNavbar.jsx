@@ -5,19 +5,26 @@ import MenuItem from 'material-ui/MenuItem';
 import IconMenuIcon from 'material-ui/svg-icons/navigation/menu';
 import { browserHistory } from 'react-router';
 import { IndexLink } from 'react-router';
+import Avatar from 'material-ui/Avatar';
+import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 
 const styles = {
   title: {
     cursor: 'pointer',
   },
   menuItem: {
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     cursor: 'pointer',
     fontSize: 14
   }
 };
 
 var AppNavbar = React.createClass({
+  getInitialState(){
+    return {
+      navopen: false
+    }
+  },
   _logout: function(){
     window.location = "/accounts/logout/";
   },
@@ -26,6 +33,11 @@ var AppNavbar = React.createClass({
   },
   _marketRoute: function(){
     browserHistory.push('/app/');
+  },
+  togglenav(){
+    this.setState({
+      navopen: !this.state.navopen
+    });
   },
   render: function() {
     var userData = null;
@@ -95,11 +107,26 @@ var AppNavbar = React.createClass({
       }
       var appnav = (
         <ul className="appbar-nav__list">
-          {menuItems.map((i,k)=> (
-            <li style={i.style} className={i.className} onTouchTap={i.touch} key={k} >
-              {i.text}
-            </li>
-          ))}
+          <li style={menuItems[0].style} className={menuItems[0].className} onTouchTap={menuItems[0].touch}>
+            {menuItems[0].text}
+          </li>
+          {
+            this.props.user?
+            (<li style={menuItems[1].style} className={menuItems[1].className} onTouchTap={this.togglenav}>
+              <Avatar style={{marginRight:5}} size={30} src="images/uxceo-128.jpg" />
+              {this.props.user.username}
+              <NavigationExpandMoreIcon color="white"/>
+              {
+                this.state.navopen?
+                (<ul className="appbar-nav__dropdown">
+                  <li onTouchTap={menuItems[1].touch}>{menuItems[1].text}</li>
+                  <li onTouchTap={menuItems[2].touch}>{menuItems[2].text}</li>
+                </ul>):
+                (<div/>)
+              }
+            </li>):
+            (<div/>)
+          }
         </ul>
       )
     }else {

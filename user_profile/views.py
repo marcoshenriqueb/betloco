@@ -5,5 +5,7 @@ from .serializers import UserSerializer
 class UserMe(APIView):
     """docstring for UserMe"""
     def get(self, request):
-        serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        if request.user.is_authenticated():
+            serializer = UserSerializer(request.user)
+            return Response(serializer.data)
+        return Response(False)

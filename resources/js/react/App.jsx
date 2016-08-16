@@ -25,7 +25,16 @@ var App = React.createClass({
   getInitialState: function(){
     return {
       balance: false,
+      user:false
     };
+  },
+  getUser: function(){
+    var that = this;
+    req('/api/users/me/?format=json').then(function(response){
+      that.setState({
+        user: response
+      });
+    });
   },
   getBalance: function(){
     var that = this;
@@ -37,12 +46,13 @@ var App = React.createClass({
   },
   componentDidMount: function(){
     this.getBalance();
+    this.getUser();
   },
   render: function() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
-          <Navbar balance={this.state.balance} />
+          <Navbar user={this.state.user} balance={this.state.balance} />
           {React.cloneElement(this.props.children, {
             balance: this.state.balance,
             updateBalance: this.getBalance
