@@ -20,11 +20,6 @@ const styles = {
 };
 
 var AppNavbar = React.createClass({
-  getInitialState(){
-    return {
-      navopen: false
-    }
-  },
   _logout: function(){
     window.location = "/accounts/logout/";
   },
@@ -33,11 +28,6 @@ var AppNavbar = React.createClass({
   },
   _marketRoute: function(){
     browserHistory.push('/app/');
-  },
-  togglenav(){
-    this.setState({
-      navopen: !this.state.navopen
-    });
   },
   render: function() {
     var userData = null;
@@ -112,12 +102,15 @@ var AppNavbar = React.createClass({
           </li>
           {
             this.props.user?
-            (<li style={menuItems[1].style} className={menuItems[1].className} onTouchTap={this.togglenav}>
-              <Avatar style={{marginRight:5}} size={30} src="images/uxceo-128.jpg" />
+            (<li style={menuItems[1].style}
+                 className={menuItems[1].className}
+                 onTouchTap={this.props.togglenav}
+                 id="navtoggle">
+              <Avatar style={{marginRight:5}} size={30} src={window.gvar.usravatar} />
               {this.props.user.username}
               <NavigationExpandMoreIcon color="white"/>
               {
-                this.state.navopen?
+                this.props.navopen?
                 (<ul className="appbar-nav__dropdown">
                   <li onTouchTap={menuItems[1].touch}>{menuItems[1].text}</li>
                   <li onTouchTap={menuItems[2].touch}>{menuItems[2].text}</li>
@@ -125,7 +118,14 @@ var AppNavbar = React.createClass({
                 (<div/>)
               }
             </li>):
-            (<div/>)
+            [
+              <li style={menuItems[1].style} className={menuItems[1].className} onTouchTap={menuItems[1].touch}>
+                {menuItems[1].text}
+              </li>,
+              <li style={menuItems[2].style} className={menuItems[2].className} onTouchTap={menuItems[2].touch}>
+                {menuItems[2].text}
+              </li>
+            ]
           }
         </ul>
       )

@@ -25,7 +25,8 @@ var App = React.createClass({
   getInitialState: function(){
     return {
       balance: false,
-      user:false
+      user:false,
+      navopen: false
     };
   },
   getUser: function(){
@@ -48,11 +49,25 @@ var App = React.createClass({
     this.getBalance();
     this.getUser();
   },
+  togglenav(e){
+    e.stopPropagation();
+    if (e.target.id == 'navtoggle') {
+      var result = !this.state.navopen;
+    }else {
+      var result = false;
+    }
+    this.setState({
+      navopen: result
+    });
+  },
   render: function() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div>
-          <Navbar user={this.state.user} balance={this.state.balance} />
+        <div onTouchTap={this.togglenav}>
+          <Navbar user={this.state.user}
+                  balance={this.state.balance}
+                  navopen={this.state.navopen}
+                  togglenav={this.togglenav} />
           {React.cloneElement(this.props.children, {
             balance: this.state.balance,
             updateBalance: this.getBalance
