@@ -95,7 +95,7 @@ var AppNavbar = React.createClass({
         default:
 
       }
-      if (this.props.user.socialaccount_set != undefined) {
+      if (this.props.user.socialaccount_set != undefined && this.props.user.socialaccount_set.length > 0) {
         console.log(this.props.user.socialaccount_set[0].extra_data.picture.data.url);
         var picture = this.props.user.socialaccount_set[0].extra_data.picture.data.url;
       }else {
