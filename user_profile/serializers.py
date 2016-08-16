@@ -4,6 +4,7 @@ from allauth.socialaccount.models import SocialAccount
 
 class SocialSerializer(serializers.ModelSerializer):
     """docstring for UserSerializer"""
+    extra_data = serializers.JSONField()
     class Meta:
         model = SocialAccount
         fields = (

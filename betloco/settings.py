@@ -167,6 +167,7 @@ SOCIALACCOUNT_PROVIDERS = \
             'last_name',
             'verified',
             'locale',
+            'picture',
             'timezone',
             'link',
             'gender',

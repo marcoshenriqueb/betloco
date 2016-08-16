@@ -95,6 +95,12 @@ var AppNavbar = React.createClass({
         default:
 
       }
+      if (this.props.user.socialaccount_set != undefined) {
+        console.log(this.props.user.socialaccount_set[0].extra_data.picture.data.url);
+        var picture = this.props.user.socialaccount_set[0].extra_data.picture.data.url;
+      }else {
+        var picture = window.gvar.usravatar
+      }
       var appnav = (
         <ul className="appbar-nav__list">
           <li style={menuItems[0].style} className={menuItems[0].className} onTouchTap={menuItems[0].touch}>
@@ -106,7 +112,7 @@ var AppNavbar = React.createClass({
                  className={menuItems[1].className}
                  onTouchTap={this.props.togglenav}
                  id="navtoggle">
-              <Avatar style={{marginRight:5}} size={30} src={window.gvar.usravatar} />
+              <Avatar style={{marginRight:5}} size={30} src={picture} />
               {this.props.user.username}
               <NavigationExpandMoreIcon color="white"/>
               {
