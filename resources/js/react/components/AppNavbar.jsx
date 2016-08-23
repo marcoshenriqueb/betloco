@@ -85,6 +85,7 @@ var AppNavbar = React.createClass({
       )
     }
     if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+      var logo = window.gvar.logo;
       switch (window.location.pathname.split('/')[2]) {
         case 'perfil':
           menuItems[1].className = "active";
@@ -136,6 +137,7 @@ var AppNavbar = React.createClass({
         </ul>
       )
     }else {
+      var logo = window.gvar.logo2;
       var appnav = (
         <IconMenu
           iconButtonElement={<IconButton iconStyle={{fill:'rgb(255,255,255)'}}><IconMenuIcon /></IconButton>}
@@ -150,8 +152,8 @@ var AppNavbar = React.createClass({
     }
     return (
       <div className="appbar">
-        <IndexLink style={{color:'white'}} to='/app/'>
-          <h1 className="appbar-logo">Guroo</h1>
+        <IndexLink style={{paddingTop:4}} to='/app/'>
+          <img className="appbar-logo" src={logo} />
         </IndexLink>
         <div className="appbar-nav">
           {userData}
