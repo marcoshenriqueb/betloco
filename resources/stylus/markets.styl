@@ -11,9 +11,13 @@
   align-items: flex-end;
 
 .markets-container
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  column-count: 1;
+  column-gap: 5px;
+
+.marketcard
+  break-inside: avoid;
+  display: inline-block;
+  margin: 0 0 5px;
 
 .marketcard-subtitle, .marketcard-warning
   max-width: 100%;
@@ -26,10 +30,6 @@
 
 .marketcard-warning span
   font-size: 12px
-
-.marketcard
-  margin-bottom: 15px;
-  width: 100%
 
 .marketcard-predictions
   display: flex;
@@ -47,6 +47,11 @@
   h5, p
     margin-bottom: 0
 
+@media(min-width: tablet_break)
+  .markets-container
+    column-count: 2;
 @media(min-width: desktop_break)
   .container
     width: 80%
+  .markets-container
+    column-count: 3;

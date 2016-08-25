@@ -7,7 +7,8 @@ var _Event = React.createClass({
       <div className="container markets-container">
         {
           this.props.events.map((_event, id) => {
-            return <EventCard _event={_event} key={id} />
+            return <EventCard _event={_event}
+                              key={id} />
           })
         }
       </div>
