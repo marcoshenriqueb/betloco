@@ -11,18 +11,19 @@
   align-items: flex-end;
 
 .markets-container
-  column-count: 1;
-  column-gap: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
 
 .marketcard
-  break-inside: avoid;
-  display: inline-block;
-  margin: 0 0 5px;
+  width: 100%
+  margin-bottom: 20px
 
 .marketcard-subtitle, .marketcard-warning
   max-width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   span
     margin-right: 20px
     white-space: nowrap;
@@ -48,10 +49,18 @@
     margin-bottom: 0
 
 @media(min-width: tablet_break)
-  .markets-container
-    column-count: 2;
+  .marketcard
+    width: 49%;
+    margin-right: 2%
+    &:nth-child(2n)
+      margin-right: 0
 @media(min-width: desktop_break)
   .container
     width: 80%
-  .markets-container
-    column-count: 3;
+  .marketcard
+    width: 32%;
+    margin-right: 2%
+    &:nth-child(2n)
+      margin-right: 2%
+    &:nth-child(3n)
+      margin-right: 0

@@ -1,6 +1,5 @@
 import React from 'react';
-import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 import LinearProgress from 'material-ui/LinearProgress';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
@@ -16,14 +15,15 @@ var style = {
   },
   title: {
     cursor:'pointer',
-    fontSize: 24,
+    fontSize: 16,
+    minHeight: 60,
     fontWeight: '400',
-    lineHeight: '24px',
+    lineHeight: '22px',
     marginBottom: 10,
     fontFamily: window.gvar.titlefont
   },
   marketTitle: {
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: '400',
     fontFamily: window.gvar.titlefont
   },
@@ -33,10 +33,10 @@ var style = {
 }
 
 if (document.documentElement.clientWidth > window.gvar.breakpoint) {
-  style.title.lineHeight = '36px';
+  style.title.lineHeight = '28px';
   style.title.marginBottom = 0;
-  style.marketTitle.fontSize = 22;
-  style.title.fontSize = 28;
+  style.marketTitle.fontSize = 16;
+  style.title.fontSize = 20;
 }
 
 var EventCard = React.createClass({
@@ -79,19 +79,21 @@ var EventCard = React.createClass({
       }
       var textContent = this.props._event._source.markets.map((m, k)=> {
         var prob = m.lastCompleteOrder != null ? m.lastCompleteOrder.price / totalPrice * 100 : 0;
-        return (
-          <div key={k}>
-            <div className="marketcard-predictions__choices">
-              <IndexLink to={'/app/mercado/' + m.id + '/'}>
-                <h5 style={style.marketTitle}>{m.title_short}</h5>
-              </IndexLink>
-              <p>({prob.toFixed(1)}%)</p>
+        if (k < 2) {
+          return (
+            <div key={k}>
+              <div className="marketcard-predictions__choices">
+                <IndexLink to={'/app/mercado/' + m.id + '/'}>
+                  <h5 style={style.marketTitle}>{m.title_short}</h5>
+                </IndexLink>
+                <p>({prob.toFixed(1)}%)</p>
+              </div>
+              <LinearProgress style={style.linear}
+                              mode="determinate"
+                              value={prob} />
             </div>
-            <LinearProgress style={style.linear}
-                            mode="determinate"
-                            value={prob} />
-          </div>
-        )
+          )
+        }
       })
     }
     return (
@@ -102,7 +104,6 @@ var EventCard = React.createClass({
           onTouchTap={this.goToMarketDetail}
           subtitle={
             <div className="marketcard-subtitle">
-              <span>Mercado: {this.props._event._source.event_type}</span>
               <span>Volume: {this.props._event._source.volume} papéis negociados</span>
               <span>Encerramento: {moment(this.props._event._source.deadline).format("DD/MM/YYYY HH:mm")}</span>
             </div>
@@ -117,9 +118,6 @@ var EventCard = React.createClass({
             <span>*Última atualização de preço: {moment(this.props._event._source.updated_at).format("DD/MM/YYYY HH:mm")}</span>
           </div>
         </CardText>
-        <CardActions>
-          <RaisedButton style={style.btn} onTouchTap={this.goToMarketDetail} primary={true} label="Ver Mercado" />
-        </CardActions>
       </Card>
     );
   }
