@@ -36,7 +36,7 @@ var OrderRequest = React.createClass({
         <span className="order-request__subtitle">{custody} papéis em custódia</span>
         <br/>
         <br/>
-        <RaisedButton backgroundColor={window.gvar.successcolor} labelColor="white" disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
+        <RaisedButton primary={true} disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
         <span className="order-request__subtitle">Clique e deixe uma ordem caso acredite que o evento ocorrerá.</span>
         <br/>
         <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />

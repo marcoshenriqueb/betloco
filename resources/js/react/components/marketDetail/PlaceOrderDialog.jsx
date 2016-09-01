@@ -97,7 +97,6 @@ var PlaceOrderDialog = React.createClass({
                   label={bestPrice}
                   labelPosition="before"
                   style={{marginTop:20}}
-                  primary={true}
                   onTouchTap={this.props.addBestPrice}
                   disabled={!bestOfferButton}
                 />

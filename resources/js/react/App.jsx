@@ -8,7 +8,8 @@ import {grey700} from 'material-ui/styles/colors';
 const muiTheme = getMuiTheme({
   fontFamily: "'Open Sans', sans-serif",
   raisedButton: {
-    fontWeight: '700'
+    fontWeight: '700',
+    primaryColor: '#00BCD4'
   },
   flatButton: {
     fontWeight: '700'
