@@ -32,6 +32,7 @@
   "dependencies": {
     "material-ui": "^0.15.1",
     "react": "^15.1.0",
+    "react-disqus-thread": "^0.4.0",
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
     "react-tap-event-plugin": "^1.0.0",

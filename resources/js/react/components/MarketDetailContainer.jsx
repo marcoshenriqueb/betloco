@@ -2,6 +2,7 @@ import React from 'react';
 import req from 'reqwest';
 import MarketDetailCard from './marketDetail/MarketDetailCard.jsx';
 import Breadcrumb from './general/Breadcrumb.jsx';
+import ReactDisqusThread from 'react-disqus-thread';
 
 var MarketDetailContainer = React.createClass({
   getInitialState: function() {
@@ -147,7 +148,13 @@ var MarketDetailContainer = React.createClass({
                           market={this.state.market}
                           orders={this.state.orders}
                           onDeleteOrders={this.deleteOrders} />
+        <ReactDisqusThread
+                shortname="guroo"
+                identifier={'market|' + this.state.market.id}
+                title="Guroo"
+                url={window.gvar.base_url + "/app/mercado/" + this.state.market.id + "/"}/>
       </div>
+
     );
   }
 });
