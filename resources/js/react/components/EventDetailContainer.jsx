@@ -7,7 +7,7 @@ import Breadcrumb from './general/Breadcrumb.jsx';
 var style = {
   title:{
     marginTop:10,
-    fontSize: 22
+    fontSize: 20
   }
 }
 

@@ -21,10 +21,10 @@ var styles = {
   },
   choice: {
     fontSize: 16,
-    width: 120
+    width: 140
   },
   choiceHeader: {
-    width: 120
+    width: 140
   }
 }
 
@@ -34,12 +34,12 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   styles.choiceHeader.width = 250;
   styles.choice.fontSize = 18;
 }else {
-  styles.td.paddingRight = 10;
-  styles.td.paddingLeft = 10;
-  styles.choice.paddingLeft = 10;
-  styles.choice.paddingRight = 10;
-  styles.choiceHeader.paddingLeft = 10;
-  styles.choiceHeader.paddingRight = 10;
+  styles.td.paddingRight = 5;
+  styles.td.paddingLeft = 5;
+  styles.choice.paddingLeft = 5;
+  styles.choice.paddingRight = 5;
+  styles.choiceHeader.paddingLeft = 5;
+  styles.choiceHeader.paddingRight = 5;
 }
 
 var MultipleMarketTable = React.createClass({

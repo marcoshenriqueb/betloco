@@ -221,6 +221,9 @@ h3 {
   white-space: nowrap;
   color: rgba(0,0,0,0.541);
 }
+.marketcard-subtitle span {
+  font-size: 13px;
+}
 .marketcard-warning span {
   font-size: 12px;
 }
@@ -264,6 +267,9 @@ h3 {
   }
   .marketcard:nth-child(3n) {
     margin-right: 0;
+  }
+  .marketcard-subtitle span {
+    font-size: 14px;
   }
 }
 .order-request {

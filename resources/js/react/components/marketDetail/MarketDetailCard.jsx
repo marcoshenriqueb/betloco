@@ -16,12 +16,12 @@ var styles = {
   title:{
     marginTop:10,
     marginBottom:5,
-    fontSize: 24
+    fontSize: 20
   }
 }
 
 if (document.documentElement.clientWidth > window.gvar.breakpoint){
-  styles.title.fontSize = 32;
+  styles.title.fontSize = 28;
 }
 
 var MarketDetailCard = React.createClass({

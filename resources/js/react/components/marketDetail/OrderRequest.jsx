@@ -29,6 +29,12 @@ var OrderRequest = React.createClass({
     }else {
       var custody = 0;
     }
+    var bTip = "Caso acredite que sim.";
+    var sTip = "Caso acredite que não.";
+    if (document.documentElement.clientWidth > window.gvar.breakpoint){
+      bTip = "Clique e deixe uma ordem caso acredite que o evento ocorrerá.";
+      sTip = "Clique e deixe uma ordem caso acredite que o evento não ocorrerá.";
+    }
     return (
       <div className="order-request">
         <span className="order-request__subtitle">Último negócio: {(this.props.market.lastCompleteOrder!=null)?(this.props.market.lastCompleteOrder.price*100).toFixed(0):0}¢</span>
@@ -37,10 +43,10 @@ var OrderRequest = React.createClass({
         <br/>
         <br/>
         <RaisedButton primary={true} disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
-        <span className="order-request__subtitle">Clique e deixe uma ordem caso acredite que o evento ocorrerá.</span>
+        <span className="order-request__subtitle">{bTip}</span>
         <br/>
         <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
-        <span className="order-request__subtitle">Clique e deixe uma ordem caso acredite que o evento não ocorrerá.</span>
+        <span className="order-request__subtitle">{sTip}</span>
       </div>
     );
   }

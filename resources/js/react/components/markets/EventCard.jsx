@@ -15,15 +15,13 @@ var style = {
   },
   title: {
     cursor:'pointer',
-    fontSize: 16,
-    minHeight: 60,
+    fontSize: 18,
     fontWeight: '400',
     lineHeight: '22px',
-    marginBottom: 10,
     fontFamily: window.gvar.titlefont
   },
   marketTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '400',
     fontFamily: window.gvar.titlefont
   },
@@ -35,8 +33,9 @@ var style = {
 if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   style.title.lineHeight = '28px';
   style.title.marginBottom = 0;
-  style.marketTitle.fontSize = 16;
+  style.marketTitle.fontSize = 18;
   style.title.fontSize = 20;
+  style.title.minHeight = 60;
 }
 
 var EventCard = React.createClass({
