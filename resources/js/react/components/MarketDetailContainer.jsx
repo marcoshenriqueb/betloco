@@ -20,6 +20,7 @@ var MarketDetailContainer = React.createClass({
       that.setState({
         market: market
       });
+      that.openDisqus();
     });
   },
   getCustody: function(){
@@ -67,35 +68,35 @@ var MarketDetailContainer = React.createClass({
       }
     }
   },
+  openDisqus(){
+    var identifier = 'market|' + this.state.market.id;
+    var url = "http://www.guroo.bet/app/mercado/" + this.state.market.id + "/";
+    if (window.DISQUS != undefined) {
+      window.DISQUS.reset({
+        reload: true,
+        config: function () {
+          this.page.identifier = identifier;
+          this.page.url = url;
+        }
+      })
+    }else {
+      var disqus_config = function () {
+          this.page.url = url;
+          this.page.identifier = identifier;
+      };
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//guroo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    }
+  },
   componentDidMount: function() {
     this.getMarket();
     this.getCustody();
     this.connectToMarket();
     this.getOpenOrders();
-    setTimeout(()=>{
-      var identifier = 'market|' + this.state.market.id;
-      var url = "http://www.guroo.bet/app/mercado/" + this.state.market.id + "/";
-      if (window.DISQUS != undefined) {
-        window.DISQUS.reset({
-          reload: true,
-          config: function () {
-            this.page.identifier = identifier;
-            this.page.url = url;
-          }
-        })
-      }else {
-        var disqus_config = function () {
-            this.page.url = url;
-            this.page.identifier = identifier;
-        };
-        (function() {
-            var d = document, s = d.createElement('script');
-            s.src = '//guroo.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-      }
-    },1000);
   },
   openDialog: function(market, buy){
     this.setState({
@@ -171,6 +172,7 @@ var MarketDetailContainer = React.createClass({
                           market={this.state.market}
                           orders={this.state.orders}
                           onDeleteOrders={this.deleteOrders} />
+        <br/>
         <div id="disqus_thread"></div>
       </div>
     );

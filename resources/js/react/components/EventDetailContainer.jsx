@@ -28,7 +28,32 @@ var EventDetailContainer = React.createClass({
       that.setState({
         _event: _event
       });
+      that.openDisqus();
     });
+  },
+  openDisqus(){
+    var identifier = 'event|' + this.state._event.id;
+    var url = "http://www.guroo.bet/app/evento/" + this.state._event.id + "/";
+    if (window.DISQUS != undefined) {
+      window.DISQUS.reset({
+        reload: true,
+        config: function () {
+          this.page.identifier = identifier;
+          this.page.url = url;
+        }
+      })
+    }else {
+      var disqus_config = function () {
+          this.page.url = url;
+          this.page.identifier = identifier;
+      };
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//guroo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    }
   },
   componentDidMount: function() {
     this.getEvent();
@@ -72,6 +97,7 @@ var EventDetailContainer = React.createClass({
         <br/>
         <Detail market={this.state._event} />
         <br/>
+        <div id="disqus_thread"></div>
       </div>
     );
   }
