@@ -2,7 +2,6 @@ import React from 'react';
 import req from 'reqwest';
 import MarketDetailCard from './marketDetail/MarketDetailCard.jsx';
 import Breadcrumb from './general/Breadcrumb.jsx';
-import ReactDisqusThread from 'react-disqus-thread';
 
 var MarketDetailContainer = React.createClass({
   getInitialState: function() {
@@ -73,6 +72,30 @@ var MarketDetailContainer = React.createClass({
     this.getCustody();
     this.connectToMarket();
     this.getOpenOrders();
+    setTimeout(()=>{
+      var identifier = 'market|' + this.state.market.id;
+      var url = "http://www.guroo.bet/app/mercado/" + this.state.market.id + "/";
+      if (window.DISQUS != undefined) {
+        window.DISQUS.reset({
+          reload: true,
+          config: function () {
+            this.page.identifier = identifier;
+            this.page.url = url;
+          }
+        })
+      }else {
+        var disqus_config = function () {
+            this.page.url = url;
+            this.page.identifier = identifier;
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = '//guroo.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+      }
+    },1000);
   },
   openDialog: function(market, buy){
     this.setState({
@@ -148,13 +171,8 @@ var MarketDetailContainer = React.createClass({
                           market={this.state.market}
                           orders={this.state.orders}
                           onDeleteOrders={this.deleteOrders} />
-        <ReactDisqusThread
-                shortname="guroo"
-                identifier={'market|' + this.state.market.id}
-                title="Guroo"
-                url={window.gvar.base_url + "/app/mercado/" + this.state.market.id + "/"}/>
+        <div id="disqus_thread"></div>
       </div>
-
     );
   }
 });
