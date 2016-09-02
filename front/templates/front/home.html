@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
     <title>BetLoco</title>
+    {% load staticfiles %}
     <style media="screen">
       *{
         box-sizing: border-box;
@@ -16,25 +17,53 @@
         width: 100%;
       }
       body{
+        padding: 5% 10%;
         font-family: 'Open Sans', sans-serif;
+        color: white;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-start;
+        justify-content: space-between;
         flex-direction: column;
+        background-image: -ms-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
+        background-image: -moz-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
+        background-image: -o-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
+        background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #616161), color-stop(100, #3D3D3D));
+        background-image: -webkit-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
+        background-image: linear-gradient(to bottom right, #616161 0%, #3D3D3D 100%);
       }
       #guroo{
         margin-bottom: 15px;
-        font-size: 28px;
+        font-size: 42px;
         min-width: 570px;
-        min-height: 38px;
+        min-height: 57px;
+      }
+      .btn{
+        border: 1px solid white;
+        border-radius: 3px;
+        padding: 5px;
+        color: white;
+        text-decoration: none;
+      }
+      .btn:hover{
+        border-color: #f7a419;
+        color: #f7a419;
+      }
+      .logo{
+        height: 150px;
+      }
+      @media(min-width:768px){
+        
       }
     </style>
   </head>
   <body>
-    <div id="guroo"></div>
-    {% load socialaccount %}
-    {% providers_media_js %}
-    <a href="{% provider_login_url "facebook" method="js_sdk" %}">Entrar com Facebook</a>
+    <img class="logo" src="{% static 'front/img/guroo-branco-dividido-04.png' %}" alt="" />
+    <div>
+      <div id="guroo"></div>
+      {% load socialaccount %}
+      {% providers_media_js %}
+      <a class="btn" href="{% provider_login_url "facebook" method="js_sdk" %}">Entrar com Facebook</a>
+    </div>
     <script src="//cdn.jsdelivr.net/theaterjs/latest/theater.min.js" charset="utf-8"></script>
     <script>
       var theater = theaterJS({
@@ -68,7 +97,7 @@
         .addScene('guroo:Quem vai ser eleito prefeito do Rio?', 1200)
         .addScene('guroo:Qual vai ser o próximo presidente dos EUA?', 400)
         .addScene('guroo:Qual time vai ser campeão brasileiro?', 400)
-        .addScene('guroo:Dê o seu palpite', 1200, ', e ganhe com ele!!', 400)
+        .addScene('guroo:Dê o seu palpite', 1200, ', e ganhe com ele!!', 1800)
         .addScene(theater.replay)
     </script>
   </body>
