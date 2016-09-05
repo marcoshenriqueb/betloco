@@ -13,6 +13,9 @@ gulp.task('stylus', function () {
   gulp.src('./resources/stylus/app.styl')
     .pipe(stylus())
     .pipe(gulp.dest('./front/static/front/css'));
+  gulp.src('./resources/stylus/home/home.styl')
+    .pipe(stylus())
+    .pipe(gulp.dest('./front/static/front/css'));
 });
 
 gulp.task('script', function() {

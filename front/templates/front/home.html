@@ -6,91 +6,8 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
     {% load staticfiles %}
     <link rel="icon" href="{% static 'front/img/guroo-favicon2-02.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'front/css/home.css' %}" media="screen" title="no title" charset="utf-8">
     <title>Guroo</title>
-    <style media="screen">
-      *{
-        box-sizing: border-box;
-      }
-      html, body{
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-      }
-      body{
-        font-family: 'Open Sans', sans-serif;
-      }
-      .top-section{
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background-image: -ms-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
-        background-image: -moz-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
-        background-image: -o-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
-        background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #616161), color-stop(100, #3D3D3D));
-        background-image: -webkit-linear-gradient(top left, #616161 0%, #3D3D3D 100%);
-        background-image: linear-gradient(to bottom right, #616161 0%, #3D3D3D 100%);
-        height: 100%;
-        width: 100%;
-      }
-      .top-section__center{
-        display: flex;
-        margin:100px 0;
-      }
-      #guroo{
-        font-size: 42px;
-        min-height: 114px;
-        width: 500px;
-      }
-      .btn{
-        border: 1px solid white;
-        border-radius: 3px;
-        padding: 5px;
-        color: white;
-        text-decoration: none;
-      }
-      .btn:hover{
-        border-color: #f7a419;
-        color: #f7a419;
-      }
-      header{
-        position: absolute;
-        top: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        font-size: 18px;
-      }
-      header ul{
-        display: flex;
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-      }
-      header a{
-        color:white;
-        text-decoration: none;
-        padding: 8px 60px;
-        height: 100%;
-        border-right: 1px dashed white;
-        transition: all 300ms ease;
-      }
-      header a:hover{
-        background-color: white;
-        color: #616161;
-      }
-      header a:first-child{
-        border-left: 1px dashed white;
-      }
-      .logo{
-        height: 114px;
-        margin-top: 4px;
-        margin-right: 100px;
-      }
-    </style>
   </head>
   <body>
     <header>
@@ -98,7 +15,7 @@
         <a href="#"><li>O quê</li></a>
         <a href="#"><li>Como</li></a>
         <a href="#"><li>Por quê</li></a>
-        <a href="#"><li>Dúvidas</li></a>
+        <a href="#"><li>Contato</li></a>
       </ul>
     </header>
     <div class="top-section">
@@ -107,15 +24,15 @@
         	   viewBox="0 0 342.851 230.033" enable-background="new 0 0 342.851 230.033"
         	   xml:space="preserve">
           <g>
-          	<path fill="white" d="M61.001,0c12.988,0,27.202,5.409,37.721,14.528c1.386,1.085,1.542,2.94,0.3,4.167L86.82,31.684
+          	<path fill="#616161" d="M61.001,0c12.988,0,27.202,5.409,37.721,14.528c1.386,1.085,1.542,2.94,0.3,4.167L86.82,31.684
           		c-1.242,1.084-2.939,1.084-4.183,0.156c-5.865-5.409-12.672-7.422-20.237-7.422c-16.855,0-30.455,14.215-30.455,31.229
           		c0,16.84,13.757,30.756,30.611,30.756c4.482,0,9.106-0.629,13.745-2.471v-8.976h-9.735c-1.697,0-2.939-1.228-2.939-2.769V56.873
           		c0-1.697,1.242-2.926,2.939-2.926h31.071c1.54,0,2.783,1.385,2.783,2.926l0.157,41.588c0,0.771-0.628,1.998-1.243,2.469
           		c0,0-15.912,10.048-38.334,10.048c-30.755,0-55.488-24.419-55.488-55.331C5.513,24.733,30.246,0,61.001,0z"/>
-          	<path fill="white" d="M112.296,4.324c0-1.541,1.397-2.94,2.938-2.94h19.01c1.697,0,2.941,1.399,2.941,2.94v62.597
+          	<path fill="#616161" d="M112.296,4.324c0-1.541,1.397-2.94,2.938-2.94h19.01c1.697,0,2.941,1.399,2.941,2.94v62.597
           		c0,10.818,8.035,19.481,19.01,19.481c11.119,0,19.311-8.663,19.311-19.481V4.324c0-1.541,1.24-2.94,2.94-2.94h19.01
           		c1.556,0,2.939,1.399,2.939,2.94v63.837c0,23.493-19.78,42.974-44.2,42.974c-24.262,0-43.899-19.48-43.899-42.974V4.324z"/>
-          	<path fill="white" d="M11.623,123.237c0-1.556,1.239-2.94,2.938-2.94h46.212c18.554,0,33.698,14.986,33.698,33.383
+          	<path fill="#616161" d="M11.623,123.237c0-1.556,1.239-2.94,2.938-2.94h46.212c18.554,0,33.698,14.986,33.698,33.383
           		c0,14.215-9.435,25.66-22.879,31.068l21.18,39.262c1.068,1.999,0,4.482-2.626,4.482H69.58c-1.229,0-2.156-0.771-2.471-1.398
           		l-20.551-40.96H35.883v39.419c0,1.541-1.384,2.939-2.926,2.939H14.561c-1.698,0-2.938-1.398-2.938-2.939V123.237z M58.76,166.509
           		c6.339,0,11.748-5.88,11.748-12.358c0-6.493-5.409-11.746-11.748-11.746H35.883v24.104H58.76z"/>
@@ -126,11 +43,11 @@
           		c-16.839,0-30.754-13.899-30.754-30.755c0-16.998,13.915-31.07,30.754-31.07c16.999,0,30.914,14.072,30.914,31.07
           		C187.607,191.4,173.692,205.3,156.693,205.3z M243.939,205.3c-16.842,0-30.756-13.899-30.756-30.755
           		c0-16.998,13.914-31.07,30.756-31.07c17.012,0,30.912,14.072,30.912,31.07C274.852,191.4,260.951,205.3,243.939,205.3z"/>
-          	<path class="logo_eye" fill="white" d="M170.523,158.289c1.172,1.556,1.869,3.468,1.869,5.565c0,5.14-4.165,9.306-9.318,9.306
+          	<path class="logo_eye" fill="#616161" d="M170.523,158.289c1.172,1.556,1.869,3.468,1.869,5.565c0,5.14-4.165,9.306-9.318,9.306
           		c-5.137,0-9.319-4.166-9.319-9.306c0-5.151,4.183-9.319,9.319-9.319c0.527,0,1.015,0.058,1.514,0.143
           		c-2.441-0.97-5.096-1.525-7.895-1.525c-11.729,0-21.221,9.504-21.221,21.221c0,11.732,9.491,21.238,21.221,21.238
           		c11.719,0,21.225-9.506,21.225-21.238C177.918,167.936,175.047,162.186,170.523,158.289z"/>
-          	<path class="logo_eye" fill="white" d="M257.497,158.289c1.157,1.556,1.869,3.468,1.869,5.565c0,5.14-4.166,9.306-9.319,9.306
+          	<path class="logo_eye" fill="#616161" d="M257.497,158.289c1.157,1.556,1.869,3.468,1.869,5.565c0,5.14-4.166,9.306-9.319,9.306
           		c-5.151,0-9.318-4.166-9.318-9.306c0-5.151,4.167-9.319,9.318-9.319c0.516,0,1.016,0.058,1.499,0.143
           		c-2.44-0.97-5.095-1.525-7.878-1.525c-11.73,0-21.236,9.504-21.236,21.221c0,11.732,9.506,21.238,21.236,21.238
           		c11.717,0,21.224-9.506,21.224-21.238C264.892,167.936,262.021,162.186,257.497,158.289z"/>

@@ -1,0 +1,79 @@
+*{
+  box-sizing: border-box;
+}
+html, body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+body{
+  font-family: 'Open Sans', sans-serif;
+}
+.top-section{
+  color: #616161;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-image: url("../img/ecailles.png");
+  background-repeat: repeat;
+  height: 100%;
+  width: 100%;
+}
+.top-section__center{
+  display: flex;
+  margin:100px 0;
+}
+#guroo{
+  font-size: 42px;
+  font-weight: 300;
+  min-height: 114px;
+  width: 500px;
+}
+.btn{
+  border: 1px solid #616161;
+  border-radius: 3px;
+  padding: 5px;
+  color: #616161;
+  text-decoration: none;
+}
+.btn:hover{
+  border-color: #f7a419;
+  color: #f7a419;
+}
+header{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 18px;
+}
+header ul{
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+header a{
+  color:#616161;
+  text-decoration: none;
+  padding: 8px 60px;
+  height: 100%;
+  border-right: 1px dashed #616161;
+  transition: all 300ms ease;
+}
+header a:hover{
+  background-color: #616161;
+  color: white;
+}
+header a:first-child{
+  border-left: 1px dashed #616161;
+}
+.logo{
+  height: 200px;
+  margin-top: 4px;
+  margin-right: 100px;
+}
