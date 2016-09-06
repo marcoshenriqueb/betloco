@@ -7,7 +7,8 @@
   box-sizing: border-box;
 }
 body {
-  background-color: #fafafa;
+  background-image: url("../img/ecailles.png");
+  background-repeat: repeat;
   font-family: 'Open Sans', sans-serif;
 }
 h1,
