@@ -193,7 +193,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR +     '/staticfiles/'
+STATIC_ROOT = BASE_DIR + '/staticfiles/'
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -208,6 +208,6 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
-EMAIL_HOST_USER = 'postmaster@sandbox36e0be12d3de4e0abb9a70914d6ee5de.mailgun.org'
-EMAIL_HOST_PASSWORD = '1f79ad6d5d12b23bf75b5c80b7ba3bfc'
+EMAIL_HOST_USER = 'postmaster@guroo.bet'
+EMAIL_HOST_PASSWORD = '22d4b03e29a705329a3f053e0cf123ab'
 EMAIL_PORT = 587

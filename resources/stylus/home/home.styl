@@ -1,37 +1,7 @@
 @import "./var.styl"
 @import "./base.styl"
+@import "./header.styl"
 
-header{
-  position: absolute;
-  top: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 18px;
-  z-index: 1000
-}
-header ul{
-  display: flex;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-header a{
-  color:topsectioncolor;
-  text-decoration: none;
-  padding: 8px 60px;
-  height: 100%;
-  border-right: 1px dashed topsectioncolor;
-  transition: all 600ms ease;
-}
-header a:hover{
-  background-color: secondarycolor;
-  color: white;
-}
-header a:first-child{
-  border-left: 1px dashed topsectioncolor;
-}
 .top-section{
   color: topsectioncolor;
   display: flex;
