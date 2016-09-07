@@ -19,6 +19,7 @@ header {
   justify-content: space-around;
   align-items: center;
   font-size: 18px;
+  z-index: 1000;
 }
 header ul {
   display: flex;
@@ -27,22 +28,22 @@ header ul {
   margin: 0;
 }
 header a {
-  color: #616161;
+  color: #303030;
   text-decoration: none;
   padding: 8px 60px;
   height: 100%;
-  border-right: 1px dashed #616161;
-  transition: all 800ms ease;
+  border-right: 1px dashed #303030;
+  transition: all 600ms ease;
 }
 header a:hover {
-  background-color: #616161;
+  background-color: #f9a51a;
   color: #fff;
 }
 header a:first-child {
-  border-left: 1px dashed #616161;
+  border-left: 1px dashed #303030;
 }
 .top-section {
-  color: #616161;
+  color: #303030;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -50,16 +51,25 @@ header a:first-child {
   background-repeat: repeat;
   height: 100%;
   width: 100%;
+  position: relative;
 }
-.top-section__center {
-  display: flex;
-  margin: 200px 0 40px;
+.top-section__drawings {
+  position: absolute;
+  bottom: 5%;
+  height: 50%;
+}
+.top-section__drawings.left {
+  left: 2%;
+}
+.top-section__drawings.right {
+  right: 2%;
 }
 #guroo {
   font-size: 42px;
   font-weight: 300;
   min-height: 114px;
-  width: 500px;
+  margin-top: 12%;
+  width: 830px;
 }
 .btn {
   border: 1px solid #616161;
@@ -69,11 +79,14 @@ header a:first-child {
   text-decoration: none;
 }
 .btn:hover {
-  border-color: #f7a419;
-  color: #f7a419;
+  border-color: #f9a51a;
+  color: #f9a51a;
 }
 .logo {
   height: 200px;
-  margin-top: 4px;
-  margin-right: 100px;
+  margin-bottom: 50px;
+  margin-left: 25px;
+}
+.logo-color {
+  fill: #616161;
 }
