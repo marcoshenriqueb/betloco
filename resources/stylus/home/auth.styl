@@ -1,0 +1,52 @@
+@import "./var.styl"
+@import "./base.styl"
+
+formlabelcolor = #616161
+formcolor = #00BCD4
+
+body
+  background-image: url("../img/ecailles.png");
+  background-repeat: repeat;
+.auth-body
+  padding: 3% 0
+.alert-error
+  color warningcolor
+.logo
+  height: 40px
+  margin-bottom: 10px
+.row .col.checkbox-field
+  min-height: 50px
+  margin-top: 0
+.form-btn
+  margin-bottom: 15px
+  width: 100%
+.fb-btn
+  margin 15px 0
+  width: 100%
+/* label color */
+.input-field label {
+ color: formlabelcolor;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label, .input-field input[type=password]:focus + label {
+ color: formcolor;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus, .input-field input[type=password]:focus {
+ border-bottom: 1px solid formcolor;
+ box-shadow: 0 1px 0 0 formcolor;
+}
+/* valid color */
+.input-field input[type=text].valid, .input-field input[type=password].valid {
+ border-bottom: 1px solid formcolor;
+ box-shadow: 0 1px 0 0 formcolor;
+}
+/* invalid color */
+.input-field input[type=text].invalid, .input-field input[type=password].invalid {
+ border-bottom: 1px solid formcolor;
+ box-shadow: 0 1px 0 0 formcolor;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+ color: formcolor;
+}

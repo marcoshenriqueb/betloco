@@ -1,19 +1,6 @@
-primarycolor = #616161
-secondarycolor = #F9A51A
-topsectioncolor = #303030
+@import "./var.styl"
+@import "./base.styl"
 
-*{
-  box-sizing: border-box;
-}
-html, body{
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-body{
-  font-family: 'Open Sans', sans-serif;
-}
 header{
   position: absolute;
   top: 0;
@@ -67,20 +54,10 @@ header a:first-child{
 #guroo{
   font-size: 42px;
   font-weight: 300;
-  min-height: 114px;
+  min-height: 63px
+  margin-bottom: 5%
   margin-top: 12%;
   width: 830px
-}
-.btn{
-  border: 1px solid primarycolor;
-  border-radius: 3px;
-  padding: 5px;
-  color: primarycolor;
-  text-decoration: none;
-}
-.btn:hover{
-  border-color: secondarycolor;
-  color: secondarycolor;
 }
 .logo{
   height: 200px;

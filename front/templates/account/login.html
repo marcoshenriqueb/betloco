@@ -1,0 +1,78 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}Guroo - {% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col s12 offset-m4 m4">
+    <div class="card white">
+      <div class="card-content">
+        <div class="col s12">
+          {% load staticfiles %}
+          <img src="{% static 'front/img/olholharanja-junto-07.png' %}" class="logo" />
+        </div>
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+          {% csrf_token %}
+          <div class="input-field col s12">
+            <input name="login" id="id_login" type="text" maxlength="30">
+            <label for="id_login">Nome de usuário</label>
+            {% if form.errors %}
+                {% for error in form.login.errors %}
+                    <div class="alert alert-error">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+          </div>
+          <div class="input-field col s12">
+            <input name="password" id="id_password" type="password" maxlength="30">
+            <label for="id_password">Senha</label>
+            {% if form.errors %}
+                {% for error in form.password.errors %}
+                    <div class="alert alert-error">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+          </div>
+          <div class="input-field checkbox-field col s12">
+            <input type="checkbox" name="remember" id="id_remember" />
+            <label for="id_remember">Lembrar de mim</label>
+          </div>
+          {% if redirect_field_value %}
+          <input type="hidden" class="input-field" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+          <div class="col s12">
+            <button class="form-btn btn cyan" type="submit">{% trans "Entrar" %}</button>
+          </div>
+          <div class="col s12">
+            <a href="{% url 'account_reset_password' %}">{% trans "Esqueceu a senha?" %}</a>
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-error">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+          </div>
+        </form>
+        <div class="col s12">
+          {% load socialaccount %}
+          {% providers_media_js %}
+          <a class="btn fb-btn blue darken-4" href="{% provider_login_url "facebook" method="js_sdk" %}">Entrar com Facebook</a>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <p>Caso não tenha uma conta ainda, <a href="{{ signup_url }}">CADASTRE-SE</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

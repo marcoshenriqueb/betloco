@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load staticfiles %}
+    <title>{% block head_title %}{% endblock %}</title>
+    <link rel="icon" href="{% static 'front/img/guroo-favicon2-02.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'front/css/auth.css' %}" media="screen" title="no title" charset="utf-8">
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body class="auth-body">
+    {% block body %}
+
+    {% if messages %}
+    <div>
+      <strong>Messages:</strong>
+      <ul>
+	{% for message in messages %}
+	<li>{{message}}</li>
+	{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div>
+      <!-- <ul>
+      	{% if user.is_authenticated %}
+      	<li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+      	<li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+      	{% else %}
+      	<li><a href="{% url 'account_login' %}">Sign In</a></li>
+      	<li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+      	{% endif %}
+      </ul> -->
+    </div>
+    {% block content %}
+    {% endblock %}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  </body>
+</html>

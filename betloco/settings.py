@@ -153,7 +153,9 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = '/app/'
 
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
        {'METHOD': 'oauth2',
@@ -176,7 +178,7 @@ SOCIALACCOUNT_PROVIDERS = \
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
@@ -209,6 +211,3 @@ EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = 'postmaster@sandbox36e0be12d3de4e0abb9a70914d6ee5de.mailgun.org'
 EMAIL_HOST_PASSWORD = '1f79ad6d5d12b23bf75b5c80b7ba3bfc'
 EMAIL_PORT = 587
-
-QUANDL_API_KEY = '8hQFbgkzT5WsDCryBVYo'
-QUANDL_API_URL = 'https://www.quandl.com/api/v3/datasets/'
