@@ -211,3 +211,5 @@ EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = 'postmaster@guroo.bet'
 EMAIL_HOST_PASSWORD = '22d4b03e29a705329a3f053e0cf123ab'
 EMAIL_PORT = 587
+
+DEFAULT_FROM_EMAIL = "confirmacao@guroo.bet"
