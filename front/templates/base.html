@@ -11,31 +11,29 @@
   </head>
   <body class="auth-body">
     {% block body %}
-
+    <div class="auth-message">
     {% if messages %}
-    <div>
-      <strong>Messages:</strong>
-      <ul>
-	{% for message in messages %}
-	<li>{{message}}</li>
-	{% endfor %}
-      </ul>
-    </div>
+    	{% for message in messages %}
+      	<p>{{message}}</p>
+    	{% endfor %}
     {% endif %}
+    </div>
 
-    <div>
-      <!-- <ul>
+    <div class="top-menu">
+      <ul class="collection">
       	{% if user.is_authenticated %}
-      	<li><a href="{% url 'account_email' %}">Change E-mail</a></li>
-      	<li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+      	<li class="collection-item"><a href="{% url 'account_email' %}">Trocar email</a></li>
+      	<li class="collection-item"><a href="{% url 'account_logout' %}">Sair</a></li>
       	{% else %}
-      	<li><a href="{% url 'account_login' %}">Sign In</a></li>
-      	<li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+      	<li class="collection-item"><a href="{% url 'account_login' %}">Login</a></li>
+      	<li class="collection-item"><a href="{% url 'account_signup' %}">Cadastro</a></li>
       	{% endif %}
-      </ul> -->
+      </ul>
     </div>
     {% block content %}
     {% endblock %}
+
+
     {% endblock %}
     {% block extra_body %}
     {% endblock %}

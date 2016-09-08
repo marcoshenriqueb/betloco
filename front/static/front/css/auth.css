@@ -11,12 +11,66 @@ body {
 body {
   font-family: 'Open Sans', sans-serif;
 }
+header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 18px;
+  z-index: 1000;
+}
+header ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+header a {
+  color: #303030;
+  text-decoration: none;
+  padding: 8px 60px;
+  height: 100%;
+  border-right: 1px dashed #303030;
+  transition: all 600ms ease;
+}
+header a:hover {
+  background-color: #f9a51a;
+  color: #fff;
+}
+header a:first-child {
+  border-left: 1px dashed #303030;
+}
 body {
   background-image: url("../img/ecailles.png");
   background-repeat: repeat;
 }
-.auth-body {
-  padding: 3% 0;
+.top-menu {
+  position: absolute;
+}
+.top-menu .collection-item a {
+  color: #616161;
+}
+.top-menu .collection-item a:hover {
+  color: #00bcd4;
+}
+.auth-card {
+  margin: 4rem 0;
+}
+.auth-message {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.auth-message p {
+  color: #fff;
+  background-color: #616161;
+  padding: 5px 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 }
 .alert-error {
   color: #ff4081;
