@@ -22,6 +22,7 @@
     <div class="top-menu">
       <ul class="collection">
       	{% if user.is_authenticated %}
+        <li class="collection-item"><a href="/app/">Voltar para o app</a></li>
       	<li class="collection-item"><a href="{% url 'account_email' %}">Trocar email</a></li>
       	<li class="collection-item"><a href="{% url 'account_logout' %}">Sair</a></li>
       	{% else %}
