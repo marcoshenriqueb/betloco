@@ -23,6 +23,12 @@ var AppNavbar = React.createClass({
   _logout: function(){
     window.location = "/accounts/logout/";
   },
+  _login: function(){
+    window.location = "/accounts/login/?next=" + window.location.pathname;
+  },
+  _register: function(){
+    window.location = "/accounts/signup/?next=" + window.location.pathname;
+  },
   _profileRoute: function(){
     browserHistory.push('/app/perfil/minhas-posicoes/');
   },
@@ -76,12 +82,12 @@ var AppNavbar = React.createClass({
         {
           style:styles.menuItem,
           text: "Cadastro",
-          touch: null
+          touch: this._register
         },
         {
           style:styles.menuItem,
           text: "Entrar",
-          touch: null
+          touch: this._login
         }
       )
     }
