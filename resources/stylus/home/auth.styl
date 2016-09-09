@@ -15,9 +15,9 @@ body
     &:hover
       color formcolor
 .auth-card
-  margin: 4rem 0
+  margin: 1rem 0
 .auth-message
-  position: absolute;
+  position: relative;
   top: 0
   display: flex;
   justify-content: center;
@@ -69,3 +69,8 @@ body
 .input-field .prefix.active {
  color: formcolor;
 }
+@media(min-width:tabletbreak)
+  .auth-message
+    position: absolute;
+  .auth-card
+    margin: 4rem 0

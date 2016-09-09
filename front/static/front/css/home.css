@@ -21,6 +21,9 @@ header {
   font-size: 18px;
   z-index: 1000;
 }
+header.auth {
+  position: relative;
+}
 .header-nav {
   display: flex;
   list-style-type: none;

@@ -4,89 +4,77 @@
 
 {% block head_title %}Guroo - {% trans "Signup" %}{% endblock %}
 
+{% block cardclass %}col s12 offset-m4 m4{% endblock %}
 {% block content %}
+<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  <div class="input-field col s12">
+    <input name="username" id="id_username" type="text" maxlength="30">
+    <label for="id_username">Nome de usuário</label>
+    {% if form.errors %}
+        {% for error in form.username.errors %}
+            <div class="alert alert-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+  <div class="input-field col s12">
+    <input name="email" id="id_email" type="text" maxlength="30">
+    <label for="id_email">Email</label>
+    {% if form.errors %}
+        {% for error in form.email.errors %}
+            <div class="alert alert-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+  <div class="input-field col s12">
+    <input name="password1" id="id_password1" type="password" maxlength="30">
+    <label for="id_password1">Senha</label>
+    {% if form.errors %}
+        {% for error in form.password1.errors %}
+            <div class="alert alert-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+  <div class="input-field col s12">
+    <input name="password2" id="id_password2" type="password" maxlength="30">
+    <input type="hidden" name="confirmation_key" id="id_confirmation_key">
+    <label for="id_password2">Confirme a senha</label>
+    {% if form.errors %}
+        {% for error in form.password2.errors %}
+            <div class="alert alert-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <div class="col s12">
+    <button class="form-btn btn cyan" type="submit">{% trans "Sign Up" %}</button>
+    {% if form.errors %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+</form>
+<div class="col s12">
+  {% load socialaccount %}
+  {% providers_media_js %}
+  <a class="btn fb-btn blue darken-4" href="{% provider_login_url "facebook" method="js_sdk" %}">Entrar com Facebook</a>
+</div>
 <div class="row">
-  <div class="col s12 offset-m4 m4">
-    <div class="auth-card card white">
-      <div class="card-content">
-        <div class="col s12">
-          {% load staticfiles %}
-          <img src="{% static 'front/img/olholharanja-junto-07.png' %}" class="logo" />
-        </div>
-        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-          {% csrf_token %}
-          <div class="input-field col s12">
-            <input name="username" id="id_username" type="text" maxlength="30">
-            <label for="id_username">Nome de usuário</label>
-            {% if form.errors %}
-                {% for error in form.username.errors %}
-                    <div class="alert alert-error">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endif %}
-          </div>
-          <div class="input-field col s12">
-            <input name="email" id="id_email" type="text" maxlength="30">
-            <label for="id_email">Email</label>
-            {% if form.errors %}
-                {% for error in form.email.errors %}
-                    <div class="alert alert-error">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endif %}
-          </div>
-          <div class="input-field col s12">
-            <input name="password1" id="id_password1" type="password" maxlength="30">
-            <label for="id_password1">Senha</label>
-            {% if form.errors %}
-                {% for error in form.password1.errors %}
-                    <div class="alert alert-error">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endif %}
-          </div>
-          <div class="input-field col s12">
-            <input name="password2" id="id_password2" type="password" maxlength="30">
-            <input type="hidden" name="confirmation_key" id="id_confirmation_key">
-            <label for="id_password2">Confirme a senha</label>
-            {% if form.errors %}
-                {% for error in form.password2.errors %}
-                    <div class="alert alert-error">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endif %}
-          </div>
-          {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-          {% endif %}
-          <div class="col s12">
-            <button class="form-btn btn cyan" type="submit">{% trans "Sign Up" %}</button>
-            {% if form.errors %}
-                {% for error in form.non_field_errors %}
-                    <div class="alert alert-error">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endif %}
-          </div>
-        </form>
-        <div class="col s12">
-          {% load socialaccount %}
-          {% providers_media_js %}
-          <a class="btn fb-btn blue darken-4" href="{% provider_login_url "facebook" method="js_sdk" %}">Entrar com Facebook</a>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <p>Já tem uma conta, <a href="{{ login_url }}">ENTRE AQUI</a>.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="col s12">
+    <p>Já tem uma conta, <a href="{{ login_url }}">ENTRE AQUI</a>.</p>
   </div>
 </div>
-
 {% endblock %}

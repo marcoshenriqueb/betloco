@@ -4,23 +4,14 @@
 
 {% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
 
+{% block cardclass %}col s12 offset-m3 m6{% endblock %}
 {% block content %}
+<div class="col s12">
+  <h4>{% trans "Social Network Login Failure" %}</h4>
+</div>
 <div class="row">
-  <div class="col s12 offset-m3 m6">
-    <div class="auth-card card white">
-      <div class="card-content">
-        <div class="col s12">
-          {% load staticfiles %}
-          <img src="{% static 'front/img/olholharanja-junto-07.png' %}" class="logo" />
-          <h4>{% trans "Social Network Login Failure" %}</h4>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="col s12">
+    <p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
   </div>
 </div>
 {% endblock %}
