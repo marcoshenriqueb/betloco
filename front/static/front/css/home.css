@@ -16,31 +16,45 @@ header {
   top: 0;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   font-size: 18px;
   z-index: 1000;
 }
-header ul {
+.header-nav {
   display: flex;
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-header a {
+.header-nav__item {
   color: #303030;
   text-decoration: none;
-  padding: 8px 60px;
+  padding: 8px 15px;
   height: 100%;
   border-right: 1px dashed #303030;
   transition: all 600ms ease;
+  position: relative;
 }
-header a:hover {
+.header-nav__item:first-child {
+  border-left: 1px dashed #303030;
+}
+.header-nav__item:hover {
   background-color: #f9a51a;
   color: #fff;
 }
-header a:first-child {
-  border-left: 1px dashed #303030;
+.header-nav__item .dropdown {
+  position: absolute;
+}
+@media (min-width: 638px) {
+  .header-nav__item {
+    padding: 8px 30px;
+  }
+}
+@media (min-width: 992px) {
+  .header-nav__item {
+    padding: 8px 60px;
+  }
 }
 .top-section {
   color: #303030;
@@ -65,18 +79,30 @@ header a:first-child {
   right: 2%;
 }
 #guroo {
-  font-size: 42px;
+  font-size: 25px;
   font-weight: 300;
-  min-height: 63px;
-  margin-bottom: 5%;
-  margin-top: 12%;
-  width: 830px;
+  min-height: 74px;
+  margin-bottom: 10%;
+  width: 90%;
+  margin-top: 40%;
 }
 .logo {
-  height: 200px;
+  height: 120px;
   margin-bottom: 50px;
-  margin-left: 25px;
+  margin-left: 15px;
 }
 .logo-color {
   fill: #616161;
+}
+@media (min-width: 600px) {
+  #guroo {
+    font-size: 42px;
+    width: 830px;
+    margin-top: 12%;
+    margin-bottom: 5%;
+  }
+  .logo {
+    height: 200px;
+    margin-left: 25px;
+  }
 }

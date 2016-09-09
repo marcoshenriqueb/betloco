@@ -16,31 +16,45 @@ header {
   top: 0;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   font-size: 18px;
   z-index: 1000;
 }
-header ul {
+.header-nav {
   display: flex;
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-header a {
+.header-nav__item {
   color: #303030;
   text-decoration: none;
-  padding: 8px 60px;
+  padding: 8px 15px;
   height: 100%;
   border-right: 1px dashed #303030;
   transition: all 600ms ease;
+  position: relative;
 }
-header a:hover {
+.header-nav__item:first-child {
+  border-left: 1px dashed #303030;
+}
+.header-nav__item:hover {
   background-color: #f9a51a;
   color: #fff;
 }
-header a:first-child {
-  border-left: 1px dashed #303030;
+.header-nav__item .dropdown {
+  position: absolute;
+}
+@media (min-width: 638px) {
+  .header-nav__item {
+    padding: 8px 30px;
+  }
+}
+@media (min-width: 992px) {
+  .header-nav__item {
+    padding: 8px 60px;
+  }
 }
 body {
   background-image: url("../img/ecailles.png");

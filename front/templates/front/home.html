@@ -12,12 +12,13 @@
   </head>
   <body>
     <header>
-      <ul>
-        <a href="#"><li>Home</li></a>
-        <a href="#"><li>O quê</li></a>
-        <a href="#"><li>Como</li></a>
-        <a href="#"><li>Por quê</li></a>
-        <a href="#"><li>Contato</li></a>
+      <ul class="header-nav">
+        <a href="#" class="header-nav__item" ><li>Home</li></a>
+        <a href="#" class="hide-on-med-and-up dropdown header-nav__item"><li>Dúvidas</li></a>
+        <a href="#" class="hide-on-small-only header-nav__item"><li>O quê</li></a>
+        <a href="#" class="hide-on-small-only header-nav__item"><li>Como</li></a>
+        <a href="#" class="hide-on-small-only header-nav__item"><li>Por quê</li></a>
+        <a href="#" class="header-nav__item"><li>Suporte</li></a>
       </ul>
     </header>
     <div class="top-section">
@@ -57,10 +58,10 @@
       </svg>
       <a class="btn cyan" href="/accounts/login/">Entrar</a>
       <p>
-        Não está convencido? Clique <a href="/app/">aqui</a> e navegue pelo App!
+        Não? Clique <a href="/app/">aqui</a> e navegue pelo App!
       </p>
-      <img src="{% static 'front/img/guroo-group1.svg' %}" class="top-section__drawings left" alt="" />
-      <img src="{% static 'front/img/guroo-group2.svg' %}" class="top-section__drawings right" alt="" />
+      <img src="{% static 'front/img/guroo-group1.svg' %}" class="top-section__drawings left hide-on-small-only" alt="" />
+      <img src="{% static 'front/img/guroo-group2.svg' %}" class="top-section__drawings right hide-on-small-only" alt="" />
 
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
