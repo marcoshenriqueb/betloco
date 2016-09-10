@@ -4,7 +4,7 @@
 {% load account socialaccount %}
 
 {% block head_title %}Guroo - {% trans "Sign In" %}{% endblock %}
-{% block cardclass %}col s12 offset-m4 m4{% endblock %}
+{% block cardclass %}col s12 offset-m3 m6 offset-l4 l4{% endblock %}
 {% block content %}
 <form class="login" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}

@@ -109,3 +109,13 @@ header.auth {
     margin-left: 25px;
   }
 }
+@media (min-width: 600px) and (orientation: portrait) {
+  #guroo {
+    margin-top: 25%;
+    width: 610px;
+    min-height: 126px;
+  }
+  .top-section__drawings {
+    height: 35%;
+  }
+}
