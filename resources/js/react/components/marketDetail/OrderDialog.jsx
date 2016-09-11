@@ -138,7 +138,8 @@ var OrderDialog = React.createClass({
         width: "100%"
       },
       body: {
-        padding: "0px 10px 10px 10px"
+        padding: "0px 10px 10px 10px",
+        minHeight: 250
       }
     }
     var autoScroll = true;
