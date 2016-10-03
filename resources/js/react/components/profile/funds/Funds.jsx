@@ -1,5 +1,5 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
 import { IndexLink } from 'react-router';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
@@ -36,26 +36,13 @@ if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
   style.firstColumn.width = 700;
 }
 
-var Funds = React.createClass({
-  getInitialState: function() {
-    return {
-      funds: false
-    };
-  },
-  getFunds: function(){
-    var that = this;
-    req('/api/transactions/balance/?format=json').then(function(response){
-      var funds = response;
-      that.setState({
-        funds: funds
-      });
-    });
-  },
-  componentDidMount: function() {
-    this.getFunds();
-  },
-  render: function(){
-    if (this.state.funds === false) {
+class Funds extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render(){
+    if (this.props.funds === false) {
       return (
         <div>
           <h2 style={style.title}>Fundos</h2>
@@ -84,21 +71,21 @@ var Funds = React.createClass({
                                   style={style.firstColumn}>
                     Saldo disponível (R$)
                   </TableRowColumn>
-                  <TableRowColumn style={style.secondColumn}>{this.state.funds.total}</TableRowColumn>
+                  <TableRowColumn style={style.secondColumn}>{this.props.funds.total}</TableRowColumn>
                 </TableRow>
                 <TableRow>
                   <TableRowColumn className="multiple-market-table__choice"
                                   style={style.firstColumn}>
                     Saldo de transações (R$)
                   </TableRowColumn>
-                  <TableRowColumn style={style.secondColumn}>{this.state.funds.transactions}</TableRowColumn>
+                  <TableRowColumn style={style.secondColumn}>{this.props.funds.transactions}</TableRowColumn>
                 </TableRow>
                 <TableRow>
                   <TableRowColumn className="multiple-market-table__choice"
                                   style={style.firstColumn}>
                     Provisão em ordens (R$)
                   </TableRowColumn>
-                  <TableRowColumn style={style.secondColumn}>{this.state.funds.risk}</TableRowColumn>
+                  <TableRowColumn style={style.secondColumn}>{this.props.funds.risk}</TableRowColumn>
                 </TableRow>
               </TableBody>
             </Table>
@@ -107,6 +94,12 @@ var Funds = React.createClass({
       </div>
     )
   }
-});
+}
 
-export default Funds;
+function mapStateToProps(state){
+  return {
+    funds: state.profileUser.balance
+  };
+}
+
+export default connect(mapStateToProps)(Funds);

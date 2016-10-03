@@ -249,7 +249,7 @@ class OrderManager(models.Manager):
                                 When(from_order__isnull=False, then='from_order__price'),
                                 When(to_order__isnull=False, then='price')
                             ))
-                        ).values(
+                        ).order_by('-created_at').values(
                             'id',
                             'market__title',
                             'market__title_short',

@@ -88,7 +88,9 @@ export const getNextEventPage = () => {
     var url = '/api/markets/?format=json&page=' + params.next;
     url += '&query=' + params.search;
     req(url).then(function(response){
-      dispatch(updateNextFetchedEvents(response))
+      dispatch(updateNextFetchedEvents(response));
+      var events = params.events.concat(response.hits.hits);
+      fetchEventsPrices(dispatch, events);
     });
   }
 }

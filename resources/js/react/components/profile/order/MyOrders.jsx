@@ -1,9 +1,14 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import { IndexLink } from 'react-router';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Open from 'material-ui/svg-icons/action/open-in-browser';
+
+import {
+  getOrders
+} from '../../../redux/actions/profile/positionActions';
 
 var style = {
   title:{
@@ -45,27 +50,18 @@ if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
   style.firstRowColumn.width = 500;
 }
 
-var MyOrders = React.createClass({
-  getInitialState: function() {
-    return {
-      orders: false
-    };
-  },
-  getOrders: function(){
-    var that = this;
-    req('/api/markets/open-orders/?format=json').then(function(response){
-      var orders = response;
-      that.setState({
-        orders: orders
-      });
-    });
-  },
-  componentDidMount: function() {
-    this.getOrders();
-  },
-  render: function(){
+class MyOrders extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.getOrders();
+  }
+
+  render(){
     var title = (<h2 style={style.title}>Ordens em Aberto</h2>);
-    if (this.state.orders === false) {
+    if (this.props.orders === false) {
       return (
         <div>
           {title}
@@ -80,7 +76,7 @@ var MyOrders = React.createClass({
           <br/>
         </div>
       )
-    }else if (this.state.orders.length == 0) {
+    }else if (this.props.orders.length == 0) {
       return (
         <div>
           {title}
@@ -98,8 +94,8 @@ var MyOrders = React.createClass({
       }
     }
     var rows = null;
-    if (this.state.orders.length > 0) {
-      rows = this.state.orders.map((o, k)=> (
+    if (this.props.orders.length > 0) {
+      rows = this.props.orders.map((o, k)=> (
         <TableRow key={k}>
           <TableRowColumn className="multiple-market-table__choice"
                           style={style.firstRowColumn}>
@@ -151,6 +147,18 @@ var MyOrders = React.createClass({
       </div>
     )
   }
-});
+}
 
-export default MyOrders;
+function mapStateToProps(state){
+  return {
+    orders: state.profilePosition.orders
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    getOrders
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(MyOrders);

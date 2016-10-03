@@ -1,9 +1,14 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import { IndexLink } from 'react-router';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import moment from 'moment';
+
+import {
+  getHistory
+} from '../../../redux/actions/profile/positionActions';
 
 var style = {
   title:{
@@ -51,27 +56,18 @@ if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
   style.firstRowColumn.width = 450;
 }
 
-var MyHistory = React.createClass({
-  getInitialState: function() {
-    return {
-      history: false
-    };
-  },
-  getHistory: function(){
-    var that = this;
-    req('/api/markets/my-history/?format=json').then(function(response){
-      var history = response;
-      that.setState({
-        history: history
-      });
-    });
-  },
-  componentDidMount: function() {
-    this.getHistory();
-  },
-  render: function(){
+class MyHistory extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.getHistory();
+  }
+
+  render(){
     var title = (<h2 style={style.title}>Histórico de transações</h2>);
-    if (this.state.history === false) {
+    if (this.props.history === false) {
       return (
         <div>
           {title}
@@ -86,7 +82,7 @@ var MyHistory = React.createClass({
           <br/>
         </div>
       )
-    }else if (this.state.history.length == 0) {
+    }else if (this.props.history.length == 0) {
       return (
         <div>
           {title}
@@ -103,8 +99,8 @@ var MyHistory = React.createClass({
       }
     }
     var rows = null;
-    if (this.state.history.length > 0) {
-      rows = this.state.history.map((h, k)=> (
+    if (this.props.history.length > 0) {
+      rows = this.props.history.map((h, k)=> (
         <TableRow key={k}>
           <TableRowColumn className="multiple-market-table__choice"
                           style={style.firstRowColumn}>
@@ -150,6 +146,18 @@ var MyHistory = React.createClass({
       </div>
     )
   }
-});
+}
 
-export default MyHistory;
+function mapStateToProps(state){
+  return {
+    history: state.profilePosition.history
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    getHistory
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(MyHistory);
