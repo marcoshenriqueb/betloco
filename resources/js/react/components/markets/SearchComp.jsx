@@ -60,10 +60,6 @@ export default class SearchComp extends React.Component {
     this.props.handleCheck();
   }
 
-  handleSearchChange(val){
-    this.props.onUserInput(val.target.value);
-  }
-
   componentDidUpdate(){
     if (!checkbox) {
       checkbox = document.getElementById('check');
@@ -83,7 +79,6 @@ export default class SearchComp extends React.Component {
     if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       filterToogle = (
         <IconButton
-          primary={true}
           iconStyle={style.mediumIcon}
           style={style.medium}
           onTouchTap={()=>{
@@ -105,7 +100,7 @@ export default class SearchComp extends React.Component {
                 style={style.textField}
                 hintText="Procurar mercados"
                 value={this.props.search}
-                onChange={this.handleSearchChange.bind(this)}
+                onChange={this.props.onUserInput.bind(this)}
               />
               {filterToogle}
             </div>

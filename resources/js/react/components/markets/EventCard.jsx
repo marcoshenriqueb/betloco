@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 import moment from 'moment';
 import { IndexLink } from 'react-router';
 
-var style = {
+const style = {
   linear: {
     height: 6,
     'marginTop': 5
@@ -38,19 +38,20 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   style.title.minHeight = 60;
 }
 
-var EventCard = React.createClass({
-  goToMarketDetail: function(){
+export default class EventCard extends React.Component{
+  goToMarketDetail(){
     if (this.props._event._source.markets.length == 1) {
       browserHistory.push('/app/mercado/' + this.props._event._source.markets[0].id + '/');
     }else {
       browserHistory.push('/app/evento/' + this.props._event._source.id + '/');
     }
-  },
-  render: function() {
+  }
+
+  render() {
     if (this.props._event._source.markets.length == 1) {
       var m = this.props._event._source.markets[0]
       var textContent = [
-        <div>
+        <div key={1}>
           <div className="marketcard-predictions__choices">
             <h5 style={style.marketTitle}>Sim</h5>
             <p>{m.lastCompleteOrder != null ? '(' + (m.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'}</p>
@@ -59,7 +60,7 @@ var EventCard = React.createClass({
                           mode="determinate"
                           value={m.lastCompleteOrder != null ? m.lastCompleteOrder.price * 100 : 0} />
         </div>,
-        <div>
+        <div key={2}>
           <div className="marketcard-predictions__choices">
             <h5 style={style.marketTitle}>Não</h5>
             <p>{m.lastCompleteOrder != null ? '(' + (100-(m.lastCompleteOrder.price * 100)).toFixed(1) + '%)' : '(0%)'}</p>
@@ -100,7 +101,7 @@ var EventCard = React.createClass({
         <CardTitle
           title={this.props._event._source.title}
           titleStyle={style.title}
-          onTouchTap={this.goToMarketDetail}
+          onTouchTap={this.goToMarketDetail.bind(this)}
           subtitle={
             <div className="marketcard-subtitle">
               <span>Volume: {this.props._event._source.volume} papéis negociados</span>
@@ -120,6 +121,4 @@ var EventCard = React.createClass({
       </Card>
     );
   }
-});
-
-export default EventCard;
+}

@@ -1,8 +1,8 @@
 import React from 'react';
 import EventCard from './EventCard.jsx';
 
-var _Event = React.createClass({
-  render: function() {
+export default class _Event extends React.Component {
+  render() {
     return (
       <div className="container markets-container">
         {
@@ -14,6 +14,4 @@ var _Event = React.createClass({
       </div>
     );
   }
-});
-
-export default _Event;
+}

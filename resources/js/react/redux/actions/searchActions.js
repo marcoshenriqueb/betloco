@@ -74,7 +74,8 @@ const updateUserInput = (filterText)=>{
   }
 }
 
-export const handleUserInput = (filterText) => {
+export const handleUserInput = (e) => {
+  const filterText = e.target.value;
   return function(dispatch){
     dispatch(updateUserInput(filterText))
     if (filterText.length > 2 || filterText.length == 0) {
