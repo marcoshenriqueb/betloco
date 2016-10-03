@@ -13,6 +13,15 @@ import FontIcon from 'material-ui/FontIcon';
 import { browserHistory } from 'react-router';
 import IconButton from 'material-ui/IconButton';
 
+import {
+  _profileRoute,
+  _ordersRoute,
+  _historyRoute,
+  _fundsRoute,
+  _configRoute,
+  _logout
+} from '../redux/actions/navigation';
+
 const style = {
   paper: {
     display: 'inline-block',
@@ -27,34 +36,19 @@ const style = {
   selectedIconcolor:window.gvar.lightcolor
 };
 
-var ProfileContainer = React.createClass({
-  getInitialState: function(){
-    return {
+export default class ProfileContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       intital: 0
     }
-  },
-  _positionRoute: function(){
-    browserHistory.push('/app/perfil/minhas-posicoes/');
-  },
-  _ordersRoute: function(){
-    browserHistory.push('/app/perfil/minhas-ordens/');
-  },
-  _historyRoute: function(){
-    browserHistory.push('/app/perfil/historico-transacoes/');
-  },
-  _fundsRoute: function(){
-    browserHistory.push('/app/perfil/fundos/');
-  },
-  _configRoute: function(){
-    browserHistory.push('/app/perfil/minhas-configuracoes/');
-  },
-  _logout: function(){
-    window.location = "/accounts/logout/";
-  },
-  shouldComponentUpdate: function(){
+  }
+
+  shouldComponentUpdate(){
     return true;
-  },
-  render: function() {
+  }
+
+  render() {
     var positionColor = style.iconColor;
     var ordersColor = style.iconColor;
     var historyColor = style.iconColor;
@@ -79,11 +73,11 @@ var ProfileContainer = React.createClass({
     var submenu = (
       <div className="profile-mobile-menu">
         <ul className="profile-mobile-menu__list">
-          <li onTouchTap={this._positionRoute}><IconButton><TrendingUp color={positionColor} className="profile-mobile-menu__item" /></IconButton></li>
-          <li onTouchTap={this._ordersRoute}><IconButton><ActionGavel color={ordersColor} className="profile-mobile-menu__item" /></IconButton></li>
-          <li onTouchTap={this._historyRoute}><IconButton><_History color={historyColor} className="profile-mobile-menu__item" /></IconButton></li>
-          <li onTouchTap={this._fundsRoute}><IconButton><Money color={fundsColor} className="profile-mobile-menu__item" /></IconButton></li>
-          <li onTouchTap={this._configRoute}><IconButton><Settings color={configColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={_profileRoute}><IconButton><TrendingUp color={positionColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={_ordersRoute}><IconButton><ActionGavel color={ordersColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={_historyRoute}><IconButton><_History color={historyColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={_fundsRoute}><IconButton><Money color={fundsColor} className="profile-mobile-menu__item" /></IconButton></li>
+          <li onTouchTap={_configRoute}><IconButton><Settings color={configColor} className="profile-mobile-menu__item" /></IconButton></li>
         </ul>
       </div>
     )
@@ -91,14 +85,14 @@ var ProfileContainer = React.createClass({
       submenu = (
         <Paper style={style.paper}>
           <Menu>
-            <MenuItem style={{cursor:'pointer'}} primaryText="Minhas posições" onTouchTap={this._positionRoute} leftIcon={<TrendingUp />} />
-            <MenuItem style={{cursor:'pointer'}} primaryText="Minhas Ordens" onTouchTap={this._ordersRoute} leftIcon={<ActionGavel />} />
-            <MenuItem style={{cursor:'pointer'}} primaryText="Histórico" onTouchTap={this._historyRoute} leftIcon={<_History />} />
-            <MenuItem style={{cursor:'pointer'}} primaryText="Fundos" onTouchTap={this._fundsRoute} leftIcon={<Money />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Minhas posições" onTouchTap={_profileRoute} leftIcon={<TrendingUp />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Minhas Ordens" onTouchTap={_ordersRoute} leftIcon={<ActionGavel />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Histórico" onTouchTap={_historyRoute} leftIcon={<_History />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Fundos" onTouchTap={_fundsRoute} leftIcon={<Money />} />
             <Divider />
-            <MenuItem style={{cursor:'pointer'}} primaryText="Configurações" onTouchTap={this._configRoute} leftIcon={<Settings />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Configurações" onTouchTap={_configRoute} leftIcon={<Settings />} />
             <Divider />
-            <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={this._logout} leftIcon={<Power />} />
+            <MenuItem style={{cursor:'pointer'}} primaryText="Sair" onTouchTap={_logout} leftIcon={<Power />} />
           </Menu>
         </Paper>
       )
@@ -114,6 +108,4 @@ var ProfileContainer = React.createClass({
       </div>
     );
   }
-});
-
-export default ProfileContainer;
+}

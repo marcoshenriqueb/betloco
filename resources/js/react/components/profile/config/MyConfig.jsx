@@ -1,8 +1,13 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+
+import {
+  _passwordReset
+} from '../../../redux/actions/navigation';
 
 var style = {
   title:{
@@ -23,33 +28,13 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   style.textfield.fontSize = 16;
 }
 
-var MyConfig = React.createClass({
-  getInitialState: function() {
-    return {
-      user: false
-    };
-  },
-  getFunds: function(){
-    var that = this;
-    req('/api/users/me/?format=json').then(function(response){
-      var user = response;
-      that.setState({
-        user: user
-      });
-    }, function(){
-      that.setState({
-        user: 'anom'
-      });
-    });
-  },
-  componentDidMount: function() {
-    this.getFunds();
-  },
-  passwordReset: function(){
-    window.location = '/accounts/password/change/';
-  },
-  render: function(){
-    if (this.state.user === false) {
+class MyConfig extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render(){
+    if (this.props.user === false) {
       return (
         <div>
           <h2 style={style.title}>Configurações</h2>
@@ -68,31 +53,35 @@ var MyConfig = React.createClass({
     var content = (
       <h5 className="subtitle" style={style.subtitle}>Usuário não logado</h5>
     )
-    if (this.state.user != 'anom') {
+    if (this.props.user != 'anom') {
       content = [
-        <h5 className="subtitle" style={style.subtitle}>Perfil</h5>,
+        <h5 key={0} className="subtitle" style={style.subtitle}>Perfil</h5>,
         <TextField
           style={style.textfield}
-          value={this.state.user.username}
+          key={1}
+          value={this.props.user.username}
           floatingLabelText="Nome de usuário"
           floatingLabelFixed={true}
-        />,<br/>,
+        />,<br key={2}/>,
         <TextField
           style={style.textfield}
-          value={this.state.user.email}
+          key={3}
+          value={this.props.user.email}
           floatingLabelText="Email"
           floatingLabelFixed={true}
-        />,<br/>,
+        />,<br key={4}/>,
         <TextField
           style={style.textfield}
-          value={this.state.user.password}
+          key={5}
+          value={this.props.user.password}
           floatingLabelText="Password"
           floatingLabelFixed={true}
           type="password"
-        />,<br/>,
+        />,<br key={6}/>,
         <FlatButton
           label="Redefinir senha"
-          onTouchTap={this.passwordReset}
+          key={7}
+          onTouchTap={_passwordReset}
           secondary={true}
         />
       ]
@@ -108,6 +97,18 @@ var MyConfig = React.createClass({
       </div>
     )
   }
-});
+}
 
-export default MyConfig;
+function mapStateToProps(state){
+  return {
+    user: state.profileUser.user
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(MyConfig);

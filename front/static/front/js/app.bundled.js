@@ -57648,20 +57648,22 @@ _reactDom2.default.render(_react2.default.createElement(
 
 // ReactDOM.render(<App />, document.getElementById('app'));
 
-},{"./react/App.jsx":681,"./react/components/EventDetailContainer.jsx":683,"./react/components/MarketContainer.jsx":684,"./react/components/MarketDetailContainer.jsx":685,"./react/components/ProfileContainer.jsx":686,"./react/components/profile/config/MyConfig.jsx":701,"./react/components/profile/funds/Funds.jsx":702,"./react/components/profile/history/MyHistory.jsx":703,"./react/components/profile/order/MyOrders.jsx":704,"./react/components/profile/position/Position.jsx":705,"./react/redux/store":714,"react":663,"react-dom":409,"react-redux":412,"react-router":452,"react-tap-event-plugin":491}],681:[function(require,module,exports){
+},{"./react/App.jsx":681,"./react/components/EventDetailContainer.jsx":683,"./react/components/MarketContainer.jsx":684,"./react/components/MarketDetailContainer.jsx":685,"./react/components/ProfileContainer.jsx":686,"./react/components/profile/config/MyConfig.jsx":701,"./react/components/profile/funds/Funds.jsx":702,"./react/components/profile/history/MyHistory.jsx":703,"./react/components/profile/order/MyOrders.jsx":704,"./react/components/profile/position/Position.jsx":705,"./react/redux/store":719,"react":663,"react-dom":409,"react-redux":412,"react-router":452,"react-tap-event-plugin":491}],681:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reqwest = require('reqwest');
+var _reactRedux = require('react-redux');
 
-var _reqwest2 = _interopRequireDefault(_reqwest);
+var _redux = require('redux');
 
 var _getMuiTheme = require('material-ui/styles/getMuiTheme');
 
@@ -57677,7 +57679,17 @@ var _AppNavbar2 = _interopRequireDefault(_AppNavbar);
 
 var _colors = require('material-ui/styles/colors');
 
+var _userActions = require('./redux/actions/profile/userActions');
+
+var _navigation = require('./redux/actions/navigation');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var muiTheme = (0, _getMuiTheme2.default)({
   fontFamily: "'Open Sans', sans-serif",
@@ -57696,71 +57708,65 @@ var muiTheme = (0, _getMuiTheme2.default)({
   }
 });
 
-var App = _react2.default.createClass({
-  displayName: 'App',
+var App = function (_React$Component) {
+  _inherits(App, _React$Component);
 
-  getInitialState: function getInitialState() {
-    return {
-      balance: false,
-      user: false,
-      navopen: false
-    };
-  },
-  getUser: function getUser() {
-    var that = this;
-    (0, _reqwest2.default)('/api/users/me/?format=json').then(function (response) {
-      that.setState({
-        user: response
-      });
-    });
-  },
-  getBalance: function getBalance() {
-    var that = this;
-    (0, _reqwest2.default)('/api/transactions/balance/?format=json').then(function (response) {
-      that.setState({
-        balance: response
-      });
-    });
-  },
-  componentDidMount: function componentDidMount() {
-    this.getBalance();
-    this.getUser();
-  },
-  togglenav: function togglenav(e) {
-    e.stopPropagation();
-    if (e.target.id == 'navtoggle') {
-      var result = !this.state.navopen;
-    } else {
-      var result = false;
-    }
-    this.setState({
-      navopen: result
-    });
-  },
+  function App(props) {
+    _classCallCheck(this, App);
 
-  render: function render() {
-    return _react2.default.createElement(
-      _MuiThemeProvider2.default,
-      { muiTheme: muiTheme },
-      _react2.default.createElement(
-        'div',
-        { onTouchTap: this.togglenav },
-        _react2.default.createElement(_AppNavbar2.default, { user: this.state.user,
-          balance: this.state.balance,
-          navopen: this.state.navopen,
-          togglenav: this.togglenav }),
-        _react2.default.cloneElement(this.props.children, {
-          balance: this.state.balance,
-          updateBalance: this.getBalance
-        })
-      )
-    );
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
   }
-});
 
-exports.default = App;
+  _createClass(App, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.props.getBalance();
+      this.props.getUser();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _MuiThemeProvider2.default,
+        { muiTheme: muiTheme },
+        _react2.default.createElement(
+          'div',
+          { onTouchTap: this.props.togglenav.bind(this) },
+          _react2.default.createElement(_AppNavbar2.default, { user: this.props.user,
+            balance: this.props.balance,
+            navopen: this.props.navopen,
+            togglenav: this.props.togglenav.bind(this) }),
+          _react2.default.cloneElement(this.props.children, {
+            balance: this.props.balance,
+            updateBalance: this.props.getBalance
+          })
+        )
+      );
+    }
+  }]);
 
-},{"./components/AppNavbar.jsx":682,"material-ui/styles/MuiThemeProvider":367,"material-ui/styles/colors":369,"material-ui/styles/getMuiTheme":370,"react":663,"reqwest":679}],682:[function(require,module,exports){
+  return App;
+}(_react2.default.Component);
+
+function mapStateToProps(state) {
+  return {
+    user: state.profileUser.user,
+    balance: state.profileUser.balance,
+    navopen: state.nav.navopen
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({
+    getUser: _userActions.getUser,
+    getBalance: _userActions.getBalance,
+    togglenav: _navigation.togglenav
+  }, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(App);
+
+},{"./components/AppNavbar.jsx":682,"./redux/actions/navigation":709,"./redux/actions/profile/userActions":711,"material-ui/styles/MuiThemeProvider":367,"material-ui/styles/colors":369,"material-ui/styles/getMuiTheme":370,"react":663,"react-redux":412,"redux":670}],682:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58293,7 +58299,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MarketContainer);
 
-},{"../redux/actions/eventsFetchingActions":708,"../redux/actions/searchActions":710,"./markets/Event.jsx":698,"./markets/SearchComp.jsx":700,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":663,"react-redux":412,"redux":670}],685:[function(require,module,exports){
+},{"../redux/actions/eventsFetchingActions":708,"../redux/actions/searchActions":712,"./markets/Event.jsx":698,"./markets/SearchComp.jsx":700,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":663,"react-redux":412,"redux":670}],685:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58500,6 +58506,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -58554,7 +58562,15 @@ var _IconButton = require('material-ui/IconButton');
 
 var _IconButton2 = _interopRequireDefault(_IconButton);
 
+var _navigation = require('../redux/actions/navigation');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
   paper: {
@@ -58570,148 +58586,143 @@ var style = {
   selectedIconcolor: window.gvar.lightcolor
 };
 
-var ProfileContainer = _react2.default.createClass({
-  displayName: 'ProfileContainer',
+var ProfileContainer = function (_React$Component) {
+  _inherits(ProfileContainer, _React$Component);
 
-  getInitialState: function getInitialState() {
-    return {
+  function ProfileContainer(props) {
+    _classCallCheck(this, ProfileContainer);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ProfileContainer).call(this, props));
+
+    _this.state = {
       intital: 0
     };
-  },
-  _positionRoute: function _positionRoute() {
-    _reactRouter.browserHistory.push('/app/perfil/minhas-posicoes/');
-  },
-  _ordersRoute: function _ordersRoute() {
-    _reactRouter.browserHistory.push('/app/perfil/minhas-ordens/');
-  },
-  _historyRoute: function _historyRoute() {
-    _reactRouter.browserHistory.push('/app/perfil/historico-transacoes/');
-  },
-  _fundsRoute: function _fundsRoute() {
-    _reactRouter.browserHistory.push('/app/perfil/fundos/');
-  },
-  _configRoute: function _configRoute() {
-    _reactRouter.browserHistory.push('/app/perfil/minhas-configuracoes/');
-  },
-  _logout: function _logout() {
-    window.location = "/accounts/logout/";
-  },
-  shouldComponentUpdate: function shouldComponentUpdate() {
-    return true;
-  },
-  render: function render() {
-    var positionColor = style.iconColor;
-    var ordersColor = style.iconColor;
-    var historyColor = style.iconColor;
-    var fundsColor = style.iconColor;
-    var configColor = style.iconColor;
-    switch (window.location.pathname.split('/')[3]) {
-      case 'minhas-ordens':
-        ordersColor = style.selectedIconcolor;
-        break;
-      case 'historico-transacoes':
-        historyColor = style.selectedIconcolor;
-        break;
-      case 'fundos':
-        fundsColor = style.selectedIconcolor;
-        break;
-      case 'minhas-configuracoes':
-        configColor = style.selectedIconcolor;
-        break;
-      default:
-        positionColor = style.selectedIconcolor;
+    return _this;
+  }
+
+  _createClass(ProfileContainer, [{
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate() {
+      return true;
     }
-    var submenu = _react2.default.createElement(
-      'div',
-      { className: 'profile-mobile-menu' },
-      _react2.default.createElement(
-        'ul',
-        { className: 'profile-mobile-menu__list' },
+  }, {
+    key: 'render',
+    value: function render() {
+      var positionColor = style.iconColor;
+      var ordersColor = style.iconColor;
+      var historyColor = style.iconColor;
+      var fundsColor = style.iconColor;
+      var configColor = style.iconColor;
+      switch (window.location.pathname.split('/')[3]) {
+        case 'minhas-ordens':
+          ordersColor = style.selectedIconcolor;
+          break;
+        case 'historico-transacoes':
+          historyColor = style.selectedIconcolor;
+          break;
+        case 'fundos':
+          fundsColor = style.selectedIconcolor;
+          break;
+        case 'minhas-configuracoes':
+          configColor = style.selectedIconcolor;
+          break;
+        default:
+          positionColor = style.selectedIconcolor;
+      }
+      var submenu = _react2.default.createElement(
+        'div',
+        { className: 'profile-mobile-menu' },
         _react2.default.createElement(
-          'li',
-          { onTouchTap: this._positionRoute },
+          'ul',
+          { className: 'profile-mobile-menu__list' },
           _react2.default.createElement(
-            _IconButton2.default,
-            null,
-            _react2.default.createElement(_trendingUp2.default, { color: positionColor, className: 'profile-mobile-menu__item' })
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          { onTouchTap: this._ordersRoute },
+            'li',
+            { onTouchTap: _navigation._profileRoute },
+            _react2.default.createElement(
+              _IconButton2.default,
+              null,
+              _react2.default.createElement(_trendingUp2.default, { color: positionColor, className: 'profile-mobile-menu__item' })
+            )
+          ),
           _react2.default.createElement(
-            _IconButton2.default,
-            null,
-            _react2.default.createElement(_gavel2.default, { color: ordersColor, className: 'profile-mobile-menu__item' })
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          { onTouchTap: this._historyRoute },
+            'li',
+            { onTouchTap: _navigation._ordersRoute },
+            _react2.default.createElement(
+              _IconButton2.default,
+              null,
+              _react2.default.createElement(_gavel2.default, { color: ordersColor, className: 'profile-mobile-menu__item' })
+            )
+          ),
           _react2.default.createElement(
-            _IconButton2.default,
-            null,
-            _react2.default.createElement(_history2.default, { color: historyColor, className: 'profile-mobile-menu__item' })
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          { onTouchTap: this._fundsRoute },
+            'li',
+            { onTouchTap: _navigation._historyRoute },
+            _react2.default.createElement(
+              _IconButton2.default,
+              null,
+              _react2.default.createElement(_history2.default, { color: historyColor, className: 'profile-mobile-menu__item' })
+            )
+          ),
           _react2.default.createElement(
-            _IconButton2.default,
-            null,
-            _react2.default.createElement(_monetizationOn2.default, { color: fundsColor, className: 'profile-mobile-menu__item' })
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          { onTouchTap: this._configRoute },
+            'li',
+            { onTouchTap: _navigation._fundsRoute },
+            _react2.default.createElement(
+              _IconButton2.default,
+              null,
+              _react2.default.createElement(_monetizationOn2.default, { color: fundsColor, className: 'profile-mobile-menu__item' })
+            )
+          ),
           _react2.default.createElement(
-            _IconButton2.default,
-            null,
-            _react2.default.createElement(_settings2.default, { color: configColor, className: 'profile-mobile-menu__item' })
+            'li',
+            { onTouchTap: _navigation._configRoute },
+            _react2.default.createElement(
+              _IconButton2.default,
+              null,
+              _react2.default.createElement(_settings2.default, { color: configColor, className: 'profile-mobile-menu__item' })
+            )
           )
         )
-      )
-    );
-    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
-      submenu = _react2.default.createElement(
-        _Paper2.default,
-        { style: style.paper },
+      );
+      if (document.documentElement.clientWidth > window.gvar.breakpoint) {
+        submenu = _react2.default.createElement(
+          _Paper2.default,
+          { style: style.paper },
+          _react2.default.createElement(
+            _Menu2.default,
+            null,
+            _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Minhas posições', onTouchTap: _navigation._profileRoute, leftIcon: _react2.default.createElement(_trendingUp2.default, null) }),
+            _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Minhas Ordens', onTouchTap: _navigation._ordersRoute, leftIcon: _react2.default.createElement(_gavel2.default, null) }),
+            _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Histórico', onTouchTap: _navigation._historyRoute, leftIcon: _react2.default.createElement(_history2.default, null) }),
+            _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Fundos', onTouchTap: _navigation._fundsRoute, leftIcon: _react2.default.createElement(_monetizationOn2.default, null) }),
+            _react2.default.createElement(_Divider2.default, null),
+            _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Configurações', onTouchTap: _navigation._configRoute, leftIcon: _react2.default.createElement(_settings2.default, null) }),
+            _react2.default.createElement(_Divider2.default, null),
+            _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Sair', onTouchTap: _navigation._logout, leftIcon: _react2.default.createElement(_powerSettingsNew2.default, null) })
+          )
+        );
+      }
+      return _react2.default.createElement(
+        'div',
+        { className: 'profile-container' },
         _react2.default.createElement(
-          _Menu2.default,
-          null,
-          _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Minhas posições', onTouchTap: this._positionRoute, leftIcon: _react2.default.createElement(_trendingUp2.default, null) }),
-          _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Minhas Ordens', onTouchTap: this._ordersRoute, leftIcon: _react2.default.createElement(_gavel2.default, null) }),
-          _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Histórico', onTouchTap: this._historyRoute, leftIcon: _react2.default.createElement(_history2.default, null) }),
-          _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Fundos', onTouchTap: this._fundsRoute, leftIcon: _react2.default.createElement(_monetizationOn2.default, null) }),
-          _react2.default.createElement(_Divider2.default, null),
-          _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Configurações', onTouchTap: this._configRoute, leftIcon: _react2.default.createElement(_settings2.default, null) }),
-          _react2.default.createElement(_Divider2.default, null),
-          _react2.default.createElement(_MenuItem2.default, { style: { cursor: 'pointer' }, primaryText: 'Sair', onTouchTap: this._logout, leftIcon: _react2.default.createElement(_powerSettingsNew2.default, null) })
+          'div',
+          { className: 'profile-menu-container' },
+          submenu
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'profile-content-container' },
+          this.props.children
         )
       );
     }
-    return _react2.default.createElement(
-      'div',
-      { className: 'profile-container' },
-      _react2.default.createElement(
-        'div',
-        { className: 'profile-menu-container' },
-        submenu
-      ),
-      _react2.default.createElement(
-        'div',
-        { className: 'profile-content-container' },
-        this.props.children
-      )
-    );
-  }
-});
+  }]);
+
+  return ProfileContainer;
+}(_react2.default.Component);
 
 exports.default = ProfileContainer;
 
-},{"material-ui/Divider":20,"material-ui/FontIcon":29,"material-ui/IconButton":31,"material-ui/Menu":40,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/svg-icons/action/gavel":376,"material-ui/svg-icons/action/history":377,"material-ui/svg-icons/action/power-settings-new":380,"material-ui/svg-icons/action/settings":381,"material-ui/svg-icons/action/trending-up":382,"material-ui/svg-icons/editor/monetization-on":387,"react":663,"react-router":452}],687:[function(require,module,exports){
+},{"../redux/actions/navigation":709,"material-ui/Divider":20,"material-ui/FontIcon":29,"material-ui/IconButton":31,"material-ui/Menu":40,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/svg-icons/action/gavel":376,"material-ui/svg-icons/action/history":377,"material-ui/svg-icons/action/power-settings-new":380,"material-ui/svg-icons/action/settings":381,"material-ui/svg-icons/action/trending-up":382,"material-ui/svg-icons/editor/monetization-on":387,"react":663,"react-router":452}],687:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60873,13 +60884,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reqwest = require('reqwest');
+var _reactRedux = require('react-redux');
 
-var _reqwest2 = _interopRequireDefault(_reqwest);
+var _redux = require('redux');
 
 var _Card = require('material-ui/Card');
 
@@ -60891,7 +60904,15 @@ var _FlatButton = require('material-ui/FlatButton');
 
 var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
+var _navigation = require('../../../redux/actions/navigation');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
   title: {
@@ -60912,35 +60933,78 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   style.textfield.fontSize = 16;
 }
 
-var MyConfig = _react2.default.createClass({
-  displayName: 'MyConfig',
+var MyConfig = function (_React$Component) {
+  _inherits(MyConfig, _React$Component);
 
-  getInitialState: function getInitialState() {
-    return {
-      user: false
-    };
-  },
-  getFunds: function getFunds() {
-    var that = this;
-    (0, _reqwest2.default)('/api/users/me/?format=json').then(function (response) {
-      var user = response;
-      that.setState({
-        user: user
-      });
-    }, function () {
-      that.setState({
-        user: 'anom'
-      });
-    });
-  },
-  componentDidMount: function componentDidMount() {
-    this.getFunds();
-  },
-  passwordReset: function passwordReset() {
-    window.location = '/accounts/password/change/';
-  },
-  render: function render() {
-    if (this.state.user === false) {
+  function MyConfig(props) {
+    _classCallCheck(this, MyConfig);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(MyConfig).call(this, props));
+  }
+
+  _createClass(MyConfig, [{
+    key: 'render',
+    value: function render() {
+      if (this.props.user === false) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h2',
+            { style: style.title },
+            'Configurações'
+          ),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement(
+            'div',
+            { style: { width: '100%', display: 'flex', justifyContent: 'center' } },
+            _react2.default.createElement(
+              'div',
+              { className: 'bouncer' },
+              _react2.default.createElement('div', { className: 'bounce1' }),
+              _react2.default.createElement('div', { className: 'bounce2' }),
+              _react2.default.createElement('div', { className: 'bounce3' })
+            )
+          ),
+          _react2.default.createElement('br', null)
+        );
+      }
+      var content = _react2.default.createElement(
+        'h5',
+        { className: 'subtitle', style: style.subtitle },
+        'Usuário não logado'
+      );
+      if (this.props.user != 'anom') {
+        content = [_react2.default.createElement(
+          'h5',
+          { key: 0, className: 'subtitle', style: style.subtitle },
+          'Perfil'
+        ), _react2.default.createElement(_TextField2.default, {
+          style: style.textfield,
+          key: 1,
+          value: this.props.user.username,
+          floatingLabelText: 'Nome de usuário',
+          floatingLabelFixed: true
+        }), _react2.default.createElement('br', { key: 2 }), _react2.default.createElement(_TextField2.default, {
+          style: style.textfield,
+          key: 3,
+          value: this.props.user.email,
+          floatingLabelText: 'Email',
+          floatingLabelFixed: true
+        }), _react2.default.createElement('br', { key: 4 }), _react2.default.createElement(_TextField2.default, {
+          style: style.textfield,
+          key: 5,
+          value: this.props.user.password,
+          floatingLabelText: 'Password',
+          floatingLabelFixed: true,
+          type: 'password'
+        }), _react2.default.createElement('br', { key: 6 }), _react2.default.createElement(_FlatButton2.default, {
+          label: 'Redefinir senha',
+          key: 7,
+          onTouchTap: _navigation._passwordReset,
+          secondary: true
+        })];
+      }
       return _react2.default.createElement(
         'div',
         null,
@@ -60949,77 +61013,35 @@ var MyConfig = _react2.default.createClass({
           { style: style.title },
           'Configurações'
         ),
-        _react2.default.createElement('br', null),
         _react2.default.createElement(
-          'div',
-          { style: { width: '100%', display: 'flex', justifyContent: 'center' } },
+          _Card.Card,
+          { initiallyExpanded: true },
           _react2.default.createElement(
-            'div',
-            { className: 'bouncer' },
-            _react2.default.createElement('div', { className: 'bounce1' }),
-            _react2.default.createElement('div', { className: 'bounce2' }),
-            _react2.default.createElement('div', { className: 'bounce3' })
+            _Card.CardText,
+            { expandable: true },
+            content
           )
-        ),
-        _react2.default.createElement('br', null)
+        )
       );
     }
-    var content = _react2.default.createElement(
-      'h5',
-      { className: 'subtitle', style: style.subtitle },
-      'Usuário não logado'
-    );
-    if (this.state.user != 'anom') {
-      content = [_react2.default.createElement(
-        'h5',
-        { className: 'subtitle', style: style.subtitle },
-        'Perfil'
-      ), _react2.default.createElement(_TextField2.default, {
-        style: style.textfield,
-        value: this.state.user.username,
-        floatingLabelText: 'Nome de usuário',
-        floatingLabelFixed: true
-      }), _react2.default.createElement('br', null), _react2.default.createElement(_TextField2.default, {
-        style: style.textfield,
-        value: this.state.user.email,
-        floatingLabelText: 'Email',
-        floatingLabelFixed: true
-      }), _react2.default.createElement('br', null), _react2.default.createElement(_TextField2.default, {
-        style: style.textfield,
-        value: this.state.user.password,
-        floatingLabelText: 'Password',
-        floatingLabelFixed: true,
-        type: 'password'
-      }), _react2.default.createElement('br', null), _react2.default.createElement(_FlatButton2.default, {
-        label: 'Redefinir senha',
-        onTouchTap: this.passwordReset,
-        secondary: true
-      })];
-    }
-    return _react2.default.createElement(
-      'div',
-      null,
-      _react2.default.createElement(
-        'h2',
-        { style: style.title },
-        'Configurações'
-      ),
-      _react2.default.createElement(
-        _Card.Card,
-        { initiallyExpanded: true },
-        _react2.default.createElement(
-          _Card.CardText,
-          { expandable: true },
-          content
-        )
-      )
-    );
-  }
-});
+  }]);
 
-exports.default = MyConfig;
+  return MyConfig;
+}(_react2.default.Component);
 
-},{"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/TextField":70,"react":663,"reqwest":679}],702:[function(require,module,exports){
+function mapStateToProps(state) {
+  return {
+    user: state.profileUser.user
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({}, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MyConfig);
+
+},{"../../../redux/actions/navigation":709,"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/TextField":70,"react":663,"react-redux":412,"redux":670}],702:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61659,13 +61681,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reqwest = require('reqwest');
+var _reactRedux = require('react-redux');
 
-var _reqwest2 = _interopRequireDefault(_reqwest);
+var _redux = require('redux');
 
 var _reactRouter = require('react-router');
 
@@ -61677,7 +61701,15 @@ var _openInBrowser = require('material-ui/svg-icons/action/open-in-browser');
 
 var _openInBrowser2 = _interopRequireDefault(_openInBrowser);
 
+var _positionActions = require('../../../redux/actions/profile/positionActions');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
   title: {
@@ -61719,153 +61751,164 @@ if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
   style.firstRowColumn.width = 500;
 }
 
-var Position = _react2.default.createClass({
-  displayName: 'Position',
+var Position = function (_React$Component) {
+  _inherits(Position, _React$Component);
 
-  getInitialState: function getInitialState() {
-    return {
-      positions: false
-    };
-  },
-  getPositions: function getPositions() {
-    var that = this;
-    (0, _reqwest2.default)('/api/markets/my-positions/?format=json').then(function (response) {
-      var positions = response;
-      that.setState({
-        positions: positions
-      });
-    });
-  },
-  componentDidMount: function componentDidMount() {
-    this.getPositions();
-  },
-  render: function render() {
-    var title = _react2.default.createElement(
-      'h2',
-      { style: style.title },
-      'Posições'
-    );
-    if (this.state.positions === false) {
-      return _react2.default.createElement(
-        'div',
-        null,
-        title,
-        _react2.default.createElement('br', null),
-        _react2.default.createElement(
+  function Position(props) {
+    _classCallCheck(this, Position);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Position).call(this, props));
+  }
+
+  _createClass(Position, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.props.getPositions();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var title = _react2.default.createElement(
+        'h2',
+        { style: style.title },
+        'Posições'
+      );
+      if (this.props.positions === false) {
+        return _react2.default.createElement(
           'div',
-          { style: { width: '100%', display: 'flex', justifyContent: 'center' } },
+          null,
+          title,
+          _react2.default.createElement('br', null),
           _react2.default.createElement(
             'div',
-            { className: 'bouncer' },
-            _react2.default.createElement('div', { className: 'bounce1' }),
-            _react2.default.createElement('div', { className: 'bounce2' }),
-            _react2.default.createElement('div', { className: 'bounce3' })
+            { style: { width: '100%', display: 'flex', justifyContent: 'center' } },
+            _react2.default.createElement(
+              'div',
+              { className: 'bouncer' },
+              _react2.default.createElement('div', { className: 'bounce1' }),
+              _react2.default.createElement('div', { className: 'bounce2' }),
+              _react2.default.createElement('div', { className: 'bounce3' })
+            )
+          ),
+          _react2.default.createElement('br', null)
+        );
+      } else if (this.props.positions.length == 0) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          title,
+          _react2.default.createElement(
+            'p',
+            { className: 'error-warning' },
+            'Você não tem posição em nenhum mercado'
           )
-        ),
-        _react2.default.createElement('br', null)
-      );
-    } else if (this.state.positions.length == 0) {
+        );
+      }
+      var returnTitle = function returnTitle(p) {
+        return p.market.title_short;
+      };
+      if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+        returnTitle = function returnTitle(p) {
+          return p.market.title;
+        };
+      }
+      var rows = null;
+      if (this.props.positions.length > 0) {
+        rows = this.props.positions.map(function (p, k) {
+          return _react2.default.createElement(
+            _Table.TableRow,
+            { key: k },
+            _react2.default.createElement(
+              _Table.TableRowColumn,
+              { className: 'multiple-market-table__choice',
+                style: style.firstRowColumn },
+              returnTitle(p)
+            ),
+            _react2.default.createElement(
+              _Table.TableRowColumn,
+              { style: style.th },
+              p.position
+            ),
+            _react2.default.createElement(
+              _Table.TableRowColumn,
+              { style: style.th },
+              _react2.default.createElement(
+                _reactRouter.IndexLink,
+                { to: '/app/mercado/' + p.market__id + '/' },
+                _react2.default.createElement(_openInBrowser2.default, null)
+              )
+            )
+          );
+        });
+      }
       return _react2.default.createElement(
         'div',
         null,
         title,
         _react2.default.createElement(
-          'p',
-          { className: 'error-warning' },
-          'Você não tem posição em nenhum mercado'
+          _Card.Card,
+          { initiallyExpanded: true },
+          _react2.default.createElement(
+            _Card.CardText,
+            { expandable: true },
+            _react2.default.createElement(
+              _Table.Table,
+              null,
+              _react2.default.createElement(
+                _Table.TableHeader,
+                { adjustForCheckbox: false,
+                  displaySelectAll: false },
+                _react2.default.createElement(
+                  _Table.TableRow,
+                  null,
+                  _react2.default.createElement(
+                    _Table.TableHeaderColumn,
+                    { style: style.firstColumn },
+                    'Mercado'
+                  ),
+                  _react2.default.createElement(
+                    _Table.TableHeaderColumn,
+                    { style: style.th },
+                    'Qtde'
+                  ),
+                  _react2.default.createElement(
+                    _Table.TableHeaderColumn,
+                    { style: style.th },
+                    'Link'
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                _Table.TableBody,
+                { displayRowCheckbox: false,
+                  showRowHover: true },
+                rows
+              )
+            )
+          )
         )
       );
     }
-    var returnTitle = function returnTitle(p) {
-      return p.market.title_short;
-    };
-    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
-      returnTitle = function returnTitle(p) {
-        return p.market.title;
-      };
-    }
-    var rows = null;
-    if (this.state.positions.length > 0) {
-      rows = this.state.positions.map(function (p, k) {
-        return _react2.default.createElement(
-          _Table.TableRow,
-          { key: k },
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { className: 'multiple-market-table__choice',
-              style: style.firstRowColumn },
-            returnTitle(p)
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: style.th },
-            p.position
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: style.th },
-            _react2.default.createElement(
-              _reactRouter.IndexLink,
-              { to: '/app/mercado/' + p.market__id + '/' },
-              _react2.default.createElement(_openInBrowser2.default, null)
-            )
-          )
-        );
-      });
-    }
-    return _react2.default.createElement(
-      'div',
-      null,
-      title,
-      _react2.default.createElement(
-        _Card.Card,
-        { initiallyExpanded: true },
-        _react2.default.createElement(
-          _Card.CardText,
-          { expandable: true },
-          _react2.default.createElement(
-            _Table.Table,
-            null,
-            _react2.default.createElement(
-              _Table.TableHeader,
-              { adjustForCheckbox: false,
-                displaySelectAll: false },
-              _react2.default.createElement(
-                _Table.TableRow,
-                null,
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: style.firstColumn },
-                  'Mercado'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: style.th },
-                  'Qtde'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: style.th },
-                  'Link'
-                )
-              )
-            ),
-            _react2.default.createElement(
-              _Table.TableBody,
-              { displayRowCheckbox: false,
-                showRowHover: true },
-              rows
-            )
-          )
-        )
-      )
-    );
-  }
-});
+  }]);
 
-exports.default = Position;
+  return Position;
+}(_react2.default.Component);
 
-},{"material-ui/Card":12,"material-ui/Table":64,"material-ui/svg-icons/action/open-in-browser":379,"react":663,"react-router":452,"reqwest":679}],706:[function(require,module,exports){
+function mapStateToProps(state) {
+  return {
+    positions: state.profilePosition.positions
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({
+    getPositions: _positionActions.getPositions
+  }, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(Position);
+
+},{"../../../redux/actions/profile/positionActions":710,"material-ui/Card":12,"material-ui/Table":64,"material-ui/svg-icons/action/open-in-browser":379,"react":663,"react-redux":412,"react-router":452,"redux":670}],706:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62020,13 +62063,13 @@ var getNextEventPage = exports.getNextEventPage = function getNextEventPage() {
   };
 };
 
-},{"../actionTypes":706,"../store":714,"reqwest":679}],709:[function(require,module,exports){
+},{"../actionTypes":706,"../store":719,"reqwest":679}],709:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports._marketRoute = exports._profileRoute = exports._register = exports._login = exports._logout = undefined;
+exports.togglenav = exports._passwordReset = exports._configRoute = exports._fundsRoute = exports._historyRoute = exports._ordersRoute = exports._profileRoute = exports._marketRoute = exports._register = exports._login = exports._logout = undefined;
 
 var _reactRouter = require("react-router");
 
@@ -62042,15 +62085,125 @@ var _register = exports._register = function _register() {
   window.location = "/accounts/signup/?next=" + window.location.pathname;
 };
 
-var _profileRoute = exports._profileRoute = function _profileRoute() {
-  _reactRouter.browserHistory.push('/app/perfil/minhas-posicoes/');
-};
-
 var _marketRoute = exports._marketRoute = function _marketRoute() {
   _reactRouter.browserHistory.push('/app/');
 };
 
+var _profileRoute = exports._profileRoute = function _profileRoute() {
+  _reactRouter.browserHistory.push('/app/perfil/minhas-posicoes/');
+};
+
+var _ordersRoute = exports._ordersRoute = function _ordersRoute() {
+  _reactRouter.browserHistory.push('/app/perfil/minhas-ordens/');
+};
+
+var _historyRoute = exports._historyRoute = function _historyRoute() {
+  _reactRouter.browserHistory.push('/app/perfil/historico-transacoes/');
+};
+
+var _fundsRoute = exports._fundsRoute = function _fundsRoute() {
+  _reactRouter.browserHistory.push('/app/perfil/fundos/');
+};
+
+var _configRoute = exports._configRoute = function _configRoute() {
+  _reactRouter.browserHistory.push('/app/perfil/minhas-configuracoes/');
+};
+
+var _passwordReset = exports._passwordReset = function _passwordReset() {
+  window.location = '/accounts/password/change/';
+};
+
+var togglenav = exports.togglenav = function togglenav(e) {
+  e.stopPropagation();
+  if (e.target.id == 'navtoggle') {
+    var result = true;
+  } else {
+    var result = false;
+  }
+  return {
+    type: 'UPDATE_NAV_MENU_OPEN',
+    payload: result
+  };
+};
+
 },{"react-router":452}],710:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getPositions = undefined;
+
+var _reqwest = require('reqwest');
+
+var _reqwest2 = _interopRequireDefault(_reqwest);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var updateProfilePositions = function updateProfilePositions(dispatch, data) {
+  return {
+    type: 'UPDATE_PROFILE_POSITIONS',
+    payload: data
+  };
+};
+
+var getPositions = exports.getPositions = function getPositions() {
+  return function (dispatch) {
+    (0, _reqwest2.default)('/api/markets/my-positions/?format=json').then(function (response) {
+      var positions = response;
+      dispatch(updateProfilePositions(dispatch, positions));
+    });
+  };
+};
+
+},{"reqwest":679}],711:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getBalance = exports.getUser = undefined;
+
+var _reqwest = require('reqwest');
+
+var _reqwest2 = _interopRequireDefault(_reqwest);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var updateUser = function updateUser(dispatch, user) {
+  return {
+    type: 'UPDATE_USER',
+    payload: user
+  };
+};
+
+var getUser = exports.getUser = function getUser() {
+  return function (dispatch) {
+    (0, _reqwest2.default)('/api/users/me/?format=json').then(function (response) {
+      var user = response;
+      dispatch(updateUser(dispatch, user));
+    }, function () {
+      dispatch(updateUser(dispatch, 'anom'));
+    });
+  };
+};
+
+var updateUserBalance = function updateUserBalance(dispatch, bal) {
+  return {
+    type: 'UPDATE_USER_BALANCE',
+    payload: bal
+  };
+};
+
+var getBalance = exports.getBalance = function getBalance() {
+  return function (dispatch) {
+    (0, _reqwest2.default)('/api/transactions/balance/?format=json').then(function (response) {
+      dispatch(updateUserBalance(dispatch, response));
+    });
+  };
+};
+
+},{"reqwest":679}],712:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62120,7 +62273,7 @@ var handleOrderChange = exports.handleOrderChange = function handleOrderChange(e
   };
 };
 
-},{"./eventsFetchingActions":708}],711:[function(require,module,exports){
+},{"./eventsFetchingActions":708}],713:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62147,7 +62300,7 @@ var initalState = {
   _event: null
 };
 
-},{}],712:[function(require,module,exports){
+},{}],714:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -62164,16 +62317,123 @@ var _eventReducer = require("./eventReducer");
 
 var _eventReducer2 = _interopRequireDefault(_eventReducer);
 
+var _positionReducer = require("./profile/positionReducer");
+
+var _positionReducer2 = _interopRequireDefault(_positionReducer);
+
+var _userReducer = require("./profile/userReducer");
+
+var _userReducer2 = _interopRequireDefault(_userReducer);
+
+var _navReducer = require("./navReducer");
+
+var _navReducer2 = _interopRequireDefault(_navReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var allReducers = (0, _redux.combineReducers)({
   eventsSearch: _searchReducer2.default,
-  _event: _eventReducer2.default
+  _event: _eventReducer2.default,
+  profilePosition: _positionReducer2.default,
+  profileUser: _userReducer2.default,
+  nav: _navReducer2.default
 });
 
 exports.default = allReducers;
 
-},{"./eventReducer":711,"./searchReducer":713,"redux":670}],713:[function(require,module,exports){
+},{"./eventReducer":713,"./navReducer":715,"./profile/positionReducer":716,"./profile/userReducer":717,"./searchReducer":718,"redux":670}],715:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function () {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? initalState : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'UPDATE_NAV_MENU_OPEN':
+      var result = false;
+      if (action.payload) {
+        result = !state.navopen;
+      }
+      return Object.assign({}, state, {
+        navopen: result
+      });
+      break;
+
+    default:
+      return state;
+  }
+};
+
+var initalState = {
+  navopen: false
+};
+
+},{}],716:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function () {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? initalState : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'UPDATE_PROFILE_POSITIONS':
+      return Object.assign({}, state, {
+        positions: action.payload
+      });
+      break;
+
+    default:
+      return state;
+  }
+};
+
+var initalState = {
+  positions: false
+};
+
+},{}],717:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function () {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? initalState : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'UPDATE_USER':
+      return Object.assign({}, state, {
+        user: action.payload
+      });
+      break;
+
+    case 'UPDATE_USER_BALANCE':
+      return Object.assign({}, state, {
+        balance: action.payload
+      });
+      break;
+
+    default:
+      return state;
+  }
+};
+
+var initalState = {
+  user: false,
+  balance: false
+};
+
+},{}],718:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62253,7 +62513,7 @@ var initalState = {
   order: '_score|desc'
 };
 
-},{"../actionTypes":706}],714:[function(require,module,exports){
+},{"../actionTypes":706}],719:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -62275,4 +62535,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var store = exports.store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
-},{"./reducers":712,"redux":670,"redux-thunk":664}]},{},[680]);
+},{"./reducers":714,"redux":670,"redux-thunk":664}]},{},[680]);

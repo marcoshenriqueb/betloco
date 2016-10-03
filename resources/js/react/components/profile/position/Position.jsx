@@ -1,9 +1,14 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import { IndexLink } from 'react-router';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Open from 'material-ui/svg-icons/action/open-in-browser';
+
+import {
+  getPositions
+} from '../../../redux/actions/profile/positionActions';
 
 var style = {
   title:{
@@ -45,27 +50,18 @@ if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
   style.firstRowColumn.width = 500;
 }
 
-var Position = React.createClass({
-  getInitialState: function() {
-    return {
-      positions: false
-    };
-  },
-  getPositions: function(){
-    var that = this;
-    req('/api/markets/my-positions/?format=json').then(function(response){
-      var positions = response;
-      that.setState({
-        positions: positions
-      });
-    });
-  },
-  componentDidMount: function() {
-    this.getPositions();
-  },
-  render: function(){
+class Position extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.getPositions();
+  }
+
+  render(){
     var title = (<h2 style={style.title}>Posições</h2>);
-    if (this.state.positions === false) {
+    if (this.props.positions === false) {
       return (
         <div>
           {title}
@@ -80,7 +76,7 @@ var Position = React.createClass({
           <br/>
         </div>
       )
-    }else if (this.state.positions.length == 0) {
+    }else if (this.props.positions.length == 0) {
       return (
         <div>
           {title}
@@ -97,8 +93,8 @@ var Position = React.createClass({
       }
     }
     var rows = null;
-    if (this.state.positions.length > 0) {
-      rows = this.state.positions.map((p, k)=> (
+    if (this.props.positions.length > 0) {
+      rows = this.props.positions.map((p, k)=> (
         <TableRow key={k}>
           <TableRowColumn className="multiple-market-table__choice"
                           style={style.firstRowColumn}>
@@ -137,6 +133,18 @@ var Position = React.createClass({
       </div>
     )
   }
-});
+}
 
-export default Position;
+function mapStateToProps(state){
+  return {
+    positions: state.profilePosition.positions
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    getPositions
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(Position);

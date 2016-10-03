@@ -1,9 +1,19 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navbar from './components/AppNavbar.jsx';
 import {grey700} from 'material-ui/styles/colors';
+
+import {
+  getUser,
+  getBalance
+} from './redux/actions/profile/userActions';
+
+import {
+  togglenav
+} from './redux/actions/navigation';
 
 const muiTheme = getMuiTheme({
   fontFamily: "'Open Sans', sans-serif",
@@ -22,61 +32,48 @@ const muiTheme = getMuiTheme({
   }
 });
 
-var App = React.createClass({
-  getInitialState: function(){
-    return {
-      balance: false,
-      user:false,
-      navopen: false
-    };
-  },
-  getUser: function(){
-    var that = this;
-    req('/api/users/me/?format=json').then(function(response){
-      that.setState({
-        user: response
-      });
-    });
-  },
-  getBalance: function(){
-    var that = this;
-    req('/api/transactions/balance/?format=json').then(function(response){
-      that.setState({
-        balance: response
-      });
-    });
-  },
-  componentDidMount: function(){
-    this.getBalance();
-    this.getUser();
-  },
-  togglenav(e){
-    e.stopPropagation();
-    if (e.target.id == 'navtoggle') {
-      var result = !this.state.navopen;
-    }else {
-      var result = false;
-    }
-    this.setState({
-      navopen: result
-    });
-  },
-  render: function() {
+class App extends React.Component {
+  constructor(props){
+    super(props);
+  }
+
+  componentDidMount(){
+    this.props.getBalance();
+    this.props.getUser();
+  }
+
+  render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div onTouchTap={this.togglenav}>
-          <Navbar user={this.state.user}
-                  balance={this.state.balance}
-                  navopen={this.state.navopen}
-                  togglenav={this.togglenav} />
+        <div onTouchTap={this.props.togglenav.bind(this)}>
+          <Navbar user={this.props.user}
+                  balance={this.props.balance}
+                  navopen={this.props.navopen}
+                  togglenav={this.props.togglenav.bind(this)} />
           {React.cloneElement(this.props.children, {
-            balance: this.state.balance,
-            updateBalance: this.getBalance
+            balance: this.props.balance,
+            updateBalance: this.props.getBalance
           })}
         </div>
       </MuiThemeProvider>
     );
   }
-});
+}
 
-export default App;
+function mapStateToProps(state){
+  return {
+    user: state.profileUser.user,
+    balance: state.profileUser.balance,
+    navopen: state.nav.navopen
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    getUser,
+    getBalance,
+    togglenav
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(App);
