@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, browserHistory } from 'react-router'
+import { Router, Route, Link, browserHistory } from 'react-router';
+import {Provider} from 'react-redux';
+import {store} from './react/redux/store';
 // Here we put our React instance to the global scope. Make sure you do not put it
 // into production and make sure that you close and open your console if the
 // DEV-TOOLS does not display
@@ -23,20 +25,22 @@ import MyOrders from './react/components/profile/order/MyOrders.jsx';
 import MyConfig from './react/components/profile/config/MyConfig.jsx';
 
 ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route component={App}>
-      <Route path="/app/" component={MarketContainer} />
-      <Route path="/app/perfil" component={ProfileContainer}>
-        <Route path="minhas-posicoes" component={Position}/>
-        <Route path="minhas-ordens" component={MyOrders}/>
-        <Route path="historico-transacoes" component={MyHistory}/>
-        <Route path="fundos" component={Funds}/>
-        <Route path="minhas-configuracoes" component={MyConfig}/>
+  <Provider store={store}>
+    <Router history={browserHistory}>
+      <Route component={App}>
+        <Route path="/app/" component={MarketContainer} />
+        <Route path="/app/perfil" component={ProfileContainer}>
+          <Route path="minhas-posicoes" component={Position}/>
+          <Route path="minhas-ordens" component={MyOrders}/>
+          <Route path="historico-transacoes" component={MyHistory}/>
+          <Route path="fundos" component={Funds}/>
+          <Route path="minhas-configuracoes" component={MyConfig}/>
+        </Route>
+        <Route path="/app/mercado/:id" component={MarketDetailContainer} />
+        <Route path="/app/evento/:id" component={EventDetailContainer} />
       </Route>
-      <Route path="/app/mercado/:id" component={MarketDetailContainer} />
-      <Route path="/app/evento/:id" component={EventDetailContainer} />
-    </Route>
-  </Router>
+    </Router>
+  </Provider>
 ), document.getElementById('app'))
 
 // ReactDOM.render(<App />, document.getElementById('app'));

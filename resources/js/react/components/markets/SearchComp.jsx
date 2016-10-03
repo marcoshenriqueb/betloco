@@ -8,7 +8,7 @@ import FilterIcon from 'material-ui/svg-icons/content/filter-list';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-var style = {
+const style = {
   card: {
     margin: 20
   },
@@ -47,20 +47,24 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
 
 var checkbox = false;
 
-var SearchComp = React.createClass({
-  getInitialState: function(){
-    return {
+export default class SearchComp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       expanded: false
-    }
-  },
-  handleCheck: function(c){
+    };
+  }
+
+  handleCheck(c){
     c.checked = !this.props.checked;
     this.props.handleCheck();
-  },
-  handleSearchChange: function(val){
+  }
+
+  handleSearchChange(val){
     this.props.onUserInput(val.target.value);
-  },
-  componentDidUpdate: function(){
+  }
+
+  componentDidUpdate(){
     if (!checkbox) {
       checkbox = document.getElementById('check');
       if (checkbox) {
@@ -72,8 +76,9 @@ var SearchComp = React.createClass({
     if (this.state.expanded == false) {
       checkbox = false;
     }
-  },
-  render: function() {
+  }
+
+  render() {
     var filterToogle = null;
     if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       filterToogle = (
@@ -100,7 +105,7 @@ var SearchComp = React.createClass({
                 style={style.textField}
                 hintText="Procurar mercados"
                 value={this.props.search}
-                onChange={this.handleSearchChange}
+                onChange={this.handleSearchChange.bind(this)}
               />
               {filterToogle}
             </div>
@@ -109,7 +114,7 @@ var SearchComp = React.createClass({
         <CardText expandable={true} style={{paddingTop:0}}>
           <div className="filter-container">
             <SelectField value={this.props.category}
-                         onChange={this.props.handleCategoryChange}
+                         onChange={this.props.handleCategoryChange.bind(this)}
                          floatingLabelText="Categoria"
                          style={style.firstSelect}
                          floatingLabelStyle={style.filterLabelStyle}>
@@ -119,7 +124,7 @@ var SearchComp = React.createClass({
               <MenuItem value="eco" primaryText="Economia" />
             </SelectField>
             <SelectField value={this.props.order}
-                         onChange={this.props.handleOrderChange}
+                         onChange={this.props.handleOrderChange.bind(this)}
                          floatingLabelText="Ordem"
                          style={style.secSelect}
                          floatingLabelStyle={style.filterLabelStyle}>
@@ -140,6 +145,4 @@ var SearchComp = React.createClass({
       </Card>
     );
   }
-});
-
-export default SearchComp;
+}

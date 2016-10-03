@@ -1,90 +1,34 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import SearchComp from './markets/SearchComp.jsx';
 import _Event from './markets/Event.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-var MarketContainer = React.createClass({
-  getInitialState: function() {
-    return {
-      events: null,
-      search: '',
-      next: null,
-      checked: false,
-      category: 'todas',
-      order: '_score|desc'
-    };
-  },
-  getEvents: function(){
-    this.setState({
-      events: null
-    });
-    var url = '/api/markets/?format=json';
-    if (this.state.search.length > 0) {
-      url += '&query=' + this.state.search;
-    }
-    url += '&expired=' + this.state.checked;
-    url += '&category=' + this.state.category;
-    url += '&order=' + this.state.order;
-    var that = this;
-    req(url).then(function(response){
-      that.setState({
-        events: response.hits.hits,
-        next: response.next
-      });
-    });
-  },
-  getNextEventPage: function(){
-    var url = '/api/markets/?format=json&page=' + this.state.next;
-    url += '&query=' + this.state.search;
-    var that = this;
-    req(url).then(function(response){
-      var events = that.state.events.concat(response.hits.hits);
-      that.setState({
-        events: events,
-        next: response.next
-      });
-    });
-  },
-  componentDidMount: function() {
-    this.getEvents();
-  },
-  handleUserInput: function(filterText) {
-    this.setState({
-      search: filterText,
-    }, ()=>{
-      if (filterText.length > 2 || filterText.length == 0) {
-        this.getEvents();
-      }
-    });
-  },
-  handleCheck: function(){
-    this.setState({
-      checked: !this.state.checked
-    }, ()=>{
-      this.getEvents();
-    });
-  },
-  handleCategoryChange: function(e, k, v){
-    this.setState({
-      category: v
-    }, ()=>{
-      this.getEvents();
-    });
-  },
-  handleOrderChange: function(e, k, v){
-    this.setState({
-      order: v
-    }, ()=>{
-      this.getEvents();
-    });
-  },
-  render: function() {
+import {
+  getEvents,
+  getNextEventPage,
+  handleUserInput,
+  handleCheck,
+  handleCategoryChange,
+  handleOrderChange
+} from '../redux/actions/searchActions';
+
+class MarketContainer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.getEvents();
+  }
+
+  render() {
     var nextPageButton = null;
-    if (this.state.next != null) {
+    if (this.props.next != null) {
       nextPageButton = (
-        <FloatingActionButton mini={true} onClick={this.getNextEventPage}>
+        <FloatingActionButton mini={true} onClick={this.props.getNextEventPage}>
           <ContentAdd />
         </FloatingActionButton>
       );
@@ -100,21 +44,21 @@ var MarketContainer = React.createClass({
         <br/>
       </div>
     );
-    if (this.state.events != null) {
+    if (this.props.events != null) {
       markets = (
-        <_Event events={this.state.events} search={this.state.search} />
+        <_Event events={this.props.events} search={this.props.search} />
       );
     }
     return (
       <div className="app-content">
-        <SearchComp search={this.state.search}
-                    onUserInput={this.handleUserInput}
-                    checked={this.state.checked}
-                    handleCheck={this.handleCheck}
-                    category={this.state.category}
-                    handleCategoryChange={this.handleCategoryChange}
-                    order={this.state.order}
-                    handleOrderChange={this.handleOrderChange} />
+        <SearchComp search={this.props.search}
+                    onUserInput={this.props.handleUserInput}
+                    checked={this.props.checked}
+                    handleCheck={this.props.handleCheck}
+                    category={this.props.category}
+                    handleCategoryChange={this.props.handleCategoryChange}
+                    order={this.props.order}
+                    handleOrderChange={this.props.handleOrderChange} />
         {markets}
         {nextPageButton}
         <br />
@@ -122,6 +66,28 @@ var MarketContainer = React.createClass({
       </div>
     );
   }
-});
+}
 
-export default MarketContainer;
+function mapStateToProps(state){
+  return {
+    events: state.eventsSearch.events,
+    search: state.eventsSearch.search,
+    next: state.eventsSearch.next,
+    checked: state.eventsSearch.expired,
+    category: state.eventsSearch.category,
+    order: state.eventsSearch.order
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    getEvents,
+    getNextEventPage,
+    handleUserInput,
+    handleCheck,
+    handleCategoryChange,
+    handleOrderChange
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(MarketContainer);
