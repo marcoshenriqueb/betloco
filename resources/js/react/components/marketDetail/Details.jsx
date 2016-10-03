@@ -19,8 +19,8 @@ if (document.documentElement.clientWidth <= window.gvar.breakpoint){
   };
 }
 
-var Details = React.createClass({
-  render: function() {
+export default class Details extends React.Component {
+  render() {
     if (Object.keys(this.props.market).length !== 0 || this.props.market.constructor !== Object) {
       return (
         <Card initiallyExpanded={true}>
@@ -56,6 +56,4 @@ var Details = React.createClass({
       <div/>
     );
   }
-});
-
-export default Details;
+}

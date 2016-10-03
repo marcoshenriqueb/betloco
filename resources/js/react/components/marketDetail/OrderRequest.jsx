@@ -16,14 +16,16 @@ var styles = {
   }
 }
 
-var OrderRequest = React.createClass({
-  openBuy: function(){
+export default class OrderRequest extends React.Component {
+  openBuy(){
     this.props.openDialog(this.props.market, true);
-  },
-  openSell: function(){
+  }
+
+  openSell(){
     this.props.openDialog(this.props.market, false);
-  },
-  render: function() {
+  }
+
+  render() {
     if (this.props.custody) {
       var custody = this.props.custody;
     }else {
@@ -42,14 +44,12 @@ var OrderRequest = React.createClass({
         <span className="order-request__subtitle">{custody} papéis em custódia</span>
         <br/>
         <br/>
-        <RaisedButton primary={true} disabled={this.props.disableOrderRequest} onClick={this.openBuy} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
+        <RaisedButton primary={true} disabled={this.props.disableOrderRequest} onClick={this.openBuy.bind(this)} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Comprar" />
         <span className="order-request__subtitle">{bTip}</span>
         <br/>
-        <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
+        <RaisedButton secondary={true} disabled={this.props.disableOrderRequest} onClick={this.openSell.bind(this)} style={styles.buysellbtn} labelStyle={styles.buyselllbl} label="Vender" />
         <span className="order-request__subtitle">{sTip}</span>
       </div>
     );
   }
-});
-
-export default OrderRequest;
+}

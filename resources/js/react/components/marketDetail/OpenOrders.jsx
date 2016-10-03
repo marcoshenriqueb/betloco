@@ -1,5 +1,4 @@
 import React from 'react';
-import req from 'reqwest';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
@@ -32,15 +31,17 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   styles.th.paddingLeft = 24;
 }
 
-var OpenOrders = React.createClass({
-  getInitialState:function(){
-    return {
+export default class OpenOrders extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
       delete: false,
       selectedOrders : [],
       selectable: true
-    }
-  },
-  rowSelected : function(rows){
+    };
+  }
+
+  rowSelected(rows){
     if (rows.length > 0) {
       this.setState({
         delete: true,
@@ -52,14 +53,16 @@ var OpenOrders = React.createClass({
         selectedOrders: rows
       });
     }
-  },
-  onCancelClick: function(){
+  }
+
+  onCancelClick(){
     this.setState({
       delete: false,
       selectedOrders: []
     });
-  },
-  onDeleteClick: function(){
+  }
+
+  onDeleteClick(){
     var that = this;
     var deleted = this.props.orders.filter(function(v, k){
       return that.state.selectedOrders.indexOf(k) >= 0;
@@ -69,14 +72,16 @@ var OpenOrders = React.createClass({
       delete: false,
       selectable: false
     });
-  },
-  componentWillReceiveProps: function(){
+  }
+
+  componentWillReceiveProps(){
     this.setState({
       selectable: true,
       selectedOrders: []
     });
-  },
-  render: function() {
+  }
+
+  render() {
     var calculateAmount = function(a){
       return a;
     }
@@ -90,7 +95,7 @@ var OpenOrders = React.createClass({
         <CardHeader actAsExpander={true} showExpandableButton={true} title="Minhas Ordens em aberto" />
         <CardText expandable={true} style={styles.noPaddingTop}>
           <Table multiSelectable={true}
-                 onRowSelection={this.rowSelected}
+                 onRowSelection={this.rowSelected.bind(this)}
                  selectable={this.state.selectable}>
           <TableHeader enableSelectAll={false}
                        displaySelectAll={true}
@@ -116,7 +121,7 @@ var OpenOrders = React.createClass({
           <RaisedButton
             icon={<ActionDelete />}
             secondary={true}
-            onTouchTap={this.onDeleteClick}
+            onTouchTap={this.onDeleteClick.bind(this)}
             disabled={!this.state.delete}
             style={{
               margin: 12,
@@ -124,7 +129,7 @@ var OpenOrders = React.createClass({
           />
           <FlatButton
             label="desmarcar"
-            onTouchTap={this.onCancelClick}
+            onTouchTap={this.onCancelClick.bind(this)}
             style={{
               margin: 12,
             }}
@@ -133,6 +138,4 @@ var OpenOrders = React.createClass({
       </Card>
     );
   }
-});
-
-export default OpenOrders;
+}

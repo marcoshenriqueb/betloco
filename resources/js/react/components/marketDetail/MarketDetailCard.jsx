@@ -24,8 +24,8 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   styles.title.fontSize = 28;
 }
 
-var MarketDetailCard = React.createClass({
-  render: function() {
+export default class MarketDetailCard extends React.Component {
+  render() {
     if (this.props.market != null) {
       var marketClosed = null;
       var disableOrderRequest = false;
@@ -81,6 +81,4 @@ var MarketDetailCard = React.createClass({
       return (<div/>);
     }
   }
-});
-
-export default MarketDetailCard;
+}

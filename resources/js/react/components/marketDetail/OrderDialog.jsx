@@ -1,90 +1,25 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import PlaceOrderDialog from './PlaceOrderDialog.jsx';
 import ConfirmOrderDialog from './ConfirmOrderDialog.jsx';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 
-var OrderDialog = React.createClass({
-  getInitialState: function(){
-    return {
-      amount: '',
-      amountError: false,
-      price: '',
-      priceError: false,
-      content: 0,
-      error: false,
-      disabled: false
-    };
-  },
-  handleAmountChange: function(e){
-    if (!isNaN(e.target.value) && Number.isInteger(Number(e.target.value))) {
-      var amount = Number(e.target.value);
-      if (Number(e.target.value) == 0) {
-        amount = '';
-      }
-      this.setState({
-        amount: amount
-      })
-    }
-  },
-  addAmount: function(){
-    this.setState({
-      amount: Number(this.state.amount) + 100
-    });
-  },
-  removeAmount: function(){
-    var amount = 0;
-    if (this.state.amount > 100) {
-      amount = Number(this.state.amount) - 100;
-    }
-    this.setState({
-      amount: amount
-    });
-  },
-  handlePriceChange: function(e){
-    if (!isNaN(e.target.value) && e.target.value < 100 && e.target.value >= 0 && Number.isInteger(Number(e.target.value))) {
-      var price = Number(e.target.value);
-      if (Number(e.target.value) == 0) {
-        price = '';
-      }
-      this.setState({
-        price: price
-      })
-    }
-  },
-  addBestPrice: function(){
-    if (this.props.dialogContent.buy) {
-      var order = this.props.dialogContent.market.topBuys[0];
-    }else {
-      var order = this.props.dialogContent.market.topSells[0];
-    }
-    this.setState({
-      price: order.price*100
-    });
-  },
-  handleOrder: function(){
-    if (this.state.amount.length != 0) {
-      if (this.state.price.length != 0) {
-        this.setState({
-          content: 1,
-          priceError: false,
-          amountError: false
-        });
-      }else {
-        this.setState({
-          priceError: true,
-          amountError: false
-        });
-      }
-    }else {
-      this.setState({
-        amountError: true
-      });
-    }
-  },
-  handleConfirmOrder:function(){
+import {
+  handleAmountChange,
+  removeAmount,
+  addAmount,
+  handlePriceChange,
+  addBestPrice,
+  handleOrder,
+  returnStep,
+  resetOrderState
+} from '../../redux/actions/orderActions';
+
+class OrderDialog extends React.Component {
+  handleConfirmOrder(){
     this.setState({
       disabled: true
     });
@@ -112,27 +47,14 @@ var OrderDialog = React.createClass({
         });
       }
     });
-  },
-  returnStep: function(){
-    this.setState({
-      content: 0,
-      error: false,
-      disabled: false
-    });
-  },
-  returnStepAndClose: function(){
-    this.setState({
-      amount: '',
-      price: '',
-      content: 0,
-      amountError: false,
-      priceError: false,
-      error: false,
-      disabled: false
-    });
+  }
+
+  returnStepAndClose(){
+    this.props.resetOrderState();
     this.props.closeDialog();
-  },
-  render: function(){
+  }
+
+  render(){
     var styles = {
       dialog:{
         width: "100%"
@@ -158,7 +80,7 @@ var OrderDialog = React.createClass({
         <FlatButton
           label="Cancelar"
           primary={true}
-          onTouchTap={this.returnStepAndClose}
+          onTouchTap={this.returnStepAndClose.bind(this)}
         />,
         <RaisedButton
           label={this.props.dialogContent.buy ? 'Comprar' : 'Vender'}
@@ -185,7 +107,7 @@ var OrderDialog = React.createClass({
         <FlatButton
           label="Cancelar"
           primary={true}
-          onTouchTap={this.returnStepAndClose}
+          onTouchTap={this.returnStepAndClose.bind(this)}
         />,
         <RaisedButton
           label="Confirmar"
@@ -230,6 +152,31 @@ var OrderDialog = React.createClass({
       </Dialog>
     );
   }
-});
+}
 
-export default OrderDialog;
+function mapStateToProps(state){
+  return {
+    amount: state.order.amount,
+    amountError: state.order.amountError,
+    price: state.order.price,
+    priceError: state.order.priceError,
+    content: state.order.content,
+    error: state.order.error,
+    disabled: state.order.disabled
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    handleAmountChange,
+    removeAmount,
+    addAmount,
+    handlePriceChange,
+    addBestPrice,
+    handleOrder,
+    returnStep,
+    resetOrderState
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(OrderDialog);

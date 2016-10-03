@@ -1,76 +1,27 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import MarketDetailCard from './marketDetail/MarketDetailCard.jsx';
 import Breadcrumb from './general/Breadcrumb.jsx';
 
-var MarketDetailContainer = React.createClass({
-  getInitialState: function() {
-    return {
-      market: null,
-      custody: false,
-      dialog: false,
-      dialogContent: undefined,
-      orders: []
-    };
-  },
-  getMarket: function(){
-    var that = this;
-    req('/api/markets/choice/' + this.props.params.id + '/?format=json').then(function(response){
-      var market = response;
-      that.setState({
-        market: market
-      });
-      that.openDisqus();
-    });
-  },
-  getCustody: function(){
-    var that = this;
-    req('/api/markets/custody/' + this.props.params.id + '/?format=json').then(function(response){
-      var custody = response;
-      that.setState({
-        custody: custody
-      });
-    });
-  },
-  getOpenOrders: function(){
-    var that = this;
-    req('/api/markets/open-orders/?market=' + this.props.params.id + '&format=json').then(function(response){
-      var orders = response;
-      that.setState({
-        orders: orders
-      });
-    });
-  },
-  deleteOrders: function(orders){
-    var that = this;
-    req({
-      url: '/api/markets/open-orders/?market=' + this.props.params.id + '&format=json&orders=' + JSON.stringify(orders),
-      headers: {
-        'X-CSRFToken': document.getElementById('token').getAttribute('value')
-      },
-      method: 'delete'
-    }).then(function(response){
-      that.props.updateBalance();
-    });
-  },
-  connectToMarket: function(){
-    var that = this;
-    var socket = new WebSocket("ws://" + window.location.host + "/market/" + this.props.params.id + '/');
-    socket.onopen = function() {
-      socket.onmessage = function(e) {
-        var m = JSON.parse(e.data);
-        that.setState({
-          market: m.market
-        });
-        that.props.updateBalance();
-        that.getCustody();
-        that.getOpenOrders();
-      }
-    }
-  },
+import {
+  getMarket,
+  getCustody,
+  getOpenOrders,
+  deleteOrders,
+  openDialog,
+  closeDialog,
+  connectToMarket
+} from '../redux/actions/marketActions';
+
+class MarketDetailContainer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   openDisqus(){
-    var identifier = 'market|' + this.state.market.id;
-    var url = "http://www.guroo.bet/app/mercado/" + this.state.market.id + "/";
+    var identifier = 'market|' + this.props.market.id;
+    var url = "http://www.guroo.bet/app/mercado/" + this.props.market.id + "/";
     if (window.DISQUS != undefined) {
       window.DISQUS.reset({
         reload: true,
@@ -91,27 +42,24 @@ var MarketDetailContainer = React.createClass({
           (d.head || d.body).appendChild(s);
       })();
     }
-  },
-  componentDidMount: function() {
-    this.getMarket();
-    this.getCustody();
-    this.connectToMarket();
-    this.getOpenOrders();
-  },
-  openDialog: function(market, buy){
-    this.setState({
-      dialog: true,
-      dialogContent: {
-        market: market,
-        buy: buy
-      }
+  }
+
+  componentDidMount() {
+    this.props.connectToMarket(this.props.params.id, ()=>{
+      this.props.getCustody(this.props.params.id);
+      this.props.getOpenOrders(this.props.params.id);
+      this.props.updateBalance();
     });
-  },
-  closeDialog: function(){
-    this.setState({dialog: false});
-  },
-  render: function() {
-    if (this.state.market == null) {
+    this.props.getMarket(this.props.params.id, this.openDisqus.bind(this));
+    this.props.getCustody(this.props.params.id);
+    this.props.getOpenOrders(this.props.params.id);
+  }
+
+  render() {
+    const onDeleteOrders = (o) => {
+      this.props.deleteOrders(this.props.params.id, o)
+    }
+    if (this.props.market == null) {
       return (
         <div style={{
                   width:'100%',
@@ -129,17 +77,17 @@ var MarketDetailContainer = React.createClass({
       )
     }
     var breadcrumb = null;
-    if (this.state.market.event != undefined) {
-      if (this.state.market.event.markets.length > 1) {
+    if (this.props.market.event != undefined) {
+      if (this.props.market.event.markets.length > 1) {
         var path = [
           {
             title_short: "evento",
-            title: this.state.market.event.title,
-            path: '/app/evento/' + this.state.market.event.id + '/'
+            title: this.props.market.event.title,
+            path: '/app/evento/' + this.props.market.event.id + '/'
           },
           {
-            title_short: this.state.market.title_short,
-            title: this.state.market.title_short,
+            title_short: this.props.market.title_short,
+            title: this.props.market.title_short,
             path: null
           }
         ]
@@ -149,8 +97,8 @@ var MarketDetailContainer = React.createClass({
       }else {
         var path = [
           {
-            title_short: this.state.market.title_short,
-            title: this.state.market.title,
+            title_short: this.props.market.title_short,
+            title: this.props.market.title,
             path: null
           }
         ]
@@ -162,21 +110,43 @@ var MarketDetailContainer = React.createClass({
     return (
       <div className="marketdetail-content container">
         {breadcrumb}
-        <MarketDetailCard dialog={this.state.dialog}
+        <MarketDetailCard dialog={this.props.dialog}
                           balance={this.props.balance}
                           updateBalance={this.props.updateBalance}
-                          dialogContent={this.state.dialogContent}
-                          openDialog={this.openDialog}
-                          closeDialog={this.closeDialog}
-                          custody={this.state.custody}
-                          market={this.state.market}
-                          orders={this.state.orders}
-                          onDeleteOrders={this.deleteOrders} />
+                          dialogContent={this.props.dialogContent}
+                          openDialog={this.props.openDialog}
+                          closeDialog={this.props.closeDialog}
+                          custody={this.props.custody}
+                          market={this.props.market}
+                          orders={this.props.orders}
+                          onDeleteOrders={onDeleteOrders} />
         <br/>
         <div id="disqus_thread"></div>
       </div>
     );
   }
-});
+}
 
-export default MarketDetailContainer;
+function mapStateToProps(state){
+  return {
+    market: state.market.market,
+    custody: state.market.custody,
+    dialog: state.market.dialog,
+    dialogContent: state.market.dialogContent,
+    orders: state.market.orders
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    getMarket,
+    getCustody,
+    getOpenOrders,
+    deleteOrders,
+    openDialog,
+    closeDialog,
+    connectToMarket
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(MarketDetailContainer);

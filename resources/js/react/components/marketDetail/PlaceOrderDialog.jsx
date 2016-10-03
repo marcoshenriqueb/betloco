@@ -18,8 +18,8 @@ var style = {
   }
 }
 
-var PlaceOrderDialog = React.createClass({
-  render: function(){
+export default class PlaceOrderDialog extends React.Component {
+  render(){
     if (this.props.dialogContent.buy) {
       var orders = this.props.dialogContent.market.topBuys;
     }else {
@@ -109,6 +109,4 @@ var PlaceOrderDialog = React.createClass({
       </div>
     )
   }
-});
-
-export default PlaceOrderDialog;
+}

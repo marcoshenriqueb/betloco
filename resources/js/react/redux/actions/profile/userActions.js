@@ -1,9 +1,9 @@
 import req from 'reqwest';
 
-const updateUser = (dispatch, user) => {
+const updateUser = (type, data) => {
   return {
-    type: 'UPDATE_USER',
-    payload: user
+    type: type,
+    payload: data
   }
 }
 
@@ -11,24 +11,25 @@ export const getUser = () =>{
   return function(dispatch){
     req('/api/users/me/?format=json').then(function(response){
       var user = response;
-      dispatch(updateUser(dispatch, user));
+      dispatch(updateUser('UPDATE_USER', user));
     }, function(){
-      dispatch(updateUser(dispatch, 'anom'));
+      dispatch(updateUser('UPDATE_USER', 'anom'));
     });
-  }
-}
-
-const updateUserBalance = (dispatch, bal) => {
-  return {
-    type: 'UPDATE_USER_BALANCE',
-    payload: bal
   }
 }
 
 export const getBalance = () =>{
   return function(dispatch){
     req('/api/transactions/balance/?format=json').then(function(response){
-      dispatch(updateUserBalance(dispatch, response));
+      dispatch(updateUser('UPDATE_USER_BALANCE', response));
+    });
+  }
+}
+
+export const getEstimatedBalance = (preview) => {
+  return function (dispatch){
+    req('/api/transactions/balance/?preview=' + encodeURI(JSON.stringify(preview)) + '&format=json').then(function(response){
+      dispatch(updateUser('UPDATE_USER_ESTIMATED_BALANCE', response));
     });
   }
 }

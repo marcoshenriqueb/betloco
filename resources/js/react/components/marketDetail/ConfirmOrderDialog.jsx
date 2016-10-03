@@ -1,6 +1,11 @@
 import React from 'react';
-import req from 'reqwest';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
+import {
+  getEstimatedBalance
+} from '../../redux/actions/profile/userActions';
 
 var styles = {
   right: {
@@ -27,29 +32,22 @@ var styles = {
   }
 }
 
-var ConfirmOrderDialog = React.createClass({
-  getInitialState: function(){
-    return {
-      estimatedBalance: false
-    }
-  },
-  componentDidMount: function(){
-    this.getEstimatedBalance();
-  },
-  getEstimatedBalance: function(){
+class ConfirmOrderDialog extends React.Component {
+
+  componentDidMount(){
+    this.getEstimatedBal();
+  }
+
+  getEstimatedBal(){
     var preview = {
       amount: (this.props.buy) ? this.props.amount : this.props.amount*-1,
       price: this.props.price/100,
       market__id: this.props.market.id
     }
-    var that = this;
-    req('/api/transactions/balance/?preview=' + encodeURI(JSON.stringify(preview)) + '&format=json').then(function(response){
-      that.setState({
-        estimatedBalance: response
-      });
-    });
-  },
-  render: function(){
+    this.props.getEstimatedBalance(preview);
+  }
+
+  render(){
     var rows = [
       {
         border: false,
@@ -76,14 +74,14 @@ var ConfirmOrderDialog = React.createClass({
         border: true,
         th: [
           {content: 'Variação no Risco (R$)', style: styles.bold},
-          {content: (this.state.estimatedBalance)?(this.state.estimatedBalance.risk-this.props.balance.risk).toFixed(2):'0', style: styles.boldRight}
+          {content: (this.props.estimatedBalance)?(this.props.estimatedBalance.risk-this.props.balance.risk).toFixed(2):'0', style: styles.boldRight}
         ]
       },
       {
         border: true,
         th: [
           {content: 'Saldo Estimado (R$)', style: styles.bold},
-          {content: (this.state.estimatedBalance)?(this.state.estimatedBalance.total).toFixed(2):'0', style: styles.boldRight}
+          {content: (this.props.estimatedBalance)?(this.props.estimatedBalance.total).toFixed(2):'0', style: styles.boldRight}
         ]
       }
     ]
@@ -143,6 +141,18 @@ var ConfirmOrderDialog = React.createClass({
       </div>
     )
   }
-});
+}
 
-export default ConfirmOrderDialog;
+function mapStateToProps(state){
+  return {
+    estimatedBalance: state.profileUser.estimatedBalance
+  };
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({
+    getEstimatedBalance
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(ConfirmOrderDialog);

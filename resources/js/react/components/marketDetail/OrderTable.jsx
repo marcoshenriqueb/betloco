@@ -26,8 +26,8 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   styles.th.paddingLeft = 24;
 }
 
-var OrderTable = React.createClass({
-  render: function(){
+export default class OrderTable extends React.Component {
+  render(){
     var orders = null;
     if (this.props.orders.length > 0) {
       orders = this.props.orders.map((o, k) => {
@@ -70,6 +70,4 @@ var OrderTable = React.createClass({
       </Table>
     );
   }
-});
-
-export default OrderTable;
+}

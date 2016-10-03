@@ -14,8 +14,8 @@ var styles = {
   }
 }
 
-var OrderBook = React.createClass({
-  render: function() {
+export default class OrderBook extends React.Component {
+  render() {
     var expanded = false;
     var content = (
       <CardText expandable={true} style={styles.cardtext} className="orderbook-card__details">
@@ -44,6 +44,4 @@ var OrderBook = React.createClass({
       </Card>
     );
   }
-});
-
-export default OrderBook;
+}
