@@ -5,7 +5,7 @@ import {
 
 const initalState = {
   events: null,
-  eventPrices: {},
+  eventPrices: null,
   search: '',
   next: null,
   expired: false,

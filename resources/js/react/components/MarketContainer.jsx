@@ -49,7 +49,9 @@ class MarketContainer extends React.Component {
     );
     if (this.props.events != null) {
       markets = (
-        <_Event events={this.props.events} search={this.props.search} />
+        <_Event events={this.props.events}
+                search={this.props.search}
+                prices={this.props.eventPrices} />
       );
     }
     return (
@@ -78,7 +80,8 @@ function mapStateToProps(state){
     next: state.eventsSearch.next,
     checked: state.eventsSearch.expired,
     category: state.eventsSearch.category,
-    order: state.eventsSearch.order
+    order: state.eventsSearch.order,
+    eventPrices: state.eventsSearch.eventPrices
   };
 }
 

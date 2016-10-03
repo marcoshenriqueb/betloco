@@ -58206,7 +58206,9 @@ var MarketContainer = function (_React$Component) {
         _react2.default.createElement('br', null)
       );
       if (this.props.events != null) {
-        markets = _react2.default.createElement(_Event3.default, { events: this.props.events, search: this.props.search });
+        markets = _react2.default.createElement(_Event3.default, { events: this.props.events,
+          search: this.props.search,
+          prices: this.props.eventPrices });
       }
       return _react2.default.createElement(
         'div',
@@ -58237,7 +58239,8 @@ function mapStateToProps(state) {
     next: state.eventsSearch.next,
     checked: state.eventsSearch.expired,
     category: state.eventsSearch.category,
-    order: state.eventsSearch.order
+    order: state.eventsSearch.order,
+    eventPrices: state.eventsSearch.eventPrices
   };
 }
 
@@ -60321,14 +60324,25 @@ var _Event = function (_React$Component) {
   }
 
   _createClass(_Event, [{
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps) {
+      if (JSON.stringify(this.props.events) === JSON.stringify(nextProps.events) && JSON.stringify(this.props.prices) === JSON.stringify(nextProps.prices)) {
+        return false;
+      }
+      return true;
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
         { className: 'container markets-container' },
         this.props.events.map(function (_event, id) {
           return _react2.default.createElement(_EventCard2.default, { _event: _event,
-            key: id });
+            key: id,
+            prices: _this2.props.prices });
         })
       );
     }
@@ -60338,6 +60352,11 @@ var _Event = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = _Event;
+
+
+_Event.propTypes = {
+  events: _react2.default.PropTypes.array.isRequired
+};
 
 },{"./EventCard.jsx":699,"react":663}],699:[function(require,module,exports){
 'use strict';
@@ -60415,6 +60434,14 @@ var EventCard = function (_React$Component) {
   }
 
   _createClass(EventCard, [{
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps) {
+      if (nextProps.prices != null) {
+        return true;
+      }
+      return false;
+    }
+  }, {
     key: 'goToMarketDetail',
     value: function goToMarketDetail() {
       if (this.props._event._source.markets.length == 1) {
@@ -60426,8 +60453,14 @@ var EventCard = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       if (this.props._event._source.markets.length == 1) {
         var m = this.props._event._source.markets[0];
+        var price = null;
+        if (this.props.prices != null && this.props.prices[m.id] != null) {
+          price = this.props.prices[m.id].price;
+        }
         var textContent = [_react2.default.createElement(
           'div',
           { key: 1 },
@@ -60442,12 +60475,12 @@ var EventCard = function (_React$Component) {
             _react2.default.createElement(
               'p',
               null,
-              m.lastCompleteOrder != null ? '(' + (m.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'
+              price != null ? '(' + (price * 100).toFixed(1) + '%)' : ''
             )
           ),
           _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
             mode: 'determinate',
-            value: m.lastCompleteOrder != null ? m.lastCompleteOrder.price * 100 : 0 })
+            value: price != null ? price * 100 : 0 })
         ), _react2.default.createElement(
           'div',
           { key: 2 },
@@ -60462,52 +60495,60 @@ var EventCard = function (_React$Component) {
             _react2.default.createElement(
               'p',
               null,
-              m.lastCompleteOrder != null ? '(' + (100 - m.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'
+              price != null ? '(' + (100 - price * 100).toFixed(1) + '%)' : ''
             )
           ),
           _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
             mode: 'determinate',
-            value: m.lastCompleteOrder != null ? 100 - m.lastCompleteOrder.price * 100 : 0 })
+            value: price != null ? 100 - price * 100 : 0 })
         )];
       } else {
-        var totalPrice = 0;
-        for (var k in this.props._event._source.markets) {
-          if (this.props._event._source.markets[k].lastCompleteOrder != null) {
-            totalPrice += this.props._event._source.markets[k].lastCompleteOrder.price;
+        var textContent;
+
+        (function () {
+          var totalPrice = 0;
+          if (_this2.props.prices != null) {
+            for (var k in _this2.props._event._source.markets) {
+              var _m = _this2.props._event._source.markets[k];
+              if (_this2.props.prices[_m.id] != null) {
+                totalPrice += _this2.props.prices[_m.id].price;
+              }
+            }
           }
-        }
-        var textContent = this.props._event._source.markets.map(function (m, k) {
-          var prob = m.lastCompleteOrder != null ? m.lastCompleteOrder.price / totalPrice * 100 : 0;
-          if (k < 2) {
-            return _react2.default.createElement(
-              'div',
-              { key: k },
-              _react2.default.createElement(
+          textContent = _this2.props._event._source.markets.map(function (m, k) {
+            var prob = null;
+            if (_this2.props.prices != null) {
+              prob = _this2.props.prices[m.id] != null ? _this2.props.prices[m.id].price / totalPrice * 100 : 0;
+            }
+            if (k < 2) {
+              return _react2.default.createElement(
                 'div',
-                { className: 'marketcard-predictions__choices' },
+                { key: k },
                 _react2.default.createElement(
-                  _reactRouter.IndexLink,
-                  { to: '/app/mercado/' + m.id + '/' },
+                  'div',
+                  { className: 'marketcard-predictions__choices' },
                   _react2.default.createElement(
-                    'h5',
-                    { style: style.marketTitle },
-                    m.title_short
+                    _reactRouter.IndexLink,
+                    { to: '/app/mercado/' + m.id + '/' },
+                    _react2.default.createElement(
+                      'h5',
+                      { style: style.marketTitle },
+                      m.title_short
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'p',
+                    null,
+                    prob != null ? '(' + prob.toFixed(1) + '%)' : ''
                   )
                 ),
-                _react2.default.createElement(
-                  'p',
-                  null,
-                  '(',
-                  prob.toFixed(1),
-                  '%)'
-                )
-              ),
-              _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
-                mode: 'determinate',
-                value: prob })
-            );
-          }
-        });
+                _react2.default.createElement(_LinearProgress2.default, { style: style.linear,
+                  mode: 'determinate',
+                  value: prob })
+              );
+            }
+          });
+        })();
       }
       return _react2.default.createElement(
         _Card.Card,
@@ -60558,6 +60599,11 @@ var EventCard = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = EventCard;
+
+
+EventCard.propTypes = {
+  _event: _react2.default.PropTypes.object.isRequired
+};
 
 },{"material-ui/Card":12,"material-ui/LinearProgress":35,"moment":408,"react":663,"react-router":452}],700:[function(require,module,exports){
 'use strict';
@@ -61824,7 +61870,7 @@ var fetchEventsPrices = function fetchEventsPrices(dispatch, data) {
       ids: JSON.stringify(ids)
     }
   }).then(function (response) {
-    dispatch(updateFetchedEventsPrices(response.data));
+    dispatch(updateFetchedEventsPrices(response));
   });
 };
 
@@ -62051,7 +62097,7 @@ var _actionTypes = require('../actionTypes');
 
 var initalState = {
   events: null,
-  eventPrices: {},
+  eventPrices: null,
   search: '',
   next: null,
   expired: false,

@@ -29,7 +29,7 @@ const fetchEventsPrices = (dispatch, data) => {
       ids: JSON.stringify(ids)
     }
   }).then(function(response){
-    dispatch(updateFetchedEventsPrices(response.data));
+    dispatch(updateFetchedEventsPrices(response));
   });
 }
 

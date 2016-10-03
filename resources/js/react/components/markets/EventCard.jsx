@@ -39,6 +39,13 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
 }
 
 export default class EventCard extends React.Component{
+  shouldComponentUpdate(nextProps){
+    if (nextProps.prices != null) {
+      return true;
+    }
+    return false;
+  }
+
   goToMarketDetail(){
     if (this.props._event._source.markets.length == 1) {
       browserHistory.push('/app/mercado/' + this.props._event._source.markets[0].id + '/');
@@ -49,36 +56,46 @@ export default class EventCard extends React.Component{
 
   render() {
     if (this.props._event._source.markets.length == 1) {
-      var m = this.props._event._source.markets[0]
+      let m = this.props._event._source.markets[0]
+      let price = null;
+      if (this.props.prices != null && this.props.prices[m.id] != null) {
+        price = this.props.prices[m.id].price;
+      }
       var textContent = [
         <div key={1}>
           <div className="marketcard-predictions__choices">
             <h5 style={style.marketTitle}>Sim</h5>
-            <p>{m.lastCompleteOrder != null ? '(' + (m.lastCompleteOrder.price * 100).toFixed(1) + '%)' : '(0%)'}</p>
+            <p>{price != null ? '(' + (price * 100).toFixed(1) + '%)' : ''}</p>
           </div>
           <LinearProgress style={style.linear}
                           mode="determinate"
-                          value={m.lastCompleteOrder != null ? m.lastCompleteOrder.price * 100 : 0} />
+                          value={price != null ? price * 100 : 0} />
         </div>,
         <div key={2}>
           <div className="marketcard-predictions__choices">
             <h5 style={style.marketTitle}>Não</h5>
-            <p>{m.lastCompleteOrder != null ? '(' + (100-(m.lastCompleteOrder.price * 100)).toFixed(1) + '%)' : '(0%)'}</p>
+            <p>{price != null ? '(' + (100-(price * 100)).toFixed(1) + '%)' : ''}</p>
           </div>
           <LinearProgress style={style.linear}
                           mode="determinate"
-                          value={m.lastCompleteOrder != null ? 100-(m.lastCompleteOrder.price * 100) : 0} />
+                          value={price != null ? 100-(price * 100) : 0} />
         </div>
       ]
     }else {
-      var totalPrice = 0;
-      for (var k in this.props._event._source.markets) {
-        if (this.props._event._source.markets[k].lastCompleteOrder != null) {
-          totalPrice += this.props._event._source.markets[k].lastCompleteOrder.price;
+      let totalPrice = 0;
+      if (this.props.prices != null) {
+        for (let k in this.props._event._source.markets) {
+          let m = this.props._event._source.markets[k];
+          if (this.props.prices[m.id] != null) {
+            totalPrice += this.props.prices[m.id].price;
+          }
         }
       }
       var textContent = this.props._event._source.markets.map((m, k)=> {
-        var prob = m.lastCompleteOrder != null ? m.lastCompleteOrder.price / totalPrice * 100 : 0;
+        let prob = null;
+        if (this.props.prices != null) {
+          prob = this.props.prices[m.id] != null ? this.props.prices[m.id].price / totalPrice * 100 : 0;
+        }
         if (k < 2) {
           return (
             <div key={k}>
@@ -86,7 +103,7 @@ export default class EventCard extends React.Component{
                 <IndexLink to={'/app/mercado/' + m.id + '/'}>
                   <h5 style={style.marketTitle}>{m.title_short}</h5>
                 </IndexLink>
-                <p>({prob.toFixed(1)}%)</p>
+                <p>{(prob!=null)?'('+prob.toFixed(1)+'%)':''}</p>
               </div>
               <LinearProgress style={style.linear}
                               mode="determinate"
@@ -122,3 +139,7 @@ export default class EventCard extends React.Component{
     );
   }
 }
+
+EventCard.propTypes = {
+  _event: React.PropTypes.object.isRequired
+};
