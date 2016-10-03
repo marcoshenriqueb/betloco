@@ -20,6 +20,13 @@ class ListEvents(APIView):
         order = '_score|desc' if 'order' not in request.query_params else request.query_params['order']
         return Response(es.search(query, page=page, expired=expired, order=order, category=category))
 
+class ListEventsPrices(APIView):
+    """docstring for ListEventsPrices"""
+    def post(self, request):
+        if 'ids' in request.data:
+            ids = json.loads(request.data['ids'])
+            return Response(Market.objects.getSearchPrices(ids))
+
 class DetailEvent(generics.RetrieveAPIView):
     """
     View to list all events in the system.

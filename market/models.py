@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Sum, Avg, Q, F, Case, When
 from django.utils import timezone
@@ -101,6 +102,18 @@ class MarketManager(models.Manager):
                     )))['position'] or 0
         return result
 
+    def getSearchPrices(self, ids):
+        markets = self.filter(event__id__in=ids)
+        result = {}
+        for m in markets:
+            if m.lastCompleteOrder is not None:
+                result[m.id] = {
+                    'price': m.lastCompleteOrder.price,
+                    'amount': m.lastCompleteOrder.amount
+                }
+            else:
+                result[m.id] = None
+        return result
 
 class Market(models.Model):
     """docstring for Market"""
@@ -178,13 +191,16 @@ class Market(models.Model):
     topSells = property(_getTopToSell)
 
     def _getLastCompleteOrder(self):
-        o = Operation.objects.filter(Q(from_order__market__id=self.id) | Q(to_order__market__id=self.id)) \
-                             .filter(from_liquidation=0) \
-                             .order_by('-created_at')[0:1].get()
-        order = self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
-        if order.id == o.from_order_id:
-            order.price = o.price
-        return order
+        try:
+            o = Operation.objects.filter(Q(from_order__market__id=self.id) | Q(to_order__market__id=self.id)) \
+                                 .filter(from_liquidation=0) \
+                                 .order_by('-created_at')[0:1].get()
+            order = self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
+            if order.id == o.from_order_id:
+                order.price = o.price
+            return order
+        except ObjectDoesNotExist:
+            return None
     lastCompleteOrder = property(_getLastCompleteOrder)
 
 

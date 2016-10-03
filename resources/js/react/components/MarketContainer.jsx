@@ -8,7 +8,10 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import {
   getEvents,
-  getNextEventPage,
+  getNextEventPage
+} from '../redux/actions/eventsFetchingActions';
+
+import {
   handleUserInput,
   handleCheck,
   handleCategoryChange,

@@ -57648,7 +57648,7 @@ _reactDom2.default.render(_react2.default.createElement(
 
 // ReactDOM.render(<App />, document.getElementById('app'));
 
-},{"./react/App.jsx":681,"./react/components/EventDetailContainer.jsx":683,"./react/components/MarketContainer.jsx":684,"./react/components/MarketDetailContainer.jsx":685,"./react/components/ProfileContainer.jsx":686,"./react/components/profile/config/MyConfig.jsx":701,"./react/components/profile/funds/Funds.jsx":702,"./react/components/profile/history/MyHistory.jsx":703,"./react/components/profile/order/MyOrders.jsx":704,"./react/components/profile/position/Position.jsx":705,"./react/redux/store":710,"react":663,"react-dom":409,"react-redux":412,"react-router":452,"react-tap-event-plugin":491}],681:[function(require,module,exports){
+},{"./react/App.jsx":681,"./react/components/EventDetailContainer.jsx":683,"./react/components/MarketContainer.jsx":684,"./react/components/MarketDetailContainer.jsx":685,"./react/components/ProfileContainer.jsx":686,"./react/components/profile/config/MyConfig.jsx":701,"./react/components/profile/funds/Funds.jsx":702,"./react/components/profile/history/MyHistory.jsx":703,"./react/components/profile/order/MyOrders.jsx":704,"./react/components/profile/position/Position.jsx":705,"./react/redux/store":711,"react":663,"react-dom":409,"react-redux":412,"react-router":452,"react-tap-event-plugin":491}],681:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58155,6 +58155,8 @@ var _add = require('material-ui/svg-icons/content/add');
 
 var _add2 = _interopRequireDefault(_add);
 
+var _eventsFetchingActions = require('../redux/actions/eventsFetchingActions');
+
 var _searchActions = require('../redux/actions/searchActions');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -58241,8 +58243,8 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return (0, _redux.bindActionCreators)({
-    getEvents: _searchActions.getEvents,
-    getNextEventPage: _searchActions.getNextEventPage,
+    getEvents: _eventsFetchingActions.getEvents,
+    getNextEventPage: _eventsFetchingActions.getNextEventPage,
     handleUserInput: _searchActions.handleUserInput,
     handleCheck: _searchActions.handleCheck,
     handleCategoryChange: _searchActions.handleCategoryChange,
@@ -58252,7 +58254,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MarketContainer);
 
-},{"../redux/actions/searchActions":707,"./markets/Event.jsx":698,"./markets/SearchComp.jsx":700,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":663,"react-redux":412,"redux":670}],685:[function(require,module,exports){
+},{"../redux/actions/eventsFetchingActions":707,"../redux/actions/searchActions":708,"./markets/Event.jsx":698,"./markets/SearchComp.jsx":700,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":663,"react-redux":412,"redux":670}],685:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61787,7 +61789,7 @@ var GET_EVENTS_FETCHING = exports.GET_EVENTS_FETCHING = 'GET_EVENTS_FETCHING';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.handleOrderChange = exports.handleCategoryChange = exports.handleCheck = exports.handleUserInput = exports.getNextEventPage = exports.getEvents = undefined;
+exports.getNextEventPage = exports.getEvents = exports.fetchEvents = undefined;
 
 var _reqwest = require('reqwest');
 
@@ -61798,6 +61800,33 @@ var _store = require('../store');
 var _actionTypes = require('../actionTypes');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var updateFetchedEventsPrices = function updateFetchedEventsPrices(data) {
+  return {
+    type: 'UPDATE_FETCHED_EVENTS_PRICE',
+    payload: data
+  };
+};
+
+var fetchEventsPrices = function fetchEventsPrices(dispatch, data) {
+  var url = "/api/markets/prices/?format=json";
+  var ids = [];
+  for (var i = 0; i < data.length; i++) {
+    ids.push(data[i]._source.id);
+  }
+  (0, _reqwest2.default)({
+    url: url,
+    headers: {
+      'X-CSRFToken': document.getElementById('token').getAttribute('value')
+    },
+    method: 'post',
+    data: {
+      ids: JSON.stringify(ids)
+    }
+  }).then(function (response) {
+    dispatch(updateFetchedEventsPrices(response.data));
+  });
+};
 
 var fetchingEvents = function fetchingEvents() {
   return {
@@ -61816,7 +61845,7 @@ var updateFetchedEvents = function updateFetchedEvents(response) {
   };
 };
 
-var fecthEvents = function fecthEvents(dispatch) {
+var fetchEvents = exports.fetchEvents = function fetchEvents(dispatch) {
   dispatch(fetchingEvents());
   var params = _store.store.getState().eventsSearch;
   var url = '/api/markets/?format=json';
@@ -61828,12 +61857,13 @@ var fecthEvents = function fecthEvents(dispatch) {
   url += '&order=' + params.order;
   (0, _reqwest2.default)(url).then(function (response) {
     dispatch(updateFetchedEvents(response));
+    fetchEventsPrices(dispatch, response.hits.hits);
   });
 };
 
 var getEvents = exports.getEvents = function getEvents() {
   return function (dispatch) {
-    fecthEvents(dispatch);
+    fetchEvents(dispatch);
   };
 };
 
@@ -61858,6 +61888,16 @@ var getNextEventPage = exports.getNextEventPage = function getNextEventPage() {
   };
 };
 
+},{"../actionTypes":706,"../store":711,"reqwest":679}],708:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleOrderChange = exports.handleCategoryChange = exports.handleCheck = exports.handleUserInput = undefined;
+
+var _eventsFetchingActions = require('./eventsFetchingActions');
+
 var updateUserInput = function updateUserInput(filterText) {
   return {
     type: 'HANDLE_SEARCH_INPUT',
@@ -61872,7 +61912,7 @@ var handleUserInput = exports.handleUserInput = function handleUserInput(e) {
   return function (dispatch) {
     dispatch(updateUserInput(filterText));
     if (filterText.length > 2 || filterText.length == 0) {
-      fecthEvents(dispatch);
+      (0, _eventsFetchingActions.fetchEvents)(dispatch);
     }
   };
 };
@@ -61886,7 +61926,7 @@ var updateExpired = function updateExpired() {
 var handleCheck = exports.handleCheck = function handleCheck() {
   return function (dispatch) {
     dispatch(updateExpired());
-    fecthEvents(dispatch);
+    (0, _eventsFetchingActions.fetchEvents)(dispatch);
   };
 };
 
@@ -61900,7 +61940,7 @@ var updateCategory = function updateCategory(v) {
 var handleCategoryChange = exports.handleCategoryChange = function handleCategoryChange(e, k, v) {
   return function (dispatch) {
     dispatch(updateCategory(v));
-    fecthEvents(dispatch);
+    (0, _eventsFetchingActions.fetchEvents)(dispatch);
   };
 };
 
@@ -61914,11 +61954,11 @@ var updateOrder = function updateOrder(v) {
 var handleOrderChange = exports.handleOrderChange = function handleOrderChange(e, k, v) {
   return function (dispatch) {
     dispatch(updateOrder(v));
-    fecthEvents(dispatch);
+    (0, _eventsFetchingActions.fetchEvents)(dispatch);
   };
 };
 
-},{"../actionTypes":706,"../store":710,"reqwest":679}],708:[function(require,module,exports){
+},{"./eventsFetchingActions":707}],709:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61939,7 +61979,7 @@ var allReducers = (0, _redux.combineReducers)({
 
 exports.default = allReducers;
 
-},{"./searchReducer":709,"redux":670}],709:[function(require,module,exports){
+},{"./searchReducer":710,"redux":670}],710:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61996,6 +62036,12 @@ exports.default = function () {
       });
       break;
 
+    case 'UPDATE_FETCHED_EVENTS_PRICE':
+      return Object.assign({}, state, {
+        eventPrices: action.payload
+      });
+      break;
+
     default:
       return state;
   }
@@ -62005,6 +62051,7 @@ var _actionTypes = require('../actionTypes');
 
 var initalState = {
   events: null,
+  eventPrices: {},
   search: '',
   next: null,
   expired: false,
@@ -62012,7 +62059,7 @@ var initalState = {
   order: '_score|desc'
 };
 
-},{"../actionTypes":706}],710:[function(require,module,exports){
+},{"../actionTypes":706}],711:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -62034,4 +62081,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var store = exports.store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
-},{"./reducers":708,"redux":670,"redux-thunk":664}]},{},[680]);
+},{"./reducers":709,"redux":670,"redux-thunk":664}]},{},[680]);

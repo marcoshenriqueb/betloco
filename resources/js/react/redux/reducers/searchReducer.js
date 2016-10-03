@@ -5,6 +5,7 @@ import {
 
 const initalState = {
   events: null,
+  eventPrices: {},
   search: '',
   next: null,
   expired: false,
@@ -56,6 +57,12 @@ export default function(state = initalState, action){
     case 'UPDATE_ORDER_SEARCH':
       return Object.assign({}, state, {
         order: action.payload
+      });
+      break;
+
+    case 'UPDATE_FETCHED_EVENTS_PRICE':
+      return Object.assign({}, state, {
+        eventPrices: action.payload
       });
       break;
 
