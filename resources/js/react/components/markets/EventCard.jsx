@@ -131,9 +131,6 @@ export default class EventCard extends React.Component{
             textContent
           }
           <br/>
-          <div className="marketcard-warning">
-            <span>*Última atualização de preço: {moment(this.props._event._source.updated_at).format("DD/MM/YYYY HH:mm")}</span>
-          </div>
         </CardText>
       </Card>
     );

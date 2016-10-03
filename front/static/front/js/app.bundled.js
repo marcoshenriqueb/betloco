@@ -57648,7 +57648,7 @@ _reactDom2.default.render(_react2.default.createElement(
 
 // ReactDOM.render(<App />, document.getElementById('app'));
 
-},{"./react/App.jsx":681,"./react/components/EventDetailContainer.jsx":683,"./react/components/MarketContainer.jsx":684,"./react/components/MarketDetailContainer.jsx":685,"./react/components/ProfileContainer.jsx":686,"./react/components/profile/config/MyConfig.jsx":701,"./react/components/profile/funds/Funds.jsx":702,"./react/components/profile/history/MyHistory.jsx":703,"./react/components/profile/order/MyOrders.jsx":704,"./react/components/profile/position/Position.jsx":705,"./react/redux/store":711,"react":663,"react-dom":409,"react-redux":412,"react-router":452,"react-tap-event-plugin":491}],681:[function(require,module,exports){
+},{"./react/App.jsx":681,"./react/components/EventDetailContainer.jsx":683,"./react/components/MarketContainer.jsx":684,"./react/components/MarketDetailContainer.jsx":685,"./react/components/ProfileContainer.jsx":686,"./react/components/profile/config/MyConfig.jsx":701,"./react/components/profile/funds/Funds.jsx":702,"./react/components/profile/history/MyHistory.jsx":703,"./react/components/profile/order/MyOrders.jsx":704,"./react/components/profile/position/Position.jsx":705,"./react/redux/store":714,"react":663,"react-dom":409,"react-redux":412,"react-router":452,"react-tap-event-plugin":491}],681:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57767,6 +57767,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -57797,7 +57799,15 @@ var _expandMore = require('material-ui/svg-icons/navigation/expand-more');
 
 var _expandMore2 = _interopRequireDefault(_expandMore);
 
+var _navigation = require('../redux/actions/navigation');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var styles = {
   title: {
@@ -57810,196 +57820,194 @@ var styles = {
   }
 };
 
-var AppNavbar = _react2.default.createClass({
-  displayName: 'AppNavbar',
+var AppNavbar = function (_React$Component) {
+  _inherits(AppNavbar, _React$Component);
 
-  _logout: function _logout() {
-    window.location = "/accounts/logout/";
-  },
-  _login: function _login() {
-    window.location = "/accounts/login/?next=" + window.location.pathname;
-  },
-  _register: function _register() {
-    window.location = "/accounts/signup/?next=" + window.location.pathname;
-  },
-  _profileRoute: function _profileRoute() {
-    _reactRouter.browserHistory.push('/app/perfil/minhas-posicoes/');
-  },
-  _marketRoute: function _marketRoute() {
-    _reactRouter.browserHistory.push('/app/');
-  },
-  render: function render() {
-    var logo = document.documentElement.clientWidth > window.gvar.breakpoint ? window.gvar.logo : window.gvar.logo2;
-    var userData = null;
-    var menuItems = [{
-      style: styles.menuItem,
-      text: "Mercados",
-      touch: this._marketRoute
-    }];
-    if (window.gvar.user != 'anom') {
-      userData = _react2.default.createElement(
-        'div',
-        { className: 'appbar-nav__info-container' },
-        _react2.default.createElement(
+  function AppNavbar() {
+    _classCallCheck(this, AppNavbar);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(AppNavbar).apply(this, arguments));
+  }
+
+  _createClass(AppNavbar, [{
+    key: 'render',
+    value: function render() {
+      var logo = document.documentElement.clientWidth > window.gvar.breakpoint ? window.gvar.logo : window.gvar.logo2;
+      var userData = null;
+      var menuItems = [{
+        style: styles.menuItem,
+        text: "Mercados",
+        touch: _navigation._marketRoute
+      }];
+      if (window.gvar.user != 'anom') {
+        userData = _react2.default.createElement(
           'div',
-          { className: 'appbar-nav__info' },
-          _react2.default.createElement(
-            'span',
-            null,
-            'Disponível'
-          ),
+          { className: 'appbar-nav__info-container' },
           _react2.default.createElement(
             'div',
-            { className: 'appbar-nav__info-holder' },
-            'R$ ',
-            this.props.balance ? this.props.balance.total.toFixed(2) : '0'
-          )
-        ),
-        document.documentElement.clientWidth > window.gvar.breakpoint ? _react2.default.createElement(
-          'div',
-          { className: 'appbar-nav__info appbar-nav__info-warning' },
-          _react2.default.createElement(
-            'span',
-            null,
-            'Risco'
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'appbar-nav__info-holder' },
-            'R$ ',
-            this.props.balance ? this.props.balance.risk.toFixed(2) : '0'
-          )
-        ) : null
-      );
-      menuItems.push({
-        style: styles.menuItem,
-        text: "Perfil",
-        touch: this._profileRoute
-      }, {
-        style: styles.menuItem,
-        text: "Sair",
-        touch: this._logout
-      });
-    } else {
-      menuItems.push({
-        style: styles.menuItem,
-        text: "Cadastro",
-        touch: this._register
-      }, {
-        style: styles.menuItem,
-        text: "Entrar",
-        touch: this._login
-      });
-    }
-    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
-      switch (window.location.pathname.split('/')[2]) {
-        case 'perfil':
-          menuItems[1].className = "active";
-          break;
-        case '':
-          menuItems[0].className = "active";
-          break;
-        default:
-
-      }
-      if (this.props.user.socialaccount_set != undefined && this.props.user.socialaccount_set.length > 0) {
-        console.log(this.props.user.socialaccount_set[0].extra_data.picture.data.url);
-        var picture = this.props.user.socialaccount_set[0].extra_data.picture.data.url;
-      } else {
-        var picture = window.gvar.usravatar;
-      }
-      var appnav = _react2.default.createElement(
-        'ul',
-        { className: 'appbar-nav__list' },
-        _react2.default.createElement(
-          'li',
-          { style: menuItems[0].style, className: menuItems[0].className, onTouchTap: menuItems[0].touch },
-          menuItems[0].text
-        ),
-        this.props.user ? _react2.default.createElement(
-          'li',
-          { style: menuItems[1].style,
-            className: menuItems[1].className,
-            onTouchTap: this.props.togglenav,
-            id: 'navtoggle' },
-          _react2.default.createElement(_Avatar2.default, { style: { marginRight: 5 }, size: 30, src: picture }),
-          this.props.user.username,
-          _react2.default.createElement(_expandMore2.default, { color: 'white' }),
-          this.props.navopen ? _react2.default.createElement(
-            'ul',
-            { className: 'appbar-nav__dropdown' },
+            { className: 'appbar-nav__info' },
             _react2.default.createElement(
-              'li',
-              { onTouchTap: menuItems[1].touch },
-              menuItems[1].text
+              'span',
+              null,
+              'Disponível'
             ),
             _react2.default.createElement(
-              'li',
-              { onTouchTap: menuItems[2].touch },
-              menuItems[2].text
+              'div',
+              { className: 'appbar-nav__info-holder' },
+              'R$ ',
+              this.props.balance ? this.props.balance.total.toFixed(2) : '0'
             )
-          ) : _react2.default.createElement('div', null)
-        ) : [_react2.default.createElement(
-          'li',
-          { style: menuItems[1].style, className: menuItems[1].className, onTouchTap: menuItems[1].touch },
-          menuItems[1].text
-        ), _react2.default.createElement(
-          'li',
-          { style: menuItems[2].style, className: menuItems[2].className, onTouchTap: menuItems[2].touch },
-          menuItems[2].text
-        )]
-      );
-    } else {
-      var appnav = _react2.default.createElement(
-        _IconMenu2.default,
-        {
-          iconButtonElement: _react2.default.createElement(
-            _IconButton2.default,
-            { iconStyle: { fill: 'rgb(255,255,255)' } },
-            _react2.default.createElement(_menu2.default, null)
           ),
-          targetOrigin: { horizontal: 'right', vertical: 'top' },
-          anchorOrigin: { horizontal: 'right', vertical: 'top' }
-        },
-        menuItems.map(function (i, k) {
-          return _react2.default.createElement(_MenuItem2.default, { style: i.style, primaryText: i.text, onTouchTap: i.touch, key: k });
-        })
+          document.documentElement.clientWidth > window.gvar.breakpoint ? _react2.default.createElement(
+            'div',
+            { className: 'appbar-nav__info appbar-nav__info-warning' },
+            _react2.default.createElement(
+              'span',
+              null,
+              'Risco'
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'appbar-nav__info-holder' },
+              'R$ ',
+              this.props.balance ? this.props.balance.risk.toFixed(2) : '0'
+            )
+          ) : null
+        );
+        menuItems.push({
+          style: styles.menuItem,
+          text: "Perfil",
+          touch: _navigation._profileRoute
+        }, {
+          style: styles.menuItem,
+          text: "Sair",
+          touch: _navigation._logout
+        });
+      } else {
+        menuItems.push({
+          style: styles.menuItem,
+          text: "Cadastro",
+          touch: _navigation._register
+        }, {
+          style: styles.menuItem,
+          text: "Entrar",
+          touch: _navigation._login
+        });
+      }
+      if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+        switch (window.location.pathname.split('/')[2]) {
+          case 'perfil':
+            menuItems[1].className = "active";
+            break;
+          case '':
+            menuItems[0].className = "active";
+            break;
+          default:
+
+        }
+        if (this.props.user.socialaccount_set != undefined && this.props.user.socialaccount_set.length > 0) {
+          console.log(this.props.user.socialaccount_set[0].extra_data.picture.data.url);
+          var picture = this.props.user.socialaccount_set[0].extra_data.picture.data.url;
+        } else {
+          var picture = window.gvar.usravatar;
+        }
+        var appnav = _react2.default.createElement(
+          'ul',
+          { className: 'appbar-nav__list' },
+          _react2.default.createElement(
+            'li',
+            { style: menuItems[0].style, className: menuItems[0].className, onTouchTap: menuItems[0].touch },
+            menuItems[0].text
+          ),
+          this.props.user ? _react2.default.createElement(
+            'li',
+            { style: menuItems[1].style,
+              className: menuItems[1].className,
+              onTouchTap: this.props.togglenav,
+              id: 'navtoggle' },
+            _react2.default.createElement(_Avatar2.default, { style: { marginRight: 5 }, size: 30, src: picture }),
+            this.props.user.username,
+            _react2.default.createElement(_expandMore2.default, { color: 'white' }),
+            this.props.navopen ? _react2.default.createElement(
+              'ul',
+              { className: 'appbar-nav__dropdown' },
+              _react2.default.createElement(
+                'li',
+                { onTouchTap: menuItems[1].touch },
+                menuItems[1].text
+              ),
+              _react2.default.createElement(
+                'li',
+                { onTouchTap: menuItems[2].touch },
+                menuItems[2].text
+              )
+            ) : _react2.default.createElement('div', null)
+          ) : [_react2.default.createElement(
+            'li',
+            { style: menuItems[1].style, className: menuItems[1].className, onTouchTap: menuItems[1].touch },
+            menuItems[1].text
+          ), _react2.default.createElement(
+            'li',
+            { style: menuItems[2].style, className: menuItems[2].className, onTouchTap: menuItems[2].touch },
+            menuItems[2].text
+          )]
+        );
+      } else {
+        var appnav = _react2.default.createElement(
+          _IconMenu2.default,
+          {
+            iconButtonElement: _react2.default.createElement(
+              _IconButton2.default,
+              { iconStyle: { fill: 'rgb(255,255,255)' } },
+              _react2.default.createElement(_menu2.default, null)
+            ),
+            targetOrigin: { horizontal: 'right', vertical: 'top' },
+            anchorOrigin: { horizontal: 'right', vertical: 'top' }
+          },
+          menuItems.map(function (i, k) {
+            return _react2.default.createElement(_MenuItem2.default, { style: i.style, primaryText: i.text, onTouchTap: i.touch, key: k });
+          })
+        );
+      }
+      return _react2.default.createElement(
+        'div',
+        { className: 'appbar' },
+        _react2.default.createElement(
+          _reactRouter.IndexLink,
+          { style: { paddingTop: 4 }, to: '/app/' },
+          _react2.default.createElement('img', { className: 'appbar-logo', src: logo })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'appbar-nav' },
+          userData,
+          appnav
+        )
       );
     }
-    return _react2.default.createElement(
-      'div',
-      { className: 'appbar' },
-      _react2.default.createElement(
-        _reactRouter.IndexLink,
-        { style: { paddingTop: 4 }, to: '/app/' },
-        _react2.default.createElement('img', { className: 'appbar-logo', src: logo })
-      ),
-      _react2.default.createElement(
-        'div',
-        { className: 'appbar-nav' },
-        userData,
-        appnav
-      )
-    );
-  }
-});
+  }]);
+
+  return AppNavbar;
+}(_react2.default.Component);
 
 exports.default = AppNavbar;
 
-},{"material-ui/Avatar":4,"material-ui/IconButton":31,"material-ui/IconMenu":33,"material-ui/MenuItem":43,"material-ui/svg-icons/navigation/expand-more":395,"material-ui/svg-icons/navigation/menu":396,"react":663,"react-router":452}],683:[function(require,module,exports){
+},{"../redux/actions/navigation":709,"material-ui/Avatar":4,"material-ui/IconButton":31,"material-ui/IconMenu":33,"material-ui/MenuItem":43,"material-ui/svg-icons/navigation/expand-more":395,"material-ui/svg-icons/navigation/menu":396,"react":663,"react-router":452}],683:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reqwest = require('reqwest');
+var _reactRedux = require('react-redux');
 
-var _reqwest2 = _interopRequireDefault(_reqwest);
+var _redux = require('redux');
 
 var _MultipleMarketTable = require('./eventDetail/MultipleMarketTable.jsx');
 
@@ -58013,7 +58021,15 @@ var _Breadcrumb = require('./general/Breadcrumb.jsx');
 
 var _Breadcrumb2 = _interopRequireDefault(_Breadcrumb);
 
+var _eventActions = require('../redux/actions/eventActions');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
   title: {
@@ -58026,103 +58042,123 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   style.title.fontSize = 28;
 }
 
-var EventDetailContainer = _react2.default.createClass({
-  displayName: 'EventDetailContainer',
+var EventDetailContainer = function (_React$Component) {
+  _inherits(EventDetailContainer, _React$Component);
 
-  getInitialState: function getInitialState() {
-    return {
-      _event: null
-    };
-  },
-  getEvent: function getEvent() {
-    var that = this;
-    (0, _reqwest2.default)('/api/markets/' + this.props.params.id + '/?format=json').then(function (response) {
-      var _event = response;
-      that.setState({
-        _event: _event
-      });
-      that.openDisqus();
-    });
-  },
-  openDisqus: function openDisqus() {
-    var identifier = 'event|' + this.state._event.id;
-    var url = "http://www.guroo.bet/app/evento/" + this.state._event.id + "/";
-    if (window.DISQUS != undefined) {
-      window.DISQUS.reset({
-        reload: true,
-        config: function config() {
-          this.page.identifier = identifier;
+  function EventDetailContainer(props) {
+    _classCallCheck(this, EventDetailContainer);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(EventDetailContainer).call(this, props));
+  }
+
+  _createClass(EventDetailContainer, [{
+    key: 'openDisqus',
+    value: function openDisqus() {
+      var identifier = 'event|' + this.props._event.id;
+      var url = "http://www.guroo.bet/app/evento/" + this.props._event.id + "/";
+      var title = this.props._event.title;
+      if (window.DISQUS != undefined) {
+        window.DISQUS.reset({
+          reload: true,
+          config: function config() {
+            this.page.identifier = identifier;
+            this.page.url = url;
+            this.page.title = title;
+          }
+        });
+      } else {
+        var disqus_config = function disqus_config() {
           this.page.url = url;
-        }
-      });
-    } else {
-      var disqus_config = function disqus_config() {
-        this.page.url = url;
-        this.page.identifier = identifier;
-      };
-      (function () {
-        var d = document,
-            s = d.createElement('script');
-        s.src = '//guroo.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-      })();
+          this.page.identifier = identifier;
+          this.page.title = title;
+        };
+        (function () {
+          var d = document,
+              s = d.createElement('script');
+          s.src = '//guroo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
     }
-  },
-
-  componentDidMount: function componentDidMount() {
-    this.getEvent();
-  },
-  render: function render() {
-    if (this.state._event == null) {
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.props.getEvent(this.props.params.id, this.openDisqus.bind(this));
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.resetEvent();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.props._event == null) {
+        return _react2.default.createElement(
+          'div',
+          { style: {
+              width: '100%',
+              height: '60vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            } },
+          _react2.default.createElement(
+            'div',
+            { className: 'bouncer' },
+            _react2.default.createElement('div', { className: 'bounce1' }),
+            _react2.default.createElement('div', { className: 'bounce2' }),
+            _react2.default.createElement('div', { className: 'bounce3' })
+          )
+        );
+      }
+      var breadcrumb = null;
+      if (this.props._event.title != undefined) {
+        var path = [{
+          title_short: "evento",
+          title: this.props._event.title,
+          path: null
+        }];
+        breadcrumb = _react2.default.createElement(_Breadcrumb2.default, { path: path });
+      }
       return _react2.default.createElement(
         'div',
-        { style: {
-            width: '100%',
-            height: '60vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          } },
+        { className: 'marketdetail-content container' },
+        breadcrumb,
         _react2.default.createElement(
-          'div',
-          { className: 'bouncer' },
-          _react2.default.createElement('div', { className: 'bounce1' }),
-          _react2.default.createElement('div', { className: 'bounce2' }),
-          _react2.default.createElement('div', { className: 'bounce3' })
-        )
+          'h2',
+          { style: style.title },
+          this.props._event.title
+        ),
+        _react2.default.createElement(_MultipleMarketTable2.default, { _event: this.props._event }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(_Details2.default, { market: this.props._event }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('div', { id: 'disqus_thread' })
       );
     }
-    var breadcrumb = null;
-    if (this.state._event.title != undefined) {
-      var path = [{
-        title_short: "evento",
-        title: this.state._event.title,
-        path: null
-      }];
-      breadcrumb = _react2.default.createElement(_Breadcrumb2.default, { path: path });
-    }
-    return _react2.default.createElement(
-      'div',
-      { className: 'marketdetail-content container' },
-      breadcrumb,
-      _react2.default.createElement(
-        'h2',
-        { style: style.title },
-        this.state._event.title
-      ),
-      _react2.default.createElement(_MultipleMarketTable2.default, { _event: this.state._event }),
-      _react2.default.createElement('br', null),
-      _react2.default.createElement(_Details2.default, { market: this.state._event }),
-      _react2.default.createElement('br', null),
-      _react2.default.createElement('div', { id: 'disqus_thread' })
-    );
-  }
-});
+  }]);
 
-exports.default = EventDetailContainer;
+  return EventDetailContainer;
+}(_react2.default.Component);
 
-},{"./eventDetail/MultipleMarketTable.jsx":687,"./general/Breadcrumb.jsx":688,"./marketDetail/Details.jsx":690,"react":663,"reqwest":679}],684:[function(require,module,exports){
+function mapStateToProps(state) {
+  return {
+    _event: state._event._event
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({
+    getEvent: _eventActions.getEvent,
+    resetEvent: _eventActions.resetEvent
+  }, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(EventDetailContainer);
+
+},{"../redux/actions/eventActions":707,"./eventDetail/MultipleMarketTable.jsx":687,"./general/Breadcrumb.jsx":688,"./marketDetail/Details.jsx":690,"react":663,"react-redux":412,"redux":670}],684:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58257,7 +58293,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MarketContainer);
 
-},{"../redux/actions/eventsFetchingActions":707,"../redux/actions/searchActions":708,"./markets/Event.jsx":698,"./markets/SearchComp.jsx":700,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":663,"react-redux":412,"redux":670}],685:[function(require,module,exports){
+},{"../redux/actions/eventsFetchingActions":708,"../redux/actions/searchActions":710,"./markets/Event.jsx":698,"./markets/SearchComp.jsx":700,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":663,"react-redux":412,"redux":670}],685:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58682,6 +58718,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -58701,6 +58739,12 @@ var _gavel2 = _interopRequireDefault(_gavel);
 var _reactRouter = require('react-router');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var styles = {
   noMarginTop: {
@@ -58739,117 +58783,128 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   styles.choiceHeader.paddingRight = 5;
 }
 
-var MultipleMarketTable = _react2.default.createClass({
-  displayName: 'MultipleMarketTable',
+var MultipleMarketTable = function (_React$Component) {
+  _inherits(MultipleMarketTable, _React$Component);
 
-  render: function render() {
-    if (this.props._event.markets != undefined && this.props._event.markets.length > 1) {
-      var totalPrice = 0;
-      for (var k in this.props._event.markets) {
-        if (this.props._event.markets[k].lastCompleteOrder != null) {
-          totalPrice += this.props._event.markets[k].lastCompleteOrder.price;
+  function MultipleMarketTable() {
+    _classCallCheck(this, MultipleMarketTable);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(MultipleMarketTable).apply(this, arguments));
+  }
+
+  _createClass(MultipleMarketTable, [{
+    key: 'render',
+    value: function render() {
+      if (this.props._event.markets != undefined && this.props._event.markets.length > 1) {
+        var totalPrice = 0;
+        for (var k in this.props._event.markets) {
+          if (this.props._event.markets[k].lastCompleteOrder != null) {
+            totalPrice += this.props._event.markets[k].lastCompleteOrder.price;
+          }
         }
-      }
-      var rows = this.props._event.markets.map(function (m, k) {
-        var prob = m.lastCompleteOrder != null ? m.lastCompleteOrder.price * 100 / totalPrice : 0;
-        return _react2.default.createElement(
-          _Table.TableRow,
-          { key: k },
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.choice, className: 'multiple-market-table__choice' },
+        var rows = this.props._event.markets.map(function (m, k) {
+          var prob = m.lastCompleteOrder != null ? m.lastCompleteOrder.price * 100 / totalPrice : 0;
+          return _react2.default.createElement(
+            _Table.TableRow,
+            { key: k },
             _react2.default.createElement(
-              _reactRouter.IndexLink,
-              { to: '/app/mercado/' + m.id + '/' },
-              m.title_short
-            )
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.td },
-            m.lastCompleteOrder != null ? (m.lastCompleteOrder.price * 100).toFixed(0) + '¢' : '0'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.tdBig },
-            prob.toFixed(1),
-            '%'
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.td },
-            m.volume
-          ),
-          _react2.default.createElement(
-            _Table.TableRowColumn,
-            { style: styles.tdBig },
-            _react2.default.createElement(
-              _reactRouter.IndexLink,
-              { to: '/app/mercado/' + m.id + '/' },
+              _Table.TableRowColumn,
+              { style: styles.choice, className: 'multiple-market-table__choice' },
               _react2.default.createElement(
-                _IconButton2.default,
-                null,
-                _react2.default.createElement(_gavel2.default, { color: window.gvar.primarycolor })
+                _reactRouter.IndexLink,
+                { to: '/app/mercado/' + m.id + '/' },
+                m.title_short
+              )
+            ),
+            _react2.default.createElement(
+              _Table.TableRowColumn,
+              { style: styles.td },
+              m.lastCompleteOrder != null ? (m.lastCompleteOrder.price * 100).toFixed(0) + '¢' : '0'
+            ),
+            _react2.default.createElement(
+              _Table.TableRowColumn,
+              { style: styles.tdBig },
+              prob.toFixed(1),
+              '%'
+            ),
+            _react2.default.createElement(
+              _Table.TableRowColumn,
+              { style: styles.td },
+              m.volume
+            ),
+            _react2.default.createElement(
+              _Table.TableRowColumn,
+              { style: styles.tdBig },
+              _react2.default.createElement(
+                _reactRouter.IndexLink,
+                { to: '/app/mercado/' + m.id + '/' },
+                _react2.default.createElement(
+                  _IconButton2.default,
+                  null,
+                  _react2.default.createElement(_gavel2.default, { color: window.gvar.primarycolor })
+                )
+              )
+            )
+          );
+        });
+        return _react2.default.createElement(
+          _Card.Card,
+          { initiallyExpanded: true },
+          _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: 'Mercados' }),
+          _react2.default.createElement(
+            _Card.CardText,
+            { expandable: true, style: styles.noPaddingTop },
+            _react2.default.createElement(
+              _Table.Table,
+              null,
+              _react2.default.createElement(
+                _Table.TableHeader,
+                { enableSelectAll: false,
+                  displaySelectAll: false,
+                  adjustForCheckbox: false },
+                _react2.default.createElement(
+                  _Table.TableRow,
+                  null,
+                  _react2.default.createElement(
+                    _Table.TableHeaderColumn,
+                    { style: styles.choiceHeader },
+                    'Escolha'
+                  ),
+                  _react2.default.createElement(
+                    _Table.TableHeaderColumn,
+                    { style: styles.td },
+                    'Preço'
+                  ),
+                  _react2.default.createElement(
+                    _Table.TableHeaderColumn,
+                    { style: styles.tdBig },
+                    'Probabilidade'
+                  ),
+                  _react2.default.createElement(
+                    _Table.TableHeaderColumn,
+                    { style: styles.td },
+                    'Volume'
+                  ),
+                  _react2.default.createElement(_Table.TableHeaderColumn, { style: styles.tdBig })
+                )
+              ),
+              _react2.default.createElement(
+                _Table.TableBody,
+                { showRowHover: true,
+                  displayRowCheckbox: false },
+                rows
               )
             )
           )
         );
-      });
-      return _react2.default.createElement(
-        _Card.Card,
-        { initiallyExpanded: true },
-        _react2.default.createElement(_Card.CardHeader, { actAsExpander: true, showExpandableButton: true, title: 'Mercados' }),
-        _react2.default.createElement(
-          _Card.CardText,
-          { expandable: true, style: styles.noPaddingTop },
-          _react2.default.createElement(
-            _Table.Table,
-            null,
-            _react2.default.createElement(
-              _Table.TableHeader,
-              { enableSelectAll: false,
-                displaySelectAll: false,
-                adjustForCheckbox: false },
-              _react2.default.createElement(
-                _Table.TableRow,
-                null,
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: styles.choiceHeader },
-                  'Escolha'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: styles.td },
-                  'Preço'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: styles.tdBig },
-                  'Probabilidade'
-                ),
-                _react2.default.createElement(
-                  _Table.TableHeaderColumn,
-                  { style: styles.td },
-                  'Volume'
-                ),
-                _react2.default.createElement(_Table.TableHeaderColumn, { style: styles.tdBig })
-              )
-            ),
-            _react2.default.createElement(
-              _Table.TableBody,
-              { showRowHover: true,
-                displayRowCheckbox: false },
-              rows
-            )
-          )
-        )
-      );
-    } else {
-      return _react2.default.createElement('div', null);
+      } else {
+        return _react2.default.createElement('div', null);
+      }
     }
-  }
-});
+  }]);
+
+  return MultipleMarketTable;
+}(_react2.default.Component);
 
 exports.default = MultipleMarketTable;
 
@@ -60579,17 +60634,7 @@ var EventCard = function (_React$Component) {
           _Card.CardText,
           { style: style.cardtext, className: 'marketcard-predictions' },
           textContent,
-          _react2.default.createElement('br', null),
-          _react2.default.createElement(
-            'div',
-            { className: 'marketcard-warning' },
-            _react2.default.createElement(
-              'span',
-              null,
-              '*Última atualização de preço: ',
-              (0, _moment2.default)(this.props._event._source.updated_at).format("DD/MM/YYYY HH:mm")
-            )
-          )
+          _react2.default.createElement('br', null)
         )
       );
     }
@@ -61835,6 +61880,47 @@ var GET_EVENTS_FETCHING = exports.GET_EVENTS_FETCHING = 'GET_EVENTS_FETCHING';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.resetEvent = exports.getEvent = undefined;
+
+var _reqwest = require('reqwest');
+
+var _reqwest2 = _interopRequireDefault(_reqwest);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var updateSingleEvent = function updateSingleEvent(data) {
+  return {
+    type: 'UPDATE_SINGLE_EVENT',
+    payload: data
+  };
+};
+
+var getEvent = exports.getEvent = function getEvent(id, callback) {
+  return function (dispatch) {
+    var that = this;
+    (0, _reqwest2.default)('/api/markets/' + id + '/?format=json').then(function (response) {
+      var _event = response;
+      dispatch(updateSingleEvent(response));
+      if (typeof callback == 'function') {
+        callback();
+      }
+    });
+  };
+};
+
+var resetEvent = exports.resetEvent = function resetEvent() {
+  return {
+    type: 'UPDATE_SINGLE_EVENT',
+    payload: null
+  };
+};
+
+},{"reqwest":679}],708:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.getNextEventPage = exports.getEvents = exports.fetchEvents = undefined;
 
 var _reqwest = require('reqwest');
@@ -61934,7 +62020,37 @@ var getNextEventPage = exports.getNextEventPage = function getNextEventPage() {
   };
 };
 
-},{"../actionTypes":706,"../store":711,"reqwest":679}],708:[function(require,module,exports){
+},{"../actionTypes":706,"../store":714,"reqwest":679}],709:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports._marketRoute = exports._profileRoute = exports._register = exports._login = exports._logout = undefined;
+
+var _reactRouter = require("react-router");
+
+var _logout = exports._logout = function _logout() {
+  window.location = "/accounts/logout/";
+};
+
+var _login = exports._login = function _login() {
+  window.location = "/accounts/login/?next=" + window.location.pathname;
+};
+
+var _register = exports._register = function _register() {
+  window.location = "/accounts/signup/?next=" + window.location.pathname;
+};
+
+var _profileRoute = exports._profileRoute = function _profileRoute() {
+  _reactRouter.browserHistory.push('/app/perfil/minhas-posicoes/');
+};
+
+var _marketRoute = exports._marketRoute = function _marketRoute() {
+  _reactRouter.browserHistory.push('/app/');
+};
+
+},{"react-router":452}],710:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62004,7 +62120,34 @@ var handleOrderChange = exports.handleOrderChange = function handleOrderChange(e
   };
 };
 
-},{"./eventsFetchingActions":707}],709:[function(require,module,exports){
+},{"./eventsFetchingActions":708}],711:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function () {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? initalState : arguments[0];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'UPDATE_SINGLE_EVENT':
+      return Object.assign({}, state, {
+        _event: action.payload
+      });
+      break;
+
+    default:
+      return state;
+  }
+};
+
+var initalState = {
+  _event: null
+};
+
+},{}],712:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -62017,15 +62160,20 @@ var _searchReducer = require("./searchReducer");
 
 var _searchReducer2 = _interopRequireDefault(_searchReducer);
 
+var _eventReducer = require("./eventReducer");
+
+var _eventReducer2 = _interopRequireDefault(_eventReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var allReducers = (0, _redux.combineReducers)({
-  eventsSearch: _searchReducer2.default
+  eventsSearch: _searchReducer2.default,
+  _event: _eventReducer2.default
 });
 
 exports.default = allReducers;
 
-},{"./searchReducer":710,"redux":670}],710:[function(require,module,exports){
+},{"./eventReducer":711,"./searchReducer":713,"redux":670}],713:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62105,7 +62253,7 @@ var initalState = {
   order: '_score|desc'
 };
 
-},{"../actionTypes":706}],711:[function(require,module,exports){
+},{"../actionTypes":706}],714:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -62127,4 +62275,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var store = exports.store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
-},{"./reducers":709,"redux":670,"redux-thunk":664}]},{},[680]);
+},{"./reducers":712,"redux":670,"redux-thunk":664}]},{},[680]);

@@ -3,10 +3,17 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconMenuIcon from 'material-ui/svg-icons/navigation/menu';
-import { browserHistory } from 'react-router';
 import { IndexLink } from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
+
+import {
+  _login,
+  _logout,
+  _register,
+  _profileRoute,
+  _marketRoute
+} from '../redux/actions/navigation';
 
 const styles = {
   title: {
@@ -19,30 +26,15 @@ const styles = {
   }
 };
 
-var AppNavbar = React.createClass({
-  _logout: function(){
-    window.location = "/accounts/logout/";
-  },
-  _login: function(){
-    window.location = "/accounts/login/?next=" + window.location.pathname;
-  },
-  _register: function(){
-    window.location = "/accounts/signup/?next=" + window.location.pathname;
-  },
-  _profileRoute: function(){
-    browserHistory.push('/app/perfil/minhas-posicoes/');
-  },
-  _marketRoute: function(){
-    browserHistory.push('/app/');
-  },
-  render: function() {
+export default class AppNavbar extends React.Component {
+  render() {
     var logo = (document.documentElement.clientWidth > window.gvar.breakpoint)?window.gvar.logo:window.gvar.logo2;
     var userData = null;
     var menuItems = [
       {
         style:styles.menuItem,
         text: "Mercados",
-        touch: this._marketRoute
+        touch: _marketRoute
       }
     ]
     if (window.gvar.user != 'anom') {
@@ -69,12 +61,12 @@ var AppNavbar = React.createClass({
         {
           style:styles.menuItem,
           text: "Perfil",
-          touch: this._profileRoute
+          touch: _profileRoute
         },
         {
           style:styles.menuItem,
           text: "Sair",
-          touch: this._logout
+          touch: _logout
         }
       )
     }else {
@@ -82,12 +74,12 @@ var AppNavbar = React.createClass({
         {
           style:styles.menuItem,
           text: "Cadastro",
-          touch: this._register
+          touch: _register
         },
         {
           style:styles.menuItem,
           text: "Entrar",
-          touch: this._login
+          touch: _login
         }
       )
     }
@@ -167,6 +159,4 @@ var AppNavbar = React.createClass({
       </div>
     );
   }
-});
-
-export default AppNavbar;
+}

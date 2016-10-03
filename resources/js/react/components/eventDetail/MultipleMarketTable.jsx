@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import ActionGavel from 'material-ui/svg-icons/action/gavel';
 import { IndexLink } from 'react-router';
 
-var styles = {
+const styles = {
   noMarginTop: {
     marginTop: 0
   },
@@ -42,8 +42,8 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint) {
   styles.choiceHeader.paddingRight = 5;
 }
 
-var MultipleMarketTable = React.createClass({
-  render: function() {
+export default class MultipleMarketTable extends React.Component {
+  render() {
     if (this.props._event.markets != undefined && this.props._event.markets.length > 1) {
       var totalPrice = 0;
       for (var k in this.props._event.markets) {
@@ -99,6 +99,4 @@ var MultipleMarketTable = React.createClass({
       return (<div/>)
     }
   }
-});
-
-export default MultipleMarketTable;
+}
