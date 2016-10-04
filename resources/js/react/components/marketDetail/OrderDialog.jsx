@@ -15,38 +15,16 @@ import {
   addBestPrice,
   handleOrder,
   returnStep,
-  resetOrderState
+  resetOrderState,
+  handleConfirmOrder
 } from '../../redux/actions/orderActions';
 
 class OrderDialog extends React.Component {
-  handleConfirmOrder(){
-    this.setState({
-      disabled: true
-    });
-    var amount = this.props.dialogContent.buy ? this.state.amount : this.state.amount * -1;
-    var data = {
-      price: this.state.price / 100,
-      amount: amount,
-      market: this.props.dialogContent.market.id
-    };
-    var that = this;
-    req({
-      url: '/api/markets/order/?format=json',
-      headers: {
-        'X-CSRFToken': document.getElementById('token').getAttribute('value')
-      },
-      method: 'post',
-      data: data
-    }).then(function(response){
-      that.returnStepAndClose();
-      that.props.updateBalance();
-    }).catch(function(response){
-      if (response.status == 400) {
-        that.setState({
-          error: JSON.parse(response.response).non_field_errors[0]
-        });
-      }
-    });
+  handleConfirmOrderAndCallback(){
+    this.props.handleConfirmOrder(()=>{
+      this.returnStepAndClose();
+      this.props.updateBalance();
+    })
   }
 
   returnStepAndClose(){
@@ -75,7 +53,7 @@ class OrderDialog extends React.Component {
     }
     var title = this.props.dialogContent.buy ? 'Comprar' : 'Vender';
     var btnColor = this.props.dialogContent.buy ? window.gvar.successcolor : window.gvar.warningcolor;
-    if (this.state.content == 0) {
+    if (this.props.content == 0) {
       var actions = [
         <FlatButton
           label="Cancelar"
@@ -86,21 +64,21 @@ class OrderDialog extends React.Component {
           label={this.props.dialogContent.buy ? 'Comprar' : 'Vender'}
           backgroundColor={btnColor}
           labelColor="white"
-          onTouchTap={this.handleOrder}
+          onTouchTap={this.props.handleOrder}
         />,
       ];
       var content = (
         <PlaceOrderDialog closeDialog={this.props.closeDialog}
                           dialogContent={this.props.dialogContent}
-                          amount={this.state.amount}
-                          amountError={this.state.amountError}
-                          price={this.state.price}
-                          priceError={this.state.priceError}
-                          handleAmountChange={this.handleAmountChange}
-                          handlePriceChange={this.handlePriceChange}
-                          addAmount={this.addAmount}
-                          removeAmount={this.removeAmount}
-                          addBestPrice={this.addBestPrice} />
+                          amount={this.props.amount}
+                          amountError={this.props.amountError}
+                          price={this.props.price}
+                          priceError={this.props.priceError}
+                          handleAmountChange={this.props.handleAmountChange}
+                          handlePriceChange={this.props.handlePriceChange}
+                          addAmount={this.props.addAmount}
+                          removeAmount={this.props.removeAmount}
+                          addBestPrice={this.props.addBestPrice} />
       );
     }else if (1) {
       var actions = [
@@ -113,28 +91,28 @@ class OrderDialog extends React.Component {
           label="Confirmar"
           backgroundColor={btnColor}
           labelColor="white"
-          onTouchTap={this.handleConfirmOrder}
-          disabled={this.state.disabled}
+          onTouchTap={this.handleConfirmOrderAndCallback.bind(this)}
+          disabled={this.props.disabled}
         />,
         <FlatButton
           label="Voltar"
           primary={true}
-          onTouchTap={this.returnStep}
+          onTouchTap={this.props.returnStep}
           style={{float:'left'}}
         />,
       ];
       var content = (
-        <ConfirmOrderDialog amount={this.state.amount}
+        <ConfirmOrderDialog amount={this.props.amount}
                             buy={this.props.dialogContent.buy}
                             market={this.props.dialogContent.market}
-                            price={this.state.price}
+                            price={this.props.price}
                             balance={this.props.balance}
                             custody={this.props.custody} />
       );
     }
     var error = null;
-    if (this.state.error) {
-      error = (<p className="error-warning">{this.state.error}</p>)
+    if (this.props.error) {
+      error = (<p className="error-warning">{this.props.error}</p>)
     }
     return (
       <Dialog
@@ -175,7 +153,8 @@ function matchDispatchToProps(dispatch){
     addBestPrice,
     handleOrder,
     returnStep,
-    resetOrderState
+    resetOrderState,
+    handleConfirmOrder
   }, dispatch);
 }
 

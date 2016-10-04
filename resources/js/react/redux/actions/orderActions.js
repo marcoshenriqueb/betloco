@@ -1,4 +1,4 @@
-import store from '../store';
+import {store} from '../store';
 import req from 'reqwest';
 
 export const handleAmountChange = e => {
@@ -53,8 +53,9 @@ export const addBestPrice = () => {
 }
 
 export const handleOrder = () => {
-  if (this.state.amount.length != 0) {
-    if (this.state.price.length != 0) {
+  let o = store.getState().order;
+  if (o.amount.length != 0) {
+    if (o.price.length != 0) {
       return {
         type: 'UPDATE_ORDER_HANDLE_ORDER',
         payload: {
@@ -91,5 +92,47 @@ export const returnStep = () => {
 export const resetOrderState = () => {
   return {
     type: 'ORDER_RETURN_INITIAL_STATE'
+  }
+}
+
+const updateOrderDisabled = () => {
+  return {
+    type: 'UPDATE_ORDER_DISABLED_TRUE'
+  }
+}
+
+const updateOrderNonFieldError = (data) => {
+  return {
+    type: 'UPDATE_ORDER_NON_FIELD_ERROR',
+    payload: data
+  }
+}
+
+export const handleConfirmOrder = (callback) => {
+  return function(dispatch){
+    dispatch(updateOrderDisabled());
+    const s = store.getState();
+    var amount = s.market.dialogContent.buy ? s.order.amount : s.order.amount * -1;
+    var data = {
+      price: s.order.price / 100,
+      amount: amount,
+      market: s.market.dialogContent.market.id
+    };
+    req({
+      url: '/api/markets/order/?format=json',
+      headers: {
+        'X-CSRFToken': document.getElementById('token').getAttribute('value')
+      },
+      method: 'post',
+      data: data
+    }).then(function(response){
+      if (typeof callback === 'function') {
+        callback();
+      }
+    }).catch(function(response){
+      if (response.status == 400) {
+        dispatch(updateOrderNonFieldError(JSON.parse(response.response).non_field_errors[0]));
+      }
+    });
   }
 }

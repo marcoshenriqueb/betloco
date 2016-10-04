@@ -39,8 +39,13 @@ export default function(state = initialState, action){
       break;
 
     case 'UPDATE_ORDER_HANDLE_ORDER':
+      let content = (action.payload.content != undefined)?action.payload.content:state.content;
+      let priceError = (action.payload.priceError != undefined)?action.payload.priceError:state.priceError;
+      let amountError = (action.payload.amountError != undefined)?action.payload.amountError:state.amountError;
       return Object.assign({}, state, {
-        ...action.payload
+        content: content,
+        priceError: priceError,
+        amountError: amountError
       });
       break;
 
@@ -54,6 +59,18 @@ export default function(state = initialState, action){
 
     case 'ORDER_RETURN_INITIAL_STATE':
       return Object.assign({}, state, initialState);
+      break;
+
+    case 'UPDATE_ORDER_DISABLED_TRUE':
+      return Object.assign({}, state, {
+        disabled: true
+      });
+      break;
+
+    case 'UPDATE_ORDER_NON_FIELD_ERROR':
+      return Object.assign({}, state, {
+        error: action.payload
+      });
       break;
 
     default:
