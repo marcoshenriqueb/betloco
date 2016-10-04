@@ -25,7 +25,10 @@ class TransactionType(models.Model):
 class TransactionManager(models.Manager):
     """docstring for TransactionManager"""
     def balance(self, user_id, new_order=None):
+        # Returns transactions balance, wich is what the user transfered to and from the app
         transactions = self.filter(user__id=user_id).aggregate(balance=Sum('value'))['balance'] or 0
+        # Return, for each market, balance(price*amount) and amount for each of completed orders,
+        # pending buy orders and pending sell orders. Also gives market and event id's
         orders = Order.objects.filter(user__id=user_id).filter(deleted=0).values('market__id') \
                               .annotate(balance=Sum(Case(
                                   When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
@@ -77,7 +80,9 @@ class TransactionManager(models.Manager):
         if new_order is not None:
             market_id = new_order['market__id'] if 'market__id' in new_order else new_order['market'].id
             new_order_added = False
+        # For each order the user gave in each market, get the executed amount and value
         for o in orders:
+            # Get this market orders that led to the balance in this orders
             netOrders = Order.objects.filter(user__id=user_id).filter(deleted=0).filter(market__id=o['market__id']) \
                                      .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
                                      .annotate(exec_amount=Sum(Case(
@@ -101,6 +106,10 @@ class TransactionManager(models.Manager):
                                            When(to_order__isnull=False, then='to_order__id'),
                                            output_field=models.IntegerField()
                                         ))
+
+            # Run through every order in the market and get every time position was liquidated,
+            # that is when it gets to 0 amount or change sign. Then adds the balance so far to
+            # the netted balance. This is done because only not netted balance goes to risk.
             sign = 0
             amount_counter = 0
             previous_balance = 0
@@ -126,21 +135,29 @@ class TransactionManager(models.Manager):
                         sign = 0
                     balance_counter += netOrder.balance
             o['balance'] = balance_counter
-            o['netBalance'] = previous_balance
+            o['nettedBalance'] = previous_balance
+
+            # Adds new_order, wich is used for balance simulation(preview) if it belongs to this market.
+            # It does the same logic as before adds balance to netted if reaches 0.
             if new_order is not None and int(o['market__id']) == market_id:
                 new_order_added = True
                 if (amount_counter > 0 and int(new_order['amount']) < 0 and abs(int(new_order['amount'])) >= abs(amount_counter)) \
                     or (amount_counter < 0 and int(new_order['amount']) > 0 and abs(int(new_order['amount'])) >= abs(amount_counter)):
                     amount_counter += int(new_order['amount'])
-                    o['netBalance'] = o['balance'] + (1-(amount_counter/int(new_order['amount'])))*(int(new_order['amount'])*float(new_order['price']))
+                    o['nettedBalance'] = o['balance'] + (1-(amount_counter/int(new_order['amount'])))*(int(new_order['amount'])*float(new_order['price']))
                     o['balance'] = (amount_counter/int(new_order['amount']))*(int(new_order['amount'])*float(new_order['price']))
                 else:
                     o['balance'] += int(new_order['amount'])*float(new_order['price'])
                 o['amount_sum'] += int(new_order['amount'])
+
+            # Adds this market with recently calculated variables to events dict
             if o['market__event__id'] in events:
                 events[o['market__event__id']].append(o)
             else:
                 events[o['market__event__id']] = [o,]
+
+        # Here we add the simulated (preview) order to a new market in case it
+        # is the first of its market
         if new_order is not None and not new_order_added:
             m = Market.objects.get(pk=market_id)
             e = m.event
@@ -148,17 +165,20 @@ class TransactionManager(models.Manager):
                 'amount_sum': int(new_order['amount']),
                 'balance': int(new_order['amount'])*float(new_order['price']),
                 'market__id': m.id,
-                'netBalance': 0,
+                'nettedBalance': 0,
                 'sell_orders_balance': 0,
                 'buy_orders_balance': 0,
                 'sell_orders_amount': 0,
                 'buy_orders_amount': 0,
                 'market__event__id': e.id
             }
+            # Adds this market with recently calculated variables to events dict
             if e.id in events:
                 events[e.id].append(result_order)
             else:
                 events[e.id] = [result_order,]
+
+        # Get the market count for each event that this user has order and adds to the dict
         markets_count = Event.objects.filter(id__in=events.keys()).values('id').annotate(Count('markets'))
         events_wc = {}
         for k, e in events.items():
@@ -170,6 +190,7 @@ class TransactionManager(models.Manager):
                 'count': c,
                 'markets': e
             }
+        # Risk calculus
         total_risk = 0
         balance = 0
         for k, e in events_wc.items():
@@ -198,7 +219,7 @@ class TransactionManager(models.Manager):
                                     risk += buy_risk
                         if events_risk is None or events_risk < risk:
                             events_risk = risk
-                    balance += m['netBalance']
+                    balance += m['nettedBalance']
                 if int(e['count']) > count:
                     risk = 0
                     for n in e['markets']:
@@ -218,7 +239,7 @@ class TransactionManager(models.Manager):
                             buy_risk = custody_risk + m['buy_orders_balance']
                             sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
                                         if m['sell_orders_amount'] != 0 else custody_risk)
-                            balance += m['netBalance']
+                            balance += m['nettedBalance']
                         else:
                             custody_risk = abs((1-m['balance']/m['amount_sum'])*m['amount_sum'])
                             sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
@@ -228,7 +249,7 @@ class TransactionManager(models.Manager):
                         custody_risk = 0
                         buy_risk = custody_risk
                         sell_risk = custody_risk
-                        balance += m['netBalance']
+                        balance += m['nettedBalance']
 
                     total_risk += max([custody_risk,sell_risk,buy_risk])
 
