@@ -81,3 +81,9 @@ export const connectToMarket = (id, callback) => {
     connectToMarketWS(dispatch, id, callback);
   }
 }
+
+export const resetMarket = () => {
+  return {
+    type: 'UPDATE_SINGLE_MARKET_RESET'
+  }
+}

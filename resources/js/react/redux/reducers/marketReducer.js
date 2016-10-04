@@ -1,4 +1,4 @@
-const initalState = {
+const initialState = {
   market: null,
   custody: false,
   dialog: false,
@@ -6,7 +6,7 @@ const initalState = {
   orders: []
 }
 
-export default function(state = initalState, action){
+export default function(state = initialState, action){
   switch (action.type) {
     case 'UPDATE_SINGLE_MARKET':
       return Object.assign({}, state, {
@@ -37,6 +37,10 @@ export default function(state = initalState, action){
       return Object.assign({}, state, {
         dialog: false
       });
+      break;
+
+    case 'UPDATE_SINGLE_MARKET_RESET':
+      return Object.assign({}, state, initialState);
       break;
 
     default:

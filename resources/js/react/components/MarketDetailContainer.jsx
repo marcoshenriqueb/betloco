@@ -11,14 +11,11 @@ import {
   deleteOrders,
   openDialog,
   closeDialog,
-  connectToMarket
+  connectToMarket,
+  resetMarket
 } from '../redux/actions/marketActions';
 
 class MarketDetailContainer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   openDisqus(){
     var identifier = 'market|' + this.props.market.id;
     var url = "http://www.guroo.bet/app/mercado/" + this.props.market.id + "/";
@@ -53,6 +50,10 @@ class MarketDetailContainer extends React.Component {
     this.props.getMarket(this.props.params.id, this.openDisqus.bind(this));
     this.props.getCustody(this.props.params.id);
     this.props.getOpenOrders(this.props.params.id);
+  }
+
+  componentWillUnmount(){
+    this.props.resetMarket();
   }
 
   render() {
@@ -145,7 +146,8 @@ function matchDispatchToProps(dispatch){
     deleteOrders,
     openDialog,
     closeDialog,
-    connectToMarket
+    connectToMarket,
+    resetMarket
   }, dispatch);
 }
 
