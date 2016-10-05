@@ -12,6 +12,7 @@ import {
   openDialog,
   closeDialog,
   connectToMarket,
+  disconnectToMarket,
   resetMarket
 } from '../redux/actions/marketActions';
 
@@ -54,6 +55,7 @@ class MarketDetailContainer extends React.Component {
 
   componentWillUnmount(){
     this.props.resetMarket();
+    this.props.disconnectToMarket(this.props.params.id);
   }
 
   render() {
@@ -147,6 +149,7 @@ function matchDispatchToProps(dispatch){
     openDialog,
     closeDialog,
     connectToMarket,
+    disconnectToMarket,
     resetMarket
   }, dispatch);
 }

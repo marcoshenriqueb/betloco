@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from .models import Order, Event, Market
 from engine.engine import OrderEngine
-from channels import Channel
+from betloco.publish import Channel
 from django.core.exceptions import ValidationError
 import json
 
@@ -11,12 +11,9 @@ def postSaveOrder(sender, instance, created, **kwargs):
     if created and instance.residual == 0:
         e = OrderEngine(instance)
         e.findMatchingOffers()
-
         pk = instance.market.id
-        Channel("market-update").send({
-            "room": 'market-' + str(pk),
-            "message": json.dumps({'pk': str(pk)})
-        })
+        c = Channel()
+        c.publishMarketUpdate(pk)
 
 @receiver(pre_save, sender=Market)
 def preSaveChoice(sender, instance, *args, **kwargs):

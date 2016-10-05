@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .models import Event, Market, Order
 from .serializers import MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
 from .search import ElasticSearch
-from channels import Channel
+from betloco.publish import Channel
 import json
 
 class ListEvents(APIView):
@@ -63,10 +63,8 @@ class OpenOrdersView(APIView):
         market = None
         if 'market' in request.query_params:
             market = request.query_params['market']
-            Channel("market-update").send({
-                "room": 'market-' + str(market),
-                "message": json.dumps({'pk': str(market)})
-            })
+            c = Channel()
+            c.publishMarketUpdate(market)
 
         return Response(True)
 

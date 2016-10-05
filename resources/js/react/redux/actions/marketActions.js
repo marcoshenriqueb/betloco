@@ -1,8 +1,8 @@
 import req from 'reqwest';
-
 import {
-  connectToMarketWS
-} from '../ws/marketWS';
+  connectToMarketWS,
+  disconnectToMarketWS
+} from '../ws/socketIo';
 
 export const updateSingleMarket = (type, data) => {
   return {
@@ -79,6 +79,12 @@ export const closeDialog = () => {
 export const connectToMarket = (id, callback) => {
   return function(dispatch){
     connectToMarketWS(dispatch, id, callback);
+  }
+}
+
+export const disconnectToMarket = (id) => {
+  return function(dispatch){
+    disconnectToMarketWS(id);
   }
 }
 

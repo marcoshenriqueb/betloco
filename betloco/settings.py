@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-from urllib.parse import urlparse
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -19,7 +18,7 @@ from urllib.parse import urlparse
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'w=*e9-y@o1-@vj8&9=w*^*5fdzor0vd=)qr*4#m8t=nx4xfg*@'
 
-ALLOWED_HOSTS = ['betloco.herokuapp.com', 'localhost:8000',]
+ALLOWED_HOSTS = ['guroo.bet', 'betloco.herokuapp.com', 'localhost:8000',]
 
 
 # Application definition
@@ -99,13 +98,13 @@ except ImportError:
     DATABASES['default'].update(db_from_env)
 
     from urllib.parse import urlparse
-    redis_url = urlparse(os.environ.get('REDIS_URL'))
+    REDIS_URL = urlparse(os.environ.get('REDIS_URL'))
     CACHES = {
             'default': {
                 'BACKEND': 'redis_cache.RedisCache',
-                'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
+                'LOCATION': '%s:%s' % (REDIS_URL.hostname, REDIS_URL.port),
                 'OPTIONS': {
-                    'PASSWORD': redis_url.password,
+                    'PASSWORD': REDIS_URL.password,
                     'DB': 1,
             }
         }

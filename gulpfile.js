@@ -8,6 +8,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var babelify = require('babelify');
+var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('stylus', function () {
   gulp.src('./resources/stylus/app.styl')
@@ -37,7 +38,9 @@ gulp.task('script', function() {
     w.bundle()
     .pipe(source('app.bundled.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    // .pipe(sourcemaps.init({loadMaps: true}))
+    // .pipe(uglify())
+    // .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./front/static/front/js'));
   }
 });
@@ -60,7 +63,7 @@ gulp.task('scripthome', function() {
   }
 });
 
-gulp.task('watch', ['apply-prod-env', 'stylus', 'script'], function() {
+gulp.task('watch', ['stylus', 'script'], function() {
   gulp.watch('./resources/stylus/**/*.styl', ['stylus']);
   // gulp.watch('./resources/js/**/*', ['script']);
 });

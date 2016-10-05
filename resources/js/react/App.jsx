@@ -5,7 +5,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navbar from './components/AppNavbar.jsx';
 import {grey700} from 'material-ui/styles/colors';
-
 import {
   getUser,
   getBalance
