@@ -124,10 +124,10 @@ export default class AppNavbar extends React.Component {
               }
             </li>):
             [
-              <li style={menuItems[1].style} className={menuItems[1].className} onTouchTap={menuItems[1].touch}>
+              <li key={0} style={menuItems[1].style} className={menuItems[1].className} onTouchTap={menuItems[1].touch}>
                 {menuItems[1].text}
               </li>,
-              <li style={menuItems[2].style} className={menuItems[2].className} onTouchTap={menuItems[2].touch}>
+              <li key={1} style={menuItems[2].style} className={menuItems[2].className} onTouchTap={menuItems[2].touch}>
                 {menuItems[2].text}
               </li>
             ]

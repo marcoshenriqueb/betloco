@@ -57,7 +57,7 @@ export const fetchEvents = dispatch => {
   if (params.search.length > 0) {
     url += '&query=' + params.search;
   }
-  url += '&expired=' + params.checked;
+  url += '&expired=' + params.expired;
   url += '&category=' + params.category;
   url += '&order=' + params.order;
   req(url).then(function(response){

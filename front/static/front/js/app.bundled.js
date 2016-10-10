@@ -65192,11 +65192,11 @@ var AppNavbar = function (_React$Component) {
             ) : _react2.default.createElement('div', null)
           ) : [_react2.default.createElement(
             'li',
-            { style: menuItems[1].style, className: menuItems[1].className, onTouchTap: menuItems[1].touch },
+            { key: 0, style: menuItems[1].style, className: menuItems[1].className, onTouchTap: menuItems[1].touch },
             menuItems[1].text
           ), _react2.default.createElement(
             'li',
-            { style: menuItems[2].style, className: menuItems[2].className, onTouchTap: menuItems[2].touch },
+            { key: 1, style: menuItems[2].style, className: menuItems[2].className, onTouchTap: menuItems[2].touch },
             menuItems[2].text
           )]
         );
@@ -69412,7 +69412,7 @@ var fetchEvents = exports.fetchEvents = function fetchEvents(dispatch) {
   if (params.search.length > 0) {
     url += '&query=' + params.search;
   }
-  url += '&expired=' + params.checked;
+  url += '&expired=' + params.expired;
   url += '&category=' + params.category;
   url += '&order=' + params.order;
   (0, _reqwest2.default)(url).then(function (response) {
