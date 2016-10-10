@@ -1,6 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from market.models import Market
+from django.conf import settings
 
 class HomeView(View):
     """docstring for HomeView"""
@@ -14,7 +15,7 @@ class AppView(View):
     def get(self, request):
         context = {'user': 'anom'}
         if request.user.is_authenticated():
-            context = {'user': request.user.id}
+            context = {'user': request.user.id, 'socket_url': settings.SOCKET_URL}
         return render(request, 'front/app.html', context=context)
 
 class ChooseWinnerView(View):
