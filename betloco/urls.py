@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'^api/transactions/', include('transaction.urls')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^.well-known/acme-challenge/(?P<pk>[A-Za-z0-9_]+)/$', LetsEncView.as_view()),
+    url(r'^.well-known/acme-challenge/(?P<pk>[A-Za-z0-9_-]+)/$', LetsEncView.as_view()),
     url(r'^$', HomeView.as_view()),
 ]
