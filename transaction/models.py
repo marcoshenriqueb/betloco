@@ -257,7 +257,7 @@ class TransactionManager(models.Manager):
             'total': transactions - total_risk - balance,
             'transactions': transactions,
             'balance': balance*-1,
-            'risk': total_risk
+            'risk': total_risk if total_risk >= 0 else 0
         }
 
 
