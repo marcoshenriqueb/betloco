@@ -31,4 +31,4 @@ class ChooseWinnerView(View):
 class LetsEncView(View):
     """docstring for LetsEncView"""
     def get(self, request, pk):
-        return HttpResponse(pk)
+        return HttpResponse(pk + '.' + settings.LETS_ENCRYPT_KEY)

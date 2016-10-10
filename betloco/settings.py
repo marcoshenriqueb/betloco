@@ -76,6 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'betloco.wsgi.application'
+LETS_ENCRYPT_KEY = "L-0tswzW1AvS8PjhmAYo0nBjMb79ODWjobUFMloY-RI"
 
 try:
     from .local_settings import *
@@ -84,7 +85,6 @@ except ImportError:
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     SOCKET_URL = "https://guroo-ws.herokuapp.com/"
 
-    LETS_ENCRYPT_KEY = "L-0tswzW1AvS8PjhmAYo0nBjMb79ODWjobUFMloY-RI"
 
     DEBUG = True
 
