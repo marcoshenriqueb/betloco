@@ -69645,6 +69645,10 @@ var handleAmountChange = exports.handleAmountChange = function handleAmountChang
       type: 'UPDATE_ORDER_AMOUNT_CHANGE',
       payload: amount
     };
+  } else {
+    return {
+      type: 'UPDATE_ORDER_AMOUNT_CHANGE_XXXXXXXX'
+    };
   }
 };
 
@@ -69669,6 +69673,10 @@ var handlePriceChange = exports.handlePriceChange = function handlePriceChange(e
     return {
       type: 'UPDATE_ORDER_PRICE_CHANGE',
       payload: price
+    };
+  } else {
+    return {
+      type: 'UPDATE_ORDER_PRICE_CHANGE_XXXXXXXX'
     };
   }
 };
