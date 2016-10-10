@@ -7,7 +7,11 @@ import json
 class RedisChannel():
     """docstring for RedisChannel"""
     def __init__(self):
-        self.redis = redis.Redis(settings.REDIS_URL.hostname, settings.REDIS_URL.port, 0)
+        self.redis = redis.Redis(
+            settings.REDIS_URL.hostname,
+            settings.REDIS_URL.port,
+            0,
+            password=settings.REDIS_URL.password)
 
     def publishMarketUpdate(self, key):
         m = Market.objects.get(pk=int(key))
