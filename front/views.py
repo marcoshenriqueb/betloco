@@ -1,4 +1,5 @@
 from django.views.generic import View
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from market.models import Market
 from django.conf import settings
@@ -26,3 +27,8 @@ class ChooseWinnerView(View):
             result = Market.objects.set_winner(request.POST['event-winner'], market_id=market_id)
             return redirect('/admin/market/event/' + request.POST['event-id'] + '/change/')
         return redirect('/')
+
+class LetsEncView(View):
+    """docstring for LetsEncView"""
+    def get(self, request, pk):
+        return HttpResponse(pk)
