@@ -2,3 +2,4 @@ node_modules/*
 anotacoes.txt
 local_settings.py
 .babelrc
+betloco.log

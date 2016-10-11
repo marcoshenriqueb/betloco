@@ -87,7 +87,7 @@ except ImportError:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    DEBUG = True
+    DEBUG = False
 
     DATABASES = {
         'default': {}
@@ -216,3 +216,36 @@ EMAIL_HOST_PASSWORD = '22d4b03e29a705329a3f053e0cf123ab'
 EMAIL_PORT = 587
 
 DEFAULT_FROM_EMAIL = "confirmacao@guroo.bet"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'betloco.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'betloco': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
