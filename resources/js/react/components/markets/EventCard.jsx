@@ -91,7 +91,10 @@ export default class EventCard extends React.Component{
           }
         }
       }
-      var textContent = this.props._event._source.markets.map((m, k)=> {
+      const markets = this.props._event._source.markets.sort((a, b)=>{
+        return b.volume - a.volume;
+      });
+      var textContent = markets.map((m, k)=> {
         let prob = null;
         if (this.props.prices != null) {
           prob = this.props.prices[m.id] != null ? this.props.prices[m.id].price / totalPrice * 100 : 0;

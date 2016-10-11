@@ -39,7 +39,7 @@ gulp.task('script', function() {
     .pipe(source('app.bundled.js'))
     .pipe(buffer())
     // .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
+    // .pipe(uglify())
     // .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./front/static/front/js'));
   }
@@ -63,7 +63,7 @@ gulp.task('scripthome', function() {
   }
 });
 
-gulp.task('watch', ['apply-prod-env', 'stylus', 'script'], function() {
+gulp.task('watch', ['stylus', 'script'], function() {
   gulp.watch('./resources/stylus/**/*.styl', ['stylus']);
   // gulp.watch('./resources/js/**/*', ['script']);
 });
