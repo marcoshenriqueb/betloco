@@ -11,7 +11,7 @@ var babelify = require('babelify');
 var sourcemaps = require('gulp-sourcemaps');
 var gulpif = require('gulp-if');
 
-var production = false;
+var production = true;
 
 gulp.task('stylus', function () {
   gulp.src('./resources/stylus/app.styl')
