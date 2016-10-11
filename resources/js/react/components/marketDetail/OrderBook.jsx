@@ -29,10 +29,14 @@ export default class OrderBook extends React.Component {
           <OrderTable buy={true}
                       inverted={true}
                       headerStyle={{}}
+                      openDialog={this.props.openDialog}
+                      market={this.props.market}
                       orders={this.props.market.topSells} />
 
           <OrderTable buy={false}
                       headerStyle={{}}
+                      openDialog={this.props.openDialog}
+                      market={this.props.market}
                       orders={this.props.market.topBuys} />
         </CardText>
       )

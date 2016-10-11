@@ -16,6 +16,7 @@ import {
   handleOrder,
   returnStep,
   resetOrderState,
+  addBookOrder,
   handleConfirmOrder
 } from '../../redux/actions/orderActions';
 
@@ -29,7 +30,11 @@ class OrderDialog extends React.Component {
 
   componentDidUpdate(prevProps){
     if (this.props.content == 0 && this.props.dialogContent != undefined && prevProps.dialogContent == undefined) {
-      this.props.addBestPrice();
+      if (this.props.dialogContent.order == undefined) {
+        this.props.addBestPrice();
+      }else {
+        this.props.addBookOrder(this.props.dialogContent.order);
+      }
     }
   }
 
@@ -160,6 +165,7 @@ function matchDispatchToProps(dispatch){
     handleOrder,
     returnStep,
     resetOrderState,
+    addBookOrder,
     handleConfirmOrder
   }, dispatch);
 }

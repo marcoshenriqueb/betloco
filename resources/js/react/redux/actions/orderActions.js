@@ -18,6 +18,13 @@ export const handleAmountChange = e => {
   }
 }
 
+export const addBookOrder = o =>{
+  return {
+    type: 'UPDATE_ORDER_AMOUNT_PRICE_CHANGE',
+    payload: o
+  }
+}
+
 export const addAmount = () => {
   return {
     type: 'UPDATE_ORDER_AMOUNT_ADD'

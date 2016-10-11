@@ -69,7 +69,8 @@ export default class MarketDetailCard extends React.Component {
           </div>
           <br/>
           <div className="orderbook-container">
-            <OrderBook market={this.props.market} />
+            <OrderBook market={this.props.market}
+                       openDialog={this.props.openDialog} />
           </div>
           <br/>
           {openOrders}

@@ -73,6 +73,13 @@ export default function(state = initialState, action){
       });
       break;
 
+    case 'UPDATE_ORDER_AMOUNT_PRICE_CHANGE':
+      return Object.assign({}, state, {
+        amount: action.payload.amount,
+        price: action.payload.price*100
+      });
+      break;
+
     default:
       return state
   }

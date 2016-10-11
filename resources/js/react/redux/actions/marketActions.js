@@ -57,14 +57,15 @@ export const deleteOrders = (id, orders, callback) => {
   }
 }
 
-export const openDialog = (market, buy) => {
+export const openDialog = (market, buy, order) => {
   return {
     type: 'UPDATE_SINGLE_MARKET_OPEN_DIALOG',
     payload: {
       dialog: true,
       dialogContent: {
         market: market,
-        buy: buy
+        buy: buy,
+        order: order
       }
     }
   }
