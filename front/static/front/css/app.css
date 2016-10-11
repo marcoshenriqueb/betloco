@@ -321,7 +321,8 @@ th {
 .order-dialog__form__buttons {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
+  padding-top: 10px;
   align-items: center;
   width: 50%;
 }

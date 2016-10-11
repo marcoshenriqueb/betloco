@@ -27,6 +27,12 @@ class OrderDialog extends React.Component {
     })
   }
 
+  componentDidUpdate(prevProps){
+    if (this.props.content == 0 && this.props.dialogContent != undefined && prevProps.dialogContent == undefined) {
+      this.props.addBestPrice();
+    }
+  }
+
   returnStepAndClose(){
     this.props.resetOrderState();
     this.props.closeDialog();

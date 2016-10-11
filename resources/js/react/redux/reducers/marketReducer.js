@@ -35,7 +35,8 @@ export default function(state = initialState, action){
 
     case 'UPDATE_SINGLE_MARKET_CLOSE_DIALOG':
       return Object.assign({}, state, {
-        dialog: false
+        dialog: false,
+        dialogContent: undefined
       });
       break;
 

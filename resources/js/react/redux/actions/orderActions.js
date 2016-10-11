@@ -49,14 +49,16 @@ export const handlePriceChange = e => {
 
 export const addBestPrice = () => {
   const c = store.getState().market.dialogContent;
-  if (c.buy) {
-    var order = c.market.topBuys[0];
-  }else {
-    var order = c.market.topSells[0];
+  if (c != undefined) {
+    if (c.buy) {
+      var order = c.market.topBuys[0];
+    }else {
+      var order = c.market.topSells[0];
+    }
   }
   return {
     type: 'UPDATE_ORDER_PRICE_CHANGE',
-    payload: order.price*100
+    payload: order!=undefined?order.price*100:""
   }
 }
 

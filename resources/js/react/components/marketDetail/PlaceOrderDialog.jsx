@@ -92,15 +92,6 @@ export default class PlaceOrderDialog extends React.Component {
                   <ContentAdd />
                 </IconButton>
               </div>
-              <div>
-                <RaisedButton
-                  label={bestPrice}
-                  labelPosition="before"
-                  style={{marginTop:20}}
-                  onTouchTap={this.props.addBestPrice}
-                  disabled={!bestOfferButton}
-                />
-              </div>
             </div>
           </div>
           <br />
