@@ -72,14 +72,17 @@ h3 {
   font-size: 14px;
   display: flex;
   align-items: center;
+  flex-direction: column;
 }
 .appbar-nav__info {
   display: flex;
   margin-right: 20px;
 }
+.appbar-nav__info:first-child {
+  margin-top: 5px;
+}
 .appbar-nav__info span {
   margin-right: 10px;
-  display: none;
 }
 .appbar-nav__info-holder {
   border-radius: 2px;
@@ -89,6 +92,8 @@ h3 {
   padding: 0px 8px;
   background-color: #00bcd4;
   color: #fff;
+  min-width: 100px;
+  height: 21px;
 }
 .appbar-nav__info-warning .appbar-nav__info-holder {
   background-color: #ff4081;
@@ -148,9 +153,11 @@ h3 {
   }
   .appbar-nav__info-container {
     margin-right: 40px;
+    flex-direction: row;
   }
-  .appbar-nav__info-container span {
-    display: block;
+  .appbar-nav__info:first-child {
+    margin-top: 0;
+    margin-bottom: 0;
   }
   .appbar-logo {
     height: 30px;

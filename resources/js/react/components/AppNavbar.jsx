@@ -6,6 +6,8 @@ import IconMenuIcon from 'material-ui/svg-icons/navigation/menu';
 import { IndexLink } from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
+import Money from 'material-ui/svg-icons/editor/attach-money';
+import MoneyOff from 'material-ui/svg-icons/editor/money-off';
 
 import {
   _login,
@@ -41,20 +43,27 @@ export default class AppNavbar extends React.Component {
       userData = (
         <div className="appbar-nav__info-container">
           <div className="appbar-nav__info">
-            <span>Disponível</span>
+            <span>
+              {
+                (document.documentElement.clientWidth > window.gvar.breakpoint)?
+                'Disponível':<Money style={{fill:'white', height:21, width:21}} />
+              }
+            </span>
             <div className="appbar-nav__info-holder">
               R$ {(this.props.balance)?this.props.balance.total.toFixed(2):'0'}
             </div>
           </div>
-          {
-            (document.documentElement.clientWidth > window.gvar.breakpoint) ?
-            <div className="appbar-nav__info appbar-nav__info-warning">
-              <span>Risco</span>
-              <div className="appbar-nav__info-holder">
-                R$ {(this.props.balance)?this.props.balance.risk.toFixed(2):'0'}
-              </div>
-            </div> : null
-          }
+          <div className="appbar-nav__info appbar-nav__info-warning">
+            <span>
+              {
+                (document.documentElement.clientWidth > window.gvar.breakpoint)?
+                'Risco':<MoneyOff style={{fill:'white', height:21, width:21}} />
+              }
+            </span>
+            <div className="appbar-nav__info-holder">
+              R$ {(this.props.balance)?this.props.balance.risk.toFixed(2):'0'}
+            </div>
+          </div>
         </div>
       )
       menuItems.push(
