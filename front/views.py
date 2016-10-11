@@ -14,7 +14,7 @@ class HomeView(View):
 class AppView(View):
     """docstring for AppView"""
     def get(self, request):
-        context = {'user': 'anom'}
+        context = {'user': 'anom', 'socket_url': settings.SOCKET_URL}
         if request.user.is_authenticated():
             context = {'user': request.user.id, 'socket_url': settings.SOCKET_URL}
         return render(request, 'front/app.html', context=context)

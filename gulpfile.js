@@ -9,6 +9,9 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var babelify = require('babelify');
 var sourcemaps = require('gulp-sourcemaps');
+var gulpif = require('gulp-if');
+
+var production = false;
 
 gulp.task('stylus', function () {
   gulp.src('./resources/stylus/app.styl')
@@ -38,9 +41,7 @@ gulp.task('script', function() {
     w.bundle()
     .pipe(source('app.bundled.js'))
     .pipe(buffer())
-    // .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
-    // .pipe(sourcemaps.write('./'))
+    .pipe(gulpif(production === true, uglify()))
     .pipe(gulp.dest('./front/static/front/js'));
   }
 });
@@ -58,7 +59,7 @@ gulp.task('scripthome', function() {
     w.bundle()
     .pipe(source('home.bundled.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    .pipe(gulpif(production === true, uglify()))
     .pipe(gulp.dest('./front/static/front/js'));
   }
 });
@@ -74,5 +75,7 @@ gulp.task('watchhome', ['apply-prod-env', 'stylus', 'scripthome'], function() {
 });
 
 gulp.task('apply-prod-env', function() {
+  if (production === true) {
     process.env.NODE_ENV = 'production';
+  }
 });
