@@ -68,6 +68,7 @@ export default class EventCard extends React.Component{
             <p>{price != null ? '(' + (price * 100).toFixed(1) + '%)' : ''}</p>
           </div>
           <LinearProgress style={style.linear}
+                          color={window.gvar.secondarycolor}
                           mode="determinate"
                           value={price != null ? price * 100 : 0} />
         </div>,
@@ -77,6 +78,7 @@ export default class EventCard extends React.Component{
             <p>{price != null ? '(' + (100-(price * 100)).toFixed(1) + '%)' : ''}</p>
           </div>
           <LinearProgress style={style.linear}
+                          color={window.gvar.secondarycolor}
                           mode="determinate"
                           value={price != null ? 100-(price * 100) : 0} />
         </div>
@@ -106,6 +108,7 @@ export default class EventCard extends React.Component{
                 <p>{(prob!=null)?'('+prob.toFixed(1)+'%)':''}</p>
               </div>
               <LinearProgress style={style.linear}
+                              color={window.gvar.secondarycolor}
                               mode="determinate"
                               value={prob} />
             </div>

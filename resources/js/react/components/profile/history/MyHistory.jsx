@@ -17,23 +17,27 @@ var style = {
   },
   firstColumn: {
     paddingRight: 10,
-    paddingLeft: 10,
-    width: 150
+    paddingLeft: 10
   },
   firstRowColumn: {
+    overflow: 'hidden',
     fontSize:15,
-    paddingRight: 10,
-    paddingLeft: 10,
-    width: 150
-  },
-  th: {
     paddingRight: 10,
     paddingLeft: 10
   },
+  th: {
+    textAlign: 'right',
+    paddingRight: 10,
+    paddingLeft: 10,
+    width: 80
+  },
   thBig: {
-    display: 'none'
+    textAlign: 'right',
+    display: 'none',
+    width: 80
   },
   thDate: {
+    textAlign: 'right',
     width: 80,
     paddingRight: 10,
     paddingLeft: 10
@@ -51,7 +55,7 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
   style.firstRowColumn.paddingRight = 24;
 }
 if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
-  style.thDate.width = 180;
+  style.thDate.width = 140;
   style.firstColumn.width = 450;
   style.firstRowColumn.width = 450;
 }
@@ -93,7 +97,7 @@ class MyHistory extends React.Component {
     var returnTitle = function(p){
       return p.market__title_short;
     }
-    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       returnTitle = function(p){
         return p.market__title;
       }
@@ -107,7 +111,9 @@ class MyHistory extends React.Component {
             {returnTitle(h)}
           </TableRowColumn>
           <TableRowColumn style={style.thBig}>{h.amount_sum}</TableRowColumn>
-          <TableRowColumn style={style.th}>{h.price_avg.toFixed(2) * h.amount_sum}</TableRowColumn>
+          <TableRowColumn style={style.th}>
+            {(document.documentElement.clientWidth > window.gvar.breakpoint)?h.price_avg.toFixed(2)*100:h.price_avg.toFixed(2)*h.amount_sum}
+          </TableRowColumn>
           <TableRowColumn style={style.thDate}>
             {
               (document.documentElement.clientWidth > window.gvar.desktopbreak) ?
@@ -131,7 +137,7 @@ class MyHistory extends React.Component {
                   <TableHeaderColumn style={style.firstColumn}>Mercado</TableHeaderColumn>
                   <TableHeaderColumn style={style.thBig}>Qtde</TableHeaderColumn>
                   <TableHeaderColumn style={style.th}>
-                    {(document.documentElement.clientWidth > window.gvar.desktopbreak) ? "Valor (R$)":"R$"}
+                    {(document.documentElement.clientWidth > window.gvar.breakpoint) ? "Preço (¢)":"R$"}
                   </TableHeaderColumn>
                   <TableHeaderColumn style={style.thDate}>Data Ordem</TableHeaderColumn>
                 </TableRow>

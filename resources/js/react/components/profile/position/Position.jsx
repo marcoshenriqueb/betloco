@@ -17,18 +17,19 @@ var style = {
   },
   firstColumn: {
     paddingRight: 10,
-    paddingLeft: 10,
-    width: 150
+    paddingLeft: 10
   },
   firstRowColumn: {
+    overflow: 'hidden',
     fontSize:15,
     paddingRight: 10,
-    paddingLeft: 10,
-    width: 150
+    paddingLeft: 10
   },
   th: {
+    textAlign: 'right',
     paddingRight: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    width: 80
   },
   thBig: {
     display: 'none'
@@ -87,7 +88,7 @@ class Position extends React.Component {
     var returnTitle = function(p){
       return p.market.title_short;
     }
-    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       returnTitle = function(p){
         return p.market.title;
       }

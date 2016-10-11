@@ -25,7 +25,7 @@ export default function(state = initialState, action){
     case 'UPDATE_ORDER_AMOUNT_REMOVE':
       var amount = 0;
       if (state.amount > 100) {
-        amount = Number(this.state.amount) - 100;
+        amount = Number(state.amount) - 100;
       }
       return Object.assign({}, state, {
         amount: amount

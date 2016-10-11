@@ -18,7 +18,7 @@ const muiTheme = getMuiTheme({
   fontFamily: "'Open Sans', sans-serif",
   raisedButton: {
     fontWeight: '700',
-    primaryColor: '#00BCD4'
+    primaryColor: window.gvar.successcolor
   },
   flatButton: {
     fontWeight: '700'

@@ -17,21 +17,24 @@ var style = {
   },
   firstColumn: {
     paddingRight: 10,
-    paddingLeft: 10,
-    width: 150
+    paddingLeft: 10
   },
   firstRowColumn: {
+    overflow: 'hidden',
     fontSize:15,
-    paddingRight: 10,
-    paddingLeft: 10,
-    width: 150
-  },
-  th: {
     paddingRight: 10,
     paddingLeft: 10
   },
+  th: {
+    textAlign: 'right',
+    paddingRight: 10,
+    paddingLeft: 10,
+    width: 80
+  },
   thBig: {
-    display: 'none'
+    textAlign: 'right',
+    display: 'none',
+    width: 80
   }
 }
 
@@ -88,7 +91,7 @@ class MyOrders extends React.Component {
     var returnTitle = function(p){
       return p.market__title_short;
     }
-    if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
+    if (document.documentElement.clientWidth > window.gvar.breakpoint) {
       returnTitle = function(p){
         return p.market__title;
       }
