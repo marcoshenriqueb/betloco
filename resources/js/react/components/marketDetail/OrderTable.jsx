@@ -40,7 +40,7 @@ export default class OrderTable extends React.Component {
     if (this.props.orders.length > 0) {
       orders = this.props.orders.map((o, k) => {
         var openDialogWithOrder = (e) => {
-          this.props.openDialog(this.props.market, this.props.buy, o);
+          this.props.openDialog(this.props.market, !this.props.buy, o);
         }
         return <TableRow style={styles.rowheight} key={k} onTouchTap={openDialogWithOrder}>
                 <TableRowColumn style={styles.rowheight}>

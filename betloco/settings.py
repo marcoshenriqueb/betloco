@@ -18,7 +18,7 @@ import os
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'w=*e9-y@o1-@vj8&9=w*^*5fdzor0vd=)qr*4#m8t=nx4xfg*@'
 
-ALLOWED_HOSTS = ['guroo.bet', 'betloco.herokuapp.com', 'localhost:8000',]
+ALLOWED_HOSTS = ['guroo.bet', 'betloco.herokuapp.com', 'localhost',]
 
 
 # Application definition
@@ -86,7 +86,7 @@ except ImportError:
     SOCKET_URL = "https://guroo-ws.herokuapp.com/"
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    
+
     DEBUG = True
 
     DATABASES = {
