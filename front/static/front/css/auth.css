@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Titles;
+  src: url("../fonts/BRANDON_MED.OTF");
+  font-weight: 300;
+}
 * {
   box-sizing: border-box;
 }
@@ -16,13 +21,20 @@ header {
   top: 0;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  font-size: 18px;
+  font-size: 16px;
   z-index: 1000;
+  padding: 20px 20px;
 }
 header.auth {
   position: relative;
+}
+.logo {
+  height: 50px;
+}
+.logo-color {
+  fill: #fff;
 }
 .header-nav {
   display: flex;
@@ -31,32 +43,36 @@ header.auth {
   margin: 0;
 }
 .header-nav__item {
-  color: #303030;
+  color: #fff;
   text-decoration: none;
   padding: 8px 15px;
   height: 100%;
-  border-right: 1px dashed #303030;
   transition: all 600ms ease;
   position: relative;
+  border-radius: 3px;
+  border: 2px solid transparent;
 }
-.header-nav__item:first-child {
-  border-left: 1px dashed #303030;
+.header-nav__item.enter {
+  border-color: #fff;
 }
 .header-nav__item:hover {
-  background-color: #f9a51a;
+  border-color: #f9a51a;
   color: #fff;
 }
-.header-nav__item .dropdown {
-  position: absolute;
-}
 @media (min-width: 638px) {
+  header {
+    padding: 20px 150px;
+  }
   .header-nav__item {
-    padding: 8px 30px;
+    padding: 8px 20px;
+  }
+  .logo {
+    height: 80px;
   }
 }
 @media (min-width: 992px) {
   .header-nav__item {
-    padding: 8px 60px;
+    padding: 8px 30px;
   }
 }
 body {

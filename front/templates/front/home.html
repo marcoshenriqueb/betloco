@@ -13,17 +13,6 @@
   <body>
     {% include "front/analytics.html" %}
     <header>
-      <ul class="header-nav">
-        <a href="#" class="header-nav__item" ><li>Home</li></a>
-        <a href="#" class="hide-on-med-and-up dropdown header-nav__item"><li>Dúvidas</li></a>
-        <a href="#" class="hide-on-small-only header-nav__item"><li>O quê</li></a>
-        <a href="#" class="hide-on-small-only header-nav__item"><li>Como</li></a>
-        <a href="#" class="hide-on-small-only header-nav__item"><li>Por quê</li></a>
-        <a href="#" class="header-nav__item"><li>Suporte</li></a>
-      </ul>
-    </header>
-    <div class="top-section">
-      <div id="guroo"></div>
       <svg version="1.1" class="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       	   viewBox="0 0 342.851 230.033" enable-background="new 0 0 342.851 230.033"
       	   xml:space="preserve">
@@ -57,13 +46,17 @@
         		c11.717,0,21.224-9.506,21.224-21.238C264.892,167.936,262.021,162.186,257.497,158.289z"/>
         </g>
       </svg>
-      <a class="btn cyan" href="/accounts/login/">Entrar</a>
-      <p>
-        Não? Clique <a href="/app/">aqui</a> e navegue pelo App!
-      </p>
-      <img src="{% static 'front/img/guroo-group1.svg' %}" class="top-section__drawings left hide-on-small-only" alt="" />
-      <img src="{% static 'front/img/guroo-group2.svg' %}" class="top-section__drawings right hide-on-small-only" alt="" />
-
+      <ul class="header-nav">
+        <a href="#" class="hide-on-small-only header-nav__item"><li>O quê</li></a>
+        <a href="#" class="hide-on-small-only header-nav__item"><li>Como</li></a>
+        <a href="#" class="hide-on-small-only header-nav__item"><li>Por quê</li></a>
+        <a href="#" class="hide-on-small-only header-nav__item"><li>Suporte</li></a>
+        <a href="/accounts/login/" class="header-nav__item enter"><li>Entrar</li></a>
+      </ul>
+    </header>
+    <div class="top-section">
+      <div id="guroo"></div>
+      <a class="waves-effect waves-light btn orange darken-1 getinbtn" href="/app/">Navegue</a>
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>

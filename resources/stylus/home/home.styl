@@ -2,54 +2,32 @@
 @import "./base.styl"
 @import "./header.styl"
 
-.top-section{
+.top-section
   color: topsectioncolor;
+  padding-top: 150px
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-image: url("../img/ecailles.png");
-  background-repeat: repeat;
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3) ), url("../img/mountain-top.jpg");
+  background-position:center top;
+  background-size: cover;
   height: 100%;
   width: 100%;
   position: relative;
-}
-.top-section__drawings
-  position: absolute;
-  bottom 5%
-  height: 50%
-  &.left
-    left: 2%
-  &.right
-    right: 2%
+  .getinbtn
+    margin-top: 200px
 #guroo{
-  font-size: 25px
+  font-family: titlefont
+  font-size: 21px
   font-weight: 300;
-  min-height: 74px
-  margin-bottom: 10%
   width: 90%
-  margin-top: 40%;
+  height: 62px
 }
-.logo{
-  height: 120px
-  margin-bottom: 50px;
-  margin-left: 15px;
-}
-.logo-color
-  fill primarycolor
 @media(min-width:tabletbreak)
-  #guroo
-    font-size: 42px;
-    width: 830px
-    margin-top: 12%;
-    margin-bottom: 5%
-  .logo
-    height: 200px;
-    margin-left: 25px;
-@media(min-width:tabletbreak) and (orientation:portrait)
-  #guroo
-    margin-top: 25%
-    width: 610px
-    min-height: 126px
+  .top-section
+    padding-top: 250px
 
-  .top-section__drawings
-    height: 35%
+  #guroo
+    font-size: 40px
+    width: 933px
+    height: 60px

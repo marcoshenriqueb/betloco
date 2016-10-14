@@ -3,12 +3,20 @@ header
   top: 0;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  font-size: 18px;
+  font-size: 16px;
   z-index: 1000
+  padding: 20px 20px
   &.auth
     position: relative;
+
+.logo
+  height: 50px
+
+.logo-color
+  fill topsectioncolor
+
 .header-nav
   display: flex;
   list-style-type: none;
@@ -20,20 +28,24 @@ header
   text-decoration: none;
   padding: 8px 15px
   height: 100%;
-  border-right: 1px dashed topsectioncolor;
   transition: all 600ms ease;
   position: relative;
-  &:first-child
-    border-left: 1px dashed topsectioncolor;
+  border-radius: 3px
+  border: 2px solid transparent;
+  &.enter
+    border-color: white
   &:hover
-    background-color: secondarycolor;
+    border-color: secondarycolor
     color: white;
-  .dropdown
-    position: absolute;
 @media(min-width:638px)
+  header
+    padding: 20px 150px
   .header-nav__item
-    padding: 8px 30px;
+    padding: 8px 20px;
+
+  .logo
+    height: 80px
 
 @media(min-width:desktopbreak)
   .header-nav__item
-    padding: 8px 60px;
+    padding: 8px 30px;
