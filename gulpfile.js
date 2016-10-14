@@ -10,6 +10,7 @@ var uglify = require('gulp-uglify');
 var babelify = require('babelify');
 var sourcemaps = require('gulp-sourcemaps');
 var gulpif = require('gulp-if');
+var imagemin = require('gulp-imagemin');
 
 var production = true;
 
@@ -78,4 +79,10 @@ gulp.task('apply-prod-env', function() {
   if (production === true) {
     process.env.NODE_ENV = 'production';
   }
+});
+
+gulp.task('image', function() {
+  gulp.src('resources/img/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('front/static/front/img'))
 });
