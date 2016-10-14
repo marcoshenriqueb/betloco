@@ -85,7 +85,7 @@ gulp.task('apply-prod-env', function() {
 gulp.task('image', function() {
   gulp.src('resources/img/*')
         .pipe(imageResize({
-          width : 1920,
+          width : 1301,
           upscale : false
           }))
         .pipe(imagemin())
