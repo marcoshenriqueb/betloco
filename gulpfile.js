@@ -11,6 +11,7 @@ var babelify = require('babelify');
 var sourcemaps = require('gulp-sourcemaps');
 var gulpif = require('gulp-if');
 var imagemin = require('gulp-imagemin');
+var imageResize = require('gulp-image-resize');
 
 var production = true;
 
@@ -83,6 +84,10 @@ gulp.task('apply-prod-env', function() {
 
 gulp.task('image', function() {
   gulp.src('resources/img/*')
+        .pipe(imageResize({
+          width : 1920,
+          upscale : false
+          }))
         .pipe(imagemin())
         .pipe(gulp.dest('front/static/front/img'))
 });
