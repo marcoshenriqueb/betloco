@@ -57,11 +57,11 @@ header.auth {
 }
 .header-nav__item:hover {
   border-color: #f9a51a;
-  color: #fff;
+  color: #f9a51a;
 }
-@media (min-width: 638px) {
+@media (min-width: 600px) {
   header {
-    padding: 20px 150px;
+    padding: 20px 50px;
   }
   .header-nav__item {
     padding: 8px 20px;
@@ -71,6 +71,9 @@ header.auth {
   }
 }
 @media (min-width: 992px) {
+  header {
+    padding: 20px 150px;
+  }
   .header-nav__item {
     padding: 8px 30px;
   }

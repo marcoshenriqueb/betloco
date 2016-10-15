@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", function(){
   theater
     .addActor('guroo',{accuracy: 1})
   theater
-    .addScene('guroo:Uma plataforma para você provar o seu conhecimento.', 1200)
-    .addScene(-26)
-    .addScene('ganhar com o seu conhecimento.', 10000)
+    .addScene('guroo:Prove o seu conhecimento.', 1200)
+    .addScene('guroo:Ganhe com suas previsões.', 10000)
     .addScene(theater.replay)
 });
