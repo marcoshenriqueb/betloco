@@ -1,58 +1,8 @@
 @import "./var.styl"
 @import "./base.styl"
 @import "./header.styl"
+@import "./top.styl"
 
-.top-section
-  color: topsectioncolor;
-  padding-top: 200px
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3) ), url("../img/man-thinking.jpg");
-  background-position:center top;
-  background-size: cover;
-  height: 100%;
-  width: 100%;
-  position: relative;
-.top-section__cto
-  margin-top: 40%
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  p
-    margin-bottom: -10px
-    font-size: 18px
-    font-weight: 300;
-  i
-    color secondarycolor
-    transition: all 300ms ease
-  &:hover i
-    transform: scale(1.3);
-
-#guroo
-  font-family: titlefont
-  font-size: 26px
-  font-weight: 300;
-  width: 273px
-  height: 39px
-
-@media(min-width:tabletbreak)
-  .top-section
-    padding-top: 300px
-  .top-section__cto
-    margin-top: 350px
-    p
-      font-size: 20px
-  #guroo
-    font-size: 52px
-    width: 546px
-    height: 75px
-
-@media(min-width:desktopbreak)
-  .top-section
-    padding-top: 250px
-  .top-section__cto
-    margin-top: 230px
-    p
-      font-size: 20px
+.screenshot1
+  border-radius: 5px
+  box-shadow: shadow

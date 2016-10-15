@@ -48,18 +48,27 @@
         </g>
       </svg>
       <ul class="header-nav">
-        <a href="#" class="hide-on-small-only header-nav__item"><li>O quê</li></a>
-        <a href="#" class="hide-on-small-only header-nav__item"><li>Por quê</li></a>
+        <a href="#what" class="hide-on-small-only header-nav__item"><li>O quê</li></a>
+        <a href="#" class="hide-on-small-only header-nav__item"><li>Como</li></a>
         <a href="#" class="hide-on-small-only header-nav__item"><li>FAQ</li></a>
         <a href="/accounts/login/" class="header-nav__item"><li>Entrar</li></a>
         <a href="/app/" class="header-nav__item enter"><li>Navegue</li></a>
       </ul>
     </header>
-    <div class="top-section">
+    <div id="top" class="top-section scrollspy">
       <div id="guroo"></div>
-      <div class="top-section__cto">
+      <a class="top-section__cto" href="#what">
         <p>Saiba mais</p>
         <i class="material-icons medium">keyboard_arrow_down</i>
+      </a>
+    </div>
+    <div id="what" class="section scrollspy">
+      <h2 class="section-title">O que é o Guroo?</h2>
+      <p class="section-description">
+        Guroo é uma plataforma onde usamos o mecanismo de mercado para coletar conhecimento sobre evetos futuros. Na prática, você irá apostar nos assuntos de seu interesse e ganhar dinheiro, não só quando acertar o resultado, mas também com a variação do preço de suas posições.
+      </p>
+      <div class="section-content">
+        <img class="screenshot1" src="{% static 'front/img/event_screeshot.png' %}" alt="" />
       </div>
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
