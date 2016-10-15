@@ -6,6 +6,7 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
     {% load staticfiles %}
     <link rel="icon" href="{% static 'front/img/guroo-favicon2-02.png' %}" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     <link rel="stylesheet" href="{% static 'front/css/home.css' %}" media="screen" title="no title" charset="utf-8">
     <title>Guroo</title>
@@ -51,12 +52,16 @@
         <a href="#" class="hide-on-small-only header-nav__item"><li>Como</li></a>
         <a href="#" class="hide-on-small-only header-nav__item"><li>Por quê</li></a>
         <a href="#" class="hide-on-small-only header-nav__item"><li>Suporte</li></a>
-        <a href="/accounts/login/" class="header-nav__item enter"><li>Entrar</li></a>
+        <a href="/accounts/login/" class="header-nav__item"><li>Entrar</li></a>
+        <a href="/app/" class="header-nav__item enter"><li>Navegue</li></a>
       </ul>
     </header>
     <div class="top-section">
       <div id="guroo"></div>
-      <a class="waves-effect waves-light btn orange darken-1 getinbtn" href="/app/">Navegue</a>
+      <!-- <div class="top-section__cto">
+        <p>Saiba mais</p>
+        <i class="material-icons medium">keyboard_arrow_down</i>
+      </div> -->
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
