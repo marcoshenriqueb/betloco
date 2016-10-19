@@ -124,20 +124,10 @@ class ElasticSearch():
                                             }
                                         }
                                     },
-                                    "lastCompletedOrder": {
-                                        "type": "nested",
-                                        "properties": {
-                                            "amount": {
-                                                "type": "integer",
-                                                "index": "no",
-                                                "include_in_all": False
-                                            },
-                                            "price":{
-                                                "type": "float",
-                                                "index": "no",
-                                                "include_in_all": False
-                                            }
-                                        }
+                                    "lastDayPrice": {
+                                        "type": "float",
+                                        "index": "no",
+                                        "include_in_all": False
                                     },
                                     "volume": {
                                         "type": "integer",

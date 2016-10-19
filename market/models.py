@@ -7,6 +7,7 @@ from django.utils import timezone
 import operator, functools
 from itertools import chain
 from channels import Channel
+from price.models import Price
 
 class EventType(models.Model):
     """docstring for EventType"""
@@ -204,6 +205,10 @@ class Market(models.Model):
             return None
     lastCompleteOrder = property(_getLastCompleteOrder)
 
+    def _getLastDayPrice(self):
+        return Price.objects.filter(market__id=self.id).last().price
+
+    lastDayPrice = property(_getLastDayPrice)
 
 class OrderManager(models.Manager):
     """docstring for OrderManager"""
