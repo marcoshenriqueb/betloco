@@ -190,10 +190,11 @@ class Market(models.Model):
 
     topSells = property(_getTopToSell)
 
-    def _getLastCompleteOrder(self):
+    def _getLastCompleteOrder(self, until=None):
         try:
+            until = timezone.now() if until is None else until
             o = Operation.objects.filter(Q(from_order__market__id=self.id) | Q(to_order__market__id=self.id)) \
-                                 .filter(from_liquidation=0) \
+                                 .filter(from_liquidation=0).filter(created_at__lte=until) \
                                  .order_by('-created_at')[0:1].get()
             order = self.order_set.filter(Q(from_order__id=o.id) | Q(to_order__id=o.id))[0:1].get()
             if order.id == o.from_order_id:

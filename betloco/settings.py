@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'market',
     'user_profile',
     'transaction',
+    'price',
     'rest_framework',
     'allauth',
     'django.contrib.algoliasearch',

@@ -36,6 +36,7 @@ body {
 .section-content {
   display: flex;
   width: 100%;
+  justify-content: space-around;
 }
 @media (min-width: 992px) {
   .section {
@@ -112,6 +113,7 @@ header.auth {
 }
 .top-section {
   color: #fff;
+  overflow: hidden;
   padding-top: 200px;
   display: flex;
   align-items: center;
@@ -180,4 +182,38 @@ header.auth {
 .screenshot1 {
   border-radius: 5px;
   box-shadow: rgba(0,0,0,0.118) 0px 2px 12px, rgba(0,0,0,0.118) 0px 2px 8px;
+  margin: 30px;
+}
+.section-content .collapsible {
+  width: 70%;
+}
+.collapsible-header {
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.2rem;
+}
+.collapsible-header i {
+  color: #f9a51a;
+}
+.collapsible-body.fun {
+  display: flex;
+  align-items: center;
+}
+.collapsible-body__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.collapsible-body__content p {
+  color: #616161;
+  font-size: 1.05rem;
+  padding: 0 2rem;
+}
+.collapsible-body__content-title {
+  margin-top: -40px;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  color: #ff4081;
 }

@@ -64,11 +64,30 @@
     </div>
     <div id="what" class="section scrollspy">
       <h2 class="section-title">O que é o Guroo?</h2>
-      <p class="section-description">
+      <!-- <p class="section-description">
         Guroo é uma plataforma onde usamos o mecanismo de mercado para coletar conhecimento sobre evetos futuros. Na prática, você irá apostar nos assuntos de seu interesse e ganhar dinheiro, não só quando acertar o resultado, mas também com a variação do preço de suas posições.
-      </p>
+      </p> -->
       <div class="section-content">
-        <img class="screenshot1" src="{% static 'front/img/event_screeshot.png' %}" alt="" />
+        <ul class="collapsible popout" data-collapsible="accordion">
+          <li>
+            <div class="collapsible-header active"><i class="material-icons">attach_money</i>Entretenimento</div>
+            <div class="collapsible-body fun">
+              <img class="screenshot1" src="{% static 'front/img/event_screeshot.png' %}" alt="app event screenshot" />
+              <div class="collapsible-body__content">
+                <h5 class="collapsible-body__content-title">Faça previsões</h5>
+                <p>Use o seu conhecimento e faça previsões a favor ou contra o acontecimento de eventos futuros. Você pode realizar ganhos antes mesmo do evento acontecer!</p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header"><i class="material-icons">verified_user</i>Hedge</div>
+            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+          </li>
+          <li>
+            <div class="collapsible-header"><i class="material-icons">info_outline</i>Informação</div>
+            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+          </li>
+        </ul>
       </div>
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

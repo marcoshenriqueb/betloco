@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^api/markets/', include('market.urls')),
     url(r'^api/users/', include('user_profile.urls')),
     url(r'^api/transactions/', include('transaction.urls')),
+    url(r'^api/prices/', include('price.urls')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^.well-known/acme-challenge/(?P<pk>.+)/$', LetsEncView.as_view()),
