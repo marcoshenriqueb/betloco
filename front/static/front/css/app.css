@@ -239,19 +239,30 @@ h3 {
   display: flex;
   flex-direction: column;
 }
-.marketcard-predictions .marketcard-predictions__choices {
+.marketcard-predictions__choices {
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
 }
-.marketcard-predictions .marketcard-predictions__choices a {
+.marketcard-predictions__choices a {
   color: rgba(0,0,0,0.88);
 }
-.marketcard-predictions h5 {
+.marketcard-predictions__choices h5,
+.marketcard-predictions__choices p {
+  margin-bottom: 0;
+}
+.marketcard-predictions__choices h5 {
   margin-right: 20px;
 }
-.marketcard-predictions h5,
-.marketcard-predictions p {
-  margin-bottom: 0;
+.marketcard-predictions__choices p span {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+.marketcard-predictions__choices p .positive-color {
+  color: #008000;
+}
+.marketcard-predictions__choices p .negative-color {
+  color: #f00;
 }
 @media (min-width: 768px) {
   .marketcard {

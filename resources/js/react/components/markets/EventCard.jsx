@@ -58,14 +58,35 @@ export default class EventCard extends React.Component{
     if (this.props._event._source.markets.length == 1) {
       let m = this.props._event._source.markets[0]
       let price = null;
+      let changeBuy = null;
+      let changeSell = null;
       if (this.props.prices != null && this.props.prices[m.id] != null) {
         price = this.props.prices[m.id].price;
+        changeBuy = (m.lastDayPrice != undefined)?
+                          (price - m.lastDayPrice)*100 :
+                          false;
+        changeSell = (m.lastDayPrice != undefined)?
+                          ((1-price)-(1-m.lastDayPrice))*100 :
+                          false;
       }
       var textContent = [
         <div key={1}>
           <div className="marketcard-predictions__choices">
             <h5 style={style.marketTitle}>Sim</h5>
-            <p>{price != null ? '(' + (price * 100).toFixed(1) + '%)' : ''}</p>
+            <p>
+              {
+                price != null ?
+                (price * 100).toFixed(0) + '%':
+                ''
+              }
+              <span className={(changeBuy>0)?'positive-color':'negative-color'}>
+              {
+                price != null && changeBuy != false?
+                ' (' + changeBuy.toFixed(0) + 'p.p.)':
+                ''
+              }
+              </span>
+            </p>
           </div>
           <LinearProgress style={style.linear}
                           mode="determinate"
@@ -74,7 +95,20 @@ export default class EventCard extends React.Component{
         <div key={2}>
           <div className="marketcard-predictions__choices">
             <h5 style={style.marketTitle}>Não</h5>
-            <p>{price != null ? '(' + (100-(price * 100)).toFixed(1) + '%)' : ''}</p>
+            <p>
+              {
+                price != null ?
+                (100-(price * 100)).toFixed(0) + '%':
+                ''
+              }
+              <span className={(changeSell>=0)?'positive-color':'negative-color'}>
+              {
+                price != null && changeSell != false?
+                ' (' + changeSell.toFixed(0) + 'p.p.)':
+                ''
+              }
+              </span>
+            </p>
           </div>
           <LinearProgress style={style.linear}
                           mode="determinate"
@@ -83,11 +117,15 @@ export default class EventCard extends React.Component{
       ]
     }else {
       let totalPrice = 0;
+      let totalLastPrice = 0;
       if (this.props.prices != null) {
         for (let k in this.props._event._source.markets) {
           let m = this.props._event._source.markets[k];
           if (this.props.prices[m.id] != null) {
             totalPrice += this.props.prices[m.id].price;
+          }
+          if (m.lastDayPrice != undefined) {
+            totalLastPrice += m.lastDayPrice;
           }
         }
       }
@@ -96,8 +134,12 @@ export default class EventCard extends React.Component{
       });
       var textContent = markets.map((m, k)=> {
         let prob = null;
+        let change = null;
         if (this.props.prices != null) {
           prob = this.props.prices[m.id] != null ? this.props.prices[m.id].price / totalPrice * 100 : 0;
+          if (m.lastDayPrice != undefined && totalLastPrice > 0 && m.lastDayPrice/totalLastPrice < 1) {
+            change = prob - m.lastDayPrice/totalLastPrice * 100;
+          }
         }
         if (k < 2) {
           return (
@@ -106,7 +148,19 @@ export default class EventCard extends React.Component{
                 <IndexLink to={'/app/mercado/' + m.id + '/'}>
                   <h5 style={style.marketTitle}>{m.title_short}</h5>
                 </IndexLink>
-                <p>{(prob!=null)?'('+prob.toFixed(1)+'%)':''}</p>
+                <p>
+                  {
+                    (prob!=null)?
+                    prob.toFixed(0)+'%':''
+                  }
+                  <span className={(change>=0)?'positive-color':'negative-color'}>
+                  {
+                    prob!=null && change!=null?
+                    ' (' + change.toFixed(0) + 'p.p.)':
+                    ''
+                  }
+                  </span>
+                </p>
               </div>
               <LinearProgress style={style.linear}
                               mode="determinate"
