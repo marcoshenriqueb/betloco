@@ -5,6 +5,7 @@ from .models import Event, Market, Order
 from .serializers import MarketDetailSerializer, EventSerializer, EventDetailSerializer, CreateOrderSerializer
 from .search import ElasticSearch
 from betloco.publish import Channel
+from rest_framework.permissions import IsAuthenticated
 import json
 
 class ListEvents(APIView):
@@ -44,6 +45,7 @@ class DetailMarket(generics.RetrieveAPIView):
 class CreateOrder(generics.CreateAPIView):
     """docstring for CreateOrder"""
     serializer_class = CreateOrderSerializer
+    permission_classes = (IsAuthenticated,)
 
 class CustodyView(APIView):
     """Show user custody"""

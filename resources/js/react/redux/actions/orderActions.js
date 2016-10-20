@@ -149,6 +149,8 @@ export const handleConfirmOrder = (callback) => {
     }).catch(function(response){
       if (response.status == 400) {
         dispatch(updateOrderNonFieldError(JSON.parse(response.response).non_field_errors[0]));
+      }else if (response.status == 403) {
+        dispatch(updateOrderNonFieldError('Você precisa se entrar na sua conta para emitir ordens.'));
       }
     });
   }

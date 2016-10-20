@@ -13,7 +13,7 @@ var gulpif = require('gulp-if');
 var imagemin = require('gulp-imagemin');
 var imageResize = require('gulp-image-resize');
 
-var production = true;
+var production = false;
 
 gulp.task('stylus', function () {
   gulp.src('./resources/stylus/app.styl')
