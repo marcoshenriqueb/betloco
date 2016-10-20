@@ -1,5 +1,7 @@
 import React from 'react';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
+import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward';
+import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward';
 import LinearProgress from 'material-ui/LinearProgress';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
@@ -27,6 +29,12 @@ const style = {
   },
   btn: {
     marginLeft: 10
+  },
+  varIcon: {
+    height: 14,
+    width: 14,
+    position: 'relative',
+    top: 2
   }
 }
 
@@ -58,16 +66,28 @@ export default class EventCard extends React.Component{
     if (this.props._event._source.markets.length == 1) {
       let m = this.props._event._source.markets[0]
       let price = null;
-      let changeBuy = null;
-      let changeSell = null;
+      let change = null;
+      let iconBuy = null;
+      let iconSell = null;
+      let classBuy = null;
+      let classSell = null;
       if (this.props.prices != null && this.props.prices[m.id] != null) {
         price = this.props.prices[m.id].price;
-        changeBuy = (m.lastDayPrice != undefined)?
-                          (price - m.lastDayPrice)*100 :
-                          false;
-        changeSell = (m.lastDayPrice != undefined)?
-                          ((1-price)-(1-m.lastDayPrice))*100 :
-                          false;
+        if (m.lastDayPrice != undefined) {
+          if (price - m.lastDayPrice > 0) {
+            change = ((price - m.lastDayPrice)*100).toFixed(0) + 'p.p.';
+            iconBuy = <ArrowUp color={window.gvar.positivecolor} style={style.varIcon} />;
+            iconSell = <ArrowDown color={window.gvar.negativecolor} style={style.varIcon} />;
+            classBuy = 'positive-color';
+            classSell = 'negative-color';
+          }else if (price - m.lastDayPrice < 0) {
+            change = ((price - m.lastDayPrice)*-100).toFixed(0) + 'p.p.';
+            iconBuy = <ArrowDown color={window.gvar.negativecolor} style={style.varIcon} />;
+            iconSell = <ArrowUp color={window.gvar.positivecolor} style={style.varIcon} />;
+            classBuy = 'negative-color';
+            classSell = 'positive-color';
+          }
+        }
       }
       var textContent = [
         <div key={1}>
@@ -76,15 +96,12 @@ export default class EventCard extends React.Component{
             <p>
               {
                 price != null ?
-                (price * 100).toFixed(0) + '%':
+                (price * 100).toFixed(0) + '% ':
                 ''
               }
-              <span className={(changeBuy>0)?'positive-color':'negative-color'}>
-              {
-                price != null && changeBuy != false?
-                ' (' + changeBuy.toFixed(0) + 'p.p.)':
-                ''
-              }
+              <span className={classBuy}>
+                {iconBuy}
+                {change}
               </span>
             </p>
           </div>
@@ -98,15 +115,12 @@ export default class EventCard extends React.Component{
             <p>
               {
                 price != null ?
-                (100-(price * 100)).toFixed(0) + '%':
+                (100-(price * 100)).toFixed(0) + '% ':
                 ''
               }
-              <span className={(changeSell>=0)?'positive-color':'negative-color'}>
-              {
-                price != null && changeSell != false?
-                ' (' + changeSell.toFixed(0) + 'p.p.)':
-                ''
-              }
+              <span className={classSell}>
+                {iconSell}
+                {change}
               </span>
             </p>
           </div>
@@ -135,10 +149,20 @@ export default class EventCard extends React.Component{
       var textContent = markets.map((m, k)=> {
         let prob = null;
         let change = null;
+        let icon = null;
+        let className = null;
         if (this.props.prices != null) {
           prob = this.props.prices[m.id] != null ? this.props.prices[m.id].price / totalPrice * 100 : 0;
           if (m.lastDayPrice != undefined && totalLastPrice > 0 && m.lastDayPrice/totalLastPrice < 1) {
-            change = prob - m.lastDayPrice/totalLastPrice * 100;
+            if (prob - m.lastDayPrice/totalLastPrice*100 > 0) {
+              change = (prob - m.lastDayPrice/totalLastPrice * 100).toFixed(0) + 'p.p.';
+              icon = <ArrowUp color={window.gvar.positivecolor} style={style.varIcon} />;
+              className = 'positive-color';
+            }else if (prob - m.lastDayPrice/totalLastPrice*100 < 0) {
+              change = ((prob - m.lastDayPrice/totalLastPrice * 100)*-1).toFixed(0) + 'p.p.';
+              icon = <ArrowDown color={window.gvar.negativecolor} style={style.varIcon} />;
+              className = 'negative-color';
+            }
           }
         }
         if (k < 2) {
@@ -151,14 +175,11 @@ export default class EventCard extends React.Component{
                 <p>
                   {
                     (prob!=null)?
-                    prob.toFixed(0)+'%':''
+                    prob.toFixed(0)+'% ':''
                   }
-                  <span className={(change>=0)?'positive-color':'negative-color'}>
-                  {
-                    prob!=null && change!=null?
-                    ' (' + change.toFixed(0) + 'p.p.)':
-                    ''
-                  }
+                  <span className={className}>
+                    {icon}
+                    {change}
                   </span>
                 </p>
               </div>

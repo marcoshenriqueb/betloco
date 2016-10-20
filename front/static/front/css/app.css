@@ -43,6 +43,14 @@ h3 {
   margin-bottom: 0;
   padding: 5px 25px;
 }
+.positive-color {
+  color: #008000;
+  fill: #008000;
+}
+.negative-color {
+  color: #f00;
+  fill: #f00;
+}
 .appbar {
   background-color: #616161;
   height: 64px;
@@ -255,14 +263,7 @@ h3 {
   margin-right: 20px;
 }
 .marketcard-predictions__choices p span {
-  font-weight: bold;
   font-size: 0.8rem;
-}
-.marketcard-predictions__choices p .positive-color {
-  color: #008000;
-}
-.marketcard-predictions__choices p .negative-color {
-  color: #f00;
 }
 @media (min-width: 768px) {
   .marketcard {
