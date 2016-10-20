@@ -39,7 +39,10 @@ export default class OrderRequest extends React.Component {
     }
     return (
       <div className="order-request">
-        <span className="order-request__subtitle">Último negócio: {(this.props.market.lastCompleteOrder!=null)?(this.props.market.lastCompleteOrder.price*100).toFixed(0):0}¢</span>
+        <span className="order-request__subtitle">
+          Último negócio:
+          {(this.props.market.lastCompleteOrder!=null)?(this.props.market.lastCompleteOrder.price*100).toFixed(0):0}¢
+        </span>
         <br/>
         <span className="order-request__subtitle">{custody} papéis em custódia</span>
         <br/>
