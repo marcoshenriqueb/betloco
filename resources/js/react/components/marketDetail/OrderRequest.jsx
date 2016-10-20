@@ -1,5 +1,7 @@
 import React from 'react';
 import {Card, CardActions, CardText} from 'material-ui/Card';
+import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward';
+import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
@@ -13,6 +15,12 @@ var styles = {
     'width': 87,
     'margin': 5,
     'marginLeft': 0
+  },
+  varIcon: {
+    height: 14,
+    width: 14,
+    position: 'relative',
+    top: 2
   }
 }
 
@@ -37,12 +45,37 @@ export default class OrderRequest extends React.Component {
       bTip = "Clique e deixe uma ordem caso acredite que o evento ocorrerá.";
       sTip = "Clique e deixe uma ordem caso acredite que o evento não ocorrerá.";
     }
+    let price = (this.props.market.lastCompleteOrder!=null)?
+                ' '+(this.props.market.lastCompleteOrder.price*100).toFixed(0):0;
+    let change = null;
+    let icon = null;
+    let className = null;
+    if (this.props.market.lastCompleteOrder!=null && this.props.market.lastDayPrice!=undefined) {
+      if (this.props.market.lastCompleteOrder.price-this.props.market.lastDayPrice > 0) {
+        change = (this.props.market.lastCompleteOrder.price-this.props.market.lastDayPrice)*100;
+        change = change.toFixed(0) + '¢';
+        icon = <ArrowUp color={window.gvar.positivecolor} style={styles.varIcon}/>;
+        className = 'positive-color';
+      }else if (this.props.market.lastCompleteOrder.price-this.props.market.lastDayPrice < 0) {
+        change = (this.props.market.lastCompleteOrder.price-this.props.market.lastDayPrice)*-100;
+        change = change.toFixed(0) + '¢';
+        icon = <ArrowDown color={window.gvar.negativecolor} style={styles.varIcon}/>;
+        className = 'negative-color';
+      }
+      // let change = ()?
+      //              ((this.props.market.lastCompleteOrder.price-this.props.market.lastDayPrice)*100).toFixed(0) :
+      //              0
+    }
     return (
       <div className="order-request">
-        <span className="order-request__subtitle">
+        <p className="order-request__subtitle">
           Último negócio:
-          {(this.props.market.lastCompleteOrder!=null)?(this.props.market.lastCompleteOrder.price*100).toFixed(0):0}¢
-        </span>
+          {price}¢
+          <span className={className}>
+            {icon}
+            {change}
+          </span>
+        </p>
         <br/>
         <span className="order-request__subtitle">{custody} papéis em custódia</span>
         <br/>

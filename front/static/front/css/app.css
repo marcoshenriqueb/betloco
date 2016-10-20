@@ -298,10 +298,15 @@ h3 {
 }
 .order-request__subtitle {
   font-size: 13px;
+  display: inline;
+  margin: 0;
+}
+.order-request__subtitle span {
+  font-size: 12px;
 }
 @media (min-width: 768px) {
   .order-request__subtitle {
-    font-size: 14px;
+    font-size: 15px;
   }
 }
 .orderbook-container {
