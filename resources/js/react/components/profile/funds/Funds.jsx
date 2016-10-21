@@ -4,6 +4,7 @@ import { IndexLink } from 'react-router';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import moment from 'moment';
+import Payment from '../../global/Paypal.jsx';
 
 var style = {
   firstColumn: {
@@ -37,10 +38,6 @@ if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
 }
 
 class Funds extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render(){
     if (this.props.funds === false) {
       return (
@@ -89,6 +86,7 @@ class Funds extends React.Component {
                 </TableRow>
               </TableBody>
             </Table>
+            <Payment/>
           </CardText>
         </Card>
       </div>

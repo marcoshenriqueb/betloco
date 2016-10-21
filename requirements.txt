@@ -20,6 +20,7 @@ idna==2.1
 msgpack-python==0.4.7
 ndg-httpsclient==0.4.1
 oauthlib==1.1.1
+paypalrestsdk==1.11.7
 psycopg2==2.6.1
 pyasn1==0.1.9
 pycparser==2.14

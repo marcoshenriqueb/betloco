@@ -4,10 +4,11 @@ from .serializers import TransactionSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Transaction
+from .payments import Paypal
 import json
 
-class ListCreateTransaction(generics.ListCreateAPIView):
-    """docstring for ListCreateTransaction"""
+class ListCreateTransaction(generics.ListAPIView):
+    """docstring for ListTransaction"""
     serializer_class = TransactionSerializer
 
     def get_queryset(self):
@@ -20,3 +21,10 @@ class BalanceView(APIView):
         if 'preview' in request.query_params:
             preview = json.loads(request.query_params['preview'])
         return Response(Transaction.objects.balance(request.user.id, new_order=preview))
+
+class CheckoutView(APIView):
+    """docstring for CheckoutView"""
+    def post(self, request):
+        p = Paypal(request.data)
+        p.create()
+        return Response(request.data['value'])

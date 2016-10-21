@@ -64989,7 +64989,7 @@ _reactDom2.default.render(_react2.default.createElement(
 
 // ReactDOM.render(<App />, document.getElementById('app'));
 
-},{"./react/App.jsx":731,"./react/components/EventDetailContainer.jsx":733,"./react/components/MarketContainer.jsx":734,"./react/components/MarketDetailContainer.jsx":735,"./react/components/ProfileContainer.jsx":736,"./react/components/profile/config/MyConfig.jsx":751,"./react/components/profile/funds/Funds.jsx":752,"./react/components/profile/history/MyHistory.jsx":753,"./react/components/profile/order/MyOrders.jsx":754,"./react/components/profile/position/Position.jsx":755,"./react/redux/store":773,"react":666,"react-dom":412,"react-redux":415,"react-router":455,"react-tap-event-plugin":494}],731:[function(require,module,exports){
+},{"./react/App.jsx":731,"./react/components/EventDetailContainer.jsx":733,"./react/components/MarketContainer.jsx":734,"./react/components/MarketDetailContainer.jsx":735,"./react/components/ProfileContainer.jsx":736,"./react/components/profile/config/MyConfig.jsx":752,"./react/components/profile/funds/Funds.jsx":753,"./react/components/profile/history/MyHistory.jsx":754,"./react/components/profile/order/MyOrders.jsx":755,"./react/components/profile/position/Position.jsx":756,"./react/redux/store":774,"react":666,"react-dom":412,"react-redux":415,"react-router":455,"react-tap-event-plugin":494}],731:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65107,7 +65107,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(App);
 
-},{"./components/AppNavbar.jsx":732,"./redux/actions/navigation":760,"./redux/actions/profile/userActions":763,"material-ui/styles/MuiThemeProvider":367,"material-ui/styles/colors":369,"material-ui/styles/getMuiTheme":370,"react":666,"react-redux":415,"redux":673}],732:[function(require,module,exports){
+},{"./components/AppNavbar.jsx":732,"./redux/actions/navigation":761,"./redux/actions/profile/userActions":764,"material-ui/styles/MuiThemeProvider":367,"material-ui/styles/colors":369,"material-ui/styles/getMuiTheme":370,"react":666,"react-redux":415,"redux":673}],732:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65347,7 +65347,7 @@ var AppNavbar = function (_React$Component) {
 
 exports.default = AppNavbar;
 
-},{"../redux/actions/navigation":760,"material-ui/Avatar":4,"material-ui/IconButton":31,"material-ui/IconMenu":33,"material-ui/MenuItem":43,"material-ui/svg-icons/editor/attach-money":386,"material-ui/svg-icons/editor/money-off":388,"material-ui/svg-icons/navigation/expand-more":398,"material-ui/svg-icons/navigation/menu":399,"react":666,"react-router":455}],733:[function(require,module,exports){
+},{"../redux/actions/navigation":761,"material-ui/Avatar":4,"material-ui/IconButton":31,"material-ui/IconMenu":33,"material-ui/MenuItem":43,"material-ui/svg-icons/editor/attach-money":386,"material-ui/svg-icons/editor/money-off":388,"material-ui/svg-icons/navigation/expand-more":398,"material-ui/svg-icons/navigation/menu":399,"react":666,"react-router":455}],733:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65513,7 +65513,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(EventDetailContainer);
 
-},{"../redux/actions/eventActions":757,"./eventDetail/MultipleMarketTable.jsx":737,"./general/Breadcrumb.jsx":738,"./marketDetail/Details.jsx":740,"react":666,"react-redux":415,"redux":673}],734:[function(require,module,exports){
+},{"../redux/actions/eventActions":758,"./eventDetail/MultipleMarketTable.jsx":737,"./general/Breadcrumb.jsx":738,"./marketDetail/Details.jsx":741,"react":666,"react-redux":415,"redux":673}],734:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65648,7 +65648,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MarketContainer);
 
-},{"../redux/actions/eventsFetchingActions":758,"../redux/actions/searchActions":764,"./markets/Event.jsx":748,"./markets/SearchComp.jsx":750,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":666,"react-redux":415,"redux":673}],735:[function(require,module,exports){
+},{"../redux/actions/eventsFetchingActions":759,"../redux/actions/searchActions":765,"./markets/Event.jsx":749,"./markets/SearchComp.jsx":751,"material-ui/FloatingActionButton":27,"material-ui/svg-icons/content/add":383,"react":666,"react-redux":415,"redux":673}],735:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65837,7 +65837,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MarketDetailContainer);
 
-},{"../redux/actions/marketActions":759,"./general/Breadcrumb.jsx":738,"./marketDetail/MarketDetailCard.jsx":741,"react":666,"react-redux":415,"redux":673}],736:[function(require,module,exports){
+},{"../redux/actions/marketActions":760,"./general/Breadcrumb.jsx":738,"./marketDetail/MarketDetailCard.jsx":742,"react":666,"react-redux":415,"redux":673}],736:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66060,7 +66060,7 @@ var ProfileContainer = function (_React$Component) {
 
 exports.default = ProfileContainer;
 
-},{"../redux/actions/navigation":760,"material-ui/Divider":20,"material-ui/FontIcon":29,"material-ui/IconButton":31,"material-ui/Menu":40,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/svg-icons/action/gavel":376,"material-ui/svg-icons/action/history":377,"material-ui/svg-icons/action/power-settings-new":380,"material-ui/svg-icons/action/settings":381,"material-ui/svg-icons/action/trending-up":382,"material-ui/svg-icons/editor/monetization-on":387,"react":666,"react-router":455}],737:[function(require,module,exports){
+},{"../redux/actions/navigation":761,"material-ui/Divider":20,"material-ui/FontIcon":29,"material-ui/IconButton":31,"material-ui/Menu":40,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/svg-icons/action/gavel":376,"material-ui/svg-icons/action/history":377,"material-ui/svg-icons/action/power-settings-new":380,"material-ui/svg-icons/action/settings":381,"material-ui/svg-icons/action/trending-up":382,"material-ui/svg-icons/editor/monetization-on":387,"react":666,"react-router":455}],737:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66403,6 +66403,82 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _TextField = require('material-ui/TextField');
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Payment = function (_React$Component) {
+  _inherits(Payment, _React$Component);
+
+  function Payment() {
+    _classCallCheck(this, Payment);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Payment).apply(this, arguments));
+  }
+
+  _createClass(Payment, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      window.paypalCheckoutReady = function () {
+        paypal.checkout.setup('VAQU6PNYNSX5L', {
+          environment: 'sandbox',
+          container: 'paypal-container'
+        });
+      };
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'form',
+          { id: 'paypal-container', method: 'post', action: '/api/transactions/checkout/' },
+          _react2.default.createElement('input', { type: 'hidden',
+            value: document.getElementById('token').getAttribute('value'),
+            name: 'csrfmiddlewaretoken' }),
+          _react2.default.createElement('input', { type: 'hidden',
+            value: window.location,
+            name: 'return_url' }),
+          _react2.default.createElement('input', { type: 'hidden',
+            value: window.location,
+            name: 'cancel_url' }),
+          _react2.default.createElement(_TextField2.default, {
+            hintText: 'Valor', name: 'value'
+          }),
+          _react2.default.createElement('br', null)
+        )
+      );
+    }
+  }]);
+
+  return Payment;
+}(_react2.default.Component);
+
+exports.default = Payment;
+
+},{"material-ui/TextField":70,"react":666}],740:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 var _reactRedux = require('react-redux');
 
 var _redux = require('redux');
@@ -66570,7 +66646,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(ConfirmOrderDialog);
 
-},{"../../redux/actions/profile/userActions":763,"material-ui/Table":64,"react":666,"react-redux":415,"redux":673}],740:[function(require,module,exports){
+},{"../../redux/actions/profile/userActions":764,"material-ui/Table":64,"react":666,"react-redux":415,"redux":673}],741:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66717,7 +66793,7 @@ var Details = function (_React$Component) {
 
 exports.default = Details;
 
-},{"material-ui/Card":12,"material-ui/Table":64,"moment":411,"react":666}],741:[function(require,module,exports){
+},{"material-ui/Card":12,"material-ui/Table":64,"moment":411,"react":666}],742:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66869,7 +66945,7 @@ var MarketDetailCard = function (_React$Component) {
 
 exports.default = MarketDetailCard;
 
-},{"./Details.jsx":740,"./OpenOrders.jsx":742,"./OrderBook.jsx":743,"./OrderDialog.jsx":744,"./OrderRequest.jsx":745,"material-ui/Card":12,"material-ui/Chip":16,"material-ui/FlatButton":25,"moment":411,"react":666}],742:[function(require,module,exports){
+},{"./Details.jsx":741,"./OpenOrders.jsx":743,"./OrderBook.jsx":744,"./OrderDialog.jsx":745,"./OrderRequest.jsx":746,"material-ui/Card":12,"material-ui/Chip":16,"material-ui/FlatButton":25,"moment":411,"react":666}],743:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67106,7 +67182,7 @@ var OpenOrders = function (_React$Component) {
 
 exports.default = OpenOrders;
 
-},{"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/RaisedButton":50,"material-ui/Table":64,"material-ui/svg-icons/action/delete":375,"react":666}],743:[function(require,module,exports){
+},{"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/RaisedButton":50,"material-ui/Table":64,"material-ui/svg-icons/action/delete":375,"react":666}],744:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67203,7 +67279,7 @@ var OrderBook = function (_React$Component) {
 
 exports.default = OrderBook;
 
-},{"./OrderTable.jsx":746,"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/Table":64,"react":666}],744:[function(require,module,exports){
+},{"./OrderTable.jsx":747,"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/Table":64,"react":666}],745:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67413,7 +67489,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(OrderDialog);
 
-},{"../../redux/actions/orderActions":761,"./ConfirmOrderDialog.jsx":739,"./PlaceOrderDialog.jsx":747,"material-ui/Dialog":18,"material-ui/FlatButton":25,"material-ui/RaisedButton":50,"react":666,"react-redux":415,"redux":673}],745:[function(require,module,exports){
+},{"../../redux/actions/orderActions":762,"./ConfirmOrderDialog.jsx":740,"./PlaceOrderDialog.jsx":748,"material-ui/Dialog":18,"material-ui/FlatButton":25,"material-ui/RaisedButton":50,"react":666,"react-redux":415,"redux":673}],746:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67569,7 +67645,7 @@ var OrderRequest = function (_React$Component) {
 
 exports.default = OrderRequest;
 
-},{"material-ui/Card":12,"material-ui/RaisedButton":50,"material-ui/Table":64,"material-ui/svg-icons/navigation/arrow-downward":392,"material-ui/svg-icons/navigation/arrow-upward":394,"react":666}],746:[function(require,module,exports){
+},{"material-ui/Card":12,"material-ui/RaisedButton":50,"material-ui/Table":64,"material-ui/svg-icons/navigation/arrow-downward":392,"material-ui/svg-icons/navigation/arrow-upward":394,"react":666}],747:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67713,7 +67789,7 @@ var OrderTable = function (_React$Component) {
 
 exports.default = OrderTable;
 
-},{"material-ui/Table":64,"react":666}],747:[function(require,module,exports){
+},{"material-ui/Table":64,"react":666}],748:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67896,7 +67972,7 @@ var PlaceOrderDialog = function (_React$Component) {
 
 exports.default = PlaceOrderDialog;
 
-},{"./OrderTable.jsx":746,"material-ui/IconButton":31,"material-ui/Paper":45,"material-ui/RaisedButton":50,"material-ui/TextField":70,"material-ui/svg-icons/content/add":383,"material-ui/svg-icons/content/remove":385,"material-ui/svg-icons/editor/attach-money":386,"react":666}],748:[function(require,module,exports){
+},{"./OrderTable.jsx":747,"material-ui/IconButton":31,"material-ui/Paper":45,"material-ui/RaisedButton":50,"material-ui/TextField":70,"material-ui/svg-icons/content/add":383,"material-ui/svg-icons/content/remove":385,"material-ui/svg-icons/editor/attach-money":386,"react":666}],749:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67965,7 +68041,7 @@ _Event.propTypes = {
   events: _react2.default.PropTypes.array.isRequired
 };
 
-},{"./EventCard.jsx":749,"react":666}],749:[function(require,module,exports){
+},{"./EventCard.jsx":750,"react":666}],750:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68275,7 +68351,7 @@ EventCard.propTypes = {
   _event: _react2.default.PropTypes.object.isRequired
 };
 
-},{"material-ui/Card":12,"material-ui/LinearProgress":35,"material-ui/svg-icons/navigation/arrow-downward":392,"material-ui/svg-icons/navigation/arrow-upward":394,"moment":411,"react":666,"react-router":455}],750:[function(require,module,exports){
+},{"material-ui/Card":12,"material-ui/LinearProgress":35,"material-ui/svg-icons/navigation/arrow-downward":392,"material-ui/svg-icons/navigation/arrow-upward":394,"moment":411,"react":666,"react-router":455}],751:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68491,7 +68567,7 @@ var SearchComp = function (_React$Component) {
 
 exports.default = SearchComp;
 
-},{"material-ui/Card":12,"material-ui/IconButton":31,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/SelectField":52,"material-ui/TextField":70,"material-ui/styles/colors":369,"material-ui/svg-icons/content/filter-list":384,"react":666}],751:[function(require,module,exports){
+},{"material-ui/Card":12,"material-ui/IconButton":31,"material-ui/MenuItem":43,"material-ui/Paper":45,"material-ui/SelectField":52,"material-ui/TextField":70,"material-ui/styles/colors":369,"material-ui/svg-icons/content/filter-list":384,"react":666}],752:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68655,7 +68731,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MyConfig);
 
-},{"../../../redux/actions/navigation":760,"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/TextField":70,"react":666,"react-redux":415,"redux":673}],752:[function(require,module,exports){
+},{"../../../redux/actions/navigation":761,"material-ui/Card":12,"material-ui/FlatButton":25,"material-ui/TextField":70,"react":666,"react-redux":415,"redux":673}],753:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68679,6 +68755,10 @@ var _Table = require('material-ui/Table');
 var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
+
+var _Paypal = require('../../global/Paypal.jsx');
+
+var _Paypal2 = _interopRequireDefault(_Paypal);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -68722,10 +68802,10 @@ if (document.documentElement.clientWidth > window.gvar.desktopbreak) {
 var Funds = function (_React$Component) {
   _inherits(Funds, _React$Component);
 
-  function Funds(props) {
+  function Funds() {
     _classCallCheck(this, Funds);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Funds).call(this, props));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Funds).apply(this, arguments));
   }
 
   _createClass(Funds, [{
@@ -68822,7 +68902,8 @@ var Funds = function (_React$Component) {
                   )
                 )
               )
-            )
+            ),
+            _react2.default.createElement(_Paypal2.default, null)
           )
         )
       );
@@ -68840,7 +68921,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Funds);
 
-},{"material-ui/Card":12,"material-ui/Table":64,"moment":411,"react":666,"react-redux":415,"react-router":455}],753:[function(require,module,exports){
+},{"../../global/Paypal.jsx":739,"material-ui/Card":12,"material-ui/Table":64,"moment":411,"react":666,"react-redux":415,"react-router":455}],754:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69090,7 +69171,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MyHistory);
 
-},{"../../../redux/actions/profile/positionActions":762,"material-ui/Card":12,"material-ui/Table":64,"moment":411,"react":666,"react-redux":415,"react-router":455,"redux":673}],754:[function(require,module,exports){
+},{"../../../redux/actions/profile/positionActions":763,"material-ui/Card":12,"material-ui/Table":64,"moment":411,"react":666,"react-redux":415,"react-router":455,"redux":673}],755:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69343,7 +69424,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(MyOrders);
 
-},{"../../../redux/actions/profile/positionActions":762,"material-ui/Card":12,"material-ui/Table":64,"material-ui/svg-icons/action/open-in-browser":379,"react":666,"react-redux":415,"react-router":455,"redux":673}],755:[function(require,module,exports){
+},{"../../../redux/actions/profile/positionActions":763,"material-ui/Card":12,"material-ui/Table":64,"material-ui/svg-icons/action/open-in-browser":379,"react":666,"react-redux":415,"react-router":455,"redux":673}],756:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69578,7 +69659,7 @@ function matchDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(Position);
 
-},{"../../../redux/actions/profile/positionActions":762,"material-ui/Card":12,"material-ui/Table":64,"material-ui/svg-icons/action/open-in-browser":379,"react":666,"react-redux":415,"react-router":455,"redux":673}],756:[function(require,module,exports){
+},{"../../../redux/actions/profile/positionActions":763,"material-ui/Card":12,"material-ui/Table":64,"material-ui/svg-icons/action/open-in-browser":379,"react":666,"react-redux":415,"react-router":455,"redux":673}],757:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69587,7 +69668,7 @@ Object.defineProperty(exports, "__esModule", {
 var GET_EVENTS_FULFILLED = exports.GET_EVENTS_FULFILLED = 'GET_EVENTS_FULFILLED';
 var GET_EVENTS_FETCHING = exports.GET_EVENTS_FETCHING = 'GET_EVENTS_FETCHING';
 
-},{}],757:[function(require,module,exports){
+},{}],758:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69628,7 +69709,7 @@ var resetEvent = exports.resetEvent = function resetEvent() {
   };
 };
 
-},{"reqwest":682}],758:[function(require,module,exports){
+},{"reqwest":682}],759:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69735,7 +69816,7 @@ var getNextEventPage = exports.getNextEventPage = function getNextEventPage() {
   };
 };
 
-},{"../actionTypes":756,"../store":773,"reqwest":682}],759:[function(require,module,exports){
+},{"../actionTypes":757,"../store":774,"reqwest":682}],760:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69842,7 +69923,7 @@ var resetMarket = exports.resetMarket = function resetMarket() {
   };
 };
 
-},{"../ws/socketIo":774,"reqwest":682}],760:[function(require,module,exports){
+},{"../ws/socketIo":775,"reqwest":682}],761:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -69905,7 +69986,7 @@ var togglenav = exports.togglenav = function togglenav(e) {
   };
 };
 
-},{"react-router":455}],761:[function(require,module,exports){
+},{"react-router":455}],762:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70076,7 +70157,7 @@ var handleConfirmOrder = exports.handleConfirmOrder = function handleConfirmOrde
   };
 };
 
-},{"../store":773,"reqwest":682}],762:[function(require,module,exports){
+},{"../store":774,"reqwest":682}],763:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70138,7 +70219,7 @@ var getHistory = exports.getHistory = function getHistory() {
   };
 };
 
-},{"reqwest":682}],763:[function(require,module,exports){
+},{"reqwest":682}],764:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70186,7 +70267,7 @@ var getEstimatedBalance = exports.getEstimatedBalance = function getEstimatedBal
   };
 };
 
-},{"reqwest":682}],764:[function(require,module,exports){
+},{"reqwest":682}],765:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70256,7 +70337,7 @@ var handleOrderChange = exports.handleOrderChange = function handleOrderChange(e
   };
 };
 
-},{"./eventsFetchingActions":758}],765:[function(require,module,exports){
+},{"./eventsFetchingActions":759}],766:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70283,7 +70364,7 @@ var initalState = {
   _event: null
 };
 
-},{}],766:[function(require,module,exports){
+},{}],767:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -70334,7 +70415,7 @@ var allReducers = (0, _redux.combineReducers)({
 
 exports.default = allReducers;
 
-},{"./eventReducer":765,"./marketReducer":767,"./navReducer":768,"./orderReducer":769,"./profile/positionReducer":770,"./profile/userReducer":771,"./searchReducer":772,"redux":673}],767:[function(require,module,exports){
+},{"./eventReducer":766,"./marketReducer":768,"./navReducer":769,"./orderReducer":770,"./profile/positionReducer":771,"./profile/userReducer":772,"./searchReducer":773,"redux":673}],768:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70395,7 +70476,7 @@ var initialState = {
   orders: []
 };
 
-},{}],768:[function(require,module,exports){
+},{}],769:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70426,7 +70507,7 @@ var initalState = {
   navopen: false
 };
 
-},{}],769:[function(require,module,exports){
+},{}],770:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70523,7 +70604,7 @@ var initialState = {
   disabled: false
 };
 
-},{}],770:[function(require,module,exports){
+},{}],771:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70564,7 +70645,7 @@ var initalState = {
   history: false
 };
 
-},{}],771:[function(require,module,exports){
+},{}],772:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70605,7 +70686,7 @@ var initalState = {
   estimatedBalance: false
 };
 
-},{}],772:[function(require,module,exports){
+},{}],773:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70685,7 +70766,7 @@ var initalState = {
   order: '_score|desc'
 };
 
-},{"../actionTypes":756}],773:[function(require,module,exports){
+},{"../actionTypes":757}],774:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -70707,7 +70788,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var store = exports.store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
-},{"./reducers":766,"redux":673,"redux-thunk":667}],774:[function(require,module,exports){
+},{"./reducers":767,"redux":673,"redux-thunk":667}],775:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70749,4 +70830,4 @@ var disconnectToMarketWS = exports.disconnectToMarketWS = function disconnectToM
   socket.removeListener('guroo:market:update:' + id);
 };
 
-},{"../actions/marketActions":759,"socket.io-client":683}]},{},[730]);
+},{"../actions/marketActions":760,"socket.io-client":683}]},{},[730]);

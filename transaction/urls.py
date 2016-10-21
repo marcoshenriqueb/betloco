@@ -6,4 +6,5 @@ app_name = 'transactions'
 urlpatterns = [
     url(r'^$', views.ListCreateTransaction.as_view()),
     url(r'^balance/$', views.BalanceView.as_view()),
+    url(r'^checkout/$', views.CheckoutView.as_view()),
 ]
