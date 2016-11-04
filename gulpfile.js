@@ -91,3 +91,12 @@ gulp.task('image', function() {
         .pipe(imagemin())
         .pipe(gulp.dest('front/static/front/img'))
 });
+gulp.task('image-thumb', function() {
+  gulp.src('resources/img/thumb/*')
+        .pipe(imageResize({
+          height : 200,
+          upscale : false
+          }))
+        .pipe(imagemin())
+        .pipe(gulp.dest('front/static/front/img'))
+});

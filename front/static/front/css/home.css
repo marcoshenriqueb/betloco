@@ -27,6 +27,13 @@ body {
   font-size: 32px;
   font-family: Titles, sans-serif;
 }
+.section-subtitle {
+  font-size: 18px;
+  margin-top: 30px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  font-family: Titles, sans-serif;
+}
 .section-description {
   color: #616161;
   font-size: 15px;
