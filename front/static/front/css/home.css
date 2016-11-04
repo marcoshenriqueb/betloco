@@ -207,6 +207,13 @@ header.auth {
   width: 80%;
   height: auto;
 }
+.what-section__content__item .entertainment {
+  margin-bottom: -20px;
+}
+.what-section__content__item .interaction {
+  height: 150px;
+  width: auto;
+}
 @media (min-width: 600px) {
   .what-section__content {
     flex-direction: row;
