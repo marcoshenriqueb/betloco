@@ -214,6 +214,9 @@ header.auth {
   width: 80%;
   height: auto;
 }
+.what-section__content__item p {
+  color: #616161;
+}
 .what-section__content__item .entertainment {
   margin-bottom: -20px;
 }
