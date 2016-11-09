@@ -108,7 +108,10 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         balance = Transaction.objects.balance(self.context['request'].user.id, new_order=data)
         if balance['total'] < 0:
             raise serializers.ValidationError("Você não tem saldo suficiente!")
-
+        if data['price'] == 0 or data['price'] >= 1:
+            raise serializers.ValidationError("Por favor, passe um preço válido.")
+        if data['amount'] == 0 or type(data['amount']) is not int:
+            raise serializers.ValidationError("Por favor, passe uma quantidade válida.")
         return data
 
     def create(self, validated_data):

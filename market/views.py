@@ -38,6 +38,11 @@ class ListEventsPrices(APIView):
 
         return Response("Didn't submit markets id's!", status=400)
 
+class CreateOrder(generics.CreateAPIView):
+    """docstring for CreateOrder"""
+    serializer_class = CreateOrderSerializer
+    permission_classes = (IsAuthenticated,)
+
 class DetailEvent(generics.RetrieveAPIView):
     """
     View to list all events in the system.
@@ -51,11 +56,6 @@ class DetailMarket(generics.RetrieveAPIView):
     """
     queryset = Market.objects.all()
     serializer_class = MarketDetailSerializer
-
-class CreateOrder(generics.CreateAPIView):
-    """docstring for CreateOrder"""
-    serializer_class = CreateOrderSerializer
-    permission_classes = (IsAuthenticated,)
 
 class CustodyView(APIView):
     """Show user custody"""
