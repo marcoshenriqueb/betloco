@@ -43,6 +43,11 @@ class CreateOrder(generics.CreateAPIView):
     serializer_class = CreateOrderSerializer
     permission_classes = (IsAuthenticated,)
 
+class CustodyView(APIView):
+    """Show user custody"""
+    def get(self, request, pk):
+        return Response(Market.objects.custody(request.user.id, pk))
+
 class DetailEvent(generics.RetrieveAPIView):
     """
     View to list all events in the system.
@@ -56,11 +61,6 @@ class DetailMarket(generics.RetrieveAPIView):
     """
     queryset = Market.objects.all()
     serializer_class = MarketDetailSerializer
-
-class CustodyView(APIView):
-    """Show user custody"""
-    def get(self, request, pk):
-        return Response(Market.objects.custody(request.user.id, pk))
 
 class OpenOrdersView(APIView):
     """Show user open orders"""

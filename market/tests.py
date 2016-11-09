@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 from rest_framework import status
-from .models import Event, Market, EventType, EventCategory
+from .models import Event, Market, EventType, EventCategory, Order
 from django.utils import timezone
 
 class MarketRequestsEventsTests(APITestCase):
@@ -146,5 +146,44 @@ class MarketRequestsOrdersTests(APITestCase):
             'amount': 10
         }, format='json')
         self.assertEqual(response.status_code, 201)
-        # print(response.status_code)
-        # print(response.data)
+
+class MarketRequestsCustodyTests(APITestCase):
+    """Test market custody api endpoint"""
+    def setUp(self):
+        u = User.objects.create_user(username="test", password="Test123456")
+        u2 = User.objects.create_user(username="test2", password="Test123456")
+        t = EventType.objects.create(name="Binary")
+        c = EventCategory.objects.create(name="General",code="GR")
+        e = Event.objects.create(
+            title="Guroo's test will pass?",
+            user=u,
+            event_type=t,
+            event_category=c,
+            trading_fee=0.5,
+            description="Any description!",
+            deadline=timezone.now()+timezone.timedelta(days=7)
+        )
+        m = Market.objects.create(
+            title="Guroo's test will pass?",
+            title_short="Guroo passes?",
+            event=e
+        )
+
+    def test_get_custody_no_credentials(self):
+        response = self.client.get('/api/markets/custody/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, 0)
+
+    def test_get_custody_before_any_order(self):
+        self.client.login(username='test', password='Test123456')
+        response = self.client.get('/api/markets/custody/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, 0)
+
+    def test_get_custody_after_order(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        Order.objects.create(market_id=1,user_id=2,price=0.5,amount=-100)
+        response = self.client.get('/api/markets/custody/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, 100)
