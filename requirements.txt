@@ -5,6 +5,7 @@ asgiref==0.13.3
 autobahn==0.14.1
 cffi==1.7.0
 channels==0.14.1
+coreapi==2.0.9
 cryptography==1.4
 daphne==0.12.1
 defusedxml==0.4.1
@@ -13,13 +14,15 @@ Django==1.9.7
 django-allauth==0.25.2
 django-filter==0.13.0
 django-redis-cache==1.6.5
-djangorestframework==3.3.3
+djangorestframework==3.5.0
 elasticsearch==2.3.0
 gunicorn==19.6.0
 idna==2.1
+itypes==1.1.0
 msgpack-python==0.4.7
 ndg-httpsclient==0.4.1
 oauthlib==1.1.1
+paypalrestsdk==1.11.7
 psycopg2==2.6.1
 pyasn1==0.1.9
 pycparser==2.14
@@ -31,6 +34,7 @@ requests-oauthlib==0.6.1
 six==1.10.0
 Twisted==16.2.0
 txaio==2.5.1
+uritemplate==3.0.0
 urllib3==1.16
 whitenoise==3.2
 zope.interface==4.2.0

@@ -80,6 +80,7 @@ class TransactionManager(models.Manager):
         if new_order is not None:
             market_id = new_order['market__id'] if 'market__id' in new_order else new_order['market'].id
             new_order_added = False
+        # Have to improve this!! Don't query in loop!!!!!!!!!!!!!!!!!!
         # For each order the user gave in each market, get the executed amount and value
         for o in orders:
             # Get this market orders that led to the balance in this orders

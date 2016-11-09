@@ -4,12 +4,16 @@ from django.contrib.auth import views
 from front.views import ChooseWinnerView, HomeView, LetsEncView
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.schemas import get_schema_view
+
+schema_view = get_schema_view(title='Guroo API')
 
 urlpatterns = [
     url(r'^custom-admin/choose-winner/$', ChooseWinnerView.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^app/', include('front.urls')),
     url(r'^accounts/logout/$', views.logout, {'next_page': '/'}),
+    url(r'^api/schema/', schema_view),
     url(r'^api/markets/', include('market.urls')),
     url(r'^api/users/', include('user_profile.urls')),
     url(r'^api/transactions/', include('transaction.urls')),
