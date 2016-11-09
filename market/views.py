@@ -25,8 +25,18 @@ class ListEventsPrices(APIView):
     """docstring for ListEventsPrices"""
     def post(self, request):
         if 'ids' in request.data:
-            ids = json.loads(request.data['ids'])
+            if type(request.data['ids']) is str:
+                try:
+                    ids = json.loads(request.data['ids'])
+                except ValueError:
+                    return Response("The string is not in the correct format", status=400)
+            elif type(request.data['ids']) is list:
+                ids = request.data['ids']
+            else:
+                return Response("Id's data type is not correct", status=400)
             return Response(Market.objects.getSearchPrices(ids))
+
+        return Response("Didn't submit markets id's!", status=400)
 
 class DetailEvent(generics.RetrieveAPIView):
     """
