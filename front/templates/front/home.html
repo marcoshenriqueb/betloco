@@ -49,7 +49,7 @@
       </svg>
       <ul class="header-nav">
         <a href="#what" class="hide-on-small-only header-nav__item"><li>O quê</li></a>
-        <a href="#" class="hide-on-small-only header-nav__item"><li>Como</li></a>
+        <a href="#how" class="hide-on-small-only header-nav__item"><li>Como</li></a>
         <a href="#" class="hide-on-small-only header-nav__item"><li>FAQ</li></a>
         <a href="/accounts/login/" class="header-nav__item"><li>Entrar</li></a>
         <a href="/app/" class="header-nav__item enter"><li>Navegue</li></a>
@@ -94,6 +94,23 @@
       <p>
         Não precisa se cadastrar!
       </p>
+    </div>
+    <div id="how" class="section gray scrollspy how-section">
+      <h2 class="section-title">Como funciona?</h2>
+      <p class="section-description">
+        Supondo que estamos no começo de 2016 e os usuários do Guroo acreditam que a Dilma tem 40% de chances de sofrer impeachment esse ano. Você concorda?
+      </p>
+      <div id="how-1" class="how-section__step">
+        <img src="{% static 'front/img/dilma.png' %}" alt="dilma bored" />
+        <div class="how-section__content">
+          <div class="how-section__content__item">
+            <button id="yes" class="how-btn waves-effect waves-light btn-large cyan"><i class="material-icons left">thumb_up</i>Com certeza!</button>
+          </div>
+          <div class="how-section__content__item">
+            <button id="no" class="how-btn waves-effect waves-light btn-large pink accent-2"><i class="material-icons right">thumb_down</i>De jeito nenhum!</button>
+          </div>
+        </div>
+      </div>
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>

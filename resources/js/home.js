@@ -1,6 +1,18 @@
 import theaterJS from "theaterjs";
 
 document.addEventListener("DOMContentLoaded", function(){
+  var firstHow = document.getElementById('how-1');
+  var btns = document.querySelectorAll(".how-btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener('click', function(e){
+      console.log(e.target.id);
+      firstHow.style.display = 'none';
+      setTimeout(function(){
+        firstHow.style.display = 'flex';
+      },2000);
+    });
+  }
+
   // if(navigator.userAgent.toLowerCase().indexOf('firefox') == -1){
   //   var logo = document.querySelector(".logo").getBoundingClientRect();
   //   var eyes = document.querySelectorAll(".logo_eye");
