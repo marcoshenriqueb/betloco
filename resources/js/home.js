@@ -4,8 +4,9 @@ document.addEventListener("DOMContentLoaded", function(){
   var firstHow = document.getElementById('how-1');
   var secondHow = document.getElementById('how-2');
   var prepareSecondHow = function(choice){
+    firstHow.style.display = 'none';
+    secondHow.style.display = 'flex';var i = document.getElementById('how-amount');
     secondHow.querySelector('.how-section__content').classList.add(choice);
-    var i = document.getElementById('how-amount');
     var result = secondHow.querySelector('.how-section__content__lead-text.result');
     var timeTravel = document.getElementById('time-travel');
     var validateAmount = function(t){
@@ -36,10 +37,11 @@ document.addEventListener("DOMContentLoaded", function(){
   var btns = document.querySelectorAll(".how-btn");
   for (var i = 0; i < btns.length; i++) {
     btns[i].addEventListener('click', function(e){
-      // console.log(e.target.id);
-      prepareSecondHow(e.target.id);
-      firstHow.style.display = 'none';
-      secondHow.style.display = 'flex';
+      if (e.target.id == "yes" || e.target.id == "no") {
+        prepareSecondHow(e.target.id);
+      }else if (e.target.id == "time-travel") {
+
+      }
     });
   }
 
