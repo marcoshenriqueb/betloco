@@ -100,3 +100,12 @@ gulp.task('image-thumb', function() {
         .pipe(imagemin())
         .pipe(gulp.dest('front/static/front/img'))
 });
+gulp.task('image-specific', function() {
+  gulp.src('resources/img/specific/dilma.png')
+        .pipe(imageResize({
+          height : 300,
+          upscale : false
+          }))
+        .pipe(imagemin())
+        .pipe(gulp.dest('front/static/front/img'))
+});
