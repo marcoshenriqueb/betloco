@@ -97,10 +97,10 @@
     </div>
     <div id="how" class="section gray scrollspy how-section">
       <h2 class="section-title">Como funciona?</h2>
-      <p class="section-description">
-        Supondo que estamos no começo de 2016 e os usuários do Guroo acreditam que a Dilma tem 40% de chances de sofrer impeachment esse ano. Você concorda?
-      </p>
       <div id="how-1" class="how-section__step">
+        <p class="section-description">
+          Supondo que estamos no começo de 2016 e os usuários do Guroo acreditam que a Dilma tem 40% de chances de sofrer impeachment esse ano. Você concorda?
+        </p>
         <img src="{% static 'front/img/dilma.png' %}" alt="dilma bored" />
         <div class="how-section__content">
           <div class="how-section__content__item">
@@ -108,6 +108,29 @@
           </div>
           <div class="how-section__content__item">
             <button id="no" class="how-btn waves-effect waves-light btn-large pink accent-2"><i class="material-icons right">thumb_down</i>De jeito nenhum!</button>
+          </div>
+        </div>
+      </div>
+      <div id="how-2" class="how-section__step">
+        <p class="section-description">
+          Cada contrato de compra pode valer de 1 a 99 centavos. Nesse caso, 20% de chance indicam que o último negócio foi a 20 centavos. Basta você multiplicar a quantidade de contratos por 0,2 e terá o valor total de dinheiro que colocará na sua previsão.
+        </p>
+        <div class="how-section__content">
+          <div>
+            <span class="how-section__content__lead-text choice"></span>
+            <input id="how-amount" type="number" min="0" max="9900" step="100" name="name"/>
+            <span class="how-section__content__lead-text">contratos</span>
+          </div>
+          <span class="how-section__content__lead-text color big weight">X</span>
+          <div class="">
+            <span class="how-section__content__lead-text">pelo valor de </span>
+            <span class="how-section__content__lead-text color big price"></span>
+            <span class="how-section__content__lead-text">cada</span>
+          </div>
+          <span class="how-section__content__lead-text color x-big weight">=</span>
+          <span class="how-section__content__lead-text color x-big result">R$0</span><br>
+          <div class="how-section__content__item">
+            <button id="time-travel" class="how-btn waves-effect waves-light btn-large"><i class="material-icons left">av_timer</i>Adiantar o tempo!</button>
           </div>
         </div>
       </div>

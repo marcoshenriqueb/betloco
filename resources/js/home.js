@@ -2,14 +2,35 @@ import theaterJS from "theaterjs";
 
 document.addEventListener("DOMContentLoaded", function(){
   var firstHow = document.getElementById('how-1');
+  var secondHow = document.getElementById('how-2');
+  var prepareSecondHow = function(choice){
+    secondHow.querySelector('.how-section__content').classList.add(choice);
+    var i = document.getElementById('how-amount');
+    var result = secondHow.querySelector('.how-section__content__lead-text.result');
+    var timeTravel = document.getElementById('time-travel');
+    if (choice == 'yes') {
+      secondHow.querySelector('.how-section__content__lead-text.choice').innerHTML = "Quero comprar";
+      secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$0,20";
+      timeTravel.classList.add('cyan');
+      i.addEventListener('change', function(e){
+        result.innerHTML = 'R$' + e.target.value*0.2;
+      });
+    }else {
+      secondHow.querySelector('.how-section__content__lead-text.choice').innerHTML = "Quero vender";
+      secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$(1,00 - 0,20)";
+      timeTravel.classList.add('pink', 'accent-2');
+      i.addEventListener('change', function(e){
+        result.innerHTML = 'R$' + e.target.value*(1-0.2);
+      });
+    }
+  }
   var btns = document.querySelectorAll(".how-btn");
   for (var i = 0; i < btns.length; i++) {
     btns[i].addEventListener('click', function(e){
-      console.log(e.target.id);
+      // console.log(e.target.id);
+      prepareSecondHow(e.target.id);
       firstHow.style.display = 'none';
-      setTimeout(function(){
-        firstHow.style.display = 'flex';
-      },2000);
+      secondHow.style.display = 'flex';
     });
   }
 
