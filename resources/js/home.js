@@ -8,11 +8,19 @@ document.addEventListener("DOMContentLoaded", function(){
     var i = document.getElementById('how-amount');
     var result = secondHow.querySelector('.how-section__content__lead-text.result');
     var timeTravel = document.getElementById('time-travel');
+    var validateAmount = function(t){
+      if (t.value > 9999) {
+        t.value = 9999
+      }else if (Number(t.value) === t.value || t.value % 1 !== 0) {
+        t.value = Math.round(t.value);
+      }
+    }
     if (choice == 'yes') {
       secondHow.querySelector('.how-section__content__lead-text.choice').innerHTML = "Quero comprar";
       secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$0.20";
       timeTravel.classList.add('cyan');
       i.addEventListener('change', function(e){
+        validateAmount(e.target);
         result.innerHTML = 'R$' + (e.target.value*0.2).toFixed(2);
       });
     }else {
@@ -20,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function(){
       secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$(1.00 - 0.20)";
       timeTravel.classList.add('pink', 'accent-2');
       i.addEventListener('change', function(e){
+        validateAmount(e.target);
         result.innerHTML = 'R$' + (e.target.value*(1-0.2)).toFixed(2);
       });
     }
