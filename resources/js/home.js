@@ -10,17 +10,17 @@ document.addEventListener("DOMContentLoaded", function(){
     var timeTravel = document.getElementById('time-travel');
     if (choice == 'yes') {
       secondHow.querySelector('.how-section__content__lead-text.choice').innerHTML = "Quero comprar";
-      secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$0,20";
+      secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$0.20";
       timeTravel.classList.add('cyan');
       i.addEventListener('change', function(e){
-        result.innerHTML = 'R$' + e.target.value*0.2;
+        result.innerHTML = 'R$' + (e.target.value*0.2).toFixed(2);
       });
     }else {
       secondHow.querySelector('.how-section__content__lead-text.choice').innerHTML = "Quero vender";
-      secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$(1,00 - 0,20)";
+      secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$(1.00 - 0.20)";
       timeTravel.classList.add('pink', 'accent-2');
       i.addEventListener('change', function(e){
-        result.innerHTML = 'R$' + e.target.value*(1-0.2);
+        result.innerHTML = 'R$' + (e.target.value*(1-0.2)).toFixed(2);
       });
     }
   }
