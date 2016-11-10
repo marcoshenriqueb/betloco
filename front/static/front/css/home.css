@@ -26,6 +26,7 @@ body {
   background-color: #fdfdfd;
 }
 .section-title {
+  text-align: center;
   color: #3b3b3b;
   font-size: 42px;
   font-family: Titles, sans-serif;
@@ -227,19 +228,15 @@ header.auth {
     margin-bottom: 100px;
   }
 }
-.how-section {
-  min-height: 100vh;
-}
 #how-1 img {
-  height: 300px;
+  height: 250px;
   width: auto;
   margin-bottom: 40px;
 }
 .how-btn {
   font-weight: bold;
-  font-size: 22px;
-  height: 80px;
-  min-width: 313px;
+  min-width: 227px;
+  margin-bottom: 15px;
 }
 .how-section__step {
   width: 100%;
@@ -256,6 +253,7 @@ header.auth {
 .how-section__content {
   width: 90%;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
 }
 .how-section__content.yes .how-section__content__lead-text.color,
@@ -275,9 +273,9 @@ header.auth {
   justify-content: flex-start;
 }
 #how-amount {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 300;
-  width: 150px;
+  width: 100px;
   margin-bottom: 10px;
 }
 .how-section__content__lead-text {
@@ -285,13 +283,39 @@ header.auth {
   color: #616161;
 }
 .how-section__content__lead-text.big {
-  font-size: 50px;
-  line-height: 60px;
+  font-size: 40px;
+  line-height: 50px;
 }
 .how-section__content__lead-text.x-big {
-  font-size: 60px;
-  line-height: 70px;
+  font-size: 40px;
+  line-height: 50px;
 }
 .how-section__content__lead-text.weight {
   font-weight: 600;
+}
+@media (min-width: 600px) {
+  #how-1 img {
+    height: 300px;
+    width: auto;
+  }
+  .how-btn {
+    font-size: 22px;
+    height: 80px;
+    min-width: 313px;
+  }
+  .how-section__content {
+    flex-direction: row;
+  }
+  #how-amount {
+    font-size: 50px;
+    width: 150px;
+  }
+  .how-section__content__lead-text.big {
+    font-size: 50px;
+    line-height: 60px;
+  }
+  .how-section__content__lead-text.x-big {
+    font-size: 60px;
+    line-height: 70px;
+  }
 }
