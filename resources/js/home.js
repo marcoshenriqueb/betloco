@@ -3,17 +3,22 @@ import theaterJS from "theaterjs";
 document.addEventListener("DOMContentLoaded", function(){
   var firstHow = document.getElementById('how-1');
   var secondHow = document.getElementById('how-2');
+  var thirdHow = document.getElementById('how-3');
   var prepareSecondHow = function(choice){
     firstHow.style.display = 'none';
-    secondHow.style.display = 'flex';var i = document.getElementById('how-amount');
+    secondHow.style.display = 'flex';
+    var i = document.getElementById('how-amount');
     secondHow.querySelector('.how-section__content').classList.add(choice);
     var result = secondHow.querySelector('.how-section__content__lead-text.result');
     var timeTravel = document.getElementById('time-travel');
     var validateAmount = function(t){
+      timeTravel.classList.remove('disabled');
       if (t.value > 9999) {
         t.value = 9999
       }else if (Number(t.value) === t.value || t.value % 1 !== 0) {
         t.value = Math.round(t.value);
+      }else if (t.value == 0) {
+        timeTravel.classList.add('disabled');
       }
     }
     if (choice == 'yes') {
@@ -34,13 +39,18 @@ document.addEventListener("DOMContentLoaded", function(){
       });
     }
   }
+  var prepareThirdHow = function(){
+    // secondHow.style.display = 'none';
+    // thirdHow.style.display = 'flex';
+
+  }
   var btns = document.querySelectorAll(".how-btn");
   for (var i = 0; i < btns.length; i++) {
     btns[i].addEventListener('click', function(e){
       if (e.target.id == "yes" || e.target.id == "no") {
         prepareSecondHow(e.target.id);
       }else if (e.target.id == "time-travel") {
-
+        prepareThirdHow();
       }
     });
   }
