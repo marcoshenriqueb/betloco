@@ -39,10 +39,13 @@ document.addEventListener("DOMContentLoaded", function(){
       });
     }
   }
-  var prepareThirdHow = function(){
-    // secondHow.style.display = 'none';
-    // thirdHow.style.display = 'flex';
+  var prepareThirdHow = function(t){
+    if ((' ' + t.className + ' ').indexOf(' disabled ') == -1) {
+      secondHow.style.display = 'none';
+      thirdHow.style.display = 'flex';
+      
 
+    }
   }
   var btns = document.querySelectorAll(".how-btn");
   for (var i = 0; i < btns.length; i++) {
@@ -50,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function(){
       if (e.target.id == "yes" || e.target.id == "no") {
         prepareSecondHow(e.target.id);
       }else if (e.target.id == "time-travel") {
-        prepareThirdHow();
+        prepareThirdHow(e.target);
       }
     });
   }

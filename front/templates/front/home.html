@@ -57,10 +57,13 @@
     </header>
     <div id="top" class="top-section scrollspy">
       <div id="guroo"></div>
-      <a class="top-section__cto" href="#what">
-        <p>Saiba mais</p>
-        <i class="material-icons medium">keyboard_arrow_down</i>
-      </a>
+      <div class="top-section__cto">
+        <button onclick="window.location='/accounts/signup/';" class="waves-effect waves-light btn orange">Cadastre-se!</button>
+        <a href="#what">
+          <p>Saiba mais</p>
+          <i class="material-icons medium">keyboard_arrow_down</i>
+        </a>
+      </div>
     </div>
     <div id="what" class="section scrollspy what-section">
       <h2 class="section-title">O que é o Guroo?</h2>
@@ -99,7 +102,7 @@
       <h2 class="section-title">Como funciona?</h2>
       <div id="how-1" class="how-section__step">
         <p class="section-description">
-          Supondo que estamos no começo de 2016 e os usuários do Guroo acreditam que a Dilma tem 40% de chance de sofrer impeachment esse ano. Você concorda?
+          Supondo que estamos no começo de 2016 e os usuários do Guroo acreditam que a Dilma tem chance de sofrer impeachment esse ano. Você concorda?
         </p>
         <img src="{% static 'front/img/dilma.png' %}" alt="dilma bored" />
         <div class="how-section__content">
@@ -113,7 +116,7 @@
       </div>
       <div id="how-2" class="how-section__step">
         <p class="section-description">
-          Cada contrato de compra pode valer de 1 a 99 centavos. Nesse caso, 40% de chance indicam que o último negócio foi a 40 centavos. Basta você multiplicar a quantidade de contratos por 0,4 (ou 0,6 caso esteja vendendo) e terá o valor total de dinheiro que colocará na sua previsão.
+          Cada contrato pode valer de 1 a 99 centavos. Nesse caso, o mercado estaria negociando a 40 centavos, ou seja, 40% de chance do evento ocorrer. Basta você multiplicar a quantidade de contratos por 0,4 (ou 0,6 caso esteja vendendo) e terá o valor total investido.
         </p>
         <div class="how-section__content">
           <div>
@@ -132,6 +135,14 @@
           <div class="how-section__content__item">
             <button id="time-travel" class="how-btn waves-effect waves-light btn-large disabled"><i class="material-icons left">av_timer</i>Adiantar o tempo!</button>
           </div>
+        </div>
+      </div>
+      <div id="how-3" class="how-section__step">
+        <p class="section-description">
+          A Dilma sofreu impeachment! Isso significa que cada contrato irá vencer com o valor de R$1,00. Caso o evento não tivesse ocorrido, os contratos venceriam a R$ 0,00.
+        </p>
+        <div class="how-section__content">
+
         </div>
       </div>
     </div>

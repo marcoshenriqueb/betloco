@@ -16,6 +16,10 @@ body {
 body {
   font-family: 'Open Sans', sans-serif;
 }
+button {
+  font-weight: bold;
+  min-width: 227px;
+}
 .section {
   display: flex;
   flex-direction: column;
