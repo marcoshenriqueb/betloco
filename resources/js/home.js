@@ -50,12 +50,14 @@ document.addEventListener("DOMContentLoaded", function(){
       thirdHow.querySelector('.how-section__content').classList.add(userChoice.value);
       if (userChoice.value == 'yes') {
         thirdHow.querySelector('.how-section__content__lead-text.position').innerHTML = "Como estou \"comprado\", meus contratos serão vendidos a";
-        thirdHow.querySelector('.how-section__content__lead-text.calc').innerHTML = "(R$1.00 x "+ i.value + ") - R$"+i.value*0.4;
+        thirdHow.querySelector('.how-section__content__lead-text.calc').innerHTML = i.value + " x R$(1.00 - 0.40)";
         thirdHow.querySelector('.how-section__content__lead-text.result').innerHTML = "R$"+ i.value*0.6;
+        thirdHow.querySelector('#how-faq-btn').classList.add('cyan');
       }else {
         thirdHow.querySelector('.how-section__content__lead-text.position').innerHTML = "Como estou \"vendido\", meus contratos serão recomprados a";
-        thirdHow.querySelector('.how-section__content__lead-text.calc').innerHTML = "R$"+i.value*0.4 + " - (R$1.00 x "+ i.value + ")";
+        thirdHow.querySelector('.how-section__content__lead-text.calc').innerHTML = i.value + " x R$(0.40 - 1.00)";
         thirdHow.querySelector('.how-section__content__lead-text.result').innerHTML = "-R$"+ i.value*0.6;
+        thirdHow.querySelector('#how-faq-btn').classList.add('pink', 'accent-2');
       }
     }
   }
@@ -66,6 +68,8 @@ document.addEventListener("DOMContentLoaded", function(){
         prepareSecondHow(e.target.id);
       }else if (e.target.id == "time-travel") {
         prepareThirdHow(e.target);
+      }else if (e.target.id == "how-register-btn") {
+        window.location = "/accounts/signup/";
       }
     });
   }
