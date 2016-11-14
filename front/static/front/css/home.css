@@ -278,7 +278,7 @@ header.auth {
   justify-content: flex-start;
 }
 #how-amount {
-  font-size: 40px;
+  font-size: 25px;
   font-weight: 300;
   width: 100px;
   margin-bottom: 10px;
@@ -288,12 +288,12 @@ header.auth {
   color: #616161;
 }
 .how-section__content__lead-text.big {
-  font-size: 30px;
-  line-height: 40px;
+  font-size: 25px;
+  line-height: 30px;
 }
 .how-section__content__lead-text.x-big {
-  font-size: 30px;
-  line-height: 40px;
+  font-size: 25px;
+  line-height: 30px;
 }
 .how-section__content__lead-text.weight {
   font-weight: 600;
