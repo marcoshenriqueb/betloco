@@ -267,10 +267,12 @@ header.auth {
 .how-section__content.no #how-amount {
   color: #ff4081;
 }
-#how-2 {
+#how-2,
+#how-3 {
   display: none;
 }
-#how-2 .how-section__content {
+#how-2 .how-section__content,
+#how-3 .how-section__content {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
@@ -295,9 +297,6 @@ header.auth {
 }
 .how-section__content__lead-text.weight {
   font-weight: 600;
-}
-#how-3 {
-  display: none;
 }
 @media (min-width: 600px) {
   #how-1 img {

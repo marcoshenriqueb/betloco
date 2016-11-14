@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function(){
   var firstHow = document.getElementById('how-1');
   var secondHow = document.getElementById('how-2');
   var thirdHow = document.getElementById('how-3');
+  var userChoice = document.getElementById('choice');
   var prepareSecondHow = function(choice){
     firstHow.style.display = 'none';
     secondHow.style.display = 'flex';
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function(){
       }
     }
     if (choice == 'yes') {
+      userChoice.value = "yes";
       secondHow.querySelector('.how-section__content__lead-text.choice').innerHTML = "Quero comprar";
       secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$0.40";
       timeTravel.classList.add('cyan');
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function(){
         result.innerHTML = 'R$' + (e.target.value*0.4).toFixed(2);
       });
     }else {
+      userChoice.value = "no";
       secondHow.querySelector('.how-section__content__lead-text.choice').innerHTML = "Quero vender";
       secondHow.querySelector('.how-section__content__lead-text.price').innerHTML = "R$(1.00 - 0.40)";
       timeTravel.classList.add('pink', 'accent-2');
@@ -43,8 +46,17 @@ document.addEventListener("DOMContentLoaded", function(){
     if ((' ' + t.className + ' ').indexOf(' disabled ') == -1) {
       secondHow.style.display = 'none';
       thirdHow.style.display = 'flex';
-      
-
+      var i = document.getElementById('how-amount');
+      thirdHow.querySelector('.how-section__content').classList.add(userChoice.value);
+      if (userChoice.value == 'yes') {
+        thirdHow.querySelector('.how-section__content__lead-text.position').innerHTML = "Como estou \"comprado\", meus contratos serão vendidos a";
+        thirdHow.querySelector('.how-section__content__lead-text.calc').innerHTML = "(R$1.00 x "+ i.value + ") - R$"+i.value*0.4;
+        thirdHow.querySelector('.how-section__content__lead-text.result').innerHTML = "R$"+ i.value*0.6;
+      }else {
+        thirdHow.querySelector('.how-section__content__lead-text.position').innerHTML = "Como estou \"vendido\", meus contratos serão recomprados a";
+        thirdHow.querySelector('.how-section__content__lead-text.calc').innerHTML = "R$"+i.value*0.4 + " - (R$1.00 x "+ i.value + ")";
+        thirdHow.querySelector('.how-section__content__lead-text.result').innerHTML = "-R$"+ i.value*0.6;
+      }
     }
   }
   var btns = document.querySelectorAll(".how-btn");
