@@ -258,6 +258,7 @@ header.auth {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  text-align: center;
 }
 .how-section__content.yes .how-section__content__lead-text.color,
 .how-section__content.yes #how-amount {
