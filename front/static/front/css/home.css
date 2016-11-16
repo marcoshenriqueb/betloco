@@ -27,7 +27,7 @@ button {
   padding: 0 20px 20px 20px;
 }
 .gray {
-  background-color: #fdfdfd;
+  background-color: #fcfcfc;
 }
 .section-title {
   text-align: center;
@@ -333,4 +333,31 @@ header.auth {
   .how-section__content2 {
     flex-direction: row;
   }
+}
+.contact-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("../img/plan-coffee.jpg");
+  background-position: right bottom;
+  background-size: cover;
+  color: #fff;
+  padding: 40px 0;
+  text-align: center;
+}
+.contact-section .contact-section__title,
+.contact-section .contact-section__subtitle {
+  color: #fff;
+}
+.contact-section .material-icons {
+  font-size: 3rem;
+}
+.contact-section__subtitle {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.contact-section__description {
+  font-size: 16px;
+  width: 60%;
 }
