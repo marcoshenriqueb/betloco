@@ -27,31 +27,31 @@ class EventDetailContainer extends React.Component {
   }
 
   openDisqus(){
-    // var identifier = 'event|' + this.props._event.id;
-    // var url = "https://www.guroo.bet/app/evento/" + this.props._event.id + "/";
-    // var title = this.props._event.title
-    // if (window.DISQUS != undefined) {
-    //   window.DISQUS.reset({
-    //     reload: true,
-    //     config: function () {
-    //       this.page.identifier = identifier;
-    //       this.page.url = url;
-    //       this.page.title = title;
-    //     }
-    //   })
-    // }else {
-    //   var disqus_config = function () {
-    //       this.page.url = url;
-    //       this.page.identifier = identifier;
-    //       this.page.title = title;
-    //   };
-    //   (function() {
-    //       var d = document, s = d.createElement('script');
-    //       s.src = '//guroo.disqus.com/embed.js';
-    //       s.setAttribute('data-timestamp', +new Date());
-    //       (d.head || d.body).appendChild(s);
-    //   })();
-    // }
+    var identifier = 'event|' + this.props._event.id;
+    var url = "https://www.guroo.bet/app/evento/" + this.props._event.id + "/";
+    var title = this.props._event.title
+    if (window.DISQUS != undefined) {
+      window.DISQUS.reset({
+        reload: true,
+        config: function () {
+          this.page.identifier = identifier;
+          this.page.url = url;
+          this.page.title = title;
+        }
+      })
+    }else {
+      var disqus_config = function () {
+          this.page.url = url;
+          this.page.identifier = identifier;
+          this.page.title = title;
+      };
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = 'https://guroo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    }
   }
 
   componentDidMount() {
