@@ -18,28 +18,28 @@ import {
 
 class MarketDetailContainer extends React.Component {
   openDisqus(){
-    var identifier = 'market|' + this.props.market.id;
-    var url = "https://www.guroo.bet/app/mercado/" + this.props.market.id + "/";
-    if (window.DISQUS != undefined) {
-      window.DISQUS.reset({
-        reload: true,
-        config: function () {
-          this.page.identifier = identifier;
-          this.page.url = url;
-        }
-      })
-    }else {
-      var disqus_config = function () {
-          this.page.url = url;
-          this.page.identifier = identifier;
-      };
-      (function() {
-          var d = document, s = d.createElement('script');
-          s.src = '//guroo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-      })();
-    }
+    // var identifier = 'market|' + this.props.market.id;
+    // var url = "https://www.guroo.bet/app/mercado/" + this.props.market.id + "/";
+    // if (window.DISQUS != undefined) {
+    //   window.DISQUS.reset({
+    //     reload: true,
+    //     config: function () {
+    //       this.page.identifier = identifier;
+    //       this.page.url = url;
+    //     }
+    //   })
+    // }else {
+    //   var disqus_config = function () {
+    //       this.page.url = url;
+    //       this.page.identifier = identifier;
+    //   };
+    //   (function() {
+    //       var d = document, s = d.createElement('script');
+    //       s.src = '//guroo.disqus.com/embed.js';
+    //       s.setAttribute('data-timestamp', +new Date());
+    //       (d.head || d.body).appendChild(s);
+    //   })();
+    // }
   }
 
   componentDidMount() {
