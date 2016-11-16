@@ -19,7 +19,7 @@ import {
 class MarketDetailContainer extends React.Component {
   openDisqus(){
     var identifier = 'market|' + this.props.market.id;
-    var url = "http://www.guroo.bet/app/mercado/" + this.props.market.id + "/";
+    var url = "https://www.guroo.bet/app/mercado/" + this.props.market.id + "/";
     if (window.DISQUS != undefined) {
       window.DISQUS.reset({
         reload: true,

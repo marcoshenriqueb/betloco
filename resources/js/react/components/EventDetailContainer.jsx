@@ -28,7 +28,7 @@ class EventDetailContainer extends React.Component {
 
   openDisqus(){
     var identifier = 'event|' + this.props._event.id;
-    var url = "http://www.guroo.bet/app/evento/" + this.props._event.id + "/";
+    var url = "https://www.guroo.bet/app/evento/" + this.props._event.id + "/";
     var title = this.props._event.title
     if (window.DISQUS != undefined) {
       window.DISQUS.reset({
