@@ -388,3 +388,27 @@ footer {
   font-size: 12px;
   margin: 5px 10px;
 }
+.quote-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("../img/man-top-mountain.jpg");
+  background-position: center center;
+  background-size: cover;
+  text-align: center;
+  padding: 50px 25px;
+}
+.quote-section .quote-section__subtitle {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 22px;
+}
+@media (min-width: 600px) {
+  .quote-section {
+    padding: 100px 50px;
+  }
+  .quote-section .quote-section__subtitle {
+    font-size: 28px;
+  }
+}
