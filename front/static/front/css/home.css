@@ -366,3 +366,20 @@ header.auth {
     width: 60%;
   }
 }
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 40px 0;
+}
+.footer-logo {
+  height: 100px;
+  width: auto;
+  margin-bottom: 20px;
+  margin-right: -5px;
+}
+.footer-text {
+  font-size: 12px;
+  margin: 5px 10px;
+}
