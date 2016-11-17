@@ -127,6 +127,7 @@ body {
   background-repeat: repeat;
 }
 .top-menu {
+  z-index: 1000;
   position: absolute;
 }
 .top-menu .collection-item a {
@@ -136,7 +137,7 @@ body {
   color: #00bcd4;
 }
 .auth-card {
-  margin: 1rem 0;
+  margin: 4rem 0;
 }
 .auth-message {
   position: relative;
