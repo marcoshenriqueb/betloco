@@ -1,4 +1,5 @@
 import React from 'react';
+import Disqus from './Disqus.jsx';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import MultipleMarketTable from './eventDetail/MultipleMarketTable.jsx';
@@ -22,40 +23,9 @@ if (document.documentElement.clientWidth > window.gvar.breakpoint){
 }
 
 class EventDetailContainer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  openDisqus(){
-    var identifier = 'event|' + this.props._event.id;
-    var url = "https://www.guroo.bet/app/evento/" + this.props._event.id + "/";
-    var title = this.props._event.title
-    if (window.DISQUS != undefined) {
-      window.DISQUS.reset({
-        reload: true,
-        config: function () {
-          this.page.identifier = identifier;
-          this.page.url = url;
-          this.page.title = title;
-        }
-      })
-    }else {
-      var disqus_config = function () {
-          this.page.url = url;
-          this.page.identifier = identifier;
-          this.page.title = title;
-      };
-      (function() {
-          var d = document, s = d.createElement('script');
-          s.src = 'https://guroo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-      })();
-    }
-  }
 
   componentDidMount() {
-    this.props.getEvent(this.props.params.id, this.openDisqus.bind(this));
+    this.props.getEvent(this.props.params.id);
   }
 
   componentWillUnmount(){
@@ -101,7 +71,9 @@ class EventDetailContainer extends React.Component {
         <br/>
         <Detail market={this.props._event} />
         <br/>
-        <div id="disqus_thread"></div>
+        <Disqus identifier={'event|' + this.props._event.id}
+                url={"https://www.guroo.bet/app/evento/" + this.props._event.id + "/"}
+                title={this.props._event.title} />
       </div>
     );
   }
