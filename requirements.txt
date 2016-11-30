@@ -4,10 +4,10 @@ asgi-redis==0.13.1
 asgiref==0.13.3
 autobahn==0.14.1
 cffi==1.7.0
-channels==0.14.1
+channels==0.17.3
 coreapi==2.0.9
 cryptography==1.4
-daphne==0.12.1
+daphne==0.15.0
 defusedxml==0.4.1
 dj-database-url==0.4.1
 Django==1.9.7

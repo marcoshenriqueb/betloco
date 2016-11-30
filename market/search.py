@@ -218,7 +218,7 @@ class ElasticSearch():
         try:
             self.es.indices.delete("events-index")
         except ElasticsearchException as e:
-            print('error')
+            print(str(e))
 
     def search(self, query=None, pagination=10, page=0, expired=0, order="created_at|desc", category="todas"):
         try:
