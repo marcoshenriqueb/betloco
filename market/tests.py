@@ -3,6 +3,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from .models import Event, Market, EventType, EventCategory, Order
 from django.utils import timezone
+import json
 
 class MarketRequestsEventsTests(APITestCase):
     """Test market events search api endpoints"""
@@ -187,3 +188,158 @@ class MarketRequestsCustodyTests(APITestCase):
         response = self.client.get('/api/markets/custody/1/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, 100)
+
+class OpenOrdersViewTests(APITestCase):
+    """Test open orders api endpoint"""
+    def setUp(self):
+        u = User.objects.create_user(username="test", password="Test123456")
+        u2 = User.objects.create_user(username="test2", password="Test123456")
+        t = EventType.objects.create(name="Binary")
+        c = EventCategory.objects.create(name="General",code="GR")
+        e = Event.objects.create(
+            title="Guroo's test will pass?",
+            user=u,
+            event_type=t,
+            event_category=c,
+            trading_fee=0.5,
+            description="Any description!",
+            deadline=timezone.now()+timezone.timedelta(days=7)
+        )
+        m = Market.objects.create(
+            title="Guroo's test will pass?",
+            title_short="Guroo passes?",
+            event=e
+        )
+
+    def test_get_open_orders_no_credentials(self):
+        response = self.client.get('/api/markets/open-orders/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_open_orders_before_any_order(self):
+        self.client.login(username='test', password='Test123456')
+        response = self.client.get('/api/markets/open-orders/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_open_orders_after_order(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        response = self.client.get('/api/markets/open-orders/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.data)
+        self.assertEqual(len(response.data),1)
+
+    def test_get_open_orders_after_order_executed(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        Order.objects.create(market_id=1,user_id=2,price=0.5,amount=-100)
+        response = self.client.get('/api/markets/open-orders/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_open_orders_after_delete_request(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        response = self.client.delete('/api/markets/open-orders/?market=1&orders=' + json.dumps([{"id":1},]))
+        response = self.client.get('/api/markets/open-orders/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+class MyPositionsViewTests(APITestCase):
+    """Test my positions api endpoint"""
+    def setUp(self):
+        u = User.objects.create_user(username="test", password="Test123456")
+        u2 = User.objects.create_user(username="test2", password="Test123456")
+        t = EventType.objects.create(name="Binary")
+        c = EventCategory.objects.create(name="General",code="GR")
+        e = Event.objects.create(
+            title="Guroo's test will pass?",
+            user=u,
+            event_type=t,
+            event_category=c,
+            trading_fee=0.5,
+            description="Any description!",
+            deadline=timezone.now()+timezone.timedelta(days=7)
+        )
+        m = Market.objects.create(
+            title="Guroo's test will pass?",
+            title_short="Guroo passes?",
+            event=e
+        )
+
+    def test_get_my_position_no_credentials(self):
+        response = self.client.get('/api/markets/my-positions/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_my_position_before_any_order(self):
+        self.client.login(username='test', password='Test123456')
+        response = self.client.get('/api/markets/my-positions/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_my_position_after_order(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        response = self.client.get('/api/markets/my-positions/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_my_position_after_order_executed(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        Order.objects.create(market_id=1,user_id=2,price=0.5,amount=-100)
+        response = self.client.get('/api/markets/my-positions/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.data)
+        self.assertEqual(len(response.data),1)
+
+class HistoryViewTests(APITestCase):
+    """Test history api endpoint"""
+    def setUp(self):
+        u = User.objects.create_user(username="test", password="Test123456")
+        u2 = User.objects.create_user(username="test2", password="Test123456")
+        t = EventType.objects.create(name="Binary")
+        c = EventCategory.objects.create(name="General",code="GR")
+        e = Event.objects.create(
+            title="Guroo's test will pass?",
+            user=u,
+            event_type=t,
+            event_category=c,
+            trading_fee=0.5,
+            description="Any description!",
+            deadline=timezone.now()+timezone.timedelta(days=7)
+        )
+        m = Market.objects.create(
+            title="Guroo's test will pass?",
+            title_short="Guroo passes?",
+            event=e
+        )
+
+    def test_get_history_no_credentials(self):
+        response = self.client.get('/api/markets/my-history/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_history_before_any_order(self):
+        self.client.login(username='test', password='Test123456')
+        response = self.client.get('/api/markets/my-history/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_history_after_order(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        response = self.client.get('/api/markets/my-history/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.data)
+
+    def test_get_history_after_order_executed(self):
+        self.client.login(username='test', password='Test123456')
+        Order.objects.create(market_id=1,user_id=1,price=0.5,amount=100)
+        Order.objects.create(market_id=1,user_id=2,price=0.5,amount=-100)
+        response = self.client.get('/api/markets/my-history/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.data)
+        self.assertEqual(len(response.data),1)
