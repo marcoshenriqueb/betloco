@@ -2,8 +2,10 @@ from algoliasearch import algoliasearch
 from django.conf import settings
 from .models import Event
 from .serializers import EventSerializer
-from elasticsearch import helpers, Elasticsearch, ElasticsearchException
+from elasticsearch import helpers, Elasticsearch, ElasticsearchException, TransportError
 from django.utils import timezone
+import logging
+logger = logging.getLogger('betloco.market.search')
 
 class Algolia():
     """search with Algolia"""
@@ -28,173 +30,180 @@ class ElasticSearch():
     def indexEvents(self):
         try:
             self.es.indices.get("events-index")
+        except TransportError as e:
+            if e.error == 'index_not_found_exception':
+                self.es.indices.create(
+                    index="events-index",
+                    body={
+                    "settings": {
+                        "analysis": {
+                            "filter": {
+                                "nGram_filter":{
+                                    "type": "nGram",
+                                    "min_gram": 1,
+                                    "max_gram": 20,
+                                    "token_chars": [
+                                        "letter",
+                                        "digit",
+                                        "punctuation",
+                                        "symbol"
+                                    ]
+                                }
+                            },
+                            "analyzer": {
+                                "nGram_analyzer": {
+                                    "type": "custom",
+                                    "tokenizer": "whitespace",
+                                    "filter": [
+                                        "lowercase",
+                                        "asciifolding",
+                                        "nGram_filter"
+                                    ]
+                                },
+                                "whitespace_analyzer": {
+                                   "type": "custom",
+                                   "tokenizer": "whitespace",
+                                   "filter": [
+                                      "lowercase",
+                                      "asciifolding"
+                                   ]
+                                }
+                            }
+                        }
+                     },
+                     "mappings":{
+                        "events": {
+                            "_all": {
+                                "analyzer": "nGram_analyzer",
+                                "search_analyzer": "whitespace_analyzer"
+                            },
+                            "properties":{
+                                "title":{
+                                    "type": "string"
+                                },
+                                "id":{
+                                    "type": "integer",
+                                    "index": "no",
+                                    "include_in_all": False
+                                },
+                                "markets":{
+                                    "type": "nested",
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "index": "no",
+                                            "include_in_all": False
+                                        },
+                                        "topSells": {
+                                            "type": "nested",
+                                            "properties": {
+                                                "amount": {
+                                                    "type": "integer",
+                                                    "index": "no",
+                                                    "include_in_all": False
+                                                },
+                                                "price":{
+                                                    "type": "float",
+                                                    "index": "no",
+                                                    "include_in_all": False
+                                                }
+                                            }
+                                        },
+                                        "topBuys": {
+                                            "type": "nested",
+                                            "properties": {
+                                                "amount": {
+                                                    "type": "integer",
+                                                    "index": "no",
+                                                    "include_in_all": False
+                                                },
+                                                "price":{
+                                                    "type": "float",
+                                                    "index": "no",
+                                                    "include_in_all": False
+                                                }
+                                            }
+                                        },
+                                        "lastDayPrice": {
+                                            "type": "float",
+                                            "index": "no",
+                                            "include_in_all": False
+                                        },
+                                        "volume": {
+                                            "type": "integer",
+                                            "index": "no",
+                                            "include_in_all": False
+                                        },
+                                        "title_short": {
+                                            "type": "string",
+                                            "index": "no",
+                                            "include_in_all": False
+                                        }
+                                    }
+                                },
+                                "user":{
+                                    "type": "string",
+                                    "index": "no",
+                                    "include_in_all": False
+                                },
+                                "event_category":{
+                                    "type": "nested",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "index": "no",
+                                            "include_in_all": False
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "index": "no",
+                                            "include_in_all": False
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "index": "not_analyzed",
+                                            "include_in_all": False
+                                        }
+                                    }
+                                },
+                                "event_type":{
+                                    "type": "string",
+                                    "index": "no",
+                                    "include_in_all": False
+                                },
+                                "created_at":{
+                                    "type": "date",
+                                    "index": "not_analyzed",
+                                    "include_in_all": False
+                                },
+                                "deadline":{
+                                    "type": "date",
+                                    "index": "not_analyzed",
+                                    "include_in_all": False
+                                },
+                                "updated_at":{
+                                    "type": "string",
+                                    "index": "no",
+                                    "include_in_all": False
+                                },
+                                "volume":{
+                                    "type": "integer",
+                                    "include_in_all": False
+                                }
+                            }
+                        }
+                     }
+                   }
+                )
+            else:
+                print(str(e))
+                logger.error(str(e))
         except ElasticsearchException as e:
-            self.es.indices.create(
-                index="events-index",
-                body={
-                "settings": {
-                    "analysis": {
-                        "filter": {
-                            "nGram_filter":{
-                                "type": "nGram",
-                                "min_gram": 1,
-                                "max_gram": 20,
-                                "token_chars": [
-                                    "letter",
-                                    "digit",
-                                    "punctuation",
-                                    "symbol"
-                                ]
-                            }
-                        },
-                        "analyzer": {
-                            "nGram_analyzer": {
-                                "type": "custom",
-                                "tokenizer": "whitespace",
-                                "filter": [
-                                    "lowercase",
-                                    "asciifolding",
-                                    "nGram_filter"
-                                ]
-                            },
-                            "whitespace_analyzer": {
-                               "type": "custom",
-                               "tokenizer": "whitespace",
-                               "filter": [
-                                  "lowercase",
-                                  "asciifolding"
-                               ]
-                            }
-                        }
-                    }
-                 },
-                 "mappings":{
-                    "events": {
-                        "_all": {
-                            "analyzer": "nGram_analyzer",
-                            "search_analyzer": "whitespace_analyzer"
-                        },
-                        "properties":{
-                            "title":{
-                                "type": "string"
-                            },
-                            "id":{
-                                "type": "integer",
-                                "index": "no",
-                                "include_in_all": False
-                            },
-                            "markets":{
-                                "type": "nested",
-                                "properties": {
-                                    "title": {
-                                        "type": "string"
-                                    },
-                                    "id": {
-                                        "type": "integer",
-                                        "index": "no",
-                                        "include_in_all": False
-                                    },
-                                    "topSells": {
-                                        "type": "nested",
-                                        "properties": {
-                                            "amount": {
-                                                "type": "integer",
-                                                "index": "no",
-                                                "include_in_all": False
-                                            },
-                                            "price":{
-                                                "type": "float",
-                                                "index": "no",
-                                                "include_in_all": False
-                                            }
-                                        }
-                                    },
-                                    "topBuys": {
-                                        "type": "nested",
-                                        "properties": {
-                                            "amount": {
-                                                "type": "integer",
-                                                "index": "no",
-                                                "include_in_all": False
-                                            },
-                                            "price":{
-                                                "type": "float",
-                                                "index": "no",
-                                                "include_in_all": False
-                                            }
-                                        }
-                                    },
-                                    "lastDayPrice": {
-                                        "type": "float",
-                                        "index": "no",
-                                        "include_in_all": False
-                                    },
-                                    "volume": {
-                                        "type": "integer",
-                                        "index": "no",
-                                        "include_in_all": False
-                                    },
-                                    "title_short": {
-                                        "type": "string",
-                                        "index": "no",
-                                        "include_in_all": False
-                                    }
-                                }
-                            },
-                            "user":{
-                                "type": "string",
-                                "index": "no",
-                                "include_in_all": False
-                            },
-                            "event_category":{
-                                "type": "nested",
-                                "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "index": "no",
-                                        "include_in_all": False
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "index": "no",
-                                        "include_in_all": False
-                                    },
-                                    "code": {
-                                        "type": "string",
-                                        "index": "not_analyzed",
-                                        "include_in_all": False
-                                    }
-                                }
-                            },
-                            "event_type":{
-                                "type": "string",
-                                "index": "no",
-                                "include_in_all": False
-                            },
-                            "created_at":{
-                                "type": "date",
-                                "index": "not_analyzed",
-                                "include_in_all": False
-                            },
-                            "deadline":{
-                                "type": "date",
-                                "index": "not_analyzed",
-                                "include_in_all": False
-                            },
-                            "updated_at":{
-                                "type": "string",
-                                "index": "no",
-                                "include_in_all": False
-                            },
-                            "volume":{
-                                "type": "integer",
-                                "include_in_all": False
-                            }
-                        }
-                    }
-                 }
-               }
-            )
+            print(str(e))
+            logger.error(str(e))
         events = Event.objects.filter().all()
         serializer = EventSerializer(events, many=True)
         data = []
@@ -213,12 +222,16 @@ class ElasticSearch():
                 helpers.bulk(self.es, data)
             except ElasticsearchException as e:
                 print(str(e))
-
+                logger.error(str(e))
+        else:
+            print('No data to index')
+            logger.error('No data to index')
     def deleteEventIndex(self):
         try:
             self.es.indices.delete("events-index")
         except ElasticsearchException as e:
             print(str(e))
+            logger.error(str(e))
 
     def search(self, query=None, pagination=10, page=0, expired=0, order="created_at|desc", category="todas"):
         try:

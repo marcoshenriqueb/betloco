@@ -211,6 +211,8 @@ REST_FRAMEWORK = {
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+ADMINS = [('Marcos', 'adm@guroo.bet'),]
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = 'postmaster@guroo.bet'
@@ -218,6 +220,7 @@ EMAIL_HOST_PASSWORD = '22d4b03e29a705329a3f053e0cf123ab'
 EMAIL_PORT = 587
 
 DEFAULT_FROM_EMAIL = "confirmacao@guroo.bet"
+SERVER_EMAIL = 'adm@guroo.bet'
 
 LOGGING = {
     'version': 1,
@@ -233,21 +236,30 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': 'betloco.log',
             'formatter': 'verbose'
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        }
     },
     'loggers': {
         'django': {
             'handlers':['file'],
             'propagate': True,
-            'level':'DEBUG',
+            'level':'ERROR',
         },
         'betloco': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
         },
+        'betloco.market.search': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR'
+        }
     }
 }
