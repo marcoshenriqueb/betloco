@@ -219,7 +219,7 @@ class ElasticSearch():
             })
         if len(data) > 0:
             try:
-                helpers.bulk(self.es, data)
+                helpers.bulk(self.es, data, request_timeout=30)
             except ElasticsearchException as e:
                 print(str(e))
                 logger.error(str(e))
