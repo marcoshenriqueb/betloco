@@ -246,6 +246,7 @@ class TransactionManager(models.Manager):
                             sell_risk = abs(custody_risk + ((1-m['sell_orders_balance']/m['sell_orders_amount'])*m['sell_orders_amount']) \
                                         if m['sell_orders_amount'] != 0 else custody_risk)
                             buy_risk = abs(custody_risk - m['buy_orders_balance'])
+                            balance += m['nettedBalance']
                     else:
                         custody_risk = 0
                         buy_risk = custody_risk
@@ -255,10 +256,10 @@ class TransactionManager(models.Manager):
                     total_risk += max([custody_risk,sell_risk,buy_risk])
 
         return {
-            'total': transactions - total_risk - balance,
-            'transactions': transactions,
-            'balance': balance*-1,
-            'risk': total_risk if total_risk >= 0 else 0
+            'total': round(transactions - total_risk - balance, 2),
+            'transactions': round(transactions, 2),
+            'balance': round(balance*-1, 2),
+            'risk': round(total_risk, 2) if total_risk >= 0 else 0
         }
 
 
