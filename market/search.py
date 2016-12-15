@@ -219,7 +219,7 @@ class ElasticSearch():
             })
         if len(data) > 0:
             try:
-                helpers.bulk(self.es, data, request_timeout=60)
+                helpers.bulk(self.es, data, chunk_size=50, request_timeout=60, max_retries=10, retry_on_timeout=True)
             except ElasticsearchException as e:
                 print(str(e))
                 logger.error(str(e))
