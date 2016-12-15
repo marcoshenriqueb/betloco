@@ -19,21 +19,16 @@ class EventTypeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name',)
 
 class MarketSerializer(serializers.ModelSerializer):
-    lastCompleteOrder = OrderSerializer()
     class Meta:
         model = Market
         fields = (
             'id',
-            'title',
             'title_short',
             'volume',
-            'lastCompleteOrder',
             'lastDayPrice'
         )
 
 class EventSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
-    event_type = serializers.StringRelatedField()
     event_category = EventCategorySerializer()
     markets = MarketSerializer(many=True)
 
@@ -42,8 +37,6 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'title',
-            'user',
-            'event_type',
             'event_category',
             'volume',
             'deadline',

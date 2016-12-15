@@ -89,43 +89,10 @@ class ElasticSearch():
                                 "markets":{
                                     "type": "nested",
                                     "properties": {
-                                        "title": {
-                                            "type": "string"
-                                        },
                                         "id": {
                                             "type": "integer",
                                             "index": "no",
                                             "include_in_all": False
-                                        },
-                                        "topSells": {
-                                            "type": "nested",
-                                            "properties": {
-                                                "amount": {
-                                                    "type": "integer",
-                                                    "index": "no",
-                                                    "include_in_all": False
-                                                },
-                                                "price":{
-                                                    "type": "float",
-                                                    "index": "no",
-                                                    "include_in_all": False
-                                                }
-                                            }
-                                        },
-                                        "topBuys": {
-                                            "type": "nested",
-                                            "properties": {
-                                                "amount": {
-                                                    "type": "integer",
-                                                    "index": "no",
-                                                    "include_in_all": False
-                                                },
-                                                "price":{
-                                                    "type": "float",
-                                                    "index": "no",
-                                                    "include_in_all": False
-                                                }
-                                            }
                                         },
                                         "lastDayPrice": {
                                             "type": "float",
@@ -143,11 +110,6 @@ class ElasticSearch():
                                             "include_in_all": False
                                         }
                                     }
-                                },
-                                "user":{
-                                    "type": "string",
-                                    "index": "no",
-                                    "include_in_all": False
                                 },
                                 "event_category":{
                                     "type": "nested",
@@ -169,11 +131,6 @@ class ElasticSearch():
                                         }
                                     }
                                 },
-                                "event_type":{
-                                    "type": "string",
-                                    "index": "no",
-                                    "include_in_all": False
-                                },
                                 "created_at":{
                                     "type": "date",
                                     "index": "not_analyzed",
@@ -182,11 +139,6 @@ class ElasticSearch():
                                 "deadline":{
                                     "type": "date",
                                     "index": "not_analyzed",
-                                    "include_in_all": False
-                                },
-                                "updated_at":{
-                                    "type": "string",
-                                    "index": "no",
                                     "include_in_all": False
                                 },
                                 "volume":{
@@ -219,7 +171,7 @@ class ElasticSearch():
             })
         if len(data) > 0:
             try:
-                helpers.bulk(self.es, data, chunk_size=50, request_timeout=60, max_retries=10, retry_on_timeout=True)
+                helpers.bulk(self.es, data, chunk_size=50, request_timeout=60)
             except ElasticsearchException as e:
                 print(str(e))
                 logger.error(str(e))
