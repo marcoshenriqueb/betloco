@@ -124,7 +124,7 @@ except ImportError:
             },"ROUTING": "betloco.routing.channel_routing",
         },
     }
-    es = urlparse(os.environ.get('SEARCHBOX_URL') or 'http://127.0.0.1:9200/')
+    es = urlparse('https://admin:49kjsemkuipt1uhyefniqg3fe7fespdy@dori-us-east-1.searchly.com')
     port = es.port or 80
     ELASTICSEARCH = {
         'URL': es.scheme + '://' + es.hostname + ':' + str(port),
