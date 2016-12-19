@@ -125,7 +125,7 @@ except ImportError:
         },
     }
     es = urlparse('https://admin:49kjsemkuipt1uhyefniqg3fe7fespdy@dori-us-east-1.searchly.com')
-    port = es.port or 80
+    port = es.port or 443
     ELASTICSEARCH = {
         'URL': es.scheme + '://' + es.hostname + ':' + str(port),
         'INDEX_SUFFIX': 'stage'
