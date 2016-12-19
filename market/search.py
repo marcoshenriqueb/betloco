@@ -25,7 +25,7 @@ class Algolia():
 class ElasticSearch():
     """search with ElasticSearch"""
     def __init__(self):
-        self.es = Elasticsearch([settings.ELASTICSEARCH['URL']],sniff_on_start=True,sniff_on_connection_fail=True,sniffer_timeout=60)
+        self.es = Elasticsearch([settings.ELASTICSEARCH['URL']])
 
     def indexEvents(self):
         try:
