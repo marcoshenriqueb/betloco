@@ -82,32 +82,38 @@ class TransactionManager(models.Manager):
             new_order_added = False
         # Have to improve this!! Don't query in loop!!!!!!!!!!!!!!!!!!
         # For each order the user gave in each market, get the executed amount and value
+        market_ids = [o['market__id'] for o in orders]
+        # Get this market orders that led to the balance in this orders
+        netOrders = Order.objects.filter(user__id=user_id).filter(deleted=0).filter(market__id__in=market_ids) \
+                                 .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
+                                 .annotate(exec_amount=Sum(Case(
+                                     When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
+                                     When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
+                                     When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
+                                     When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')),
+                                     default=0,
+                                     output_field=models.FloatField()
+                                   ))) \
+                                 .annotate(balance=Sum(Case(
+                                     When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
+                                     When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')*F('from_order__price')),
+                                     When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')*F('price')),
+                                     When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')*F('price')),
+                                     default=0,
+                                     output_field=models.FloatField()
+                                   ))) \
+                                   .order_by(Case(
+                                       When(from_order__isnull=False, then='from_order__id'),
+                                       When(to_order__isnull=False, then='to_order__id'),
+                                       output_field=models.IntegerField()
+                                    )).values('exec_amount','balance','market_id')
+        net_orders_dict = {}
+        for n in netOrders:
+            if n['market_id'] in net_orders_dict:
+                net_orders_dict[n['market_id']].append(n)
+            else:
+                net_orders_dict[n['market_id']] = [n,]
         for o in orders:
-            # Get this market orders that led to the balance in this orders
-            netOrders = Order.objects.filter(user__id=user_id).filter(deleted=0).filter(market__id=o['market__id']) \
-                                     .filter(Q(from_order__isnull=False) | Q(to_order__isnull=False)) \
-                                     .annotate(exec_amount=Sum(Case(
-                                         When(from_order__isnull=False, amount__gt=0, then='from_order__amount'),
-                                         When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')),
-                                         When(to_order__isnull=False, amount__gt=0, then='to_order__amount'),
-                                         When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')),
-                                         default=0,
-                                         output_field=models.FloatField()
-                                       ))) \
-                                     .annotate(balance=Sum(Case(
-                                         When(from_order__isnull=False, amount__gt=0, then=F('from_order__amount')*F('from_order__price')),
-                                         When(from_order__isnull=False, amount__lt=0, then=-1*F('from_order__amount')*F('from_order__price')),
-                                         When(to_order__isnull=False, amount__gt=0, then=F('to_order__amount')*F('price')),
-                                         When(to_order__isnull=False, amount__lt=0, then=-1*F('to_order__amount')*F('price')),
-                                         default=0,
-                                         output_field=models.FloatField()
-                                       ))) \
-                                       .order_by(Case(
-                                           When(from_order__isnull=False, then='from_order__id'),
-                                           When(to_order__isnull=False, then='to_order__id'),
-                                           output_field=models.IntegerField()
-                                        ))
-
             # Run through every order in the market and get every time position was liquidated,
             # that is when it gets to 0 amount or change sign. Then adds the balance so far to
             # the netted balance. This is done because only not netted balance goes to risk.
@@ -115,26 +121,27 @@ class TransactionManager(models.Manager):
             amount_counter = 0
             previous_balance = 0
             balance_counter = 0
-            for netOrder in netOrders:
-                amount_counter += netOrder.exec_amount
-                if sign > 0 and amount_counter <= 0:
-                    sign = 0 if amount_counter == 0 else -1
-                    balance_counter += (1-(amount_counter/netOrder.exec_amount))*netOrder.balance
-                    previous_balance += balance_counter
-                    balance_counter = (amount_counter/netOrder.exec_amount)*netOrder.balance
-                elif sign < 0 and amount_counter >= 0:
-                    sign = 0 if amount_counter == 0 else 1
-                    balance_counter += (1-(amount_counter/netOrder.exec_amount))*netOrder.balance
-                    previous_balance += balance_counter
-                    balance_counter = (amount_counter/netOrder.exec_amount)*netOrder.balance
-                else:
-                    if amount_counter > 0:
-                        sign = 1
-                    elif amount_counter < 0:
-                        sign = -1
+            if o['market__id'] in net_orders_dict:
+                for netOrder in net_orders_dict[o['market__id']]:
+                    amount_counter += netOrder['exec_amount']
+                    if sign > 0 and amount_counter <= 0:
+                        sign = 0 if amount_counter == 0 else -1
+                        balance_counter += (1-(amount_counter/netOrder['exec_amount']))*netOrder['balance']
+                        previous_balance += balance_counter
+                        balance_counter = (amount_counter/netOrder['exec_amount'])*netOrder['balance']
+                    elif sign < 0 and amount_counter >= 0:
+                        sign = 0 if amount_counter == 0 else 1
+                        balance_counter += (1-(amount_counter/netOrder['exec_amount']))*netOrder['balance']
+                        previous_balance += balance_counter
+                        balance_counter = (amount_counter/netOrder['exec_amount'])*netOrder['balance']
                     else:
-                        sign = 0
-                    balance_counter += netOrder.balance
+                        if amount_counter > 0:
+                            sign = 1
+                        elif amount_counter < 0:
+                            sign = -1
+                        else:
+                            sign = 0
+                        balance_counter += netOrder['balance']
             o['balance'] = balance_counter
             o['nettedBalance'] = previous_balance
 
