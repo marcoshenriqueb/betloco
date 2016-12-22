@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels'
+    'channels',
+    'silk'
 ]
 
 SITE_ID = 1
@@ -57,7 +58,11 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
+
+SILKY_AUTHENTICATION = True
+SILKY_AUTHORISATION = True
 
 ROOT_URLCONF = 'betloco.urls'
 

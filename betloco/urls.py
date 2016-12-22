@@ -23,3 +23,5 @@ urlpatterns = [
     url(r'^.well-known/acme-challenge/(?P<pk>.+)/$', LetsEncView.as_view()),
     url(r'^$', HomeView.as_view()),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
