@@ -19,6 +19,8 @@ class EventTypeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name',)
 
 class MarketSerializer(serializers.ModelSerializer):
+    lastCompleteOrder = OrderSerializer()
+    
     class Meta:
         model = Market
         fields = (
