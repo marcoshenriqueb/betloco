@@ -25,6 +25,7 @@ class MarketSerializer(serializers.ModelSerializer):
             'id',
             'title_short',
             'volume',
+            'lastCompleteOrder',
             'lastDayPrice'
         )
 

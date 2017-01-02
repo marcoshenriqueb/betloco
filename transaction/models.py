@@ -80,7 +80,6 @@ class TransactionManager(models.Manager):
         if new_order is not None:
             market_id = new_order['market__id'] if 'market__id' in new_order else new_order['market'].id
             new_order_added = False
-        # Have to improve this!! Don't query in loop!!!!!!!!!!!!!!!!!!
         # For each order the user gave in each market, get the executed amount and value
         market_ids = [o['market__id'] for o in orders]
         # Get this market orders that led to the balance in this orders
@@ -186,6 +185,7 @@ class TransactionManager(models.Manager):
             else:
                 events[e.id] = [result_order,]
 
+        # Improve here!!
         # Get the market count for each event that this user has order and adds to the dict
         markets_count = Event.objects.filter(id__in=events.keys()).values('id').annotate(Count('markets'))
         events_wc = {}
