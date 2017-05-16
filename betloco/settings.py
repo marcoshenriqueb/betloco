@@ -99,7 +99,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME') or os.path.join(BASE_DIR, 'db.sqlite3'),
         'USER': os.environ.get('DB_USER') or '',
         'PASSWORD': os.environ.get('DB_PASS') or '',
-        'HOST': os.environ.get('DB_SERVICE') or '',
+        'HOST': os.environ.get('DB_HOST') or '',
         'PORT': os.environ.get('DB_PORT') or ''
     }
 }
