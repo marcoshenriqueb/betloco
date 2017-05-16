@@ -18,7 +18,7 @@ import os
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'w=*e9-y@o1-@vj8&9=w*^*5fdzor0vd=)qr*4#m8t=nx4xfg*@'
 
-ALLOWED_HOSTS = ['guroo.bet', 'betloco.herokuapp.com', 'localhost', 'www.guroo.bet',]
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
