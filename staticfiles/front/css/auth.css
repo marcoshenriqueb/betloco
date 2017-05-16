@@ -1,0 +1,213 @@
+@font-face {
+  font-family: Titles;
+  src: url("../fonts/BRANDON_MED.OTF");
+  font-weight: 300;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+button {
+  font-weight: bold;
+  min-width: 227px;
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px 20px 20px;
+}
+.gray {
+  background-color: #fcfcfc;
+}
+.section-title {
+  text-align: center;
+  color: #3b3b3b;
+  font-size: 42px;
+  font-family: Titles, sans-serif;
+}
+.section-subtitle {
+  font-size: 28px;
+  margin-top: 30px;
+  margin-bottom: 0;
+  font-family: Titles, sans-serif;
+}
+.section-description {
+  color: #616161;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.section-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+@media (min-width: 992px) {
+  .section {
+    padding: 0 8% 40px 8%;
+  }
+  .section-title {
+    font-size: 48px;
+  }
+}
+header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  z-index: 1000;
+  padding: 20px 20px;
+}
+header.auth {
+  position: relative;
+}
+.logo {
+  height: 50px;
+}
+.logo-color {
+  fill: #fff;
+}
+.header-nav {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.header-nav__item {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 15px;
+  height: 100%;
+  transition: all 600ms ease;
+  position: relative;
+  border-radius: 3px;
+  border: 2px solid transparent;
+}
+.header-nav__item.enter {
+  border-color: #fff;
+}
+.header-nav__item:hover {
+  border-color: #f9a51a;
+  color: #f9a51a;
+}
+@media (min-width: 600px) {
+  header {
+    padding: 20px 50px;
+  }
+  .header-nav__item {
+    padding: 8px 20px;
+  }
+  .logo {
+    height: 80px;
+  }
+}
+@media (min-width: 992px) {
+  header {
+    padding: 20px 150px;
+  }
+  .header-nav__item {
+    padding: 8px 30px;
+  }
+}
+body {
+  background-image: url("../img/ecailles.png");
+  background-repeat: repeat;
+}
+.top-menu {
+  z-index: 1000;
+  position: absolute;
+}
+.top-menu .collection-item a {
+  color: #616161;
+}
+.top-menu .collection-item a:hover {
+  color: #00bcd4;
+}
+.auth-card {
+  margin: 4rem 0;
+}
+.auth-message {
+  position: relative;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.auth-message p {
+  color: #fff;
+  background-color: #616161;
+  padding: 5px 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+.alert-error {
+  color: #ff4081;
+}
+.logo {
+  height: 40px;
+  margin-bottom: 10px;
+}
+.row .col.checkbox-field {
+  min-height: 50px;
+  margin-top: 0;
+}
+.form-btn {
+  margin-bottom: 15px;
+  width: 100%;
+}
+.fb-btn {
+  margin: 15px 0;
+  width: 100%;
+}
+/* label color */
+.input-field label {
+  color: #616161;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label,
+.input-field input[type=password]:focus + label {
+  color: #00bcd4;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus,
+.input-field input[type=password]:focus {
+  border-bottom: 1px solid #00bcd4;
+  box-shadow: 0 1px 0 0 #00bcd4;
+}
+/* valid color */
+.input-field input[type=text].valid,
+.input-field input[type=password].valid {
+  border-bottom: 1px solid #00bcd4;
+  box-shadow: 0 1px 0 0 #00bcd4;
+}
+/* invalid color */
+.input-field input[type=text].invalid,
+.input-field input[type=password].invalid {
+  border-bottom: 1px solid #00bcd4;
+  box-shadow: 0 1px 0 0 #00bcd4;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+  color: #00bcd4;
+}
+@media (min-width: 600px) {
+  .auth-message {
+    position: absolute;
+  }
+  .auth-card {
+    margin: 4rem 0;
+  }
+}

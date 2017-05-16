@@ -1,12 +1,11 @@
+import operator, functools
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Sum, Avg, Q, F, Case, When
 from django.utils import timezone
-import operator, functools
 from itertools import chain
-from channels import Channel
 from price.models import Price
 
 class EventType(models.Model):
@@ -62,6 +61,8 @@ class Event(models.Model):
 class MarketManager(models.Manager):
     """docstring for MarketManager"""
     def set_winner(self, winner_id, market_id=False):
+        from engine.engine import LiquidationEngine
+
         if winner_id:
             winner_choice = True
             if winner_id == 'true':
@@ -80,16 +81,12 @@ class MarketManager(models.Manager):
                 winner_market.winner = 1 if winner_choice == True else 0
                 winner_market.liquidated = 1
                 winner_market.save()
-                Channel("liquidate-market").send({
-                    "market_id": winner_market.id
-                })
+                LiquidationEngine(winner_market.id)
                 loosers_markets = e.markets.filter(~Q(id=winner_id))
                 for m in loosers_markets:
                     m.liquidated = 1
                     m.save()
-                    Channel("liquidate-market").send({
-                        "market_id": m.id
-                    })
+                    LiquidationEngine(m.id)
 
     def custody(self, user_id, market_id):
         market = self.get(id=market_id)

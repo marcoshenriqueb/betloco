@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'price',
     'rest_framework',
     'allauth',
-    'django.contrib.algoliasearch',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
@@ -42,8 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
-    'silk'
 ]
 
 SITE_ID = 1
@@ -58,14 +55,13 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    # 'silk.middleware.SilkyMiddleware',
 ]
 
-SILKY_AUTHENTICATION = True
-SILKY_AUTHORISATION = True
-SILKY_META = True
-SILKY_MAX_REQUEST_BODY_SIZE = 0
-SILKY_MAX_RESPONSE_BODY_SIZE = 0
+# SILKY_AUTHENTICATION = True
+# SILKY_AUTHORISATION = True
+# SILKY_META = True
+# SILKY_MAX_REQUEST_BODY_SIZE = 0
+# SILKY_MAX_RESPONSE_BODY_SIZE = 0
 
 ROOT_URLCONF = 'betloco.urls'
 
@@ -88,58 +84,47 @@ TEMPLATES = [
 WSGI_APPLICATION = 'betloco.wsgi.application'
 LETS_ENCRYPT_KEY = "L-0tswzW1AvS8PjhmAYo0nBjMb79ODWjobUFMloY-RI"
 
-try:
-    from .local_settings import *
-except ImportError:
-    # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    SOCKET_URL = "https://guroo-ws.herokuapp.com/"
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    DEBUG = False
+SOCKET_URL = os.environ.get('SOCKET_URL') or 'http://localhost:3000/'
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT') or False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    DATABASES = {
-        'default': {}
+DEBUG = os.environ.get('DEBUG') or False
+
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DB_ENGINE') or 'django.db.backends.sqlite3',
+        'NAME': os.environ.get('DB_NAME') or os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER': os.environ.get('DB_USER') or '',
+        'PASSWORD': os.environ.get('DB_PASS') or '',
+        'HOST': os.environ.get('DB_SERVICE') or '',
+        'PORT': os.environ.get('DB_PORT') or ''
     }
-    ALGOLIA = {
-        'APPLICATION_ID': "I1N0D7FVQX",
-        'API_KEY': "79ac62468de382e1756e0e10b4924a9b",
-        'INDEX_SUFFIX': 'staging'
-    }
-    import dj_database_url
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
-
-    from urllib.parse import urlparse
-    REDIS_URL = urlparse(os.environ.get('REDIS_URL'))
-    CACHES = {
-            'default': {
-                'BACKEND': 'redis_cache.RedisCache',
-                'LOCATION': '%s:%s' % (REDIS_URL.hostname, REDIS_URL.port),
-                'OPTIONS': {
-                    'PASSWORD': REDIS_URL.password,
-                    'DB': 1,
-            }
+}
+    
+from urllib.parse import urlparse
+REDIS_URL = urlparse(os.environ.get('REDIS_URL')) if os.environ.get('REDIS_URL') else urlparse('http://localhost:6379/')
+CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': '%s:%s' % (REDIS_URL.hostname, REDIS_URL.port),
+            'OPTIONS': {
+                'PASSWORD': REDIS_URL.password,
+                'DB': 1,
         }
     }
+}
 
-    CHANNEL_LAYERS = {
-        "default": {
-            "BACKEND": "asgi_redis.RedisChannelLayer",
-            "CONFIG": {
-                "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-            },"ROUTING": "betloco.routing.channel_routing",
-        },
-    }
-    es = urlparse(os.environ.get('BONSAI_URL'))
-    port = es.port or 443
-    ELASTICSEARCH = {
-        'URL': es.scheme + '://' + es.hostname + ':' + str(port),
-        'INDEX_SUFFIX': 'stage'
-    }
-    if es.username:
-        ELASTICSEARCH['URL'] = es.scheme + '://'+ es.username + ':' + es.password + '@' + es.hostname + ':' + str(port)
+ES_URL = urlparse(os.environ.get('ES_URL')) if os.environ.get('ES_URL') else urlparse('http://localhost:9200/')
+port = ES_URL.port or 443
+ELASTICSEARCH = {
+    'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':' + str(port),
+    'INDEX_SUFFIX': 'stage'
+}
+if ES_URL.username:
+    ELASTICSEARCH['URL'] = ES_URL.scheme + '://'+ ES_URL.username + ':' + ES_URL.password + '@' + ES_URL.hostname + ':' + str(port)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

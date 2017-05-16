@@ -1,26 +1,8 @@
-from algoliasearch import algoliasearch
 from django.conf import settings
 from .models import Event
 from .serializers import EventSerializer
 from elasticsearch import helpers, Elasticsearch, ElasticsearchException, TransportError
 from django.utils import timezone
-import logging
-logger = logging.getLogger('betloco.market.search')
-
-class Algolia():
-    """search with Algolia"""
-    def __init__(self):
-        self.client = algoliasearch.Client(settings.ALGOLIA['APPLICATION_ID'], settings.ALGOLIA['API_KEY'])
-
-    def indexEvents(self):
-        index = self.client.init_index("events_" + settings.ALGOLIA['INDEX_SUFFIX'])
-        index.set_settings({
-            "attributesToIndex": ["title", "event_category",],
-            "customRanking": ["desc(volume)", "desc(created_at)"]
-        })
-        events = Event.objects.all()
-        serializer = EventSerializer(events, many=True)
-        index.add_objects(serializer.data)
 
 class ElasticSearch():
     """search with ElasticSearch"""
@@ -152,10 +134,8 @@ class ElasticSearch():
                 )
             else:
                 print(str(e))
-                logger.error(str(e))
         except ElasticsearchException as e:
             print(str(e))
-            logger.error(str(e))
         events = Event.objects.filter().all()
         serializer = EventSerializer(events, many=True)
         data = []
@@ -174,16 +154,13 @@ class ElasticSearch():
                 helpers.bulk(self.es, data, chunk_size=50, request_timeout=60)
             except ElasticsearchException as e:
                 print(str(e))
-                logger.error(str(e))
         else:
             print('No data to index')
-            logger.error('No data to index')
     def deleteEventIndex(self):
         try:
             self.es.indices.delete("events-index")
         except ElasticsearchException as e:
             print(str(e))
-            logger.error(str(e))
 
     def search(self, query=None, pagination=10, page=0, expired=0, order="created_at|desc", category="todas"):
         try:
