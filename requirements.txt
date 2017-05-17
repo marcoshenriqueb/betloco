@@ -9,6 +9,7 @@ Django==1.9.7
 django-allauth==0.25.2
 django-filter==0.13.0
 django-redis==4.8.0
+django-redis-cache==1.7.1
 django-silk==0.7.2
 djangorestframework==3.5.0
 elasticsearch==2.4.1

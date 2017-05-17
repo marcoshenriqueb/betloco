@@ -91,7 +91,7 @@ SOCKET_URL = os.environ.get('SOCKET_URL') or 'http://localhost:3000/'
 SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT') or False
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-DEBUG = os.environ.get('DEBUG') or False
+DEBUG = os.environ.get('DEBUG') or True
 
 DATABASES = {
     'default': {
@@ -151,9 +151,10 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = '/app/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
        {'METHOD': 'oauth2',
