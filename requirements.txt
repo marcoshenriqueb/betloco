@@ -11,7 +11,7 @@ django-filter==0.13.0
 django-redis==4.8.0
 django-redis-cache==1.7.1
 django-silk==0.7.2
-djangorestframework==3.5.0
+djangorestframework==3.9.1
 elasticsearch==2.4.1
 gunicorn==19.6.0
 idna==2.1
