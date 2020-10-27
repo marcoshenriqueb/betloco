@@ -2,7 +2,7 @@ appdirs==1.4.3
 autopep8==1.2.4
 cffi==1.7.0
 coreapi==2.0.9
-cryptography==1.4
+cryptography==3.2
 defusedxml==0.4.1
 dj-database-url==0.4.1
 Django==1.9.7
